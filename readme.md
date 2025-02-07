@@ -1,28 +1,41 @@
-# SV-Marketing: Build beautiful marketing sites with SvelteKit
+# SV-Marketing
 
-This is a component library for building basic marketing sites with SvelteKit. It's born out of the frustrating of not having any fast highly customizable component libraries for typical staticly generated marketing sites.
-This still a WIP and I'm working on adding more components and improving the existing ones.
+Build beautiful marketing sites with SvelteKit - A lightweight, customizable component library for static marketing websites.
 
-## Getting Started
+## Features
 
-To get started, install the `NPM` package:
-```npm install sv-marketing```
+- 🚀 Built for SvelteKit
+- 🎨 Highly customizable through CSS variables
+- 📱 Fully responsive components
+- ⚡ Lightweight and fast
+- 🔧 Easy to integrate
 
-## Components
+## Installation
 
-- [ ] Hero
-- [ ] Features
-- [ ] Pricing
-- [ ] CTA
-- [ ] Footer
-- [ ] Testimonials
-- [ ] FAQ
-- [ ] Navbar
+```bash
+npm install sv-marketing
+```
 
-## Design Approach
+## Available Components
 
-Components are designed to be highly customizable and easy to use.
-A set of CSS variables are used to control the look and feel of the components. This allows you to easily change the color, font, and spacing of the components by adding your own CSS file to `+layout.svelte` file.
-Components are also designed to be responsive and work well on all screen sizes.
+- Hero sections
+- Feature blocks
+- Pricing tables
+- Call-to-action (CTA) blocks
+- Footer layouts
+- Testimonial displays
+- FAQ accordions
+- Navigation bars
 
-Note: we will be using runes mode.
+## Usage
+
+Components use Svelte's runes mode and can be styled through CSS variables in your `+layout.svelte` file.
+
+## Status
+
+Currently in active development. Components are being added and refined regularly.
+
+## License
+
+MIT
+
