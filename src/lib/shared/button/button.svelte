@@ -17,6 +17,13 @@
 		padding: 0.5rem 1rem;
 		border-radius: 0;
 		font-weight: bold;
+		filter: brightness(1);
+	}
+	a:hover {
+		filter: brightness(1.25);
+	}
+	a:active {
+		filter: brightness(0.9);
 	}
 
 	@media (max-width: 640px) {
