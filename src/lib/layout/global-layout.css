@@ -1,0 +1,8 @@
+body,
+html {
+	all: unset;
+}
+
+* {
+	box-sizing: border-box;
+}

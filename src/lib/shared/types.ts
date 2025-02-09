@@ -1,6 +1,11 @@
 export interface ITextAlignmentProps {
 	align: 'left' | 'center' | 'right';
 }
+
+export interface ISizeProps {
+	size: 'small' | 'medium' | 'large';
+}
+
 export interface ITitleProps extends Partial<ITextAlignmentProps> {
 	title: string;
 }
@@ -15,12 +20,8 @@ export interface ILinkProps {
 	isTargetBlank?: boolean;
 }
 
-export interface IButtonProps extends ILinkProps, Partial<IButtonSizeProps> {
+export interface IButtonProps extends ILinkProps, Partial<ISizeProps> {
 	type?: 'primary' | 'secondary' | 'default';
-}
-
-export interface IButtonSizeProps {
-	size: 'small' | 'medium' | 'large';
 }
 
 export interface IMediaProps {
@@ -37,3 +38,5 @@ export interface IBaseSectionProps extends ITitleProps, ISubtitleProps, ISection
 	primaryButton?: IButtonProps;
 	secondaryButton?: IButtonProps;
 }
+
+export interface ILogoProps extends Omit<IMediaProps, 'type'>, ILinkProps, ISizeProps {}

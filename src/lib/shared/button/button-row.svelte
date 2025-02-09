@@ -6,7 +6,8 @@
 		primaryButton,
 		secondaryButton,
 		size = 'small',
-		align = 'center'
+		align = 'center',
+		snug = false
 	}: IButtonRowProps = $props();
 	const shouldRenderPrimaryButton = primaryButton !== undefined;
 	const shouldRenderSecondaryButton = secondaryButton !== undefined;
@@ -14,7 +15,7 @@
 </script>
 
 {#if shouldRenderButtons}
-	<div class={align}>
+	<div class={align} class:snug>
 		{#if shouldRenderPrimaryButton}
 			<Button {...primaryButton} {size} />
 		{/if}
@@ -29,6 +30,7 @@
 		display: flex;
 		gap: 1rem;
 		width: 100%;
+		max-width: 100%;
 	}
 
 	.center {
@@ -40,11 +42,15 @@
 	.right {
 		justify-content: flex-end;
 	}
-	
+
 	@media (max-width: 640px) {
 		div {
 			flex-direction: column;
 			justify-content: center;
 		}
+	}
+	.snug {
+		width: fit-content;
+		min-width: fit-content;
 	}
 </style>

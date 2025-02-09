@@ -1,6 +1,7 @@
-import type { IButtonProps, IButtonSizeProps, ITextAlignmentProps } from '../types.js';
+import type { IButtonProps, ISizeProps, ITextAlignmentProps } from '../types.js';
 
-export interface IButtonRowProps extends IButtonSizeProps, Partial<ITextAlignmentProps> {
+export interface IButtonRowProps extends ISizeProps, Partial<ITextAlignmentProps> {
 	primaryButton?: IButtonProps;
 	secondaryButton?: IButtonProps;
+	snug?: boolean;
 }

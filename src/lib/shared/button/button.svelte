@@ -10,6 +10,7 @@
 <style>
 	a {
 		all: unset;
+		box-sizing: border-box;
 		border: none;
 		text-decoration: none;
 		text-align: center;
@@ -18,6 +19,8 @@
 		border-radius: 0;
 		font-weight: bold;
 		filter: brightness(1);
+		width: fit-content;
+		max-width: 100%;
 	}
 	a:hover {
 		filter: brightness(1.25);
