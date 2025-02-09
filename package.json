@@ -1,6 +1,6 @@
 {
 	"name": "@really-headless/sv-marketing",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
