@@ -1,5 +1,8 @@
 # SV-Marketing
 
+> Still in active development.
+> need to expose a variable? feel free to submit a PR.
+
 Build beautiful marketing sites with SvelteKit - A lightweight, customizable component library for static marketing websites.
 
 ## Features
@@ -39,10 +42,6 @@ Components use Svelte's runes mode and can be styled through CSS variables in yo
 ## Status
 
 Currently in active development. Components are being added and refined regularly.
-
-## License
-
-MIT
 
 ## CSS Variables
 

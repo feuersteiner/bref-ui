@@ -1,7 +1,25 @@
 {
 	"name": "@really-headless/sv-marketing",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/feuersteiner/sv-marketing.git"
+	},
+	"author": "feuersteiner",
+	"keywords": [
+		"svelte",
+		"sveltekit",
+		"vite",
+		"marketing site",
+		"ssg",
+		"static site",
+		"landing page"
+	],
+	"bugs": {
+		"url": "https://github.com/feuersteiner/sv-marketing/issues"
+	},
+	"homepage": "https://github.com/feuersteiner/sv-marketing#readme",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
