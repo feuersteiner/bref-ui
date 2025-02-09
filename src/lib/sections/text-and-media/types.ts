@@ -1,4 +1,4 @@
-import type { IBaseSectionProps, IMediaProps } from "$lib/shared/types.js";
+import type { IBaseSectionProps, IMediaProps } from '$lib/shared/types.js';
 
 export interface ITextAndMediaItemProps extends IBaseSectionProps {
 	media: IMediaProps;
