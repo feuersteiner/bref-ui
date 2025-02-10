@@ -6,10 +6,26 @@
 		Features,
 		FrequentlyAskedQuestions,
 		MediaHero,
+		PageSeo,
 		TextAndMedia
 	} from '$lib/index.js';
 </script>
 
+<PageSeo
+	title="Home"
+	description="This is the home page."
+	keywords={['home', 'page']}
+	thumbnail="https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+	path="/"
+	baseUrl="https://example.com"
+	jsonLd={{
+		additionalType: 'https://schema.org/WebPage',
+		name: 'Home',
+		legalName: 'Home',
+		logo: 'https://example.com/logo.png',
+		socialMedia: ['https://twitter.com', 'https://facebook.com']
+	}}
+/>
 <BreadCrumbs
 	items={[
 		{ label: 'Home', href: '#' },

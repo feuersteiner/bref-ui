@@ -38,7 +38,7 @@ npm install sv-marketing
 - ✅ Footer
 - ✅ Breadcrumbs (with `SEO` ✨)
 - ✅ Page Layout
-
+- ✅ Page `SEO` (with `jsonLD` ✨)
 - 🚧 Blog Listing Page
 - 🚧 Blog Post Page
 
