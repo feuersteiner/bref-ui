@@ -15,6 +15,7 @@ Build beautiful marketing sites with SvelteKit - A lightweight, customizable com
 - 📱 Fully responsive components
 - ⚡ Lightweight and fast
 - 🔧 Easy to integrate
+- 📈 SEO-friendly with the right semantic components and `jsonLD`
 
 ## Installation
 
