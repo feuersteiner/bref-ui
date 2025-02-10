@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BasicHero, BreadCrumbs, MediaHero, TextAndMedia } from '$lib/index.js';
+	import { BasicHero, BreadCrumbs, FaqSection, MediaHero, TextAndMedia } from '$lib/index.js';
 </script>
 
 <BreadCrumbs
@@ -61,6 +61,27 @@
 				alt: 'Random Image',
 				type: 'image'
 			}
+		}
+	]}
+/>
+<FaqSection
+	title="FAQ"
+	subtitle="This is a FAQ section."
+	items={[
+		{
+			question: 'What is SveteKit?',
+			answer:
+				'SvelteKit is a framework for building web applications of all sizes, with a beautiful development experience and flexible filesystem-based routing.'
+		},
+		{
+			question: 'What is Svelte?',
+			answer:
+				'Svelte is a radical new approach to building user interfaces. Whereas traditional frameworks like React and Vue do the bulk of their work in the browser, Svelte shifts that work into a compile step that happens when you build your app.'
+		},
+		{
+			question: 'What is Africa?',
+			answer:
+				`Africa is the world's second-largest and second-most populous continent, after Asia in both cases. At about 30.3 million km² including adjacent islands, it covers 6% of Earth's total surface area and 20% of its land area.`
 		}
 	]}
 />

@@ -1,3 +1,5 @@
+import type { IButtonPairProps } from './button/types.js';
+
 export interface ITextAlignmentProps {
 	align: 'left' | 'center' | 'right';
 }
@@ -37,9 +39,10 @@ export interface ISectionContainerProps {
 	minimalPadding?: boolean;
 }
 
-export interface IBaseSectionProps extends ITitleProps, ISubtitleProps, ISectionContainerProps {
-	primaryButton?: IButtonProps;
-	secondaryButton?: IButtonProps;
-}
+export interface IBaseSectionProps
+	extends ITitleProps,
+		ISubtitleProps,
+		ISectionContainerProps,
+		IButtonPairProps {}
 
 export interface ILogoProps extends Omit<IMediaProps, 'type'>, ILinkProps, ISizeProps {}

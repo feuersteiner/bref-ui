@@ -1,7 +1,10 @@
 # SV-Marketing
 
-> Still in active development.
-> need to expose a variable? feel free to submit a PR.
+>
+> 🚧 Still in active development.
+>
+> 🧑‍💻 Need to expose a variable? feel free to submit a PR.
+>
 
 Build beautiful marketing sites with SvelteKit - A lightweight, customizable component library for static marketing websites.
 
@@ -29,10 +32,10 @@ npm install sv-marketing
 - 🚧 Pricing tables
 - 🚧 Call-to-action (CTA)
 - 🚧 Testimonials
-- 🚧 FAQ accordions
+- ✅ FAQ accordions (with `SEO` ✨)
 - ✅ Navbar
 - ✅ Footer
-- ✅ Breadcrumbs (with `SEO` ✨ )
+- ✅ Breadcrumbs (with `SEO` ✨)
 - ✅ Page Layout
 
 ## Usage
