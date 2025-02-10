@@ -6,13 +6,14 @@
 		children,
 		gridSize = 'full',
 		gapSize = 'small',
-		align = 'center'
+		align = 'center',
+		justifyUp
 	}: {
 		children: Snippet;
 	} & Partial<ISubSectionContainerProps> = $props();
 </script>
 
-<div class={`${gridSize} ${gapSize} ${align}`}>{@render children()}</div>
+<div class:justifyUp class={`${gridSize} ${gapSize} ${align}`}>{@render children()}</div>
 
 <style>
 	div {
@@ -22,8 +23,11 @@
 		flex-grow: 1;
 		height: 100%;
 		width: 100%;
+		align-items: center;
+		justify-content: center;
+	}
+	.justifyUp {
 		justify-content: flex-start;
-		align-items: center; /* Default center alignment for small screens */
 	}
 	.full {
 		grid-column: span 12;

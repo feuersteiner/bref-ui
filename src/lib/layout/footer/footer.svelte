@@ -9,12 +9,12 @@
 
 <footer>
 	<SectionContainer>
-		<SubSectionContainer gridSize="quarter" gapSize="medium" align="left">
+		<SubSectionContainer gridSize="quarter" gapSize="medium" align="left" justifyUp>
 			<Logo size="large" {...logo} />
 			<p>{tagline}</p>
 		</SubSectionContainer>
 		{#each columns as column}
-			<SubSectionContainer gridSize="quarter" gapSize="medium" align="left">
+			<SubSectionContainer gridSize="quarter" gapSize="medium" align="left" justifyUp>
 				<strong><a {...column.header}>{column.header.label}</a></strong>
 				{#if column.children}
 					{#each column.children as child}

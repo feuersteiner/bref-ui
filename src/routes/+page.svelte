@@ -1,8 +1,14 @@
 <script lang="ts">
-	import { MediaHero, TextAndMedia } from '$lib/index.js';
-	import BasicHero from '$lib/sections/hero/basic-hero.svelte';
+	import { BasicHero, BreadCrumbs, MediaHero, TextAndMedia } from '$lib/index.js';
 </script>
 
+<BreadCrumbs
+	items={[
+		{ label: 'Home', href: '#' },
+		{ label: 'About', href: '#' },
+		{ label: 'Contact', href: '#' }
+	]}
+/>
 <MediaHero
 	title="Welcome to SV-Marketing"
 	subtitle="This is a basic hero component."

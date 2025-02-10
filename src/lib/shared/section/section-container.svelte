@@ -4,13 +4,14 @@
 
 	const {
 		children,
-		anchor
+		anchor,
+		minimalPadding
 	}: {
 		children: Snippet;
 	} & ISectionContainerProps = $props();
 </script>
 
-<section>
+<section class:minimalPadding>
 	<div id={anchor}>
 		{@render children()}
 	</div>
@@ -23,6 +24,9 @@
 		align-items: center;
 		width: 100%;
 		padding: 4rem 0rem;
+	}
+	.minimalPadding {
+		padding: 0rem;
 	}
 
 	div {

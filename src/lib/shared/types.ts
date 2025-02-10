@@ -34,6 +34,7 @@ export interface IMediaProps {
 
 export interface ISectionContainerProps {
 	anchor?: string;
+	minimalPadding?: boolean;
 }
 
 export interface IBaseSectionProps extends ITitleProps, ISubtitleProps, ISectionContainerProps {
