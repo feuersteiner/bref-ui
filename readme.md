@@ -38,6 +38,9 @@ npm install sv-marketing
 - ✅ Breadcrumbs (with `SEO` ✨)
 - ✅ Page Layout
 
+- 🚧 Blog Listing Page
+- 🚧 Blog Post Page 
+
 ## Usage
 
 Components use Svelte's runes mode and can be styled through CSS variables in your `+layout.svelte` file.
