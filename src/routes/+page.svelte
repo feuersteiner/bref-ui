@@ -2,6 +2,7 @@
 	import {
 		BasicHero,
 		BreadCrumbs,
+		CallToAction,
 		Features,
 		FrequentlyAskedQuestions,
 		MediaHero,
@@ -112,4 +113,13 @@
 			answer: `Africa is the world's second-largest and second-most populous continent, after Asia in both cases. At about 30.3 million km² including adjacent islands, it covers 6% of Earth's total surface area and 20% of its land area.`
 		}
 	]}
+/>
+
+<CallToAction
+	title="Call To Action"
+	subtitle="This is a call to action section."
+	primaryButton={{
+		label: 'Primary Button',
+		href: '#'
+	}}
 />
