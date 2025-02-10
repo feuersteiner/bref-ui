@@ -5,7 +5,7 @@
 	import SubSectionContainer from '$lib/shared/sub-section/sub-section-container.svelte';
 	import SubSectionSubtitle from '$lib/shared/sub-section/sub-section-subtitle.svelte';
 	import SubSectionTitle from '$lib/shared/sub-section/sub-section-title.svelte';
-	import type { IFeatureSectionProps } from './type.js';
+	import type { IFeaturesProps } from './type.js';
 
 	const {
 		title,
@@ -15,7 +15,7 @@
 		secondaryButton,
 		items,
 		gridSize
-	}: IFeatureSectionProps = $props();
+	}: IFeaturesProps = $props();
 </script>
 
 <SectionContainer {anchor}>

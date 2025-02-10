@@ -5,6 +5,6 @@ export interface IFaqPairProps {
 	answer: string;
 }
 
-export interface IFaqSectionProps extends IBaseSectionProps {
+export interface IFaqProps extends IBaseSectionProps {
 	items: IFaqPairProps[];
 }

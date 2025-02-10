@@ -6,10 +6,10 @@ import type {
 	ITitleProps
 } from '$lib/shared/types.js';
 
-export interface IFeatureSectionItemProps extends ITitleProps, ISubtitleProps{
+interface IFeatureItemProps extends ITitleProps, ISubtitleProps {
 	media: IMediaProps;
 }
 
-export interface IFeatureSectionProps extends IBaseSectionProps, IGridSizeProps  {
-	items: IFeatureSectionItemProps[];
+export interface IFeaturesProps extends IBaseSectionProps, IGridSizeProps {
+	items: IFeatureItemProps[];
 }

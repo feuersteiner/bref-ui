@@ -2,9 +2,9 @@
 	import SectionContainer from '$lib/shared/section/section-container.svelte';
 	import SectionHeader from '$lib/shared/section/section-header.svelte';
 	import FaqItem from './faq-item.svelte';
-	import type { IFaqSectionProps } from './types.js';
+	import type { IFaqProps } from './types.js';
 
-	const { items, title, subtitle, anchor, primaryButton, secondaryButton }: IFaqSectionProps =
+	const { items, title, subtitle, anchor, primaryButton, secondaryButton }: IFaqProps =
 		$props();
 
 	const jsonLd = JSON.stringify({
