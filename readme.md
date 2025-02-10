@@ -29,7 +29,7 @@ npm install sv-marketing
   - ✅ Basic Hero
   - ✅ Hero with Image
 - ✅ Text And Media Pairs
-- 🚧 Feature blocks
+- ✅ Feature blocks
 - 🚧 Pricing tables
 - 🚧 Call-to-action (CTA)
 - 🚧 Testimonials

@@ -1,14 +1,14 @@
 <script lang="ts">
 	import type { IMediaProps } from './types.js';
 
-	const { src, alt, type }: IMediaProps = $props();
+	const { src, alt, type, fill }: IMediaProps = $props();
 
 	const isImage = type === 'image';
 	const isVideo = type === 'video';
 </script>
 
 {#if isImage}
-	<img {src} {alt} />
+	<img {src} {alt} class:fill />
 {/if}
 
 {#if isVideo}
@@ -20,5 +20,10 @@
 	video,
 	img {
 		max-width: 100%;
+	}
+	.fill {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 </style>

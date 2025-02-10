@@ -1,5 +1,12 @@
 <script lang="ts">
-	import { BasicHero, BreadCrumbs, FaqSection, MediaHero, TextAndMedia } from '$lib/index.js';
+	import {
+		BasicHero,
+		BreadCrumbs,
+		Features,
+		FrequentlyAskedQuestions,
+		MediaHero,
+		TextAndMedia
+	} from '$lib/index.js';
 </script>
 
 <BreadCrumbs
@@ -64,7 +71,29 @@
 		}
 	]}
 />
-<FaqSection
+<Features
+	title="Features"
+	subtitle={`This is a features section. 
+		It demonstrates multiple features in a grid layout.
+		Each feature includes a title, description, and image.`}
+	secondaryButton={{
+		label: 'Secondary Button',
+		href: '#'
+	}}
+	gridSize="third"
+	items={Array.from({ length: 3 }, (_, i) => ({
+		title: `Feature ${i + 1}`,
+		subtitle: `This is feature number ${i + 1}.
+			A simple description for the feature.
+			Additional details about the feature.`,
+		media: {
+			src: 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+			alt: 'Random Image',
+			type: 'image'
+		}
+	}))}
+/>
+<FrequentlyAskedQuestions
 	title="FAQ"
 	subtitle="This is a FAQ section."
 	items={[
@@ -80,8 +109,7 @@
 		},
 		{
 			question: 'What is Africa?',
-			answer:
-				`Africa is the world's second-largest and second-most populous continent, after Asia in both cases. At about 30.3 million km² including adjacent islands, it covers 6% of Earth's total surface area and 20% of its land area.`
+			answer: `Africa is the world's second-largest and second-most populous continent, after Asia in both cases. At about 30.3 million km² including adjacent islands, it covers 6% of Earth's total surface area and 20% of its land area.`
 		}
 	]}
 />

@@ -1,7 +1,6 @@
-import type { ITextAlignmentProps, SizeType } from '../types.js';
+import type { IGridSizeProps, ITextAlignmentProps, SizeType } from '../types.js';
 
-export interface ISubSectionContainerProps extends ITextAlignmentProps {
-	gridSize: 'full' | 'half' | 'third' | 'quarter';
+export interface ISubSectionContainerProps extends ITextAlignmentProps, IGridSizeProps {
 	gapSize: SizeType;
 	justifyUp?: boolean;
 }

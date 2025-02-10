@@ -32,6 +32,7 @@ export interface IMediaProps {
 	src: string;
 	alt: string;
 	type: 'image' | 'video';
+	fill?: boolean;
 }
 
 export interface ISectionContainerProps {
@@ -46,3 +47,7 @@ export interface IBaseSectionProps
 		IButtonPairProps {}
 
 export interface ILogoProps extends Omit<IMediaProps, 'type'>, ILinkProps, ISizeProps {}
+
+export interface IGridSizeProps {
+	gridSize: 'full' | 'half' | 'third' | 'quarter';
+}
