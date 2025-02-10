@@ -4,26 +4,26 @@
 
 	const {
 		children,
-		gridSize,
-		gapSize = 'small'
+		gridSize = 'full',
+		gapSize = 'small',
+		align = 'center'
 	}: {
 		children: Snippet;
-	} & ISubSectionContainerProps = $props();
+	} & Partial<ISubSectionContainerProps> = $props();
 </script>
 
-<div class={`${gridSize} ${gapSize}`}>{@render children()}</div>
+<div class={`${gridSize} ${gapSize} ${align}`}>{@render children()}</div>
 
 <style>
 	div {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
 		gap: 1rem;
 		flex-grow: 1;
 		height: 100%;
 		width: 100%;
-		align-items: center;
-		justify-content: center;
+		justify-content: flex-start;
+		align-items: center; /* Default center alignment for small screens */
 	}
 	.full {
 		grid-column: span 12;
@@ -47,6 +47,16 @@
 		}
 		.quarter {
 			grid-column: span 6;
+		}
+
+		.center {
+			align-items: center;
+		}
+		.left {
+			align-items: flex-start;
+		}
+		.right {
+			align-items: flex-end;
 		}
 	}
 

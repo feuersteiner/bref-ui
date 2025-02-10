@@ -2,8 +2,10 @@ export interface ITextAlignmentProps {
 	align: 'left' | 'center' | 'right';
 }
 
+export type SizeType = 'small' | 'medium' | 'large';
+
 export interface ISizeProps {
-	size: 'small' | 'medium' | 'large';
+	size: SizeType;
 }
 
 export interface ITitleProps extends Partial<ITextAlignmentProps> {

@@ -15,6 +15,8 @@ export interface INavbarProps extends ILogoNavigationProps, IButtonPairProps {
 
 export interface IFooterProps extends ILogoNavigationProps {
 	columns: INavigationLinkColumnProps[];
+	copyright: string;
+	tagline: string;
 }
 
 export interface ILayoutProps {

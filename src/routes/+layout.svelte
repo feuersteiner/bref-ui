@@ -33,6 +33,8 @@
 		}
 	}}
 	footer={{
+		copyright: 'Contoso Inc',
+		tagline: 'The best company in the world',
 		logo,
 		columns: [
 			...Array.from({ length: 3 }, (_, i) => ({
