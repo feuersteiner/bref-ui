@@ -9,18 +9,17 @@
 	const toggle = () => (isOpen = !isOpen);
 </script>
 
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <SubSectionContainer>
-	<div>
-		<SubSectionTitle title={question} align='left' />
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<div onclick={toggle}>
+		<SubSectionTitle title={question} align="left" />
 		<svg
 			width="24"
 			height="24"
 			viewBox="0 0 12 12"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
-			onclick={toggle}
 			class:isOpen
 		>
 			<path
@@ -33,7 +32,7 @@
 		</svg>
 	</div>
 	{#if isOpen}
-		<SubSectionSubtitle align='left' subtitle={answer} />
+		<SubSectionSubtitle align="left" subtitle={answer} />
 	{/if}
 </SubSectionContainer>
 
