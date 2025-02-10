@@ -30,10 +30,10 @@ npm install sv-marketing
 - 🚧 Call-to-action (CTA)
 - 🚧 Testimonials
 - 🚧 FAQ accordions
-- 🚧 Navbar
-- 🚧 Footer
+- ✅ Navbar
+- ✅ Footer
 - 🚧 Breadcrumbs
-- 🚧 Page Layout
+- ✅ Page Layout
 
 ## Usage
 
