@@ -32,7 +32,7 @@ npm install sv-marketing
 - 🚧 FAQ accordions
 - ✅ Navbar
 - ✅ Footer
-- 🚧 Breadcrumbs
+- ✅ Breadcrumbs (with `SEO` ✨ )
 - ✅ Page Layout
 
 ## Usage

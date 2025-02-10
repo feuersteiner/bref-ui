@@ -4,7 +4,21 @@
 	import type { IBreadcrumbProps } from '../types.js';
 
 	const { items }: IBreadcrumbProps = $props();
+	const jsonLd = JSON.stringify({
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: items.map((item, index) => ({
+			'@type': 'ListItem',
+			position: index + 1,
+			name: item.label,
+			...(index < items.length - 1 && { item: item.href })
+		}))
+	});
 </script>
+
+<svelte:head>
+	{@html `<script type="application/ld+json">${jsonLd}</script>`}
+</svelte:head>
 
 <SectionContainer minimalPadding>
 	<SubSectionContainer align="left">
