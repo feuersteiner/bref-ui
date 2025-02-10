@@ -1,17 +1,19 @@
-import type { IButtonProps, ILinkProps, ILogoProps } from '$lib/shared/types.js';
+import type { IButtonPairProps } from '$lib/shared/button/types.js';
+import type { ILinkProps, ILogoProps } from '$lib/shared/types.js';
 
 export interface IBreadcrumbProps {
 	items: ILinkProps[];
 }
 
-export interface INavbarProps {
-	items: ILinkProps[];
-	primaryCta?: IButtonProps;
-	secondaryCta?: IButtonProps;
+interface ILogoNavigationProps {
 	logo: Omit<ILogoProps, 'size'>;
 }
 
-export interface IFooterProps {
+export interface INavbarProps extends ILogoNavigationProps, IButtonPairProps {
+	items: ILinkProps[];
+}
+
+export interface IFooterProps extends ILogoNavigationProps {
 	columns: INavigationLinkColumnProps[];
 }
 

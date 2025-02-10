@@ -2,6 +2,12 @@
 	import { Layout } from '$lib/index.js';
 	import type { Snippet } from 'svelte';
 	let { children }: { children: Snippet } = $props();
+	const logo = {
+		src: 'https://images.pexels.com/photos/430205/pexels-photo-430205.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+		alt: 'Logo',
+		href: '#',
+		label: 'Logo'
+	};
 </script>
 
 <Layout
@@ -20,18 +26,14 @@
 				href: '#'
 			}
 		],
-		logo: {
-			src: 'https://images.pexels.com/photos/430205/pexels-photo-430205.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-			alt: 'Logo',
-			href: '#',
-			label: 'Logo'
-		},
-		primaryCta: {
+		logo,
+		primaryButton: {
 			label: 'Sign Up',
 			href: '#'
 		}
 	}}
 	footer={{
+		logo,
 		columns: [
 			...Array.from({ length: 3 }, (_, i) => ({
 				header: {

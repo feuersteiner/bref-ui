@@ -3,7 +3,7 @@
 	import Logo from '$lib/shared/logo.svelte';
 	import type { INavbarProps } from '../types.js';
 
-	const { items, primaryCta, secondaryCta, logo }: INavbarProps = $props();
+	const { items, primaryButton, secondaryButton, logo }: INavbarProps = $props();
 </script>
 
 <div class="container">
@@ -15,7 +15,7 @@
 		{/each}
 	</div>
 
-	<ButtonRow snug primaryButton={primaryCta} secondaryButton={secondaryCta} size="small" />
+	<ButtonRow snug {primaryButton} {secondaryButton} size="small" />
 </div>
 
 <style>

@@ -3,7 +3,7 @@
 	import Logo from '$lib/shared/logo.svelte';
 	import type { INavbarProps } from '../types.js';
 
-	const { items, primaryCta, secondaryCta, logo }: INavbarProps = $props();
+	const { items, primaryButton, secondaryButton, logo }: INavbarProps = $props();
 	let isOpen = $state(false);
 	const toggle = () => (isOpen = !isOpen);
 </script>
@@ -41,7 +41,7 @@
 				</a>
 			{/each}
 		</div>
-		<ButtonRow primaryButton={primaryCta} secondaryButton={secondaryCta} size="small" />
+		<ButtonRow {primaryButton} {secondaryButton} size="small" />
 	{/if}
 </div>
 
