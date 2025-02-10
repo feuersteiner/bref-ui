@@ -39,7 +39,7 @@ npm install sv-marketing
 - ✅ Page Layout
 
 - 🚧 Blog Listing Page
-- 🚧 Blog Post Page 
+- 🚧 Blog Post Page
 
 ## Usage
 
