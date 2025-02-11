@@ -32,7 +32,7 @@ npm install sv-marketing
 - ✅ Feature blocks
 - 🚧 Pricing tables
 - ✅ Call-to-action (CTA)
-- 🚧 Testimonials
+- ✅ Testimonials
 - ✅ FAQ accordions (with `SEO` ✨)
 - ✅ Navbar
 - ✅ Footer

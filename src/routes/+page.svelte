@@ -7,6 +7,7 @@
 		FrequentlyAskedQuestions,
 		MediaHero,
 		PageSeo,
+		Testimonials,
 		TextAndMedia
 	} from '$lib/index.js';
 </script>
@@ -109,6 +110,38 @@
 			type: 'image'
 		}
 	}))}
+/>
+<Testimonials
+	title="Testimonials"
+	subtitle="This is a testimonials section."
+	items={[
+		{
+			text: 'This is a testimonial from a satisfied customer.',
+			avatar: {
+				src: 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+				alt: 'Random Image',
+				type: 'image'
+			},
+			person: {
+				name: 'John Doe',
+				company: 'Company Name'
+			}
+		},
+		{
+			text: 'This is another testimonial from another satisfied customer.',
+			person: {
+				name: 'Jane Doe',
+				company: 'Company Name'
+			}
+		},
+		{
+			text: 'This is another testimonial from another satisfied customer.',
+			person: {
+				name: 'Jane Doe',
+				company: 'Company Name'
+			}
+		}
+	]}
 />
 <FrequentlyAskedQuestions
 	title="FAQ"

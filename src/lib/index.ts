@@ -7,3 +7,4 @@ export { default as FrequentlyAskedQuestions } from './sections/faq/faq.svelte';
 export { default as Features } from './sections/features/features.svelte';
 export { default as CallToAction } from './sections/cta/cta.svelte';
 export { default as PageSeo } from './sections/seo/page-seo.svelte';
+export { default as Testimonials } from './sections/testimonials/testimonials.svelte';
