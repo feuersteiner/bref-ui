@@ -42,10 +42,11 @@
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
+		cursor: pointer;
 	}
 
 	svg {
-		cursor: pointer;
+		cursor: inherit;
 		rotate: 0deg;
 		transition: rotate 0.15s;
 		margin: 0.5rem;
