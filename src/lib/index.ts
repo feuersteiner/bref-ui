@@ -2,11 +2,12 @@ export { default as TextAndMedia } from './sections/text-and-media/text-and-medi
 export { default as BasicHero } from './sections/hero/basic-hero.svelte';
 export { default as MediaHero } from './sections/hero/media-hero.svelte';
 export { default as Layout } from './layout/layout.svelte';
-export { default as BreadCrumbs } from './layout/breadcrumbs/breadcrumbs.svelte';
+export { default as Breadcrumbs } from './layout/breadcrumbs/breadcrumbs.svelte';
 export { default as FrequentlyAskedQuestions } from './sections/faq/faq.svelte';
 export { default as Features } from './sections/features/features.svelte';
 export { default as CallToAction } from './sections/cta/cta.svelte';
 export { default as PageSeo } from './sections/seo/page-seo.svelte';
+export { default as Brands } from './sections/brands/brands.svelte';
 export { default as Testimonials } from './sections/testimonials/testimonials.svelte';
 export { default as Pricing } from './sections/pricing/pricing.svelte';
 export { default as BlogListing } from './blog/listing/blog-listing.svelte';

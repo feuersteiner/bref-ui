@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {
 		BasicHero,
-		BreadCrumbs,
+		Breadcrumbs,
 		CallToAction,
 		Features,
 		FrequentlyAskedQuestions,
@@ -9,7 +9,8 @@
 		PageSeo,
 		Testimonials,
 		TextAndMedia,
-		Pricing
+		Pricing,
+		Brands
 	} from '$lib/index.js';
 </script>
 
@@ -28,7 +29,7 @@
 		socialMedia: ['https://twitter.com', 'https://facebook.com']
 	}}
 />
-<BreadCrumbs
+<Breadcrumbs
 	items={[
 		{ label: 'Home', href: '#' },
 		{ label: 'About', href: '#' },
@@ -144,6 +145,19 @@
 			}
 		}
 	]}
+/>
+<Brands
+	title="Brands Trust Us"
+	subtitle="This is a brands section."
+	items={Array.from({ length: 6 }, (_, i) => ({
+		logo: {
+			src: 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+			alt: 'Random Image'
+		},
+		link: {
+			href: '#'
+		}
+	}))}
 />
 <Testimonials
 	title="Testimonials"

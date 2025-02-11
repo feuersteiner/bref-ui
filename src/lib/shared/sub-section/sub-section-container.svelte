@@ -15,6 +15,8 @@
 	} & Partial<ISubSectionContainerProps> = $props();
 
 	const inferGridSizeFromItems = (count: number): GridSizeType => {
+		if (count % 12 === 0) return 'twelfth';
+		if (count % 6 === 0) return 'sixth';
 		if (count % 4 === 0) return 'quarter';
 		if (count % 3 === 0) return 'third';
 		if (count % 2 === 0) return 'half';
@@ -52,6 +54,12 @@
 	.quarter {
 		grid-column: span 12;
 	}
+	.sixth {
+		grid-column: span 12;
+	}
+	.twelfth {
+		grid-column: span 12;
+	}
 
 	@media (min-width: 640px) {
 		.half {
@@ -62,6 +70,12 @@
 		}
 		.quarter {
 			grid-column: span 6;
+		}
+		.sixth {
+			grid-column: span 4;
+		}
+		.twelfth {
+			grid-column: span 4;
 		}
 
 		.center {
@@ -82,11 +96,23 @@
 		.quarter {
 			grid-column: span 4;
 		}
+		.sixth {
+			grid-column: span 2;
+		}
+		.twelfth {
+			grid-column: span 2;
+		}
 	}
 
 	@media (min-width: 1024px) {
 		.quarter {
 			grid-column: span 3;
+		}
+		.sixth {
+			grid-column: span 2;
+		}
+		.twelfth {
+			grid-column: span 1;
 		}
 	}
 

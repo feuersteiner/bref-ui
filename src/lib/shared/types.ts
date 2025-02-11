@@ -49,7 +49,7 @@ export interface IBaseSectionProps
 
 export interface ILogoProps extends Omit<IMediaProps, 'type'>, ILinkProps, ISizeProps {}
 
-export type GridSizeType = 'full' | 'half' | 'third' | 'quarter';
+export type GridSizeType = 'full' | 'half' | 'third' | 'quarter' | 'sixth' | 'twelfth';
 export interface IGridSizeProps {
 	gridSize: GridSizeType;
 }
