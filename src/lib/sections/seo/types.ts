@@ -9,8 +9,8 @@ export interface IJsonLdPageProps {
 export interface IPageSeoProps {
 	title: string;
 	description: string;
-	keywords: string[];
 	thumbnail: string;
+	keywords: string[];
 	path: string;
 	baseUrl: string;
 	jsonLd: IJsonLdPageProps;

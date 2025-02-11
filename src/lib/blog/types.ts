@@ -15,7 +15,31 @@ export interface IBlogListingProps
 	posts: IBaseBlogPostProps[];
 }
 
-export interface IBlogPostProps extends IBaseBlogPostProps {
+export interface IBlogPostProps {
+	title: string;
+	subtitle: string;
 	content: string;
 	keywords: string[];
+	thumbnail: {
+		src: string;
+		alt: string;
+	};
+	href: string;
+	datePublished: Date;
+	author: {
+		name: string;
+		type: string;
+	};
+	publisher: {
+		name: string;
+		url: string;
+		logo: {
+			url: string;
+			width: string;
+			height: string;
+			name: string;
+		};
+		socialMedia: string[];
+	};
+	baseUrl: string;
 }

@@ -1,10 +1,8 @@
 # SV-Marketing
 
->
 > 🚧 Still in active development.
 >
 > 🧑‍💻 Need to expose a variable? feel free to submit a PR.
->
 
 Build beautiful marketing sites with SvelteKit - A lightweight, customizable component library for static marketing websites.
 

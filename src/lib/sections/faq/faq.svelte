@@ -4,8 +4,7 @@
 	import FaqItem from './faq-item.svelte';
 	import type { IFaqProps } from './types.js';
 
-	const { items, title, subtitle, anchor, primaryButton, secondaryButton }: IFaqProps =
-		$props();
+	const { items, title, subtitle, anchor, primaryButton, secondaryButton }: IFaqProps = $props();
 
 	const jsonLd = JSON.stringify({
 		'@context': 'https://schema.org',

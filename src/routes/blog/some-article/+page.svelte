@@ -21,4 +21,20 @@
 	}}
 	href="/blog/some-article"
 	datePublished={new Date(2021, 0, 1)}
+	author={{
+		name: 'John Doe',
+		type: 'Person'
+	}}
+	publisher={{
+		name: 'Company Name',
+		url: 'https://example.com',
+		logo: {
+			url: 'https://example.com/logo.png',
+			width: '600',
+			height: '60',
+			name: 'Company Logo'
+		},
+		socialMedia: ['https://twitter.com/example', 'https://facebook.com/example']
+	}}
+	baseUrl="https://example.com"
 />
