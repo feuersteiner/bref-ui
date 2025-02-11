@@ -23,22 +23,26 @@ npm install sv-marketing
 
 ## Available Components
 
-- ✅ Hero
-  - ✅ Basic Hero
-  - ✅ Hero with Image
-- ✅ Text And Media Pairs
-- ✅ Feature blocks
-- ✅ Pricing tables
-- ✅ Call-to-action (CTA)
-- ✅ Testimonials
-- ✅ FAQ accordions (with `SEO` ✨)
-- ✅ Navbar
-- ✅ Footer
-- ✅ Breadcrumbs (with `SEO` ✨)
-- ✅ Page Layout
-- ✅ Page `SEO` (with `jsonLD` ✨)
-- ✅ Blog Listing Page
-- ✅ Blog Post Page
+### Content Sections
+
+- Hero
+  - Basic Hero `<BasicHero {...props} />`
+  - Hero with Media `<MediaHero {...props} />`
+- Text & Media `<TextAndMedia {...props} />`
+- Features Grid `<Features {...props} />`
+- Pricing Table `<Pricing {...props} />`
+- Call-to-Action (CTA) `<CallToAction {...props} />`
+- Testimonials Grid `<Testimonials {...props} />`
+- FAQ Accordion `<FrequentlyAskedQuestions {...props} />` (with `SEO` ✨)
+- Brand Showcase List `<Brands {...props} />`
+- Blog List View `<BlogListing {...props} />`
+- Blog Post View `<BlogPost {...props} />`
+
+### Navigation & Structure
+
+- Layout `<Layout {...props} />`
+- Breadcrumbs `<Breadcrumbs {...props} />` (with `SEO` ✨)
+- Page SEO `<PageSeo {...props} />` (with `jsonLD` ✨)
 
 ## Usage
 
