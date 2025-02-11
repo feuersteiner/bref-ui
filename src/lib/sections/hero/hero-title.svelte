@@ -11,6 +11,7 @@
 		all: unset;
 		text-align: center;
 		font-size: 4rem;
+		width: 100%;
 	}
 	.left {
 		text-align: left;

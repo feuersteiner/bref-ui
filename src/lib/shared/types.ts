@@ -26,6 +26,7 @@ export interface ILinkProps {
 
 export interface IButtonProps extends ILinkProps, Partial<ISizeProps> {
 	type?: 'primary' | 'secondary' | 'default';
+	fullWidth?: boolean;
 }
 
 export interface IMediaProps {

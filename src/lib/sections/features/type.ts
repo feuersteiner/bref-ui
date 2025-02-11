@@ -1,6 +1,5 @@
 import type {
 	IBaseSectionProps,
-	IGridSizeProps,
 	IMediaProps,
 	ISubtitleProps,
 	ITitleProps
@@ -10,6 +9,6 @@ interface IFeatureItemProps extends ITitleProps, ISubtitleProps {
 	media: IMediaProps;
 }
 
-export interface IFeaturesProps extends IBaseSectionProps, IGridSizeProps {
+export interface IFeaturesProps extends IBaseSectionProps {
 	items: IFeatureItemProps[];
 }

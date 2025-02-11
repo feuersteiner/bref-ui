@@ -8,3 +8,6 @@ export { default as Features } from './sections/features/features.svelte';
 export { default as CallToAction } from './sections/cta/cta.svelte';
 export { default as PageSeo } from './sections/seo/page-seo.svelte';
 export { default as Testimonials } from './sections/testimonials/testimonials.svelte';
+export { default as Pricing } from './sections/pricing/pricing.svelte';
+export { default as BlogListing } from './blog/listing/blog-listing.svelte';
+export { default as BlogPost } from './blog/blog-post.svelte';

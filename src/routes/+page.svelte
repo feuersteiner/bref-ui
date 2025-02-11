@@ -8,7 +8,8 @@
 		MediaHero,
 		PageSeo,
 		Testimonials,
-		TextAndMedia
+		TextAndMedia,
+		Pricing
 	} from '$lib/index.js';
 </script>
 
@@ -98,7 +99,6 @@
 		label: 'Secondary Button',
 		href: '#'
 	}}
-	gridSize="third"
 	items={Array.from({ length: 3 }, (_, i) => ({
 		title: `Feature ${i + 1}`,
 		subtitle: `This is feature number ${i + 1}.
@@ -110,6 +110,40 @@
 			type: 'image'
 		}
 	}))}
+/>
+<Pricing
+	title="Pricing"
+	subtitle="This is a pricing section."
+	items={[
+		{
+			title: 'Basic',
+			price: '$10',
+			features: ['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4', 'Feature 5'],
+			ctaButton: {
+				label: 'Buy',
+				href: '#'
+			}
+		},
+		{
+			title: 'Pro',
+			price: '$20',
+			features: ['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4', 'Feature 5'],
+			ctaButton: {
+				label: 'Buy',
+				href: '#'
+			},
+			featured: true
+		},
+		{
+			title: 'Enterprise',
+			price: 'contact sales',
+			features: ['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4', 'Feature 5'],
+			ctaButton: {
+				label: 'Buy',
+				href: '#'
+			}
+		}
+	]}
 />
 <Testimonials
 	title="Testimonials"

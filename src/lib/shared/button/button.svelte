@@ -1,11 +1,18 @@
 <script lang="ts">
 	import type { IButtonProps } from '../types.js';
 
-	const { label, type = 'default', href, isTargetBlank, size = 'small' }: IButtonProps = $props();
+	const {
+		label,
+		type = 'default',
+		href,
+		isTargetBlank,
+		size = 'small',
+		fullWidth
+	}: IButtonProps = $props();
 	const target = isTargetBlank ? '_blank' : undefined;
 </script>
 
-<a class={`${type} ${size}`} {target} {href}>{label}</a>
+<a class={`${type} ${size}`} {target} {href} class:fullWidth>{label}</a>
 
 <style>
 	a {
@@ -54,5 +61,8 @@
 	}
 	.large {
 		font-size: 1.25rem;
+	}
+	.fullWidth {
+		width: 100%;
 	}
 </style>

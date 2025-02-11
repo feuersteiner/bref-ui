@@ -1,14 +1,13 @@
 <script lang="ts">
-	import Media from '$lib/shared/media.svelte';
+	import Button from '$lib/shared/button/button.svelte';
 	import SectionContainer from '$lib/shared/section/section-container.svelte';
 	import SectionHeader from '$lib/shared/section/section-header.svelte';
 	import SubSectionContainer from '$lib/shared/sub-section/sub-section-container.svelte';
-	import SubSectionSubtitle from '$lib/shared/sub-section/sub-section-subtitle.svelte';
 	import SubSectionTitle from '$lib/shared/sub-section/sub-section-title.svelte';
 	import { inferGridSizeFromItems } from '$lib/shared/utiles.js';
-	import type { IFeaturesProps } from './type.js';
+	import type { IPricingProps } from './types.js';
 
-	const { title, subtitle, anchor, primaryButton, secondaryButton, items }: IFeaturesProps =
+	const { anchor, title, subtitle, primaryButton, secondaryButton, items }: IPricingProps =
 		$props();
 	const gridSize = inferGridSizeFromItems(items);
 </script>
@@ -17,19 +16,27 @@
 	<SectionHeader {title} {subtitle} {primaryButton} {secondaryButton} />
 	{#each items as item}
 		<SubSectionContainer {gridSize}>
-			<div class="feature-media">
-				<Media {...item.media} fill />
-			</div>
 			<SubSectionTitle title={item.title} />
-			<SubSectionSubtitle subtitle={item.subtitle} />
+			<span>{item.price}</span>
+			<ul>
+				{#each item.features as feature}
+					<li>{feature}</li>
+				{/each}
+			</ul>
+			<Button fullWidth {...item.ctaButton} type={item.featured ? 'primary' : 'default'} />
 		</SubSectionContainer>
 	{/each}
 </SectionContainer>
 
 <style>
-	.feature-media {
-		max-width: 50%;
-		aspect-ratio: 1 / 1;
-		height: auto;
+	ul,
+	li {
+		margin: 0;
+		padding: 0;
+	}
+	span {
+		font-size: 1.25rem;
+		font-weight: bold;
+		text-transform: capitalize;
 	}
 </style>

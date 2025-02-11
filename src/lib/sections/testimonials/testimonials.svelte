@@ -4,18 +4,13 @@
 	import SectionHeader from '$lib/shared/section/section-header.svelte';
 	import SubSectionContainer from '$lib/shared/sub-section/sub-section-container.svelte';
 	import SubSectionSubtitle from '$lib/shared/sub-section/sub-section-subtitle.svelte';
-	import type { GridSizeType } from '$lib/shared/types.js';
+	import { inferGridSizeFromItems } from '$lib/shared/utiles.js';
 	import type { ITestimonialsProps } from './types.js';
 
 	const { title, subtitle, primaryButton, secondaryButton, items, anchor }: ITestimonialsProps =
 		$props();
 
-	const gridSize: GridSizeType = (() => {
-		if (items.length % 2 === 0) return 'half';
-		if (items.length % 3 === 0) return 'third';
-		if (items.length % 4 === 0) return 'quarter';
-		return 'full';
-	})() as GridSizeType;
+	const gridSize = inferGridSizeFromItems(items);
 	const align = 'left';
 </script>
 
