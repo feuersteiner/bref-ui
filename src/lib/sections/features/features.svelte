@@ -5,18 +5,16 @@
 	import SubSectionContainer from '$lib/shared/sub-section/sub-section-container.svelte';
 	import SubSectionSubtitle from '$lib/shared/sub-section/sub-section-subtitle.svelte';
 	import SubSectionTitle from '$lib/shared/sub-section/sub-section-title.svelte';
-	import { inferGridSizeFromItems } from '$lib/shared/utiles.js';
 	import type { IFeaturesProps } from './type.js';
 
 	const { title, subtitle, anchor, primaryButton, secondaryButton, items }: IFeaturesProps =
 		$props();
-	const gridSize = inferGridSizeFromItems(items);
 </script>
 
 <SectionContainer {anchor}>
 	<SectionHeader {title} {subtitle} {primaryButton} {secondaryButton} />
 	{#each items as item}
-		<SubSectionContainer {gridSize}>
+		<SubSectionContainer itemsCount={items.length}>
 			<div class="feature-media">
 				<Media {...item.media} fill />
 			</div>

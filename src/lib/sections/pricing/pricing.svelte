@@ -4,18 +4,16 @@
 	import SectionHeader from '$lib/shared/section/section-header.svelte';
 	import SubSectionContainer from '$lib/shared/sub-section/sub-section-container.svelte';
 	import SubSectionTitle from '$lib/shared/sub-section/sub-section-title.svelte';
-	import { inferGridSizeFromItems } from '$lib/shared/utiles.js';
 	import type { IPricingProps } from './types.js';
 
 	const { anchor, title, subtitle, primaryButton, secondaryButton, items }: IPricingProps =
 		$props();
-	const gridSize = inferGridSizeFromItems(items);
 </script>
 
 <SectionContainer {anchor}>
 	<SectionHeader {title} {subtitle} {primaryButton} {secondaryButton} />
 	{#each items as item}
-		<SubSectionContainer {gridSize}>
+		<SubSectionContainer itemsCount={items.length}>
 			<SubSectionTitle title={item.title} />
 			<span>{item.price}</span>
 			<ul>

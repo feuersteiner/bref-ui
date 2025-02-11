@@ -4,20 +4,18 @@
 	import SectionHeader from '$lib/shared/section/section-header.svelte';
 	import SubSectionContainer from '$lib/shared/sub-section/sub-section-container.svelte';
 	import SubSectionSubtitle from '$lib/shared/sub-section/sub-section-subtitle.svelte';
-	import { inferGridSizeFromItems } from '$lib/shared/utiles.js';
 	import type { ITestimonialsProps } from './types.js';
 
 	const { title, subtitle, primaryButton, secondaryButton, items, anchor }: ITestimonialsProps =
 		$props();
 
-	const gridSize = inferGridSizeFromItems(items);
 	const align = 'left';
 </script>
 
 <SectionContainer {anchor}>
 	<SectionHeader {title} {primaryButton} {secondaryButton} {subtitle} />
 	{#each items as item}
-		<SubSectionContainer gapSize="small" {align} {gridSize}>
+		<SubSectionContainer gapSize="small" {align} itemsCount={items.length}>
 			<span>“</span>
 			<SubSectionSubtitle subtitle={item.text} {align} />
 			<div>

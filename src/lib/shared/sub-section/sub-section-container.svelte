@@ -1,19 +1,30 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { ISubSectionContainerProps } from './types.js';
+	import type { GridSizeType } from '../types.js';
 
 	const {
 		children,
 		gridSize = 'full',
 		gapSize = 'small',
 		align = 'center',
-		justifyUp
+		justifyUp,
+		itemsCount
 	}: {
 		children: Snippet;
 	} & Partial<ISubSectionContainerProps> = $props();
+
+	const inferGridSizeFromItems = (count: number): GridSizeType => {
+		if (count % 4 === 0) return 'quarter';
+		if (count % 3 === 0) return 'third';
+		if (count % 2 === 0) return 'half';
+		return 'full';
+	};
+
+	const finalGridSize = itemsCount ? inferGridSizeFromItems(itemsCount) : gridSize;
 </script>
 
-<div class:justifyUp class={`${gridSize} ${gapSize} ${align}`}>{@render children()}</div>
+<div class:justifyUp class={`${finalGridSize} ${gapSize} ${align}`}>{@render children()}</div>
 
 <style>
 	div {
