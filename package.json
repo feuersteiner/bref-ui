@@ -1,6 +1,6 @@
 {
 	"name": "@really-headless/sv-marketing",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
@@ -49,13 +49,13 @@
 		}
 	},
 	"peerDependencies": {
-		"svelte": "^5.0.0"
+		"svelte": "^5.9.0"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
 		"@sveltejs/adapter-auto": "^4.0.0",
-		"@sveltejs/kit": "^2.16.0",
+		"@sveltejs/kit": "^2.19.0",
 		"@sveltejs/package": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"eslint": "^9.18.0",
