@@ -30,6 +30,7 @@
 		justify-content: center;
 		align-items: center;
 		width: 100%;
+		height: fit-content;
 	}
 
 	div {
@@ -37,5 +38,6 @@
 		max-width: var(--max-section-width, 1200px);
 		padding: 1rem;
 		display: flex;
+		height: fit-content;
 	}
 </style>

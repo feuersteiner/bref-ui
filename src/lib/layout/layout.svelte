@@ -3,7 +3,6 @@
 	import Footer from './footer/footer.svelte';
 	import Navbar from './navbar/navbar.svelte';
 	import type { ILayoutProps } from './types.js';
-	import './global-layout.css';
 
 	const {
 		children,
