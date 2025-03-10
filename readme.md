@@ -65,9 +65,10 @@ The following CSS variables can be customized:
 
 - `--section-max-width`: Sets the maximum width (`1200px` as fallback) for section containers to ensure consistent layout across different screen sizes.
 - `--color-primary`: Sets the primary color (`#00f` as fallback) for buttons and other elements.
-- `--color-primary-text`: Sets the text color for buttons and other elements that are styled (`#fff` as fallback).
+- `--color-primary-alternate-text`: Sets the text color for buttons and other elements that are styled (`#fff` as fallback).
 - `--color-primary-background`: Sets the background color for primary sections (`#eee` as fallback).
 - `--color-secondary-background`: Sets the background color for secondary sections (`#aaa` as fallback).
+- `--color-text`: Sets the text color (`#222` as fallback) for all text elements.
 
 ## TODO
 

@@ -9,3 +9,8 @@ html {
 html {
 	background-color: var(--color-primary-background, #eee);
 }
+
+* {
+	background-color: var(--color-primary-background, #eee);
+	color: var(--color-text, #222);
+}

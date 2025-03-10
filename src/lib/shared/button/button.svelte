@@ -47,7 +47,7 @@
 	}
 	.primary {
 		background-color: var(--color-primary, #00f);
-		color: var(--color-primary-text, #fff);
+		color: var(--color-primary-alternate-text, #fff);
 	}
 	.secondary {
 		background-color: color-mix(in srgb, var(--color-primary, #00f) 10%, transparent);

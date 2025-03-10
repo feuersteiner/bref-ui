@@ -1,6 +1,8 @@
 :root {
 	--color-primary: #00f;
-	--color-primary-text: #fff;
+	--color-primary-alternate-text: #050;
+
+	--color-text: #222;
 
 	--color-primary-background: #eee;
 	--color-secondary-background: #aaa;
