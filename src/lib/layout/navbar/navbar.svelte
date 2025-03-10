@@ -1,16 +1,21 @@
 <script lang="ts">
 	import type { INavbarProps } from '../types.js';
-	import { innerWidth } from 'svelte/reactivity/window';
 	import MobileNavbar from './mobile-navbar.svelte';
 	import DesktopNavbar from './desktop-navbar.svelte';
 
 	const props: INavbarProps = $props();
-	const shouldShowMobileMenu = $derived(innerWidth.current ? innerWidth.current < 640 : true);
+
+	let isMobileMenu: boolean = $state(false);
+	const onresize = (e: Event) => {
+		const newValue = window.innerWidth < 640 ? true : false;
+		if (isMobileMenu !== newValue) isMobileMenu = newValue;
+	};
 </script>
 
+<svelte:document {onresize} />
 <nav>
 	<div>
-		{#if shouldShowMobileMenu}
+		{#if isMobileMenu}
 			<MobileNavbar {...props} />
 		{:else}
 			<DesktopNavbar {...props} />
