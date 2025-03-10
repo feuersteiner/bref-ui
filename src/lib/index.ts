@@ -13,3 +13,4 @@ export { default as Pricing } from './sections/pricing/pricing.svelte';
 export { default as BlogListing } from './blog/listing/blog-listing.svelte';
 export { default as BlogPost } from './blog/blog-post.svelte';
 export { default as SectionContainer } from './shared/section/section-container.svelte';
+export { default as SubSectionContainer } from './shared/sub-section/sub-section-container.svelte';

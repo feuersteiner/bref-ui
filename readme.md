@@ -44,6 +44,17 @@ npm install sv-marketing
 - Breadcrumbs `<Breadcrumbs {...props} />` (with `SEO` ✨)
 - Page SEO `<PageSeo {...props} />` (with `jsonLD` ✨)
 
+### Compose your own
+
+- SectionContainer `<SectionContainer {...props} />`, a wrapper for all sections (using a 12-column grid system)
+- SubSectionContainer `<SubSectionContainer {...props} />`, a container for organizing content within sections with these props:
+  - `children`: Svelte components to render inside the container
+  - `gridSize`: Sets container width ('full' by default)
+  - `gapSize`: Controls spacing between items ('small' by default)
+  - `align`: Alignment of content ('center' by default)
+  - `justifyUp`: Controls vertical alignment
+  - `itemsCount`: Specifies number of items in the container
+
 ## Usage
 
 Components use Svelte's runes mode and can be styled through CSS variables imported to your `+layout.svelte` file.
