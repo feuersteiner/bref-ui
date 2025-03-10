@@ -1,0 +1,9 @@
+:root {
+	--color-primary: #00f;
+	--color-primary-text: #fff;
+
+	--color-primary-background: #eee;
+	--color-secondary-background: #aaa;
+
+	--section-max-width: 1200px;
+}

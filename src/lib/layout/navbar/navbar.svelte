@@ -35,7 +35,7 @@
 
 	div {
 		width: 100%;
-		max-width: var(--max-section-width, 1200px);
+		max-width: var(--section-max-width, 1200px);
 		padding: 1rem;
 		display: flex;
 		height: fit-content;

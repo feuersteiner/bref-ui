@@ -6,3 +6,6 @@ html {
 * {
 	box-sizing: border-box;
 }
+html {
+	background-color: var(--color-primary-background, #eee);
+}

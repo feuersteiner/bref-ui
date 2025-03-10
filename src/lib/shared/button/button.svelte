@@ -46,12 +46,12 @@
 		background-color: color-mix(in srgb, currentColor 10%, transparent);
 	}
 	.primary {
-		background-color: var(--primary-color, #00f);
-		color: var(--primary-color-text, #fff);
+		background-color: var(--color-primary, #00f);
+		color: var(--color-primary-text, #fff);
 	}
 	.secondary {
-		background-color: color-mix(in srgb, var(--primary-color, #00f) 10%, transparent);
-		color: var(--primary-color, #00f);
+		background-color: color-mix(in srgb, var(--color-primary, #00f) 10%, transparent);
+		color: var(--color-primary, #00f);
 	}
 	.small {
 		font-size: 0.75rem;

@@ -5,13 +5,14 @@
 	const {
 		children,
 		anchor,
-		minimalPadding
+		minimalPadding,
+		isBackgroundColorSecondary
 	}: {
 		children: Snippet;
 	} & ISectionContainerProps = $props();
 </script>
 
-<section class:minimalPadding>
+<section class:minimalPadding class:isBackgroundColorSecondary>
 	<div id={anchor}>
 		{@render children()}
 	</div>
@@ -24,14 +25,19 @@
 		align-items: center;
 		width: 100%;
 		padding: 4rem 0rem;
+		background-color: var(--color-primary-background, #eee);
 	}
 	.minimalPadding {
 		padding: 0rem;
 	}
 
+	.isBackgroundColorSecondary {
+		background-color: var(--color-secondary-background, #aaa);
+	}
+
 	div {
 		width: 100%;
-		max-width: var(--max-section-width, 1200px);
+		max-width: var(--section-max-width, 1200px);
 		padding: 1rem;
 		display: grid;
 		grid-template-columns: repeat(12, 1fr);

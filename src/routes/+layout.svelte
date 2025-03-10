@@ -2,6 +2,9 @@
 	import { Layout } from '$lib/index.js';
 	import type { Snippet } from 'svelte';
 	let { children }: { children: Snippet } = $props();
+
+	import '$lib/templates/template.css'
+
 	const logo = {
 		src: 'https://images.pexels.com/photos/430205/pexels-photo-430205.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
 		alt: 'Logo',

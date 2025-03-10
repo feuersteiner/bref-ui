@@ -36,9 +36,13 @@ export interface IMediaProps {
 	fill?: boolean;
 }
 
-export interface ISectionContainerProps {
+export interface ISectionContainerProps extends IBackgroundColorProps {
 	anchor?: string;
 	minimalPadding?: boolean;
+}
+
+export interface IBackgroundColorProps {
+	isBackgroundColorSecondary?: boolean;
 }
 
 export interface IBaseSectionProps
