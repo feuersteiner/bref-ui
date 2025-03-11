@@ -13,7 +13,9 @@
 
 {#if isVideo}
 	<!-- svelte-ignore a11y_media_has_caption -->
-	<video autoplay={true} controls={false} loop={true} {src} title={alt}> </video>
+	<video autoplay muted loop controls={false} title={alt}>
+		<source {src} type="video/mp4" />
+	</video>
 {/if}
 
 <style>
