@@ -120,6 +120,15 @@ Each component has specific class names to enable custom styling in your own `CS
   - `.brands` - Main container
   - `.brands-item` - Individual brand items
 
+- **Navbar Component**
+  - `.navbar` - Main container
+  - `.desktop-navbar` - Desktop navigation
+  - `.mobile-navbar` - Mobile navigation
+
+- **Footer Component**
+  - `.footer` - Main container
+  - `.footer-item` - Individual footer sub section
+
 ### Example Usage
 
 To style all text and media sections:

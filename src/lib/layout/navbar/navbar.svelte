@@ -13,7 +13,7 @@
 </script>
 
 <svelte:document {onresize} />
-<nav>
+<nav class="navbar">
 	<div>
 		{#if isMobileMenu}
 			<MobileNavbar {...props} />

@@ -1,12 +1,14 @@
 import type { IButtonPairProps } from '$lib/shared/button/types.js';
-import type { ILinkProps, ILogoProps } from '$lib/shared/types.js';
+import type { ILinkProps, ILogoProps, SizeType } from '$lib/shared/types.js';
 
 export interface IBreadcrumbProps {
 	items: ILinkProps[];
 }
 
 interface ILogoNavigationProps {
-	logo: Omit<ILogoProps, 'size'>;
+	logo: Omit<ILogoProps, 'size'> & {
+		size?: SizeType;
+	};
 }
 
 export interface INavbarProps extends ILogoNavigationProps, IButtonPairProps {

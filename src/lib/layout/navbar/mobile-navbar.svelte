@@ -8,10 +8,10 @@
 	const toggle = () => (isOpen = !isOpen);
 </script>
 
-<div class="column">
+<div class="column mobile-navbar">
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div>
-		<Logo {...logo} size="medium" />
+		<Logo {...logo} size={logo.size ?? 'medium'} />
 
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<svg

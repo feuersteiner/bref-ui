@@ -6,8 +6,8 @@
 	const { items, primaryButton, secondaryButton, logo }: INavbarProps = $props();
 </script>
 
-<div class="container">
-	<Logo {...logo} size="medium" />
+<div class="desktop-navbar">
+	<Logo {...logo} size={logo.size ?? 'large'} />
 
 	<div class="links">
 		{#each items as item}
@@ -15,7 +15,7 @@
 		{/each}
 	</div>
 
-	<ButtonRow snug {primaryButton} {secondaryButton}  size='medium' />
+	<ButtonRow snug {primaryButton} {secondaryButton} size="medium" />
 </div>
 
 <style>
@@ -24,7 +24,7 @@
 		width: 100%;
 		gap: 2rem;
 	}
-	.container {
+	.desktop-navbar {
 		justify-content: space-between;
 		align-items: center;
 		height: fit-content;

@@ -9,13 +9,13 @@
 </script>
 
 <footer>
-	<SectionContainer>
-		<SubSectionContainer {itemsCount} gapSize="medium" align="left" justifyUp>
+	<SectionContainer className="footer">
+		<SubSectionContainer {itemsCount} gapSize="medium" align="left" justifyUp className="footer-item">
 			<Logo size="large" {...logo} />
 			<p class="tagline">{tagline}</p>
 		</SubSectionContainer>
 		{#each columns as column}
-			<SubSectionContainer {itemsCount} gapSize="medium" align="left" justifyUp>
+			<SubSectionContainer {itemsCount} gapSize="medium" align="left" justifyUp className="footer-item">
 				<strong><a {...column.header}>{column.header.label}</a></strong>
 				{#if column.children}
 					{#each column.children as child}
