@@ -15,7 +15,7 @@
 		{/each}
 	</div>
 
-	<ButtonRow snug {primaryButton} {secondaryButton} size="small" />
+	<ButtonRow snug {primaryButton} {secondaryButton}  size='medium' />
 </div>
 
 <style>
