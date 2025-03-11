@@ -30,10 +30,12 @@
 		max-width: 100%;
 	}
 	a:hover {
-		filter: brightness(1.25);
+		filter: brightness(1.5);
+		transform: scale(1.01);
 	}
 	a:active {
-		filter: brightness(0.9);
+		filter: brightness(0.8);
+		transform: scale(0.99);
 	}
 
 	@media (max-width: 640px) {

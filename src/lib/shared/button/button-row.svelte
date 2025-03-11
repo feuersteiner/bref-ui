@@ -17,10 +17,10 @@
 {#if shouldRenderButtons}
 	<div class={align} class:snug>
 		{#if shouldRenderPrimaryButton}
-			<Button {...primaryButton} {size} />
+			<Button {...primaryButton} type="primary" {size} />
 		{/if}
 		{#if shouldRenderSecondaryButton}
-			<Button {...secondaryButton} {size} />
+			<Button {...secondaryButton} type="secondary" {size} />
 		{/if}
 	</div>
 {/if}
