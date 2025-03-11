@@ -122,12 +122,12 @@
 	}
 
 	.small {
-		gap: 0.75rem;
-	}
-	.medium {
 		gap: 1rem;
 	}
+	.medium {
+		gap: 2rem;
+	}
 	.large {
-		gap: 1.5rem;
+		gap: 4rem;
 	}
 </style>
