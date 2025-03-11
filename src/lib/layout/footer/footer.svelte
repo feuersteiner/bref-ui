@@ -5,6 +5,7 @@
 	import type { IFooterProps } from '../types.js';
 
 	const { columns, logo, copyright, tagline }: IFooterProps = $props();
+	const itemsCount = columns.length > 4 ? 4 : columns.length;
 </script>
 
 <footer>
@@ -14,7 +15,7 @@
 			<p>{tagline}</p>
 		</SubSectionContainer>
 		{#each columns as column}
-			<SubSectionContainer gridSize="quarter" gapSize="medium" align="left" justifyUp>
+			<SubSectionContainer {itemsCount} gapSize="medium" align="left" justifyUp>
 				<strong><a {...column.header}>{column.header.label}</a></strong>
 				{#if column.children}
 					{#each column.children as child}
