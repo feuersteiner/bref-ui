@@ -13,7 +13,7 @@
 </script>
 
 <svelte:document {onresize} />
-<nav class="navbar">
+<nav class="navbar" class:isBackgroundColorSecondary={props.isBackgroundColorSecondary}>
 	<div>
 		{#if isMobileMenu}
 			<MobileNavbar {...props} />
@@ -31,6 +31,11 @@
 		align-items: center;
 		width: 100%;
 		height: fit-content;
+		background-color: var(--color-primary-background, #eee);
+	}
+	
+	.isBackgroundColorSecondary {
+		background-color: var(--color-secondary-background, #aaa);
 	}
 
 	div {

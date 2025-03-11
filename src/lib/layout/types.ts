@@ -11,7 +11,10 @@ interface ILogoNavigationProps {
 	};
 }
 
-export interface INavbarProps extends ILogoNavigationProps, IButtonPairProps {
+export interface INavbarProps
+	extends ILogoNavigationProps,
+		IButtonPairProps,
+		IBackgroundColorProps {
 	items: ILinkProps[];
 }
 
