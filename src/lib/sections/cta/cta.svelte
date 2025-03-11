@@ -6,10 +6,10 @@
 	import SubSectionContainer from '$lib/shared/sub-section/sub-section-container.svelte';
 	import type { IBaseSectionProps } from '$lib/shared/types.js';
 
-	const { title, subtitle, primaryButton, secondaryButton, anchor }: IBaseSectionProps = $props();
+	const { title, subtitle, primaryButton, secondaryButton, anchor, isBackgroundColorSecondary }: IBaseSectionProps = $props();
 </script>
 
-<SectionContainer {anchor} className="cta">
+<SectionContainer {anchor} className="cta" {isBackgroundColorSecondary}>
 	<SubSectionContainer gridSize="full" gapSize="large">
 		<SectionTitle {title} />
 		<SectionSubtitle {subtitle} />

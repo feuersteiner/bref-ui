@@ -1,5 +1,5 @@
 import type { IButtonPairProps } from '$lib/shared/button/types.js';
-import type { ILinkProps, ILogoProps, SizeType } from '$lib/shared/types.js';
+import type { IBackgroundColorProps, ILinkProps, ILogoProps, SizeType } from '$lib/shared/types.js';
 
 export interface IBreadcrumbProps {
 	items: ILinkProps[];
@@ -15,7 +15,7 @@ export interface INavbarProps extends ILogoNavigationProps, IButtonPairProps {
 	items: ILinkProps[];
 }
 
-export interface IFooterProps extends ILogoNavigationProps {
+export interface IFooterProps extends ILogoNavigationProps, IBackgroundColorProps {
 	columns: INavigationLinkColumnProps[];
 	copyright: string;
 	tagline: string;

@@ -4,7 +4,7 @@
 	import FaqItem from './faq-item.svelte';
 	import type { IFaqProps } from './types.js';
 
-	const { items, title, subtitle, anchor, primaryButton, secondaryButton }: IFaqProps = $props();
+	const { items, title, subtitle, anchor, primaryButton, secondaryButton, isBackgroundColorSecondary }: IFaqProps = $props();
 
 	const jsonLd = JSON.stringify({
 		'@context': 'https://schema.org',
@@ -26,7 +26,7 @@
 	{@html `<script type="application/ld+json">${jsonLd}</script>`}
 </svelte:head>
 
-<SectionContainer {anchor} className="faq">
+<SectionContainer {anchor} className="faq" {isBackgroundColorSecondary}>
 	<SectionHeader {title} {primaryButton} {secondaryButton} {subtitle} />
 	{#each items as item}
 		<FaqItem {...item} />

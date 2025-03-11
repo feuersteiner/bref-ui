@@ -8,7 +8,7 @@
 
 	import type { ITextAndMediaProps } from './types.js';
 
-	const { title, subtitle, primaryButton, secondaryButton, items, anchor }: ITextAndMediaProps =
+	const { title, subtitle, primaryButton, secondaryButton, items, anchor, isBackgroundColorSecondary }: ITextAndMediaProps =
 		$props();
 
 	let isSmall: boolean = $state(false);
@@ -21,7 +21,7 @@
 </script>
 
 <svelte:document {onresize} />
-<SectionContainer {anchor} className="text-and-media">
+<SectionContainer {anchor} className="text-and-media" {isBackgroundColorSecondary}>
 	<SectionHeader {title} {primaryButton} {secondaryButton} {subtitle} />
 	{#each items as { title, subtitle, media }, index}
 		{@const isEven = index % 2 === 0}

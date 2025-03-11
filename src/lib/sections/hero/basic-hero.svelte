@@ -6,10 +6,10 @@
 	import type { IBaseSectionProps } from '$lib/shared/types.js';
 	import HeroTitle from './hero-title.svelte';
 
-	const { title, subtitle, primaryButton, secondaryButton, anchor }: IBaseSectionProps = $props();
+	const { title, subtitle, primaryButton, secondaryButton, anchor, isBackgroundColorSecondary }: IBaseSectionProps = $props();
 </script>
 
-<SectionContainer {anchor} className="basic-hero">
+<SectionContainer {anchor} className="basic-hero" {isBackgroundColorSecondary}>
 	<SubSectionContainer gridSize="full" gapSize="large">
 		<HeroTitle {title} />
 		<SectionSubtitle {subtitle} />

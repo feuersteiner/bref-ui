@@ -6,11 +6,18 @@
 	import SubSectionTitle from '$lib/shared/sub-section/sub-section-title.svelte';
 	import type { IPricingProps } from './types.js';
 
-	const { anchor, title, subtitle, primaryButton, secondaryButton, items }: IPricingProps =
-		$props();
+	const {
+		anchor,
+		title,
+		subtitle,
+		primaryButton,
+		secondaryButton,
+		items,
+		isBackgroundColorSecondary
+	}: IPricingProps = $props();
 </script>
 
-<SectionContainer {anchor} className="pricing">
+<SectionContainer {anchor} className="pricing" {isBackgroundColorSecondary}>
 	<SectionHeader {title} {subtitle} {primaryButton} {secondaryButton} />
 	{#each items as item}
 		<SubSectionContainer itemsCount={items.length} className="pricing-item">

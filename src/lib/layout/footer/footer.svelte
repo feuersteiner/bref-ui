@@ -4,12 +4,12 @@
 	import SubSectionContainer from '$lib/shared/sub-section/sub-section-container.svelte';
 	import type { IFooterProps } from '../types.js';
 
-	const { columns, logo, copyright, tagline }: IFooterProps = $props();
+	const { columns, logo, copyright, tagline, isBackgroundColorSecondary }: IFooterProps = $props();
 	const itemsCount = columns.length + 1 > 4 ? 4 : columns.length + 1;
 </script>
 
 <footer>
-	<SectionContainer className="footer">
+	<SectionContainer className="footer" {isBackgroundColorSecondary}>
 		<SubSectionContainer {itemsCount} gapSize="medium" align="left" justifyUp className="footer-item">
 			<Logo size="large" {...logo} />
 			<p class="tagline">{tagline}</p>
