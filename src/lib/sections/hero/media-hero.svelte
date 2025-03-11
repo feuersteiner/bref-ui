@@ -7,11 +7,18 @@
 	import HeroTitle from './hero-title.svelte';
 	import type { IMediaHeroProps } from './types.js';
 
-	const { title, subtitle, primaryButton, secondaryButton, anchor, media }: IMediaHeroProps =
-		$props();
+	const {
+		title,
+		subtitle,
+		primaryButton,
+		secondaryButton,
+		anchor,
+		media,
+		isBackgroundColorSecondary
+	}: IMediaHeroProps = $props();
 </script>
 
-<SectionContainer {anchor} className="media-hero">
+<SectionContainer {anchor} className="media-hero" {isBackgroundColorSecondary}>
 	<SubSectionContainer gridSize="half" gapSize="large">
 		<HeroTitle {title} align="left" />
 		<SectionSubtitle {subtitle} align="left" />
