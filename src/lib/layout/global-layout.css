@@ -1,16 +1,11 @@
-body,
-html {
-	all: unset;
+body {
+	background-color: var(--color-primary-background, #eee);
+	margin: 0;
+	padding: 0;
 }
 
 * {
 	box-sizing: border-box;
-}
-html {
-	background-color: var(--color-primary-background, #eee);
-}
-
-* {
 	background-color: var(--color-primary-background, #eee);
 	color: var(--color-text, #222);
 }
