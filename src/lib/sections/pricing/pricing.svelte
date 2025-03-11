@@ -10,10 +10,10 @@
 		$props();
 </script>
 
-<SectionContainer {anchor}>
+<SectionContainer {anchor} className="pricing">
 	<SectionHeader {title} {subtitle} {primaryButton} {secondaryButton} />
 	{#each items as item}
-		<SubSectionContainer itemsCount={items.length}>
+		<SubSectionContainer itemsCount={items.length} className="pricing-item">
 			<SubSectionTitle title={item.title} />
 			<span>{item.price}</span>
 			<ul>

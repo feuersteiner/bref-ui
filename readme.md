@@ -70,11 +70,74 @@ The following CSS variables can be customized:
 - `--color-secondary-background`: Sets the background color for secondary sections (`#aaa` as fallback).
 - `--color-text`: Sets the text color (`#222` as fallback) for all text elements.
 
+## CSS Classes
+
+Each component has specific class names to enable custom styling in your own `CSS` files. These classes follow a consistent pattern:
+
+### Component Classes
+
+- **Section Container Classes**
+  - `.section` - Applied to all sections for generic styling
+  - Component-specific class (e.g., `.text-and-media`, `.hero`, `.features`) for targeted styling
+
+- **Item Classes**
+  - Component-specific item class (e.g., `.text-and-media-item`, `.features-item`) for styling individual items within a component
+  - `.sub-section` - Applied to sub-section containers within components
+
+### Component-Specific Classes
+
+- **Text and Media Component**
+  - `.text-and-media` - Main container
+  - `.text-and-media-item` - Individual text/media pairs
+  - `.text-and-media-media` - Media within text/media pairs
+
+- **Hero Components**
+  - `.basic-hero` - Basic hero section
+  - `.media-hero` - Hero with media section
+
+- **Features Component**
+  - `.features` - Main container
+  - `.features-item` - Individual feature items
+  - `.feature-media` - Media within feature items
+
+- **Testimonials Component**
+  - `.testimonials` - Main container
+  - `.testimonials-item` - Individual testimonial
+  - `.testimonial-media` - Avatar/media within testimonials
+
+- **Pricing Component**
+  - `.pricing` - Main container
+  - `.pricing-item` - Individual pricing plans
+
+- **FAQ Component**
+  - `.faq` - Main container
+  - `.faq-item` - Individual question/answer pairs
+
+- **Call-to-Action Component**
+  - `.cta` - Main container
+
+- **Brands Component**
+  - `.brands` - Main container
+  - `.brands-item` - Individual brand items
+
+### Example Usage
+
+To style all text and media sections:
+
+```css
+.text-and-media {
+  background-color: #f9f9f9;
+}
+
+.text-and-media-item {
+  border-left: 3px solid var(--color-primary);
+}
+```
+
 ## TODO
 
 - Add template `CSS` for quick start
 - Add demo site
-- Add `CSS` classes to all sections
 - Add Markdown support for `p` tags and blog posts
 - Add much clearer documentation
 - Add Contact Form component (with `API` Submission)

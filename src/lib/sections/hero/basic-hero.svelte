@@ -9,7 +9,7 @@
 	const { title, subtitle, primaryButton, secondaryButton, anchor }: IBaseSectionProps = $props();
 </script>
 
-<SectionContainer {anchor}>
+<SectionContainer {anchor} className="basic-hero">
 	<SubSectionContainer gridSize="full" gapSize="large">
 		<HeroTitle {title} />
 		<SectionSubtitle {subtitle} />

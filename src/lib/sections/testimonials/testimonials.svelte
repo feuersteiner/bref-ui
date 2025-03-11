@@ -12,16 +12,16 @@
 	const align = 'left';
 </script>
 
-<SectionContainer {anchor}>
+<SectionContainer {anchor} className="testimonials">
 	<SectionHeader {title} {primaryButton} {secondaryButton} {subtitle} />
 	{#each items as item}
-		<SubSectionContainer gapSize="small" {align} itemsCount={items.length}>
+		<SubSectionContainer gapSize="small" {align} itemsCount={items.length} className="testimonials-item">
 			<span>“</span>
 			<SubSectionSubtitle subtitle={item.text} {align} />
 			<div>
 				<div class="testimonial-media">
 					{#if item.avatar}
-						<Media {...item.avatar} fill />
+						<Media {...item.avatar} fill className="testimonial-media" />
 					{:else}
 						<svg
 							viewBox="0 0 24 24"

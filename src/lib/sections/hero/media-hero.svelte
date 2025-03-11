@@ -11,13 +11,13 @@
 		$props();
 </script>
 
-<SectionContainer {anchor}>
+<SectionContainer {anchor} className="media-hero">
 	<SubSectionContainer gridSize="half" gapSize="large">
 		<HeroTitle {title} align="left" />
 		<SectionSubtitle {subtitle} align="left" />
 		<ButtonRow {primaryButton} {secondaryButton} size={'large'} align="left" />
 	</SubSectionContainer>
 	<SubSectionContainer gridSize="half" gapSize="large">
-		<Media {...media} />
+		<Media {...media} className="media-hero-media" />
 	</SubSectionContainer>
 </SectionContainer>

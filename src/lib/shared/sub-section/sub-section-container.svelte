@@ -9,7 +9,8 @@
 		gapSize = 'small',
 		align = 'center',
 		justifyUp,
-		itemsCount
+		itemsCount,
+		className
 	}: {
 		children: Snippet;
 	} & Partial<ISubSectionContainerProps> = $props();
@@ -24,9 +25,13 @@
 	};
 
 	const finalGridSize = itemsCount ? inferGridSizeFromItems(itemsCount) : gridSize;
+	const subSectionClass =
+		`sub-section ${finalGridSize} ${gapSize} ${align} ${className || ''}`.trim();
 </script>
 
-<div class:justifyUp class={`${finalGridSize} ${gapSize} ${align}`}>{@render children()}</div>
+<div class:justifyUp class={subSectionClass}>
+	{@render children()}
+</div>
 
 <style>
 	div {

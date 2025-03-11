@@ -21,21 +21,21 @@
 </script>
 
 <svelte:document {onresize} />
-<SectionContainer {anchor}>
+<SectionContainer {anchor} className="text-and-media">
 	<SectionHeader {title} {primaryButton} {secondaryButton} {subtitle} />
 	{#each items as { title, subtitle, media }, index}
 		{@const isEven = index % 2 === 0}
 		{#if isEven || isSmall}
-			<SubSectionContainer gridSize="half" {gapSize}>
+			<SubSectionContainer gridSize="half" {gapSize} className="text-and-media-item">
 				<SubSectionTitle align="left" {title} />
 				<SubSectionSubtitle align="left" {subtitle} />
 			</SubSectionContainer>
 			<SubSectionContainer gridSize="half" {gapSize}>
-				<Media {...media} />
+				<Media {...media} className="text-and-media-media" />
 			</SubSectionContainer>
 		{:else}
-			<SubSectionContainer gridSize="half" {gapSize}>
-				<Media {...media} />
+			<SubSectionContainer gridSize="half" {gapSize} className="text-and-media-item">
+				<Media {...media} className="text-and-media-media" />
 			</SubSectionContainer>
 			<SubSectionContainer gridSize="half" {gapSize}>
 				<SubSectionTitle align="left" {title} />

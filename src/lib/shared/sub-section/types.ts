@@ -1,4 +1,4 @@
-import type { IGridSizeProps, ITextAlignmentProps, SizeType } from '../types.js';
+import type { IClassNameProps, IGridSizeProps, ITextAlignmentProps, SizeType } from '../types.js';
 
 /**
  * Props interface for SubSection container component
@@ -10,7 +10,10 @@ import type { IGridSizeProps, ITextAlignmentProps, SizeType } from '../types.js'
  * @property {boolean} [justifyUp] - Whether to justify content upwards
  * @property {number} [itemsCount] - Number of items in the container. If provided, overrides gridSize props
  */
-export interface ISubSectionContainerProps extends ITextAlignmentProps, IGridSizeProps {
+export interface ISubSectionContainerProps
+	extends ITextAlignmentProps,
+		IGridSizeProps,
+		IClassNameProps {
 	gapSize: SizeType;
 	justifyUp?: boolean;
 	itemsCount?: number;

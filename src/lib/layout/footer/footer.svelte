@@ -5,14 +5,14 @@
 	import type { IFooterProps } from '../types.js';
 
 	const { columns, logo, copyright, tagline }: IFooterProps = $props();
-	const itemsCount = columns.length > 4 ? 4 : columns.length;
+	const itemsCount = columns.length + 1 > 4 ? 4 : columns.length + 1;
 </script>
 
 <footer>
 	<SectionContainer>
-		<SubSectionContainer gridSize="quarter" gapSize="medium" align="left" justifyUp>
+		<SubSectionContainer {itemsCount} gapSize="medium" align="left" justifyUp>
 			<Logo size="large" {...logo} />
-			<p>{tagline}</p>
+			<p class="tagline">{tagline}</p>
 		</SubSectionContainer>
 		{#each columns as column}
 			<SubSectionContainer {itemsCount} gapSize="medium" align="left" justifyUp>

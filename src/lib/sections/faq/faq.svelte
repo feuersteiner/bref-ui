@@ -26,7 +26,7 @@
 	{@html `<script type="application/ld+json">${jsonLd}</script>`}
 </svelte:head>
 
-<SectionContainer {anchor}>
+<SectionContainer {anchor} className="faq">
 	<SectionHeader {title} {primaryButton} {secondaryButton} {subtitle} />
 	{#each items as item}
 		<FaqItem {...item} />

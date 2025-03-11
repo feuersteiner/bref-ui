@@ -8,12 +8,12 @@
 	const { anchor, title, subtitle, primaryButton, secondaryButton, items }: IBrandsProps = $props();
 </script>
 
-<SectionContainer {anchor}>
+<SectionContainer {anchor} className="brands">
 	<SectionHeader {title} {subtitle} {primaryButton} {secondaryButton} />
 	{#each items as item}
-		<SubSectionContainer itemsCount={items.length}>
+		<SubSectionContainer itemsCount={items.length} className="brands-item">
 			<a {...item.link}>
-				<Media {...item.logo} type="image" fill />
+				<Media {...item.logo} type="image" fill className="brands-media" />
 			</a>
 		</SubSectionContainer>
 	{/each}

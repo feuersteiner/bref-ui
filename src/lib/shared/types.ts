@@ -29,14 +29,18 @@ export interface IButtonProps extends ILinkProps, Partial<ISizeProps> {
 	fullWidth?: boolean;
 }
 
-export interface IMediaProps {
+export interface IMediaProps extends IClassNameProps {
 	src: string;
 	alt: string;
 	type: 'image' | 'video';
 	fill?: boolean;
 }
 
-export interface ISectionContainerProps extends IBackgroundColorProps {
+export interface IClassNameProps {
+	className?: string;
+}
+
+export interface ISectionContainerProps extends IBackgroundColorProps, IClassNameProps {
 	anchor?: string;
 	minimalPadding?: boolean;
 }

@@ -6,13 +6,16 @@
 		children,
 		anchor,
 		minimalPadding,
-		isBackgroundColorSecondary
+		isBackgroundColorSecondary,
+		className
 	}: {
 		children: Snippet;
 	} & ISectionContainerProps = $props();
+
+	const sectionClassName = 'section' + (className ? ' ' + className : '');
 </script>
 
-<section class:minimalPadding class:isBackgroundColorSecondary>
+<section class:minimalPadding class:isBackgroundColorSecondary class={sectionClassName}>
 	<div id={anchor}>
 		{@render children()}
 	</div>

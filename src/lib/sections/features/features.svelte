@@ -11,12 +11,12 @@
 		$props();
 </script>
 
-<SectionContainer {anchor}>
+<SectionContainer {anchor} className="features">
 	<SectionHeader {title} {subtitle} {primaryButton} {secondaryButton} />
 	{#each items as item}
-		<SubSectionContainer itemsCount={items.length}>
+		<SubSectionContainer itemsCount={items.length} className="features-item">
 			<div class="feature-media">
-				<Media {...item.media} fill />
+				<Media {...item.media} fill className="feature-media" />
 			</div>
 			<SubSectionTitle title={item.title} />
 			<SubSectionSubtitle subtitle={item.subtitle} />
