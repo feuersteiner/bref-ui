@@ -7,16 +7,18 @@
 		anchor,
 		minimalPadding,
 		isBackgroundColorSecondary,
-		className
+		className,
+		gap = 'medium'
 	}: {
 		children: Snippet;
 	} & ISectionContainerProps = $props();
 
 	const sectionClassName = 'section' + (className ? ' ' + className : '');
+	const rowGap = gap === 'small' ? '2rem' : gap === 'medium' ? '4rem' : '8rem';
 </script>
 
 <section class:minimalPadding class:isBackgroundColorSecondary class={sectionClassName}>
-	<div id={anchor}>
+	<div id={anchor} style:row-gap={rowGap}>
 		{@render children()}
 	</div>
 </section>
@@ -45,6 +47,5 @@
 		display: grid;
 		grid-template-columns: repeat(12, 1fr);
 		column-gap: 2rem;
-		row-gap: 4rem;
 	}
 </style>

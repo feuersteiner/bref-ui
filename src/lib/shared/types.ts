@@ -43,6 +43,7 @@ export interface IClassNameProps {
 export interface ISectionContainerProps extends IBackgroundColorProps, IClassNameProps {
 	anchor?: string;
 	minimalPadding?: boolean;
+	gap?: SizeType;
 }
 
 export interface IBackgroundColorProps {
