@@ -20,7 +20,8 @@
 <SectionContainer {anchor} className="pricing" {isBackgroundColorSecondary}>
 	<SectionHeader {title} {subtitle} {primaryButton} {secondaryButton} />
 	{#each items as item}
-		<SubSectionContainer itemsCount={items.length} className="pricing-item">
+		{@const className = item.featured ? 'pricing-item featured' : 'pricing-item'}
+		<SubSectionContainer itemsCount={items.length} {className}>
 			<SubSectionTitle title={item.title} />
 			<span>{item.price}</span>
 			<ul>
@@ -28,7 +29,12 @@
 					<li>{feature}</li>
 				{/each}
 			</ul>
-			<Button fullWidth {...item.ctaButton} type={item.featured ? 'primary' : 'default'} />
+			<Button
+				fullWidth
+				{...item.ctaButton}
+				type={item.featured ? 'primary' : 'default'}
+				size="medium"
+			/>
 		</SubSectionContainer>
 	{/each}
 </SectionContainer>
