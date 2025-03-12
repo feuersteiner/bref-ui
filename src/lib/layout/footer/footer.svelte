@@ -5,17 +5,23 @@
 	import type { IFooterProps } from '../types.js';
 
 	const { columns, logo, copyright, tagline, isBackgroundColorSecondary }: IFooterProps = $props();
-	const itemsCount = columns.length + 1 > 4 ? 4 : columns.length + 1;
+	const itemsCount = columns.length > 4 ? 4 : columns.length;
 </script>
 
 <footer>
 	<SectionContainer className="footer" {isBackgroundColorSecondary}>
-		<SubSectionContainer {itemsCount} gapSize="medium" align="left" justifyUp className="footer-item">
+		<SubSectionContainer gridSize="full" gapSize="small" align="center">
 			<Logo size="large" {...logo} />
 			<p class="tagline">{tagline}</p>
 		</SubSectionContainer>
 		{#each columns as column}
-			<SubSectionContainer {itemsCount} gapSize="medium" align="left" justifyUp className="footer-item">
+			<SubSectionContainer
+				{itemsCount}
+				gapSize="small"
+				align="left"
+				justifyUp
+				className="footer-item"
+			>
 				<strong><a {...column.header}>{column.header.label}</a></strong>
 				{#if column.children}
 					{#each column.children as child}
