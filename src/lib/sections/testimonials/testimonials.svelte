@@ -6,8 +6,15 @@
 	import SubSectionSubtitle from '$lib/shared/sub-section/sub-section-subtitle.svelte';
 	import type { ITestimonialsProps } from './types.js';
 
-	const { title, subtitle, primaryButton, secondaryButton, items, anchor, isBackgroundColorSecondary }: ITestimonialsProps =
-		$props();
+	const {
+		title,
+		subtitle,
+		primaryButton,
+		secondaryButton,
+		items,
+		anchor,
+		isBackgroundColorSecondary
+	}: ITestimonialsProps = $props();
 
 	const align = 'left';
 </script>
@@ -15,7 +22,13 @@
 <SectionContainer {anchor} className="testimonials" {isBackgroundColorSecondary}>
 	<SectionHeader {title} {primaryButton} {secondaryButton} {subtitle} />
 	{#each items as item}
-		<SubSectionContainer gapSize="small" {align} itemsCount={items.length} className="testimonials-item">
+		<SubSectionContainer
+			gapSize="small"
+			{align}
+			itemsCount={items.length}
+			className="testimonials-item"
+			justifyUp
+		>
 			<span>“</span>
 			<SubSectionSubtitle subtitle={item.text} {align} />
 			<div>
