@@ -33,7 +33,7 @@
 		height: fit-content;
 		background-color: var(--color-primary-background, #eee);
 	}
-	
+
 	.isBackgroundColorSecondary {
 		background-color: var(--color-secondary-background, #aaa);
 	}

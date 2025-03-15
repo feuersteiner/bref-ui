@@ -8,8 +8,15 @@
 
 	import type { ITextAndMediaProps } from './types.js';
 
-	const { title, subtitle, primaryButton, secondaryButton, items, anchor, isBackgroundColorSecondary }: ITextAndMediaProps =
-		$props();
+	const {
+		title,
+		subtitle,
+		primaryButton,
+		secondaryButton,
+		items,
+		anchor,
+		isBackgroundColorSecondary
+	}: ITextAndMediaProps = $props();
 
 	let isSmall: boolean = $state(false);
 	const onresize = (e: Event) => {

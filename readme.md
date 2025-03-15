@@ -77,6 +77,7 @@ Each component has specific class names to enable custom styling in your own `CS
 ### Component Classes
 
 - **Section Container Classes**
+
   - `.section` - Applied to all sections for generic styling
   - Component-specific class (e.g., `.text-and-media`, `.hero`, `.features`) for targeted styling
 
@@ -87,40 +88,49 @@ Each component has specific class names to enable custom styling in your own `CS
 ### Component-Specific Classes
 
 - **Text and Media Component**
+
   - `.text-and-media` - Main container
   - `.text-and-media-item` - Individual text/media pairs
   - `.text-and-media-media` - Media within text/media pairs
 
 - **Hero Components**
+
   - `.basic-hero` - Basic hero section
   - `.media-hero` - Hero with media section
 
 - **Features Component**
+
   - `.features` - Main container
   - `.features-item` - Individual feature items
   - `.feature-media` - Media within feature items
 
 - **Testimonials Component**
+
   - `.testimonials` - Main container
   - `.testimonials-item` - Individual testimonial
   - `.testimonial-media` - Avatar/media within testimonials
 
 - **Pricing Component**
+
   - `.pricing` - Main container
   - `.pricing-item` - Individual pricing plans
 
 - **FAQ Component**
+
   - `.faq` - Main container
   - `.faq-item` - Individual question/answer pairs
 
 - **Call-to-Action Component**
+
   - `.cta` - Main container
 
 - **Brands Component**
+
   - `.brands` - Main container
   - `.brands-item` - Individual brand items
 
 - **Navbar Component**
+
   - `.navbar` - Main container
   - `.desktop-navbar` - Desktop navigation
   - `.mobile-navbar` - Mobile navigation
@@ -135,11 +145,11 @@ To style all text and media sections:
 
 ```css
 .text-and-media {
-  background-color: #f9f9f9;
+	background-color: #f9f9f9;
 }
 
 .text-and-media-item {
-  border-left: 3px solid var(--color-primary);
+	border-left: 3px solid var(--color-primary);
 }
 ```
 
