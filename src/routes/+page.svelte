@@ -12,6 +12,13 @@
 		Pricing,
 		Brands
 	} from '$lib/index.js';
+	import type { IMediaProps } from '$lib/shared/types.js';
+
+	const media: IMediaProps = {
+		type: 'image',
+		src: 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+		alt: 'Random Image'
+	};
 </script>
 
 <PageSeo
@@ -41,11 +48,7 @@
 	subtitle="This is a basic hero component."
 	primaryButton={{ label: 'Primary Button', type: 'primary', href: '#' }}
 	secondaryButton={{ label: 'Secondary Button', type: 'secondary', href: '#' }}
-	media={{
-		src: 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-		alt: 'Random Image',
-		type: 'image'
-	}}
+	{media}
 />
 <BasicHero
 	title="Welcome to SV-Marketing, Again!"
@@ -72,22 +75,14 @@
 			subtitle: `This is the first section of three.
             It contains a title, subtitle, and two buttons.
             The text spans 3 lines.`,
-			media: {
-				src: 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-				alt: 'Random Image',
-				type: 'image'
-			}
+			media
 		},
 		{
 			title: 'Section One Out of Three',
 			subtitle: `This is the first section of three.
             It contains a title, subtitle, and two buttons.
             The text spans 3 lines.`,
-			media: {
-				src: 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-				alt: 'Random Image',
-				type: 'image'
-			}
+			media
 		}
 	]}
 />
@@ -105,11 +100,7 @@
 		subtitle: `This is feature number ${i + 1}.
 			A simple description for the feature.
 			Additional details about the feature.`,
-		media: {
-			src: 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-			alt: 'Random Image',
-			type: 'image'
-		}
+		media
 	}))}
 />
 <Pricing
@@ -165,11 +156,7 @@
 	items={[
 		{
 			text: 'This is a testimonial from a satisfied customer.',
-			avatar: {
-				src: 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-				alt: 'Random Image',
-				type: 'image'
-			},
+			avatar: media,
 			person: {
 				name: 'John Doe',
 				company: 'Company Name'

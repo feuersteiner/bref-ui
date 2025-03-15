@@ -7,14 +7,21 @@
 	import SubSectionTitle from '$lib/shared/sub-section/sub-section-title.svelte';
 	import type { IFeaturesProps } from './type.js';
 
-	const { title, subtitle, anchor, primaryButton, secondaryButton, items, isBackgroundColorSecondary }: IFeaturesProps =
-		$props();
+	const {
+		title,
+		subtitle,
+		anchor,
+		primaryButton,
+		secondaryButton,
+		items,
+		isBackgroundColorSecondary
+	}: IFeaturesProps = $props();
 </script>
 
 <SectionContainer {anchor} className="features" {isBackgroundColorSecondary}>
 	<SectionHeader {title} {subtitle} {primaryButton} {secondaryButton} />
 	{#each items as item}
-		<SubSectionContainer itemsCount={items.length} className="features-item">
+		<SubSectionContainer itemsCount={items.length} className="features-item" justifyUp>
 			<div class="feature-media">
 				<Media {...item.media} fill className="feature-media" />
 			</div>
