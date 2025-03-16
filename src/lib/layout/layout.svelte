@@ -8,28 +8,21 @@
 	const {
 		children,
 		navbar,
-		footer,
-		themeColor
+		footer
 	}: ILayoutProps & {
 		children: Snippet;
 	} = $props();
-
-	const hasThemeColor =
-		themeColor !== undefined &&
-		RegExp(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{4}|[0-9A-Fa-f]{6})$/i).test(themeColor);
 </script>
 
-<svelte:head>
-	{#if hasThemeColor}
-		<meta name="theme-color" content={themeColor} />
-	{/if}
-</svelte:head>
-
-<Navbar {...navbar} />
+{#if navbar}
+	<Navbar {...navbar} />
+{/if}
 <main>
 	{@render children()}
 </main>
-<Footer {...footer} />
+{#if footer}
+	<Footer {...footer} />
+{/if}
 
 <style>
 	main {

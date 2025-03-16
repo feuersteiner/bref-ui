@@ -16,6 +16,7 @@ export interface INavbarProps
 		IButtonPairProps,
 		IBackgroundColorProps {
 	items: ILinkProps[];
+	themeColor?: string;
 }
 
 export interface IFooterProps extends ILogoNavigationProps, IBackgroundColorProps {
@@ -25,9 +26,8 @@ export interface IFooterProps extends ILogoNavigationProps, IBackgroundColorProp
 }
 
 export interface ILayoutProps {
-	navbar: INavbarProps;
-	footer: IFooterProps;
-	themeColor?: string;
+	navbar?: INavbarProps;
+	footer?: IFooterProps;
 }
 
 export interface INavigationLinkColumnProps {
