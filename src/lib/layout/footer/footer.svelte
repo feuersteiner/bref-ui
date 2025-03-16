@@ -2,9 +2,19 @@
 	import Logo from '$lib/shared/logo.svelte';
 	import SectionContainer from '$lib/shared/section/section-container.svelte';
 	import SubSectionContainer from '$lib/shared/sub-section/sub-section-container.svelte';
+	import type { Snippet } from 'svelte';
 	import type { IFooterProps } from '../types.js';
 
-	const { columns, logo, copyright, tagline, isBackgroundColorSecondary }: IFooterProps = $props();
+	const {
+		columns,
+		logo,
+		copyright,
+		tagline,
+		isBackgroundColorSecondary,
+		children
+	}: IFooterProps & {
+		children?: Snippet;
+	} = $props();
 	const itemsCount = columns.length > 4 ? 4 : columns.length;
 </script>
 
@@ -32,6 +42,9 @@
 		{/each}
 		<SubSectionContainer gridSize="full" gapSize="medium">
 			<p>© {new Date().getFullYear()} All rights reserved {copyright}.</p>
+			{#if children}
+				{@render children()}
+			{/if}
 		</SubSectionContainer>
 	</SectionContainer>
 </footer>
