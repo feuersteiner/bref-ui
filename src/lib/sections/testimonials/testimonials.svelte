@@ -3,7 +3,6 @@
 	import SectionContainer from '$lib/shared/section/section-container.svelte';
 	import SectionHeader from '$lib/shared/section/section-header.svelte';
 	import SubSectionContainer from '$lib/shared/sub-section/sub-section-container.svelte';
-	import SubSectionSubtitle from '$lib/shared/sub-section/sub-section-subtitle.svelte';
 	import type { ITestimonialsProps } from './types.js';
 
 	const {
@@ -30,7 +29,7 @@
 			justifyUp
 		>
 			<span>“</span>
-			<SubSectionSubtitle subtitle={item.text} {align} />
+			<p class="text">{item.text}</p>
 			<div>
 				<div class="testimonial-media">
 					{#if item.avatar}
@@ -54,7 +53,7 @@
 				</div>
 				<div class="person">
 					<h3>{item.person.name}</h3>
-					<p>{item.person.company}</p>
+					<p class="company">{item.person.company}</p>
 				</div>
 			</div>
 		</SubSectionContainer>
@@ -86,8 +85,15 @@
 		all: unset;
 		text-align: left;
 	}
-	p {
+	.company {
 		font-size: 0.75rem;
+	}
+	.text {
+		font-size: 1.5rem;
+		width: 100%;
+		display: flex;
+		height: fit-content;
+		flex-grow: 1;
 	}
 	span {
 		font-size: 2rem;

@@ -155,7 +155,7 @@
 	subtitle="This is a testimonials section."
 	items={[
 		{
-			text: 'This is a testimonial from a satisfied customer.',
+			text: 'This is a very long testimonial from a very satisfied customer. Where the customer went above and beyond to express their satisfaction with the product.',
 			avatar: media,
 			person: {
 				name: 'John Doe',
