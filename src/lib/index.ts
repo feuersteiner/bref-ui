@@ -2,6 +2,8 @@ export { default as TextAndMedia } from './sections/text-and-media/text-and-medi
 export { default as BasicHero } from './sections/hero/basic-hero.svelte';
 export { default as MediaHero } from './sections/hero/media-hero.svelte';
 export { default as Layout } from './layout/layout.svelte';
+export { default as Footer } from './layout/footer/footer.svelte';
+export { default as Navbar } from './layout/navbar/navbar.svelte';
 export { default as Breadcrumbs } from './layout/breadcrumbs/breadcrumbs.svelte';
 export { default as FrequentlyAskedQuestions } from './sections/faq/faq.svelte';
 export { default as Features } from './sections/features/features.svelte';
