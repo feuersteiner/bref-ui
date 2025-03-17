@@ -5,18 +5,12 @@
 
 	const props: INavbarProps = $props();
 
-	let isMobileMenu: boolean = $state(false);
-	const onresize = (e: Event) => {
-		const newValue = window.innerWidth < 640 ? true : false;
-		if (isMobileMenu !== newValue) isMobileMenu = newValue;
-	};
 	const themeColor = props.themeColor;
 	const hasThemeColor =
 		themeColor !== undefined &&
 		RegExp(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{4}|[0-9A-Fa-f]{6})$/i).test(themeColor);
 </script>
 
-<svelte:document {onresize} />
 <svelte:head>
 	{#if hasThemeColor}
 		<meta name="theme-color" content={themeColor} />
@@ -24,12 +18,11 @@
 </svelte:head>
 
 <nav class="navbar" class:isBackgroundColorSecondary={props.isBackgroundColorSecondary}>
-	<div>
-		{#if isMobileMenu}
-			<MobileNavbar {...props} />
-		{:else}
-			<DesktopNavbar {...props} />
-		{/if}
+	<div class="mobile">
+		<MobileNavbar {...props} />
+	</div>
+	<div class="desktop">
+		<DesktopNavbar {...props} />
 	</div>
 </nav>
 
@@ -54,5 +47,19 @@
 		padding: 1rem;
 		display: flex;
 		height: fit-content;
+	}
+	.desktop {
+		display: flex;
+	}
+	.mobile {
+		display: none;
+	}
+	@media (max-width: 720px) {
+		.desktop {
+			display: none;
+		}
+		.mobile {
+			display: flex;
+		}
 	}
 </style>
