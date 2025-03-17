@@ -25,11 +25,20 @@
 	};
 
 	const finalGridSize = itemsCount ? inferGridSizeFromItems(itemsCount) : gridSize;
-	const subSectionClass =
-		`sub-section ${finalGridSize} ${gapSize} ${align} ${className || ''}`.trim();
+
+	const classes = [
+		'sub-section',
+		finalGridSize,
+		`gap-${gapSize}`,
+		`align-${align}`,
+		justifyUp ? 'justify-start' : 'justify-center',
+		className
+	]
+		.filter(Boolean)
+		.join(' ');
 </script>
 
-<div class:justifyUp class={subSectionClass}>
+<div class={classes}>
 	{@render children()}
 </div>
 
@@ -37,64 +46,63 @@
 	div {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
 		flex-grow: 1;
 		height: 100%;
 		width: 100%;
+		gap: var(--gap-size, 1rem);
+	}
+
+	.align-center {
 		align-items: center;
+	}
+	.align-left {
+		align-items: flex-start;
+	}
+	.align-right {
+		align-items: flex-end;
+	}
+
+	.justify-center {
 		justify-content: center;
 	}
-	.justifyUp {
+	.justify-start {
 		justify-content: flex-start;
 	}
-	.full {
-		grid-column: span 12;
+
+	.gap-small {
+		--gap-size: 1rem;
 	}
-	.half {
-		grid-column: span 12;
+	.gap-medium {
+		--gap-size: 2rem;
 	}
-	.third {
-		grid-column: span 12;
+	.gap-large {
+		--gap-size: 4rem;
 	}
-	.quarter {
-		grid-column: span 12;
-	}
-	.sixth {
-		grid-column: span 12;
-	}
+
+	.full,
+	.half,
+	.third,
+	.quarter,
+	.sixth,
 	.twelfth {
 		grid-column: span 12;
 	}
 
 	@media (min-width: 640px) {
-		.half {
-			grid-column: span 6;
-		}
-		.third {
-			grid-column: span 6;
-		}
+		.third,
 		.quarter {
 			grid-column: span 6;
 		}
-		.sixth {
-			grid-column: span 4;
-		}
+		.sixth,
 		.twelfth {
 			grid-column: span 4;
-		}
-
-		.center {
-			align-items: center;
-		}
-		.left {
-			align-items: flex-start;
-		}
-		.right {
-			align-items: flex-end;
 		}
 	}
 
 	@media (min-width: 768px) {
+		.half {
+			grid-column: span 6;
+		}
 		.third {
 			grid-column: span 4;
 		}
@@ -119,15 +127,5 @@
 		.twelfth {
 			grid-column: span 1;
 		}
-	}
-
-	.small {
-		gap: 1rem;
-	}
-	.medium {
-		gap: 2rem;
-	}
-	.large {
-		gap: 4rem;
 	}
 </style>
