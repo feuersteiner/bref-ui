@@ -18,9 +18,12 @@
 		isBackgroundColorSecondary
 	}: ITextAndMediaProps = $props();
 
-	let isLargeScreen: boolean = $state(false);
+	const getIsLargeScreen = (): boolean => (window.innerWidth > 768 ? true : false);
+
+	let isLargeScreen: boolean = $state(getIsLargeScreen());
+	
 	const onresize = () => {
-		const newValue = window.innerWidth > 768 ? true : false;
+		const newValue = getIsLargeScreen();
 		if (isLargeScreen !== newValue) isLargeScreen = newValue;
 	};
 
