@@ -17,14 +17,14 @@
 	const media: IMediaProps = {
 		type: 'image',
 		src: 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-		alt: 'Random Image'
+		alt: 'SV-Marketing Component Example'
 	};
 </script>
 
 <PageSeo
-	title="Home"
-	description="This is the home page."
-	keywords={['home', 'page']}
+	title="SV-Marketing - Beautiful Marketing Sites with SvelteKit"
+	description="Build beautiful marketing sites with SvelteKit - A lightweight, customizable component library for static marketing websites."
+	keywords={['sveltekit', 'marketing', 'components', 'library', 'static sites']}
 	thumbnail="https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
 	path="/"
 	baseUrl="https://example.com"
@@ -38,112 +38,178 @@
 />
 <Breadcrumbs
 	items={[
-		{ label: 'Home', href: '#' },
-		{ label: 'About', href: '#' },
-		{ label: 'Contact', href: '#' }
+		{ label: 'Home', href: '/' },
+		{ label: 'Components', href: '/components' },
+		{ label: 'Docs', href: '/docs' }
 	]}
 />
 <MediaHero
-	title="Welcome to SV-Marketing"
-	subtitle="This is a basic hero component."
-	primaryButton={{ label: 'Primary Button', type: 'primary', href: '#' }}
-	secondaryButton={{ label: 'Secondary Button', type: 'secondary', href: '#' }}
+	title="SV-Marketing"
+	subtitle="Build beautiful marketing sites with SvelteKit - A lightweight, customizable component library for static marketing websites."
+	primaryButton={{ label: 'Get Started', type: 'primary', href: '#features' }}
+	secondaryButton={{
+		label: 'View on GitHub',
+		href: 'https://github.com/sv-marketing'
+	}}
 	{media}
 />
 <BasicHero
-	title="Welcome to SV-Marketing, Again!"
-	subtitle="This is a basic hero component, again!"
-	primaryButton={{ label: 'Primary Button', type: 'primary', href: '#' }}
-	secondaryButton={{ label: 'Secondary Button', type: 'secondary', href: '#' }}
-/>
-<TextAndMedia
-	title="Text And Media"
-	subtitle="This is a component that displays text and media in alternating pairs."
+	title="Another Hero!!"
+	subtitle="Who knew? There are multiple heroes!"
 	primaryButton={{
-		label: 'Primary Button',
-		type: 'primary',
-		href: '#'
+		label: 'Explore Components',
+		href: '#components'
 	}}
 	secondaryButton={{
-		label: 'Secondary Button',
-		type: 'secondary',
+		label: 'Inflate A Balloon',
 		href: '#'
+	}}
+/>
+<Features
+	title="Why Choose SV-Marketing"
+	subtitle="Our lightweight component library offers everything you need to build stunning marketing sites"
+	primaryButton={{
+		label: 'Explore Components',
+		href: '#components'
 	}}
 	items={[
 		{
-			title: 'Section One Out of Three',
-			subtitle: `This is the first section of three.
-            It contains a title, subtitle, and two buttons.
-            The text spans 3 lines.`,
+			title: 'Built for SvelteKit',
+			subtitle:
+				"Optimized for SvelteKit's architecture with full support for runes mode and seamless integration with your existing projects.",
 			media
 		},
 		{
-			title: 'Section One Out of Three',
-			subtitle: `This is the first section of three.
-            It contains a title, subtitle, and two buttons.
-            The text spans 3 lines.`,
+			title: 'Highly Customizable',
+			subtitle:
+				'Easily customize the look and feel through CSS variables to match your brand identity without writing complex overrides.',
+			media
+		},
+		{
+			title: 'SEO Friendly',
+			subtitle:
+				'Built-in SEO optimizations with semantic HTML and JSON-LD support to help your marketing site rank better in search results.',
+			media
+		}
+	]}
+/>
+<TextAndMedia
+	title="Component Showcase"
+	subtitle="Explore our versatile components designed to create compelling marketing websites"
+	items={[
+		{
+			title: 'Content Sections',
+			subtitle:
+				'From heroes to feature grids, our content sections help you structure your marketing message effectively and beautifully.',
+			media
+		},
+		{
+			title: 'Navigation Components',
+			subtitle:
+				'Create intuitive user flows with our navigation components like breadcrumbs, menus, and structured layouts.',
+			media
+		},
+		{
+			title: 'Conversion Elements',
+			subtitle:
+				'Drive action with our call-to-action components, pricing tables, and testimonial displays designed for maximum impact.',
+			media
+		},
+		{
+			title: 'Fully Responsive',
+			subtitle:
+				'All components adapt beautifully to any screen size, ensuring your marketing site looks perfect on desktop, tablet, and mobile.',
 			media
 		}
 	]}
 />
 <Features
-	title="Features"
-	subtitle={`This is a features section. 
-		It demonstrates multiple features in a grid layout.
-		Each feature includes a title, description, and image.`}
+	title="Technical Benefits"
+	subtitle="Why developers love building with SV-Marketing"
 	secondaryButton={{
-		label: 'Secondary Button',
+		label: 'View Documentation',
 		href: '#'
 	}}
-	items={Array.from({ length: 3 }, (_, i) => ({
-		title: `Feature ${i + 1}`,
-		subtitle: `This is feature number ${i + 1}.
-			A simple description for the feature.
-			Additional details about the feature.`,
-		media
-	}))}
-/>
-<Pricing
-	title="Pricing"
-	subtitle="This is a pricing section."
 	items={[
 		{
-			title: 'Basic',
-			price: '$10',
-			features: ['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4', 'Feature 5'],
+			title: 'Lightweight & Fast',
+			subtitle:
+				'Built with performance in mind, our components add minimal overhead to your SvelteKit application while maintaining smooth animations and transitions.',
+			media
+		},
+		{
+			title: 'Easy Integration',
+			subtitle:
+				'Simple import syntax and consistent prop structures make integration into new or existing projects straightforward and developer-friendly.',
+			media
+		},
+		{
+			title: 'Flexible Styling',
+			subtitle:
+				'Customize appearance through CSS variables or use our class naming system to apply your own styles while maintaining component functionality.',
+			media
+		}
+	]}
+/>
+<Pricing
+	title="Simple Pricing.. that doesn't exist"
+	subtitle="Start building your marketing site today with our flexible options"
+	items={[
+		{
+			title: 'Open Source',
+			price: 'Free',
+			features: [
+				'All core components',
+				'Runes mode support',
+				'Basic CSS variables',
+				'Community support',
+				'MIT license'
+			],
 			ctaButton: {
-				label: 'Buy',
-				href: '#'
+				label: 'Get Started',
+				href: 'https://github.com/sv-marketing'
 			}
 		},
 		{
 			title: 'Pro',
-			price: '$20',
-			features: ['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4', 'Feature 5'],
+			price: '$49',
+			features: [
+				'All free features',
+				'Advanced components',
+				'Premium templates',
+				'Priority support',
+				'Regular updates'
+			],
 			ctaButton: {
-				label: 'Buy',
-				href: '#'
+				label: 'Subscribe',
+				href: '/pricing'
 			},
 			featured: true
 		},
 		{
 			title: 'Enterprise',
-			price: 'contact sales',
-			features: ['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4', 'Feature 5'],
+			price: 'Custom',
+			features: [
+				'Custom component development',
+				'White-labeling options',
+				'Dedicated support',
+				'Custom integrations',
+				'Training sessions'
+			],
 			ctaButton: {
-				label: 'Buy',
-				href: '#'
+				label: 'Contact Us',
+				href: '/contact'
 			}
 		}
 	]}
 />
 <Brands
-	title="Brands Trust Us"
-	subtitle="This is a brands section."
+	title="Trusted By Developers"
+	subtitle="Join the growing community of developers building with SV-Marketing"
 	items={Array.from({ length: 6 }, (_, i) => ({
 		logo: {
 			src: 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-			alt: 'Random Image'
+			alt: 'Company logo'
 		},
 		link: {
 			href: '#'
@@ -151,59 +217,69 @@
 	}))}
 />
 <Testimonials
-	title="Testimonials"
-	subtitle="This is a testimonials section."
+	title="What Developers Say"
+	subtitle="Hear from developers who have built marketing sites with our components"
 	items={[
 		{
-			text: 'This is a very long testimonial from a very satisfied customer. Where the customer went above and beyond to express their satisfaction with the product.',
+			text: 'SV-Marketing has dramatically reduced our development time for marketing pages. The components are well-designed, customizable, and the documentation is excellent.',
 			avatar: media,
 			person: {
-				name: 'John Doe',
-				company: 'Company Name'
+				name: 'Alex Chen',
+				company: 'Really Headless'
 			}
 		},
 		{
-			text: 'This is another testimonial from another satisfied customer.',
+			text: 'As a solo developer, SV-Marketing has been a game-changer for my client projects. I can quickly spin up professional marketing sites with minimal custom CSS.',
 			person: {
-				name: 'Jane Doe',
-				company: 'Company Name'
+				name: 'Maria Rodriguez',
+				company: 'Freelance Developer'
 			}
 		},
 		{
-			text: 'This is another testimonial from another satisfied customer.',
+			text: 'The SEO benefits alone make SV-Marketing worth it. Our marketing pages now have proper semantic structure and schema markup without extra effort on our part.',
 			person: {
-				name: 'Jane Doe',
-				company: 'Company Name'
+				name: 'Sam Taylor',
+				company: 'Web Optimization Inc'
 			}
 		}
 	]}
 />
 <FrequentlyAskedQuestions
-	title="FAQ"
-	subtitle="This is a FAQ section."
+	title="Frequently Asked Questions"
+	subtitle="Get answers to common questions about SV-Marketing"
 	items={[
 		{
-			question: 'What is SveteKit?',
+			question: 'What is SV-Marketing?',
 			answer:
-				'SvelteKit is a framework for building web applications of all sizes, with a beautiful development experience and flexible filesystem-based routing.'
+				'SV-Marketing is a lightweight, customizable component library for SvelteKit that helps developers build beautiful marketing websites with less effort.'
 		},
 		{
-			question: 'What is Svelte?',
+			question: 'Do I need to know Svelte to use SV-Marketing?',
 			answer:
-				'Svelte is a radical new approach to building user interfaces. Whereas traditional frameworks like React and Vue do the bulk of their work in the browser, Svelte shifts that work into a compile step that happens when you build your app.'
+				'Yes, SV-Marketing is built specifically for SvelteKit projects. Basic knowledge of Svelte and SvelteKit is recommended to get the most out of the library.'
 		},
 		{
-			question: 'What is Africa?',
-			answer: `Africa is the world's second-largest and second-most populous continent, after Asia in both cases. At about 30.3 million km² including adjacent islands, it covers 6% of Earth's total surface area and 20% of its land area.`
+			question: 'How customizable are the components?',
+			answer:
+				"All components are highly customizable through CSS variables and class-based styling. You can easily adapt them to match your brand's design system."
+		},
+		{
+			question: 'Is SV-Marketing SEO-friendly?',
+			answer:
+				'Absolutely! Our components use semantic HTML and include built-in support for JSON-LD structured data, which helps search engines understand your content better.'
 		}
 	]}
 />
 
 <CallToAction
-	title="Call To Action"
-	subtitle="This is a call to action section."
+	title="Ready to Build Your Marketing Site?"
+	subtitle="Get started with SV-Marketing today and create beautiful, SEO-friendly marketing pages in minutes."
 	primaryButton={{
-		label: 'Primary Button',
+		label: 'Install Now',
+		href: 'https://github.com/feuersteiner/sv-marketing'
+	}}
+	secondaryButton={{
+		label: 'View Documentation',
 		href: '#'
 	}}
 />
