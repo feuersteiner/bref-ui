@@ -18,36 +18,30 @@
 		isBackgroundColorSecondary
 	}: ITextAndMediaProps = $props();
 
-	let isSmall: boolean = $state(false);
-	const onresize = (e: Event) => {
-		const newValue = window.innerWidth < 640 ? false : true;
-		if (isSmall !== newValue) isSmall = newValue;
+	let isLargeScreen: boolean = $state(false);
+	const onresize = () => {
+		const newValue = window.innerWidth > 768 ? true : false;
+		if (isLargeScreen !== newValue) isLargeScreen = newValue;
 	};
 
 	const gapSize = 'small';
+	const gridSize = 'half';
 </script>
 
-<svelte:document {onresize} />
+<svelte:window {onresize} />
 <SectionContainer {anchor} className="text-and-media" {isBackgroundColorSecondary}>
 	<SectionHeader {title} {primaryButton} {secondaryButton} {subtitle} />
 	{#each items as { title, subtitle, media }, index}
-		{@const isEven = index % 2 === 0}
-		{#if isEven || isSmall}
-			<SubSectionContainer gridSize="half" {gapSize} className="text-and-media-item">
-				<SubSectionTitle align="left" {title} />
-				<SubSectionSubtitle align="left" {subtitle} />
-			</SubSectionContainer>
-			<SubSectionContainer gridSize="half" {gapSize}>
-				<Media {...media} className="text-and-media-media" />
-			</SubSectionContainer>
-		{:else}
-			<SubSectionContainer gridSize="half" {gapSize} className="text-and-media-item">
-				<Media {...media} className="text-and-media-media" />
-			</SubSectionContainer>
-			<SubSectionContainer gridSize="half" {gapSize}>
-				<SubSectionTitle align="left" {title} />
-				<SubSectionSubtitle align="left" {subtitle} />
-			</SubSectionContainer>
-		{/if}
+		{@const isMediaFirst = isLargeScreen && index % 2 === 1}
+		{@const groupIndexNumber = index * 2}
+		{@const textOrder = groupIndexNumber + Number(isMediaFirst)}
+		{@const mediaOrder = groupIndexNumber + Number(!isMediaFirst)}
+		<SubSectionContainer {gridSize} {gapSize} className="text-and-media-item" order={textOrder}>
+			<SubSectionTitle align="left" {title} />
+			<SubSectionSubtitle align="left" {subtitle} />
+		</SubSectionContainer>
+		<SubSectionContainer {gridSize} {gapSize} className="text-and-media-media" order={mediaOrder}>
+			<Media {...media} />
+		</SubSectionContainer>
 	{/each}
 </SectionContainer>
