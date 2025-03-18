@@ -22,7 +22,7 @@
 		<div>
 			{#each items as item}
 				<a {...item.link} class="brands-item">
-					<Media {...item.logo} type="image" fill className="brands-media" />
+					<Media {...item.logo} type="image" className="brands-media" />
 				</a>
 			{/each}
 		</div>
