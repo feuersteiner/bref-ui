@@ -206,7 +206,7 @@
 <Brands
 	title="Trusted By Developers"
 	subtitle="Join the growing community of developers building with SV-Marketing"
-	items={Array.from({ length: 6 }, (_, i) => ({
+	items={Array.from({ length: 12 }, (_, i) => ({
 		logo: {
 			src: 'https://images.pexels.com/photos/5011647/pexels-photo-5011647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
 			alt: 'Company logo'
