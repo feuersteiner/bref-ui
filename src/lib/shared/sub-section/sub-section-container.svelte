@@ -89,13 +89,13 @@
 		grid-column: span 12;
 	}
 
-	@media (min-width: 640px) {
-		.third,
+	@media (min-width: 540px) {
 		.quarter {
 			grid-column: span 6;
 		}
-		.sixth,
-		.twelfth {
+	}
+	@media (min-width: 640px) {
+		.third {
 			grid-column: span 4;
 		}
 	}
@@ -104,18 +104,6 @@
 		.half {
 			grid-column: span 6;
 		}
-		.third {
-			grid-column: span 4;
-		}
-		.quarter {
-			grid-column: span 4;
-		}
-		.sixth {
-			grid-column: span 2;
-		}
-		.twelfth {
-			grid-column: span 2;
-		}
 	}
 
 	@media (min-width: 1024px) {
@@ -123,8 +111,23 @@
 			grid-column: span 3;
 		}
 		.sixth {
+			grid-column: span 4;
+		}
+		.twelfth {
+			grid-column: span 6;
+		}
+	}
+
+	@media (min-width: 1280px) {
+		.sixth {
 			grid-column: span 2;
 		}
+		.twelfth {
+			grid-column: span 3;
+		}
+	}
+
+	@media (min-width: 1536px) {
 		.twelfth {
 			grid-column: span 1;
 		}
