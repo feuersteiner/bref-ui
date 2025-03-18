@@ -5,7 +5,7 @@
 	import SubSectionContainer from '$lib/shared/sub-section/sub-section-container.svelte';
 	import SubSectionSubtitle from '$lib/shared/sub-section/sub-section-subtitle.svelte';
 	import SubSectionTitle from '$lib/shared/sub-section/sub-section-title.svelte';
-
+	import { innerWidth } from 'svelte/reactivity/window';
 	import type { ITextAndMediaProps } from './types.js';
 
 	const {
@@ -18,20 +18,14 @@
 		isBackgroundColorSecondary
 	}: ITextAndMediaProps = $props();
 
-	const getIsLargeScreen = (): boolean => (window.innerWidth > 768 ? true : false);
-
-	let isLargeScreen: boolean = $state(getIsLargeScreen());
-	
-	const onresize = () => {
-		const newValue = getIsLargeScreen();
-		if (isLargeScreen !== newValue) isLargeScreen = newValue;
-	};
+	const isLargeScreen: boolean = $derived(
+		innerWidth.current === undefined || innerWidth.current > 768
+	);
 
 	const gapSize = 'small';
 	const gridSize = 'half';
 </script>
 
-<svelte:window {onresize} />
 <SectionContainer {anchor} className="text-and-media" {isBackgroundColorSecondary}>
 	<SectionHeader {title} {primaryButton} {secondaryButton} {subtitle} />
 	{#each items as { title, subtitle, media }, index}
