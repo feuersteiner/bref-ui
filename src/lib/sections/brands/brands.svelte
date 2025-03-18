@@ -18,20 +18,28 @@
 
 <SectionContainer {anchor} className="brands" {isBackgroundColorSecondary}>
 	<SectionHeader {title} {subtitle} {primaryButton} {secondaryButton} />
-	{#each items as item}
-		<SubSectionContainer itemsCount={items.length} className="brands-item">
-			<a {...item.link}>
-				<Media {...item.logo} type="image" fill className="brands-media" />
-			</a>
-		</SubSectionContainer>
-	{/each}
+	<SubSectionContainer gridSize="full">
+		<div>
+			{#each items as item}
+				<a {...item.link} class="brands-item">
+					<Media {...item.logo} type="image" fill className="brands-media" />
+				</a>
+			{/each}
+		</div>
+	</SubSectionContainer>
 </SectionContainer>
 
 <style>
 	a {
 		display: flex;
-		width: 100%;
+		width: 96px;
 		aspect-ratio: 16 / 9;
 		height: auto;
+	}
+	div {
+		gap: 1rem;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-around;
 	}
 </style>
