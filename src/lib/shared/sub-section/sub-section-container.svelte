@@ -10,7 +10,8 @@
 		align = 'center',
 		justifyUp,
 		itemsCount,
-		className
+		className,
+		order
 	}: {
 		children: Snippet;
 	} & Partial<ISubSectionContainerProps> = $props();
@@ -38,7 +39,7 @@
 		.join(' ');
 </script>
 
-<div class={classes}>
+<div class={classes} style:order>
 	{@render children()}
 </div>
 
