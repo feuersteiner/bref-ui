@@ -14,17 +14,21 @@
 		secondaryButton,
 		anchor,
 		media,
-		isBackgroundColorSecondary
+		isBackgroundColorSecondary,
+		type = 'horizontal'
 	}: IMediaHeroProps = $props();
+
+	const gridSize = type === 'horizontal' ? 'half' : 'full';
+	const align = type === 'horizontal' ? 'left' : 'center';
 </script>
 
 <SectionContainer {anchor} className="media-hero" {isBackgroundColorSecondary}>
-	<SubSectionContainer gridSize="half" gapSize="large">
-		<HeroTitle {title} align="left" />
-		<SectionSubtitle {subtitle} align="left" />
-		<ButtonRow {primaryButton} {secondaryButton} size={'large'} align="left" />
+	<SubSectionContainer {gridSize} gapSize="large">
+		<HeroTitle {title} {align} />
+		<SectionSubtitle {subtitle} {align} />
+		<ButtonRow {primaryButton} {secondaryButton} size={'large'} {align} />
 	</SubSectionContainer>
-	<SubSectionContainer gridSize="half" gapSize="large">
+	<SubSectionContainer {gridSize} gapSize="large">
 		<Media {...media} className="media-hero-media" />
 	</SubSectionContainer>
 </SectionContainer>
