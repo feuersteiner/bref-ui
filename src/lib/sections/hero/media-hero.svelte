@@ -15,20 +15,23 @@
 		anchor,
 		media,
 		isBackgroundColorSecondary,
-		type = 'horizontal'
+		type = 'horizontal',
+		mediaFirst = false
 	}: IMediaHeroProps = $props();
 
 	const gridSize = type === 'horizontal' ? 'half' : 'full';
 	const align = type === 'horizontal' ? 'left' : 'center';
+	const mediaOrder = mediaFirst ? 1 : 2;
+	const textOrder = mediaFirst ? 2 : 1;
 </script>
 
 <SectionContainer {anchor} className="media-hero" {isBackgroundColorSecondary}>
-	<SubSectionContainer {gridSize} gapSize="large">
+	<SubSectionContainer {gridSize} gapSize="large" order={textOrder}>
 		<HeroTitle {title} {align} />
 		<SectionSubtitle {subtitle} {align} />
 		<ButtonRow {primaryButton} {secondaryButton} size={'large'} {align} />
 	</SubSectionContainer>
-	<SubSectionContainer {gridSize} gapSize="large">
+	<SubSectionContainer {gridSize} gapSize="large" order={mediaOrder}>
 		<Media {...media} className="media-hero-media" />
 	</SubSectionContainer>
 </SectionContainer>
