@@ -54,6 +54,12 @@ npm install sv-marketing
   - `align`: Alignment of content ('center' by default)
   - `justifyUp`: Controls vertical alignment
   - `itemsCount`: Specifies number of items in the container
+- SectionHeader `<SectionHeader {...props} />`, a header for each section with these props:
+  - `title`: Title of the section
+  - `subtitle`: Subtitle of the section
+  - `align`: Alignment of content ('center' by default)
+  - `justifyUp`: Controls vertical alignment
+  - `itemsCount`: Specifies number of items in the container
 
 ## Usage
 
@@ -145,11 +151,11 @@ To style all text and media sections:
 
 ```css
 .text-and-media {
-	background-color: #f9f9f9;
+ background-color: #f9f9f9;
 }
 
 .text-and-media-item {
-	border-left: 3px solid var(--color-primary);
+ border-left: 3px solid var(--color-primary);
 }
 ```
 
