@@ -36,7 +36,6 @@
 	<meta property="og:type" content="website" />
 	{@html `<script type="application/ld+json">${JSON_LD}</script>`}
 	<meta name="keywords" content={keywords.join(', ')} />
-	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
 	<link rel="canonical" href={url} />
 </svelte:head>
