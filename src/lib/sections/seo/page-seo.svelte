@@ -27,7 +27,7 @@
 <svelte:head>
 	<title>{title}</title>
 	<meta name="description" content={description} />
-	<meta property="og:site_name" content="Third Design" />
+	<meta property="og:site_name" content={jsonLd.name} />
 	<meta property="og:title" content={title} />
 	<meta property="og:image" content={thumbnail} />
 	<meta property="og:image:width" content="1200" />
