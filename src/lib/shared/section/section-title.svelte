@@ -21,4 +21,16 @@
 	.center {
 		text-align: center;
 	}
+
+	@media (max-width: 768px) {
+		h2 {
+			font-size: 2.5rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		h2 {
+			font-size: 2rem;
+		}
+	}
 </style>

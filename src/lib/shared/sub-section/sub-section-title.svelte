@@ -22,4 +22,16 @@
 	.center {
 		text-align: center;
 	}
+
+	@media (max-width: 768px) {
+		h3 {
+			font-size: 1.75rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		h3 {
+			font-size: 1.5rem;
+		}
+	}
 </style>

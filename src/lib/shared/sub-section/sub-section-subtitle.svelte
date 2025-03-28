@@ -21,4 +21,18 @@
 	.center {
 		text-align: center;
 	}
+
+	/* Medium screens */
+	@media (max-width: 768px) {
+		p {
+			font-size: 1.125rem;
+		}
+	}
+
+	/* Small screens */
+	@media (max-width: 480px) {
+		p {
+			font-size: 1rem;
+		}
+	}
 </style>

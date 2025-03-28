@@ -22,4 +22,16 @@
 	.center {
 		text-align: center;
 	}
+
+	@media (max-width: 768px) {
+		p {
+			font-size: 1.25rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		p {
+			font-size: 1.125rem;
+		}
+	}
 </style>

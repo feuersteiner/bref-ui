@@ -24,7 +24,8 @@
 	video,
 	img {
 		max-width: 100%;
-		object-fit: contain; /* Default to contain for non-fill images */
+		object-fit: contain;
+		max-height: calc(100vh / 2);
 	}
 	.fill {
 		width: 100%;
