@@ -5,6 +5,10 @@
 ## Before starting
 
 - Stay scoped, preserve unrelated changes and ask before large diffs. Communicate briefly.
+- Let the human's review pace govern coding patterns, speed and scope at all times.
+  Default to one small, reviewable step: explain it, make the scoped change, show the
+  diff and checks, then wait for human approval before the next step. Do not batch
+  tickets or expand implementation unless the human explicitly authorizes it.
 - Read the assigned ticket, [delivery workflow](.tasks/README.md) and
   `references.local.md`. Consult matching components and their coding rules read-only,
   in the order specified there. Report missing references; keep reference names and
