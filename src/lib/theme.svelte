@@ -3,10 +3,11 @@
 	import type { ThemeMode } from './types.js';
 	import iconFontUrl from '@fontsource-variable/material-symbols-outlined/files/material-symbols-outlined-latin-fill-normal.woff2?url';
 
-	let { children }: { children?: Snippet; mode?: ThemeMode } = $props();
+	let { children, mode = $bindable('auto') }: { children?: Snippet; mode?: ThemeMode } = $props();
 </script>
 
 <svelte:head>
+	<meta name="color-scheme" content={mode === 'auto' ? 'light dark' : mode} />
 	<link rel="preload" href={iconFontUrl} as="font" type="font/woff2" crossorigin="anonymous" />
 </svelte:head>
 
@@ -55,6 +56,7 @@
 	}
 
 	:global(:root),
+	:global(:root:has(meta[name='color-scheme'][content='light'])),
 	:global([data-theme='light']),
 	:global([data-theme='auto']) {
 		color-scheme: light;
@@ -69,7 +71,8 @@
 		--color-error: var(--color-error-light);
 	}
 
-	:global([data-theme='dark']) {
+	:global([data-theme='dark']),
+	:global(:root:has(meta[name='color-scheme'][content='dark'])) {
 		color-scheme: dark;
 		--color-primary: var(--color-primary-dark);
 		--color-secondary: var(--color-secondary-dark);
@@ -83,7 +86,7 @@
 	}
 
 	@media (prefers-color-scheme: dark) {
-		:global(:root:not([data-theme])),
+		:global(:root:not([data-theme]):not(:has(meta[name='color-scheme'][content='light']))),
 		:global([data-theme='auto']) {
 			color-scheme: dark;
 			--color-primary: var(--color-primary-dark);
