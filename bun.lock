@@ -4,6 +4,9 @@
   "workspaces": {
     "": {
       "name": "bref",
+      "dependencies": {
+        "@fontsource-variable/material-symbols-outlined": "^5.3.5",
+      },
       "devDependencies": {
         "@eslint/js": "^10.0.1",
         "@sveltejs/adapter-auto": "^7.0.1",
@@ -50,6 +53,8 @@
     "@eslint/object-schema": ["@eslint/object-schema@3.0.5", "", {}, "sha512-vqTaUEgxzm+YDSdElad6PiRoX4t8VGDjCtt05zn4nU810UIx/uNEV7/lZJ6KwFThKZOzOxzXy48da+No7HZaMw=="],
 
     "@eslint/plugin-kit": ["@eslint/plugin-kit@0.7.3", "", { "dependencies": { "@eslint/core": "^1.2.1", "levn": "^0.4.1" } }, "sha512-IkO+/KEUvwbVpiURZg+P7zF74z5Jxe0UgJxVni+RtoHQ6IZieXaO02kmadomap/q+l6bc/jdPGGqTjhuZnuz1Q=="],
+
+    "@fontsource-variable/material-symbols-outlined": ["@fontsource-variable/material-symbols-outlined@5.3.7", "", {}, "sha512-d6kLamaMdad40AYoyJEBgCH63fRLklC7GW7bgb7WWbPh/UzuW483Dlyfmn3vxpiNsHLIMBOcYYkZDtOC9Y3MUA=="],
 
     "@humanfs/core": ["@humanfs/core@0.19.2", "", { "dependencies": { "@humanfs/types": "^0.15.0" } }, "sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA=="],
 

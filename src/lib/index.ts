@@ -11,3 +11,4 @@ export type {
 } from './types.js';
 
 export { default as Icon } from './icon/icon.svelte';
+export { default as Theme } from './theme.svelte';
