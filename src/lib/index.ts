@@ -5,5 +5,9 @@ export type {
 	StatusColor,
 	Color,
 	Orientation,
-	Dimension
+	Dimension,
+	IconName,
+	IconProps
 } from './types.js';
+
+export { default as Icon } from './icon/icon.svelte';
