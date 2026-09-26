@@ -5,5 +5,6 @@ export type StatusColor = 'info' | 'success' | 'warning' | 'error';
 export type Color = 'primary' | 'secondary' | 'foreground' | 'background' | 'muted' | StatusColor;
 export type Orientation = 'horizontal' | 'vertical';
 export type Dimension = 'fit' | 'fill';
+export type ThemeMode = 'light' | 'dark' | 'auto';
 
 export type { IconName, IconProps } from './icon/types.js';

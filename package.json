@@ -55,5 +55,8 @@
 	},
 	"keywords": [
 		"svelte"
-	]
+	],
+	"dependencies": {
+		"@fontsource-variable/material-symbols-outlined": "^5.3.5"
+	}
 }
