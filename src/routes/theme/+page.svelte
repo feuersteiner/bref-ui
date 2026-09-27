@@ -1,7 +1,8 @@
 <script lang="ts">
+	/* eslint-disable max-lines -- Keep the theme examples and their page styles together. */
 	import { getContext } from 'svelte';
 	import { chapter, sections } from './sections.js';
-	import Page from '../components/page.svelte';
+	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
@@ -9,6 +10,7 @@
 	import type { ThemeMode } from '$lib/types.js';
 	const theme = getContext<{ mode: ThemeMode }>('documentation-theme');
 	const variants = ['neutral', 'soft', 'filled'] as const;
+	const noop = () => undefined;
 	const source = `<script>
   import { Theme, ThemeModeToggle } from 'bref';
   let mode = $state('auto');
@@ -66,23 +68,24 @@
 				<option value="dark">Dark</option>
 			</select>
 		</label>
-		<p>Current mode: {theme.mode}. This control and the ToC control share the same mode.</p>
+		<p>Current mode: {theme.mode}. This control and the navbar control share the same mode.</p>
 		<div data-demo="row">
 			<Icon name="check_circle" color="success" label="Complete" size="large" />
 			{#each variants as variant (variant)}<Button
 					{variant}
 					color="primary"
 					label={variant}
+					onClick={noop}
 				/>{/each}
-			<Button label="Disabled" stylesOverride={{ disabled: true }} />
+			<Button label="Disabled" onClick={noop} disabled />
 		</div>
-		<CodeSnippet {source} />
+		<CodeSnippet {source} label="Theme usage code" />
 	</Section>
 	<Section {...sections[1]}><PropTable {props} /></Section>
 	<Section {...sections[2]}>
 		<p>
-			Use the ToC theme control to test every example in light, dark or system mode. System follows
-			the browser preference.
+			Use the navbar theme control to test every example in light, dark or system mode. System
+			follows the browser preference.
 		</p>
 		<p>
 			ThemeModeToggle renders color-scheme metadata and has no visible control. Pass a reactive <code
@@ -122,36 +125,44 @@
 			automatically.
 		</p>
 		<div data-demo="row">
-			<Button color="primary" label="Default primary" />
+			<Button color="primary" label="Default primary" onClick={noop} />
 			<Button
 				color="primary"
 				label="Local color override"
+				onClick={noop}
 				stylesOverride={{ style: '--color-primary: var(--color-secondary);' }}
 			/>
 		</div>
 		<CodeSnippet
-			source={`<Button color="primary" label="Default primary" />
-<Button color="primary" label="Local color override" stylesOverride={{ style: '--color-primary: var(--color-secondary);' }} />`}
+			label="Theme customization code"
+			source={`<Button color="primary" label="Default primary" onClick={save} />
+<Button color="primary" label="Local color override" onClick={save} stylesOverride={{ style: '--color-primary: var(--color-secondary);' }} />`}
 		/>
 	</Section>
 </Page>
 
 <style>
+	label {
+		display: grid;
+		gap: 12px;
+		width: min(100%, 240px);
+		color: var(--color-muted);
+	}
 	[data-demo='row'] {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 1rem;
+		gap: 24px;
 	}
 	[data-demo='palette'] {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-		gap: 1rem;
+		gap: 24px;
 	}
 	[data-demo='swatch'] {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
+		gap: 12px;
 	}
 	[data-demo='swatch'] > span {
 		width: 2rem;

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Surface } from '$lib/index.js';
+
 	let {
 		props
 	}: {
@@ -12,8 +14,14 @@
 	} = $props();
 </script>
 
-<!-- svelte-ignore a11y_no_noninteractive_tabindex (Allow keyboard scrolling of wide tables.) -->
-<div role="region" aria-label="Component props" tabindex="0">
+<Surface
+	stylesOverride={{
+		role: 'region',
+		'aria-label': 'Component props',
+		tabindex: 0,
+		style: 'max-width: 100%; overflow-x: auto; border-block: 1px solid var(--docs-rule);'
+	}}
+>
 	<table>
 		<caption>Component props</caption>
 		<thead>
@@ -43,10 +51,55 @@
 			{/each}
 		</tbody>
 	</table>
-</div>
+</Surface>
 
 <style>
-	div {
-		overflow-x: auto;
+	table {
+		width: 100%;
+		min-width: 48rem;
+		border-collapse: collapse;
+		text-align: left;
+	}
+	caption {
+		padding: 24px 0;
+		color: var(--color-muted);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-align: left;
+		text-transform: uppercase;
+	}
+	th,
+	td {
+		padding: 18px 24px;
+		border-top: 1px solid var(--docs-rule-subtle);
+		vertical-align: top;
+	}
+	thead th {
+		background: var(--docs-surface);
+		color: var(--color-muted);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+	tbody th {
+		font-weight: 600;
+	}
+	tbody tr:hover {
+		background: var(--docs-surface);
+	}
+	code {
+		white-space: nowrap;
+	}
+	th:last-child,
+	td:last-child {
+		min-width: 18rem;
+	}
+	@media (max-width: 575px) {
+		th,
+		td {
+			padding-inline: 16px;
+		}
 	}
 </style>

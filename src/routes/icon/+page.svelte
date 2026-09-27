@@ -1,11 +1,11 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the prop matrix and interactive examples in their documentation page. */
 	import { chapter, sections } from './sections.js';
-	import Page from '../components/page.svelte';
+	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Icon } from '$lib/index.js';
+	import { Button, Icon } from '$lib/index.js';
 	import type { Color, Size, IconName } from '$lib/types.js';
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const colors = [
@@ -36,6 +36,7 @@
 	let color = $state<Color | ''>('');
 	let filled = $state(false);
 	let label = $state('Favorite');
+	let matrixOpen = $state(false);
 	const source = `<script>
   import { Icon } from 'bref';
 <${'/'}script>
@@ -92,7 +93,7 @@
 			<Icon name="check_circle" label="Complete" />
 			<Icon name="favorite" filled size="large" color="secondary" />
 		</div>
-		<CodeSnippet {source} />
+		<CodeSnippet {source} label="Icon usage code" />
 	</Section>
 	<Section {...sections[1]}>
 		<div data-demo="controls">
@@ -130,39 +131,80 @@
 			container.
 		</p>
 		<CodeSnippet
+			label="Icon playground code"
 			source={`<Icon name="${name}" filled={${filled}}${size ? ` size="${size}"` : ''}${color ? ` color="${color}"` : ''}${label ? ` label={${JSON.stringify(label)}}` : ''} />`}
 		/>
 	</Section>
 	<Section {...sections[2]}>
 		<div data-demo="matrix">
 			<p>
-				Every size, color and fill combination. Background-colored icons match the page surface.
+				Representative size, color and fill axes stay visible without mounting every combination.
 			</p>
-			{#each colors as color (color)}
-				<h3>{color}</h3>
-				<div data-demo="row">
-					{#each sizes as size (size)}
-						<figure>
-							<div data-demo="row">
-								<Icon name="favorite" {size} {color} /><Icon
-									name="favorite"
-									{size}
-									{color}
-									filled
-								/>
-							</div>
-							<figcaption>{size}: outline / filled</figcaption>
-						</figure>
-					{/each}
-				</div>
-			{/each}
+			<h3>Sizes and fill</h3>
+			<div data-demo="row">
+				{#each sizes as size (size)}
+					<figure>
+						<div data-demo="row">
+							<Icon name="favorite" {size} color="primary" />
+							<Icon name="favorite" {size} color="primary" filled />
+						</div>
+						<figcaption>{size}: outline / filled</figcaption>
+					</figure>
+				{/each}
+			</div>
+			<h3>Colors and fill</h3>
+			<div data-demo="row">
+				{#each colors as color (color)}
+					<figure>
+						<div data-demo="row">
+							<Icon name="favorite" size="medium" {color} />
+							<Icon name="favorite" size="medium" {color} filled />
+						</div>
+						<figcaption>{color}: outline / filled</figcaption>
+					</figure>
+				{/each}
+			</div>
 		</div>
 		<h3>Different glyphs</h3>
 		<div data-demo="row">
 			{#each names as name (name)}<figure>
-					<Icon {name} size="large" /><Icon {name} size="large" filled />
+					<Icon {name} size="large" />
 					<figcaption>{name}</figcaption>
 				</figure>{/each}
+		</div>
+		<p>The exhaustive color × size × fill matrix is mounted only when requested.</p>
+		<div data-demo="row">
+			<Button
+				label={matrixOpen ? 'Hide exhaustive matrix' : 'Load exhaustive matrix'}
+				color="primary"
+				variant="soft"
+				onClick={() => (matrixOpen = !matrixOpen)}
+				stylesOverride={{
+					'aria-controls': 'exhaustive-icon-matrix',
+					'aria-expanded': matrixOpen
+				}}
+			/>
+		</div>
+		<div id="exhaustive-icon-matrix">
+			{#if matrixOpen}
+				<div data-demo="matrix">
+					<p>Every size, color and fill combination.</p>
+					{#each colors as color (color)}
+						<h3>{color}</h3>
+						<div data-demo="row">
+							{#each sizes as size (size)}
+								<figure>
+									<div data-demo="row">
+										<Icon name="favorite" {size} {color} />
+										<Icon name="favorite" {size} {color} filled />
+									</div>
+									<figcaption>{size}: outline / filled</figcaption>
+								</figure>
+							{/each}
+						</div>
+					{/each}
+				</div>
+			{/if}
 		</div>
 	</Section>
 	<Section {...sections[3]}><PropTable {props} /></Section>
@@ -184,6 +226,7 @@
 			title="Native span title"
 		/>
 		<CodeSnippet
+			label="Icon composition code"
 			source={`<span style="font-size: 2rem; color: var(--color-primary);"><Icon name="star" /> Inherited size and color</span>
 <Icon name="star" class="custom-icon" style="font-size: 3rem; color: var(--color-secondary);" title="Native span title" />`}
 		/>
@@ -210,11 +253,21 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 1rem;
+		gap: 24px;
+	}
+	[data-demo='controls'] > label {
+		display: grid;
+		gap: 12px;
+		color: var(--color-muted);
+	}
+	[data-demo='controls'] > label:has(input[type='checkbox']) {
+		grid-template-columns: 20px 1fr;
+		align-items: center;
+		color: var(--color-foreground);
 	}
 	[data-demo='matrix'] {
 		display: grid;
-		gap: 1rem;
+		gap: 24px;
 	}
 	[data-demo='inherited'] {
 		font-size: 2rem;
@@ -222,7 +275,7 @@
 	}
 	figure {
 		display: grid;
-		gap: 0.5rem;
+		gap: 12px;
 	}
 	figcaption {
 		font-size: 0.875rem;

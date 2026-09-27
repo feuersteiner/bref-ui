@@ -1,7 +1,7 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the prop matrix and interactive examples in their documentation page. */
 	import { chapter, sections } from './sections.js';
-	import Page from '../components/page.svelte';
+	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
@@ -33,16 +33,26 @@
 	let clicks = $state(0);
 	let pressed = $state(false);
 	let submitted = $state('No submission yet.');
+	let matrixOpen = $state(false);
+	const previewLabel = $derived(label.trim() || 'Save');
+	const noop = () => undefined;
 	const source = `<script>
   import { Button } from 'bref';
 <${'/'}script>
 
-<Button label="Save" />
-<Button label="Next" color="primary" variant="filled" trailingIcon={{ name: 'arrow_forward' }} />
-<Button icon={{ name: 'favorite', filled: true }} rounded stylesOverride={{ 'aria-label': 'Favorite' }} />
-<Button label="Unavailable" stylesOverride={{ disabled: true }} />`;
+<Button label="Save" onClick={save} />
+<Button label="Next" href="/next" color="primary" variant="filled" trailingIcon={{ name: 'arrow_forward' }} />
+<Button icon={{ name: 'favorite', filled: true }} rounded onClick={favorite} stylesOverride={{ 'aria-label': 'Favorite' }} />
+<Button label="Unavailable" onClick={save} disabled />`;
 
 	const props = [
+		{
+			name: 'onClick / href',
+			type: 'MouseEvent handler / string',
+			required: true,
+			default: '—',
+			description: 'Use onClick for actions or href for navigation.'
+		},
 		{
 			name: 'label',
 			type: 'string',
@@ -100,11 +110,18 @@
 			description: 'Circular shape; icon-only buttons only.'
 		},
 		{
+			name: 'disabled',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Disables actions and navigation.'
+		},
+		{
 			name: 'stylesOverride',
 			type: 'HTMLButtonAttributes',
 			required: false,
 			default: 'Omitted',
-			description: 'Native button attributes and events.'
+			description: 'Additional native attributes.'
 		}
 	];
 </script>
@@ -115,9 +132,10 @@
 >
 	<Section {...sections[0]}>
 		<div data-demo="row">
-			<Button label="Save" />
+			<Button label="Save" onClick={noop} />
 			<Button
 				label="Next"
+				href="#native-behavior"
 				color="primary"
 				variant="filled"
 				trailingIcon={{ name: 'arrow_forward' }}
@@ -125,16 +143,17 @@
 			<Button
 				icon={{ name: 'favorite', filled: true }}
 				rounded
+				onClick={noop}
 				stylesOverride={{ 'aria-label': 'Favorite' }}
 			/>
-			<Button label="Unavailable" stylesOverride={{ disabled: true }} />
+			<Button label="Unavailable" onClick={noop} disabled />
 		</div>
-		<CodeSnippet {source} />
+		<CodeSnippet {source} label="Button usage code" />
 	</Section>
 	<Section {...sections[1]}>
 		<p>Change every custom prop together; text and icon-only buttons share the controls.</p>
 		<div data-demo="controls">
-			<label>Label <input bind:value={label} /></label>
+			<label>Label <input bind:value={label} placeholder="Save" /></label>
 			<label
 				>Size <select bind:value={size}
 					>{#each sizes as value (value)}<option>{value}</option>{/each}</select
@@ -153,22 +172,21 @@
 			<label><input type="checkbox" bind:checked={leading} /> Leading icon</label>
 			<label><input type="checkbox" bind:checked={trailing} /> Trailing icon</label>
 			<label><input type="checkbox" bind:checked={filled} /> Filled icons</label>
-			<label
-				><input type="checkbox" bind:checked={disabled} /> Disabled (also applies to matrices)</label
-			>
+			<label><input type="checkbox" bind:checked={disabled} /> Disabled</label>
 			<label><input type="checkbox" bind:checked={wide} /> Wide text button</label>
 			<label><input type="checkbox" bind:checked={rounded} /> Rounded icon button</label>
 		</div>
 		<div data-demo="row">
 			<Button
-				{label}
+				label={previewLabel}
 				{size}
 				{variant}
 				{color}
 				{wide}
 				icon={leading ? { name: 'save', filled } : undefined}
 				trailingIcon={trailing ? { name: 'arrow_forward', filled } : undefined}
-				stylesOverride={{ disabled, onclick: () => clicks++ }}
+				{disabled}
+				onClick={() => clicks++}
 			/>
 			<Button
 				{size}
@@ -176,79 +194,161 @@
 				{color}
 				{rounded}
 				icon={{ name: 'favorite', filled }}
-				stylesOverride={{ disabled, 'aria-label': 'Favorite', onclick: () => clicks++ }}
+				{disabled}
+				onClick={() => clicks++}
+				stylesOverride={{ 'aria-label': 'Favorite' }}
 			/>
 		</div>
 		<p role="status">Activated {clicks} times. Try Tab, Enter and Space.</p>
 		<CodeSnippet
-			source={`<Button label={${JSON.stringify(label)}} size="${size}" variant="${variant}" color="${color}" wide={${wide}} icon={${leading ? `{ name: 'save', filled: ${filled} }` : 'undefined'}} trailingIcon={${trailing ? `{ name: 'arrow_forward', filled: ${filled} }` : 'undefined'}} stylesOverride={{ disabled: ${disabled}, onclick: () => clicks++ }} />
-<Button size="${size}" variant="${variant}" color="${color}" rounded={${rounded}} icon={{ name: 'favorite', filled: ${filled} }} stylesOverride={{ disabled: ${disabled}, 'aria-label': 'Favorite', onclick: () => clicks++ }} />`}
+			label="Button playground code"
+			source={`<Button label={${JSON.stringify(previewLabel)}} size="${size}" variant="${variant}" color="${color}" wide={${wide}} icon={${leading ? `{ name: 'save', filled: ${filled} }` : 'undefined'}} trailingIcon={${trailing ? `{ name: 'arrow_forward', filled: ${filled} }` : 'undefined'}} disabled={${disabled}} onClick={() => clicks++} />
+<Button size="${size}" variant="${variant}" color="${color}" rounded={${rounded}} icon={{ name: 'favorite', filled: ${filled} }} disabled={${disabled}} onClick={() => clicks++} stylesOverride={{ 'aria-label': 'Favorite' }} />`}
 		/>
 	</Section>
 	<Section {...sections[2]}>
 		<div data-demo="matrix">
-			{#each variants as value (value)}
-				<h3>{value}</h3>
+			<fieldset>
+				<legend>Sizes</legend>
 				<div data-demo="row">
 					{#each sizes as size (size)}
-						<div data-demo="group">
-							<span>{size}</span>
-							<Button
-								{size}
-								variant={value}
-								color="primary"
-								label="Save"
-								icon={{ name: 'save' }}
-								stylesOverride={{ disabled }}
-							/>
-							<Button
-								{size}
-								variant={value}
-								color="primary"
-								icon={{ name: 'add' }}
-								stylesOverride={{ disabled, 'aria-label': `Add (${size}, ${value})` }}
-							/>
-							<Button
-								{size}
-								variant={value}
-								color="primary"
-								rounded
-								icon={{ name: 'favorite', filled: true }}
-								stylesOverride={{ disabled, 'aria-label': `Favorite (${size}, ${value})` }}
-							/>
-						</div>
+						<Button {size} color="primary" label={size} onClick={noop} />
 					{/each}
 				</div>
+			</fieldset>
+			<fieldset>
+				<legend>Variants</legend>
+				<div data-demo="row">
+					{#each variants as variant (variant)}
+						<Button {variant} color="primary" label={variant} onClick={noop} />
+					{/each}
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend>Colors</legend>
 				<div data-demo="row">
 					{#each colors as color (color)}
-						<div data-demo="group">
-							<Button {color} variant={value} label={color} stylesOverride={{ disabled }} />
-							<Button
-								{color}
-								variant={value}
-								icon={{ name: 'add' }}
-								stylesOverride={{ disabled, 'aria-label': `Add (${color}, ${value})` }}
-							/>
-							<Button
-								{color}
-								variant={value}
-								rounded
-								icon={{ name: 'favorite', filled: true }}
-								stylesOverride={{ disabled, 'aria-label': `Favorite (${color}, ${value})` }}
-							/>
-						</div>
+						<Button {color} label={color} onClick={noop} />
 					{/each}
 				</div>
-			{/each}
+			</fieldset>
+			<fieldset>
+				<legend>Text and icon shapes</legend>
+				<div data-demo="row">
+					<Button color="primary" label="Save" icon={{ name: 'save' }} onClick={noop} />
+					<Button
+						color="primary"
+						icon={{ name: 'add' }}
+						onClick={noop}
+						stylesOverride={{ 'aria-label': 'Add' }}
+					/>
+					<Button
+						color="primary"
+						rounded
+						icon={{ name: 'favorite', filled: true }}
+						onClick={noop}
+						stylesOverride={{ 'aria-label': 'Favorite' }}
+					/>
+				</div>
+			</fieldset>
+		</div>
+		<p>The exhaustive QA matrix is mounted only when requested.</p>
+		<div data-demo="row">
+			<Button
+				label={matrixOpen ? 'Hide exhaustive matrix' : 'Load exhaustive matrix'}
+				color="primary"
+				variant="soft"
+				onClick={() => (matrixOpen = !matrixOpen)}
+				stylesOverride={{
+					'aria-controls': 'exhaustive-button-matrix',
+					'aria-expanded': matrixOpen
+				}}
+			/>
+		</div>
+		<div id="exhaustive-button-matrix">
+			{#if matrixOpen}
+				<div data-demo="matrix">
+					{#each variants as value (value)}
+						<fieldset>
+							<legend>{value}: sizes and shapes</legend>
+							<div data-demo="row">
+								{#each sizes as size (size)}
+									<div data-demo="group">
+										<span>{size}</span>
+										<Button
+											{size}
+											variant={value}
+											color="primary"
+											label="Save"
+											icon={{ name: 'save' }}
+											{disabled}
+											onClick={noop}
+										/>
+										<Button
+											{size}
+											variant={value}
+											color="primary"
+											icon={{ name: 'add' }}
+											{disabled}
+											onClick={noop}
+											stylesOverride={{ 'aria-label': `Add (${size}, ${value})` }}
+										/>
+										<Button
+											{size}
+											variant={value}
+											color="primary"
+											rounded
+											icon={{ name: 'favorite', filled: true }}
+											{disabled}
+											onClick={noop}
+											stylesOverride={{
+												'aria-label': `Favorite (${size}, ${value})`
+											}}
+										/>
+									</div>
+								{/each}
+							</div>
+						</fieldset>
+						<fieldset>
+							<legend>{value}: colors and shapes</legend>
+							<div data-demo="row">
+								{#each colors as color (color)}
+									<div data-demo="group">
+										<Button {color} variant={value} label={color} {disabled} onClick={noop} />
+										<Button
+											{color}
+											variant={value}
+											icon={{ name: 'add' }}
+											{disabled}
+											onClick={noop}
+											stylesOverride={{ 'aria-label': `Add (${color}, ${value})` }}
+										/>
+										<Button
+											{color}
+											variant={value}
+											rounded
+											icon={{ name: 'favorite', filled: true }}
+											{disabled}
+											onClick={noop}
+											stylesOverride={{
+												'aria-label': `Favorite (${color}, ${value})`
+											}}
+										/>
+									</div>
+								{/each}
+							</div>
+						</fieldset>
+					{/each}
+				</div>
+			{/if}
 		</div>
 	</Section>
 	<Section {...sections[3]}><PropTable {props} /></Section>
 	<Section {...sections[4]}>
 		<p>
-			Pass native attributes and events through <code>stylesOverride</code>, including
-			<code>disabled</code>, <code>onclick</code>, form attributes, ARIA attributes,
-			<code>class</code>
-			and <code>style</code>.
+			Use <code>onClick</code> for actions or <code>href</code> for navigation. Pass other native
+			attributes through <code>stylesOverride</code>, including form attributes, ARIA attributes,
+			<code>class</code> and <code>style</code>.
 		</p>
 		<p>
 			Button uses <code>type="button"</code> unless overridden. Set <code>stylesOverride.type</code>
@@ -256,19 +356,23 @@
 			snippet or expose an element binding.
 		</p>
 		<div data-demo="row">
-			<Button label="Disabled" stylesOverride={{ disabled: true }} />
+			<Button label="Disabled" onClick={noop} disabled />
 			<Button
 				label="Saving…"
 				variant="filled"
 				icon={{ name: 'sync' }}
-				stylesOverride={{ disabled: true, 'aria-busy': true }}
+				onClick={noop}
+				disabled
+				stylesOverride={{ 'aria-busy': true }}
 			/>
 			<Button
 				label={pressed ? 'Selected' : 'Select'}
-				stylesOverride={{ 'aria-pressed': pressed, onclick: () => (pressed = !pressed) }}
+				onClick={() => (pressed = !pressed)}
+				stylesOverride={{ 'aria-pressed': pressed }}
 			/>
 			<Button
 				label="Style override"
+				onClick={noop}
 				stylesOverride={{
 					class: 'custom-button',
 					style: 'font-style: italic;',
@@ -281,10 +385,12 @@
 			wide
 			icon={{ name: 'save' }}
 			trailingIcon={{ name: 'arrow_forward' }}
+			onClick={noop}
 		/>
 		<Button
 			label="A long label that wraps on a narrow screen without losing its meaning"
 			size="small"
+			onClick={noop}
 		/>
 		<form
 			onsubmit={(event) => {
@@ -296,15 +402,20 @@
 		>
 			<label>Message <input name="message" value="Hello" required /></label>
 			<div data-demo="row">
-				<Button label="Submit" stylesOverride={{ type: 'submit', name: 'action', value: 'save' }} />
-				<Button label="Reset" stylesOverride={{ type: 'reset' }} />
+				<Button
+					label="Submit"
+					onClick={noop}
+					stylesOverride={{ type: 'submit', name: 'action', value: 'save' }}
+				/>
+				<Button label="Reset" onClick={noop} stylesOverride={{ type: 'reset' }} />
 			</div>
 		</form>
 		<p role="status">{submitted}</p>
 		<CodeSnippet
-			source={`<Button label="Saving…" icon={{ name: 'sync' }} variant="filled" stylesOverride={{ disabled: true, 'aria-busy': true }} />
-<Button label="Submit" stylesOverride={{ type: 'submit', name: 'action', value: 'save' }} />
-<Button label="Reset" stylesOverride={{ type: 'reset' }} />`}
+			label="Button native behavior code"
+			source={`<Button label="Saving…" icon={{ name: 'sync' }} variant="filled" onClick={save} disabled stylesOverride={{ 'aria-busy': true }} />
+<Button label="Submit" onClick={save} stylesOverride={{ type: 'submit', name: 'action', value: 'save' }} />
+<Button label="Reset" onClick={reset} stylesOverride={{ type: 'reset' }} />`}
 		/>
 	</Section>
 	<Section {...sections[5]}>
@@ -314,9 +425,8 @@
 		</p>
 		<p>
 			Enter and Space activate focused buttons; disabled buttons skip keyboard navigation. Compose
-			pending states through <code>stylesOverride</code> with <code>disabled</code> and
-			<code>aria-busy</code>; there is no loading prop. Verify contrast when changing colors or
-			surfaces.
+			pending states with <code>disabled</code> and <code>stylesOverride['aria-busy']</code>; there
+			is no loading prop. Verify contrast when changing colors or surfaces.
 		</p>
 	</Section>
 </Page>
@@ -327,24 +437,43 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 1rem;
+		gap: 24px;
+	}
+	[data-demo='controls'] > label {
+		display: grid;
+		gap: 12px;
+		color: var(--color-muted);
+	}
+	[data-demo='controls'] > label:has(input[type='checkbox']) {
+		grid-template-columns: 20px 1fr;
+		align-items: center;
+		color: var(--color-foreground);
 	}
 	[data-demo='matrix'] {
 		display: grid;
-		gap: 1rem;
+		gap: 24px;
+	}
+	fieldset {
+		min-width: 0;
+		padding: 24px;
+		border: 1px solid var(--docs-rule);
+	}
+	legend {
+		padding-inline: 12px;
+		font-weight: 600;
 	}
 	[data-demo='group'] {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 0.5rem;
+		gap: 12px;
 	}
 	[data-demo='group'] > span {
 		flex-basis: 100%;
 	}
 	form {
 		display: grid;
-		gap: 1rem;
+		gap: 24px;
 	}
 	input,
 	select {
