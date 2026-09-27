@@ -1,5 +1,6 @@
 <script lang="ts">
-	/* eslint-disable max-lines -- Keep the button's scoped styling recipe with its markup. */
+	/* eslint-disable max-lines, svelte/no-navigation-without-resolve -- Library hrefs are consumer-provided; keep the scoped styling recipe with its markup. */
+	import type { HTMLAnchorAttributes } from 'svelte/elements';
 	import Icon from '../icon/icon.svelte';
 	import type { ButtonProps } from './types.js';
 
@@ -12,24 +13,17 @@
 		trailingIcon,
 		wide = false,
 		rounded = false,
+		disabled = false,
+		href,
+		onClick,
 		stylesOverride
 	}: ButtonProps = $props();
 
 	const isIcon = $derived(label === undefined);
+	const anchorStylesOverride = $derived(stylesOverride as HTMLAnchorAttributes | undefined);
 </script>
 
-<button
-	type="button"
-	aria-label={isIcon ? (icon?.label ?? icon?.name) : undefined}
-	data-color={color}
-	data-size={size}
-	data-variant={variant}
-	data-kind={isIcon ? 'icon' : 'normal'}
-	data-wide={wide && !isIcon ? '' : undefined}
-	data-rounded={rounded && isIcon ? '' : undefined}
-	{...stylesOverride}
-	style:--internal-color={`var(--color-${color}, #28231f)`}
->
+{#snippet content()}
 	{#if icon}
 		<span><Icon {...icon} label={undefined} /></span>
 	{/if}
@@ -39,15 +33,51 @@
 			<span><Icon {...trailingIcon} label={undefined} /></span>
 		{/if}
 	{/if}
-</button>
+{/snippet}
+
+{#if href !== undefined}
+	<a
+		{...anchorStylesOverride}
+		href={disabled ? undefined : href}
+		aria-disabled={disabled}
+		tabindex={disabled ? -1 : undefined}
+		aria-label={isIcon ? (icon?.label ?? icon?.name) : undefined}
+		data-color={color}
+		data-size={size}
+		data-variant={variant}
+		data-kind={isIcon ? 'icon' : 'normal'}
+		data-wide={wide && !isIcon ? '' : undefined}
+		data-rounded={rounded && isIcon ? '' : undefined}
+		style:--internal-color={`var(--color-${color}, #28231f)`}
+	>
+		{@render content()}
+	</a>
+{:else}
+	<button
+		type="button"
+		{...stylesOverride}
+		{disabled}
+		onclick={onClick}
+		aria-label={isIcon ? (icon?.label ?? icon?.name) : undefined}
+		data-color={color}
+		data-size={size}
+		data-variant={variant}
+		data-kind={isIcon ? 'icon' : 'normal'}
+		data-wide={wide && !isIcon ? '' : undefined}
+		data-rounded={rounded && isIcon ? '' : undefined}
+		style:--internal-color={`var(--color-${color}, #28231f)`}
+	>
+		{@render content()}
+	</button>
+{/if}
 
 <style>
-	button {
+	:is(button, a) {
 		--internal-height: max(48px, 3rem);
 		--internal-padding: 1.125rem;
 		--internal-icon-size: calc(var(--internal-height) / 2 + 0.25rem);
-		--internal-background: var(--color-background, #f7f3eb);
-		--internal-foreground: var(--color-foreground, #28231f);
+		--internal-background: var(--color-background, white);
+		--internal-foreground: var(--color-foreground, black);
 		--internal-state-color: var(--internal-foreground);
 		--internal-surface: transparent;
 		--internal-fill: color-mix(
@@ -76,25 +106,30 @@
 		font: inherit;
 		font-size: 1rem;
 		cursor: pointer;
-		transition: all 120ms ease;
+		text-decoration: none;
+		transition:
+			background-color 120ms ease,
+			border-color 120ms ease,
+			box-shadow 120ms ease,
+			color 120ms ease;
 	}
-	button[data-size='x-small'] {
+	:is(button, a)[data-size='x-small'] {
 		--internal-height: max(28px, 1.75rem);
 		--internal-padding: 0.5rem;
 	}
-	button[data-size='small'] {
+	:is(button, a)[data-size='small'] {
 		--internal-height: max(40px, 2.5rem);
 		--internal-padding: 0.875rem;
 	}
-	button[data-size='large'] {
+	:is(button, a)[data-size='large'] {
 		--internal-height: max(64px, 4rem);
 		--internal-padding: 1.5rem;
 	}
-	button[data-size='x-large'] {
+	:is(button, a)[data-size='x-large'] {
 		--internal-height: max(80px, 5rem);
 		--internal-padding: 2rem;
 	}
-	button[data-kind='icon'] {
+	:is(button, a)[data-kind='icon'] {
 		width: var(--internal-height);
 		height: var(--internal-height);
 		padding: 0;
@@ -104,74 +139,77 @@
 		display: inline-flex;
 		font-size: var(--internal-icon-size);
 	}
-	button[data-wide] {
+	:is(button, a)[data-wide] {
 		width: 100%;
 	}
-	button[data-rounded] {
+	:is(button, a)[data-rounded] {
 		border-radius: 50%;
 	}
-	button[data-variant='soft'] {
+	:is(button, a)[data-variant='soft'] {
 		--internal-tint: 12%;
 		--internal-content: var(--internal-foreground);
 		--internal-surface: color-mix(in srgb, var(--internal-background) 80%, transparent);
 		--internal-border: color-mix(in srgb, var(--internal-color) 30%, transparent);
 		--internal-highlight: color-mix(in srgb, var(--internal-foreground) 16%, transparent);
 	}
-	button[data-variant='filled'] {
+	:is(button, a)[data-variant='filled'] {
 		--internal-fill: color-mix(in srgb, var(--internal-color) 97%, transparent);
 		--internal-content: var(--internal-background);
 		--internal-border: color-mix(in srgb, var(--internal-color) 68%, var(--internal-foreground));
 		--internal-highlight: color-mix(in srgb, var(--internal-foreground) 28%, transparent);
 	}
-	button:is([data-variant='soft'], [data-variant='filled']) {
+	:is(button, a):is([data-variant='soft'], [data-variant='filled']) {
 		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
 		backdrop-filter: blur(0.5rem) saturate(120%);
 	}
-	button[data-color='foreground'] {
+	:is(button, a)[data-color='foreground'] {
 		--internal-state-color: var(--internal-background);
 	}
-	button:not(:disabled):is(:hover, :active) {
+	:is(button, a):not(:disabled, [aria-disabled='true']):is(:hover, :active) {
 		--internal-tint: 16%;
 		--internal-content: var(--internal-foreground);
 	}
-	button[data-variant='neutral']:not(:disabled):is(:hover, :active) {
+	:is(button, a)[data-variant='neutral']:not(:disabled, [aria-disabled='true']):is(
+			:hover,
+			:active
+		) {
 		--internal-surface: var(--internal-background);
 	}
-	button:not(:disabled):active {
+	:is(button, a):not(:disabled, [aria-disabled='true']):active {
 		--internal-tint: 22%;
 	}
-	button[data-variant='filled']:not(:disabled):is(:hover, :active) {
+	:is(button, a)[data-variant='filled']:not(:disabled, [aria-disabled='true']):is(:hover, :active) {
 		--internal-content: var(--internal-background);
 		--internal-fill: color-mix(in srgb, var(--internal-color) 92%, var(--internal-state-color));
 	}
-	button[data-variant='filled']:not(:disabled):active {
+	:is(button, a)[data-variant='filled']:not(:disabled, [aria-disabled='true']):active {
 		--internal-fill: color-mix(in srgb, var(--internal-color) 84%, var(--internal-state-color));
 	}
-	button:focus-visible {
+	:is(button, a):focus-visible {
 		outline: 2px solid var(--internal-foreground);
 		outline-offset: 3px;
 	}
-	button:disabled {
+	:is(button, a):is(:disabled, [aria-disabled='true']) {
 		opacity: 0.45;
 		cursor: not-allowed;
 	}
 	@media (prefers-reduced-motion: reduce) {
-		button {
+		:is(button, a) {
 			transition: none;
 		}
 	}
 	@media (forced-colors: active) {
-		button {
+		:is(button, a) {
 			border-color: ButtonText;
 			box-shadow: none;
 			-webkit-backdrop-filter: none;
 			backdrop-filter: none;
 		}
-		button:disabled {
+		:is(button, a):is(:disabled, [aria-disabled='true']) {
 			color: GrayText;
 			opacity: 1;
 		}
-		button:focus-visible {
+		:is(button, a):focus-visible {
 			outline-color: Highlight;
 		}
 	}
