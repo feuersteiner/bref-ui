@@ -6,5 +6,6 @@ export type Color = 'primary' | 'secondary' | 'foreground' | 'background' | 'mut
 export type Orientation = 'horizontal' | 'vertical';
 export type Dimension = 'fit' | 'fill';
 
+export type { ButtonProps } from './button/types.js';
 export type * from './icon/types.js';
 export type * from './theme/types.ts';
