@@ -40,8 +40,8 @@ src/routes/
 ## Component responsibilities
 
 - **Layout:** site shell and responsive arrangement.
-- **Sidebar:** grouped links between documentation pages.
-- **ToC:** links to sections within the current page and the shared theme control.
+- **Sidebar:** grouped page links and the active page’s ToC.
+- **ToC:** links to sections within the current page, beneath its active sidebar item.
 - **Page:** article, page heading, introduction and document metadata.
 - **Section:** titled content section with a stable, unique anchor.
 - **CodeSnippet:** escaped source in `pre`/`code`, with copy feedback.
@@ -68,7 +68,7 @@ and shared navigation/ToC; do not duplicate chapter names or section definitions
   color and variant, omitted/default values, and both values of boolean props.
 - Show matrices for combinations that affect rendering (such as color × variant,
   size × kind, and icon size × color × fill).
-- Keep the main theme control in the ToC. All pages and demos follow that shared mode.
+- Keep the main theme control in the documentation navbar. All pages and demos follow that shared mode.
   The theme page may include a second control bound to the same state. Do not
   duplicate demos per theme or force contrasting demo backgrounds; switch the shared
   control to test light, dark and system modes.
