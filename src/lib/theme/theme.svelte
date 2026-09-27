@@ -1,13 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import iconFontUrl from '@fontsource-variable/material-symbols-outlined/files/material-symbols-outlined-latin-fill-normal.woff2?url';
 
 	let { children }: { children?: Snippet } = $props();
 </script>
-
-<svelte:head>
-	<link rel="preload" href={iconFontUrl} as="font" type="font/woff2" crossorigin="anonymous" />
-</svelte:head>
 
 {@render children?.()}
 
@@ -22,23 +17,23 @@
 	}
 
 	:global(:root) {
-		--color-primary-light: #243f64;
+		--color-primary-light: #1d4ed8;
 		--color-primary-dark: #92b4df;
-		--color-secondary-light: #8b3042;
+		--color-secondary-light: #c51630;
 		--color-secondary-dark: #df97a5;
-		--color-background-light: #f6f4ec;
+		--color-background-light: #f1eee7;
 		--color-background-dark: #18191c;
-		--color-foreground-light: #302e2a;
+		--color-foreground-light: #151515;
 		--color-foreground-dark: #eceef2;
-		--color-muted-light: #706b62;
+		--color-muted-light: #696661;
 		--color-muted-dark: #acb0b8;
-		--color-info-light: #45677b;
+		--color-info-light: #2563b8;
 		--color-info-dark: #a3c1d1;
-		--color-success-light: #4e6c4b;
+		--color-success-light: #34745a;
 		--color-success-dark: #abc3a3;
-		--color-warning-light: #815f28;
+		--color-warning-light: #945c08;
 		--color-warning-dark: #d9bc82;
-		--color-error-light: #a04448;
+		--color-error-light: #bc2436;
 		--color-error-dark: #dfa4a7;
 	}
 
