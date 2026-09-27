@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { chapter, sections } from './sections.js';
 	import { resolve } from '$app/paths';
-	import Page from './components/page.svelte';
+	import Page from './components/page-container.svelte';
 	import Section from './components/section.svelte';
 	import CodeSnippet from './components/code-snippet.svelte';
 
@@ -10,13 +10,13 @@
 \x3c/script>
 
 <Theme>
-  <Button label="Save" />
+  <Button label="Save" onClick={save} />
 </Theme>`;
 </script>
 
 <Page title={chapter} description="Svelte components with scoped styles and simple composition.">
 	<Section {...sections[0]}>
-		<CodeSnippet source={usage} />
+		<CodeSnippet source={usage} label="Bref usage code" />
 	</Section>
 	<Section {...sections[1]}>
 		<p>
