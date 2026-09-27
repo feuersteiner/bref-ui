@@ -1,13 +1,11 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { ThemeMode } from './types.js';
 	import iconFontUrl from '@fontsource-variable/material-symbols-outlined/files/material-symbols-outlined-latin-fill-normal.woff2?url';
 
-	let { children, mode = $bindable('auto') }: { children?: Snippet; mode?: ThemeMode } = $props();
+	let { children }: { children?: Snippet } = $props();
 </script>
 
 <svelte:head>
-	<meta name="color-scheme" content={mode === 'auto' ? 'light dark' : mode} />
 	<link rel="preload" href={iconFontUrl} as="font" type="font/woff2" crossorigin="anonymous" />
 </svelte:head>
 

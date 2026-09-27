@@ -1,14 +1,5 @@
-export type {
-	BaseSize,
-	Size,
-	Variant,
-	StatusColor,
-	Color,
-	Orientation,
-	Dimension,
-	IconName,
-	IconProps
-} from './types.js';
+export type * from './types.js';
 
 export { default as Icon } from './icon/icon.svelte';
-export { default as Theme } from './theme.svelte';
+export { default as Theme } from './theme/theme.svelte';
+export { default as ThemeModeToggle } from './theme/theme-mode-toggle.svelte';
