@@ -1,23 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import Icon from '$lib/icon/icon.svelte';
-
 	const user = 'feuersteiner';
 	const repo = 'bref-ui';
-
-	let count = $state<string | null>(null);
-
-	// Public GitHub API, no token needed; limited to 60 requests/hour per
-	// client IP. On failure (e.g. rate limit) the count bubble stays hidden.
-	onMount(() => {
-		fetch(`https://api.github.com/repos/${user}/${repo}`)
-			.then((response) => response.json())
-			.then((data) => {
-				if (typeof data.stargazers_count === 'number')
-					count = data.stargazers_count.toLocaleString('en-US');
-			})
-			.catch(() => {});
-	});
 </script>
 
 <span>
@@ -27,48 +10,81 @@
 		rel="noopener"
 		aria-label="Star {repo} on GitHub"
 	>
-		<Icon name="star" label="Star" size="medium" />
+		<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+			<path
+				d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"
+			/>
+		</svg>
 		Star
 	</a>
-	{#if count !== null}
-		<a
-			href="https://github.com/{user}/{repo}/stargazers"
-			target="_blank"
-			rel="noopener"
-			aria-label="{count} stargazers on GitHub">{count}</a
-		>
-	{/if}
+	<svelte:boundary>
+		{@const response = await fetch(`https://api.github.com/repos/${user}/${repo}`)}
+		{@const data = response.ok ? await response.json() : null}
+		{#if typeof data?.stargazers_count === 'number'}
+			{@const count = String(data.stargazers_count)}
+			<a
+				href="https://github.com/{user}/{repo}/stargazers"
+				target="_blank"
+				rel="noopener"
+				aria-label="{count} stargazers on GitHub">{count}</a
+			>
+		{/if}
+		{#snippet pending()}{/snippet}
+		{#snippet failed()}{/snippet}
+	</svelte:boundary>
 </span>
 
 <style>
 	span {
+		--internal-border: #d5d5d5;
+		--internal-background: #fafafa;
+		--internal-foreground: #333;
 		display: inline-flex;
-		font-size: 14px;
-		font-weight: 600;
+		align-items: center;
+		gap: 6px;
+		font:
+			700 13px / 1 Arial,
+			sans-serif;
 		white-space: nowrap;
 	}
 	a {
+		position: relative;
 		display: inline-flex;
 		align-items: center;
-		gap: 8px;
-		padding: 8px 16px;
-		border: 1px solid var(--docs-rule);
-		color: var(--color-foreground);
+		justify-content: center;
+		gap: 3px;
+		height: 24px;
+		padding: 0 6px;
+		border: 1px solid var(--internal-border);
+		border-radius: 4px;
+		background: var(--internal-background);
+		color: var(--internal-foreground);
 		text-decoration: none;
 	}
 	a:first-child {
-		border-radius: 8px;
-		background: var(--docs-surface);
+		background: linear-gradient(var(--internal-background), #ededed);
 	}
-	a:first-child:not(:last-child) {
-		border-radius: 8px 0 0 8px;
-	}
-	a + a {
-		border-left: 0;
-		border-radius: 0 8px 8px 0;
-		color: var(--color-muted);
+	a[href$='/stargazers']::before {
+		position: absolute;
+		top: 50%;
+		left: -4px;
+		width: 6px;
+		height: 6px;
+		border: solid var(--internal-border);
+		border-width: 0 0 1px 1px;
+		background: inherit;
+		content: '';
+		transform: translateY(-50%) rotate(45deg);
 	}
 	a:hover {
-		color: var(--color-primary);
+		--internal-background: #f0f0f0;
+		--internal-border: #bcbcbc;
+	}
+	a:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 3px;
+	}
+	svg {
+		flex-shrink: 0;
 	}
 </style>
