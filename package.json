@@ -1,9 +1,10 @@
 {
-	"name": "bref",
+	"name": "bref-ui",
 	"version": "2.0.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
+		"demo-site-build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"prepack": "svelte-kit sync && svelte-package && publint",
@@ -30,7 +31,7 @@
 		}
 	},
 	"peerDependencies": {
-		"svelte": "^5.0.0"
+		"svelte": "^5.56.1"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
@@ -40,6 +41,7 @@
 		"@fontsource/meow-script": "5.2.8",
 		"@fontsource/spectral": "5.2.8",
 		"@sveltejs/adapter-auto": "^7.0.1",
+		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "^2.63.0",
 		"@sveltejs/package": "^2.5.8",
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
