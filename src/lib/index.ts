@@ -1,5 +1,3 @@
-export type * from './types.js';
-
 export { default as Button } from './button/button.svelte';
 export { default as Icon } from './icon/icon.svelte';
 export { default as Surface } from './surface/surface.svelte';
