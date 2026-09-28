@@ -153,28 +153,48 @@
 	<Section {...sections[1]}>
 		<p>Change every custom prop together; text and icon-only buttons share the controls.</p>
 		<div data-demo="controls">
-			<label>Label <input bind:value={label} placeholder="Save" /></label>
-			<label
-				>Size <select bind:value={size}
-					>{#each sizes as value (value)}<option>{value}</option>{/each}</select
-				></label
-			>
-			<label
-				>Variant <select bind:value={variant}
-					>{#each variants as value (value)}<option>{value}</option>{/each}</select
-				></label
-			>
-			<label
-				>Color <select bind:value={color}
-					>{#each colors as value (value)}<option>{value}</option>{/each}</select
-				></label
-			>
-			<label><input type="checkbox" bind:checked={leading} /> Leading icon</label>
-			<label><input type="checkbox" bind:checked={trailing} /> Trailing icon</label>
-			<label><input type="checkbox" bind:checked={filled} /> Filled icons</label>
-			<label><input type="checkbox" bind:checked={disabled} /> Disabled</label>
-			<label><input type="checkbox" bind:checked={wide} /> Wide text button</label>
-			<label><input type="checkbox" bind:checked={rounded} /> Rounded icon button</label>
+			<label>
+				Label <input bind:value={label} placeholder="Save" />
+			</label>
+			<label>
+				Size <select bind:value={size}>
+					{#each sizes as value (value)}<option>{value}</option>{/each}
+				</select>
+			</label>
+			<label>
+				Variant <select bind:value={variant}>
+					{#each variants as value (value)}<option>{value}</option>{/each}
+				</select>
+			</label>
+			<label>
+				Color <select bind:value={color}>
+					{#each colors as value (value)}<option>{value}</option>{/each}
+				</select>
+			</label>
+			<label>
+				<input type="checkbox" bind:checked={leading} />
+				 Leading icon
+			</label>
+			<label>
+				<input type="checkbox" bind:checked={trailing} />
+				 Trailing icon
+			</label>
+			<label>
+				<input type="checkbox" bind:checked={filled} />
+				 Filled icons
+			</label>
+			<label>
+				<input type="checkbox" bind:checked={disabled} />
+				 Disabled
+			</label>
+			<label>
+				<input type="checkbox" bind:checked={wide} />
+				 Wide text button
+			</label>
+			<label>
+				<input type="checkbox" bind:checked={rounded} />
+				 Rounded icon button
+			</label>
 		</div>
 		<div data-demo="row">
 			<Button
@@ -346,14 +366,26 @@
 	<Section {...sections[3]}><PropTable {props} /></Section>
 	<Section {...sections[4]}>
 		<p>
-			Use <code>onClick</code> for actions or <code>href</code> for navigation. Pass other native
-			attributes through <code>stylesOverride</code>, including form attributes, ARIA attributes,
-			<code>class</code> and <code>style</code>.
+			Use <code>onClick</code>
+			for actions or
+			<code>href</code>
+			for navigation. Pass other native attributes through
+			<code>stylesOverride</code>
+			, including form attributes, ARIA attributes,
+			<code>class</code>
+			and
+			<code>style</code>
+			.
 		</p>
 		<p>
-			Button uses <code>type="button"</code> unless overridden. Set <code>stylesOverride.type</code>
-			to <code>submit</code> or <code>reset</code> for native form actions. Button does not accept a children
-			snippet or expose an element binding.
+			Button uses <code>type="button"</code>
+			unless overridden. Set
+			<code>stylesOverride.type</code>
+			to
+			<code>submit</code>
+			or
+			<code>reset</code>
+			 for native form actions. Button does not accept a children snippet or expose an element binding.
 		</p>
 		<div data-demo="row">
 			<Button label="Disabled" onClick={noop} disabled />
@@ -400,7 +432,9 @@
 			}}
 			onreset={() => (submitted = 'Form reset.')}
 		>
-			<label>Message <input name="message" value="Hello" required /></label>
+			<label>
+				Message <input name="message" value="Hello" required />
+			</label>
 			<div data-demo="row">
 				<Button
 					label="Submit"
@@ -420,13 +454,16 @@
 	</Section>
 	<Section {...sections[5]}>
 		<p>
-			Use a visible label for text buttons and <code>stylesOverride['aria-label']</code> for icon-only
-			buttons. Icon-only names fall back to the icon label, then its name. Rendered icons are decorative.
+			Use a visible label for text buttons and <code>stylesOverride['aria-label']</code>
+			 for icon-only buttons. Icon-only names fall back to the icon label, then its name. Rendered icons
+			are decorative.
 		</p>
 		<p>
 			Enter and Space activate focused buttons; disabled buttons skip keyboard navigation. Compose
-			pending states with <code>disabled</code> and <code>stylesOverride['aria-busy']</code>; there
-			is no loading prop. Verify contrast when changing colors or surfaces.
+			pending states with <code>disabled</code>
+			and
+			<code>stylesOverride['aria-busy']</code>
+			; there is no loading prop. Verify contrast when changing colors or surfaces.
 		</p>
 	</Section>
 </Page>

@@ -79,12 +79,13 @@
 			lang: 'svelte',
 			themes: { light: 'github-light', dark: 'github-dark' }
 		})}
-		<pre role="region" aria-label={label} tabindex="0"><code
-				>{#each highlighted as line, index (index)}{#if index > 0}{newline}{/if}{#each line as token (token.offset)}<span
+		<pre
+			role="region"
+			aria-label={label}
+			tabindex="0"><code>{#each highlighted as line, index (index)}{#if index > 0}{newline}{/if}{#each line as token (token.offset)}<span
 							style:--token-light={token.variants.light.color}
-							style:--token-dark={token.variants.dark.color}>{token.content}</span
-						>{/each}{/each}</code
-			></pre>
+							style:--token-dark={token.variants.dark
+								.color}>{token.content}</span>{/each}{/each}</code></pre>
 	</svelte:boundary>
 	<p role="status">{feedback}</p>
 </div>

@@ -26,8 +26,10 @@
 				href="https://github.com/{user}/{repo}/stargazers"
 				target="_blank"
 				rel="noopener"
-				aria-label="{count} stargazers on GitHub">{count}</a
+				aria-label="{count} stargazers on GitHub"
 			>
+				{count}
+			</a>
 		{/if}
 		{#snippet pending()}{/snippet}
 		{#snippet failed()}{/snippet}

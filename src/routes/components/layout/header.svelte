@@ -35,11 +35,14 @@
 />
 <header>
 	<div>
-		<a href={resolve('/')} aria-label="Bref documentation home" data-logo
-			><img src={asset('/favicon.svg')} alt="" width="40" height="40" /><strong
-				>bref<span data-slash>/</span>ui</strong
-			></a
-		>
+		<a href={resolve('/')} aria-label="Bref documentation home" data-logo>
+			<img src={asset('/favicon.svg')} alt="" width="40" height="40" />
+			<strong>
+				bref
+				<span data-slash>/</span>
+				ui
+			</strong>
+		</a>
 		<p>Svelte components, simply.</p>
 		<ThemeModeToggle mode={theme.mode} />
 		<span data-actions>
