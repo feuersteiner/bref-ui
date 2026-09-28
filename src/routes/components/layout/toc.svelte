@@ -5,17 +5,23 @@
 	import type { PageSection } from './navigation.js';
 
 	let { sections }: { sections: readonly PageSection[] } = $props();
+	let sectionLinks = $derived(
+		sections.map((section) => ({
+			...section,
+			isCurrent: page.url.hash === `#${section.id}`
+		}))
+	);
 </script>
 
-{#if sections.length}
+{#if sectionLinks.length}
 	<nav aria-label="On this page">
 		<ul>
-			{#each sections as section (section.id)}
+			{#each sectionLinks as section (section.id)}
 				<li in:fly={{ x: -24, duration: 240 }}>
 					<NavigationLink
 						href={`#${section.id}`}
 						title={section.title}
-						current={page.url.hash === `#${section.id}` ? 'location' : undefined}
+						current={section.isCurrent ? 'location' : undefined}
 					/>
 				</li>
 			{/each}
