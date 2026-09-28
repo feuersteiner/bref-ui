@@ -92,7 +92,7 @@
 			>
 				mode
 			</code>
-			 from an application select or button. Theme accepts a children snippet; neither theme component
+			from an application select or button. Theme accepts a children snippet; neither theme component
 			forwards native attributes or exposes an element binding.
 		</p>
 		<p>
@@ -101,7 +101,7 @@
 			<code>data-theme="dark"</code>
 			or
 			<code>data-theme="auto"</code>
-			 on a container to select its palette.
+			on a container to select its palette.
 		</p>
 	</Section>
 	<Section {...sections[3]}>
@@ -125,8 +125,8 @@
 			<code>--color-primary-dark</code>
 			on
 			<code>:root</code>
-			 or a themed container, or override an active color alias on a specific component. Verify final
-			foreground/background contrast.
+			or a themed container, or override an active color alias on a specific component. Verify final foreground/background
+			contrast.
 		</p>
 		<p>
 			Theme applies a global reset and loads Material Symbols. Components do not import it

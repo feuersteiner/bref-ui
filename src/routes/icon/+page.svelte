@@ -119,7 +119,7 @@
 			</label>
 			<label>
 				<input type="checkbox" bind:checked={filled} />
-				 Filled
+				Filled
 			</label>
 		</div>
 		<div data-demo="inherited">
@@ -223,7 +223,7 @@
 		</p>
 		<p>
 			Load the Material Symbols font through <code>Theme</code>
-			 or an application font-face declaration. The documentation layout loads Theme so these examples
+			or an application font-face declaration. The documentation layout loads Theme so these examples
 			render the actual glyphs.
 		</p>
 		<div data-demo="inherited"><Icon name="star" /> Inherited size and color</div>
@@ -244,7 +244,7 @@
 			Icons without <code>label</code>
 			are decorative and hidden from assistive technology. Labeled icons have
 			<code>role="img"</code>
-			 and an accessible name.
+			and an accessible name.
 		</p>
 		<p>
 			Put action names on containing buttons and leave their icons decorative. Icons alone are not
@@ -261,7 +261,7 @@
 			identifier there, then pass it to the <code>name</code>
 			prop. This component requires the Material Symbols font to be loaded by
 			<code>Theme</code>
-			 or your application.
+			or your application.
 		</p>
 		<p>
 			<a href="https://fonts.google.com/icons" target="_blank" rel="noreferrer">
