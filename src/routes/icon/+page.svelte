@@ -86,7 +86,7 @@
 
 <Page
 	title={chapter}
-	description="Material Symbols with inherited size and color, optional fill and accessible names."
+	description="Render Material Symbols by name, with inherited or explicit size and color, optional fill, and accessible labels. Load the Material Symbols font through Theme or your app's font-face declaration."
 >
 	<Section {...sections[0]}>
 		<div data-demo="row">
@@ -244,6 +244,18 @@
 			<Icon name="check_circle" label="Complete" />
 			<span><Icon name="check_circle" /> Complete (decorative icon beside visible text)</span>
 		</div>
+	</Section>
+	<Section {...sections[6]}>
+		<p>
+			Google Fonts Icons is a catalog for browsing and customizing Material Symbols. Find a symbol's
+			identifier there, then pass it to the <code>name</code> prop. This component requires the
+			Material Symbols font to be loaded by <code>Theme</code> or your application.
+		</p>
+		<p>
+			<a href="https://fonts.google.com/icons" target="_blank" rel="noreferrer">
+				Browse Google Fonts Icons
+			</a>
+		</p>
 	</Section>
 </Page>
 
