@@ -1,0 +1,13 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "Bref configuration",
+	"description": "Configuration for bref.config.json.",
+	"type": "object",
+	"properties": {
+		"ui": {
+			"type": "string",
+			"description": "Import alias for the directory receiving component source and its index.ts barrel.",
+			"default": "$lib/ui"
+		}
+	}
+}
