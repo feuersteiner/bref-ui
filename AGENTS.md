@@ -34,6 +34,7 @@ src/lib/
   button/
     button.svelte
     types.ts          # only for necessary custom types
+    registry.json     # CLI installation metadata
   index.ts            # public component exports
   types.ts            # shared types and public type exports
 ```
@@ -64,6 +65,30 @@ export { default as Button } from './button/button.svelte';
 ```
 
 Keep npm, registry copies and gallery imports tied to that single source.
+
+### Component registry
+
+Each CLI-installable component owns a `registry.json` beside its canonical source:
+
+```json
+{
+	"id": "button",
+	"files": ["button.svelte"],
+	"exports": { "Button": "button.svelte" },
+	"dependencies": ["icon"]
+}
+```
+
+Use a stable, unique kebab-case `id`. List source files relative to the component
+folder; paths must stay inside that folder. Map PascalCase component export names to
+listed files. Dependencies reference other component IDs and must not form cycles.
+Keep type definitions out of copied files; copied components import their types from
+`bref-ui/types`. The local UI barrel exports components only.
+
+`cli/registry/index.ts` discovers manifests in immediate component folders under a
+supplied source root. Its shared loader validates metadata, unique IDs/export names,
+file existence and the dependency graph. Development and CLI packaging reuse this
+loader; no separate development command is required.
 
 ## 2. CSS patterns
 

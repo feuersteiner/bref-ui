@@ -1,0 +1,6 @@
+{
+	"id": "icon",
+	"files": ["icon.svelte"],
+	"exports": { "Icon": "icon.svelte" },
+	"dependencies": []
+}
