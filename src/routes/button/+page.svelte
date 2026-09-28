@@ -128,7 +128,7 @@
 
 <Page
 	title={chapter}
-	description="A native button with labels, icons, theme colors, sizes and variants."
+	description="An action or navigation control with text or icon labels, theme colors, five sizes, three variants, and wide, rounded or disabled options."
 >
 	<Section {...sections[0]}>
 		<div data-demo="row">

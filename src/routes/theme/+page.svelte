@@ -57,7 +57,7 @@
 
 <Page
 	title={chapter}
-	description="An opt-in palette, global reset and icon font with light and dark modes."
+	description="An opt-in theme setup with light, dark and system modes, semantic palette variables, a global reset and the Material Symbols font. ThemeModeToggle sets color-scheme metadata for your own mode control."
 >
 	<Section {...sections[0]}>
 		<label
