@@ -60,8 +60,8 @@
 	description="An opt-in theme setup with light, dark and system modes, semantic palette variables, a global reset and the Material Symbols font. ThemeModeToggle sets color-scheme metadata for your own mode control."
 >
 	<Section {...sections[0]}>
-		<label
-			>Demo theme
+		<label>
+			Demo theme
 			<select bind:value={theme.mode}>
 				<option value="auto">System</option>
 				<option value="light">Light</option>
@@ -89,13 +89,19 @@
 		</p>
 		<p>
 			ThemeModeToggle renders color-scheme metadata and has no visible control. Pass a reactive <code
-				>mode</code
-			> from an application select or button. Theme accepts a children snippet; neither theme component
+			>
+				mode
+			</code>
+			 from an application select or button. Theme accepts a children snippet; neither theme component
 			forwards native attributes or exposes an element binding.
 		</p>
 		<p>
-			Applications can also set <code>data-theme="light"</code>, <code>data-theme="dark"</code> or
-			<code>data-theme="auto"</code> on a container to select its palette.
+			Applications can also set <code>data-theme="light"</code>
+			,
+			<code>data-theme="dark"</code>
+			or
+			<code>data-theme="auto"</code>
+			 on a container to select its palette.
 		</p>
 	</Section>
 	<Section {...sections[3]}>
@@ -106,19 +112,21 @@
 		<div data-demo="palette">
 			{#each colors as color (color)}
 				<div data-demo="swatch">
-					<span style:background={`var(--color-${color})`} aria-hidden="true"></span><code
-						>--color-{color}</code
-					>
+					<span style:background={`var(--color-${color})`} aria-hidden="true"></span>
+					<code>--color-{color}</code>
 				</div>
 			{/each}
 		</div>
 	</Section>
 	<Section {...sections[4]}>
 		<p>
-			Override light and dark variables such as <code>--color-primary-light</code> and
+			Override light and dark variables such as <code>--color-primary-light</code>
+			and
 			<code>--color-primary-dark</code>
-			on <code>:root</code> or a themed container, or override an active color alias on a specific component.
-			Verify final foreground/background contrast.
+			on
+			<code>:root</code>
+			 or a themed container, or override an active color alias on a specific component. Verify final
+			foreground/background contrast.
 		</p>
 		<p>
 			Theme applies a global reset and loads Material Symbols. Components do not import it

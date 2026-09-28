@@ -97,25 +97,30 @@
 	</Section>
 	<Section {...sections[1]}>
 		<div data-demo="controls">
-			<label
-				>Name <select bind:value={name}
-					>{#each names as value (value)}<option>{value}</option>{/each}</select
-				></label
-			>
-			<label
-				>Size <select bind:value={size}
-					><option value="">Inherited</option>{#each sizes as value (value)}<option>{value}</option
-						>{/each}</select
-				></label
-			>
-			<label
-				>Color <select bind:value={color}
-					><option value="">Inherited</option>{#each colors as value (value)}<option>{value}</option
-						>{/each}</select
-				></label
-			>
-			<label>Accessible label <input bind:value={label} /></label>
-			<label><input type="checkbox" bind:checked={filled} /> Filled</label>
+			<label>
+				Name <select bind:value={name}>
+					{#each names as value (value)}<option>{value}</option>{/each}
+				</select>
+			</label>
+			<label>
+				Size <select bind:value={size}>
+					<option value="">Inherited</option>
+					{#each sizes as value (value)}<option>{value}</option>{/each}
+				</select>
+			</label>
+			<label>
+				Color <select bind:value={color}>
+					<option value="">Inherited</option>
+					{#each colors as value (value)}<option>{value}</option>{/each}
+				</select>
+			</label>
+			<label>
+				Accessible label <input bind:value={label} />
+			</label>
+			<label>
+				<input type="checkbox" bind:checked={filled} />
+				 Filled
+			</label>
 		</div>
 		<div data-demo="inherited">
 			<Icon
@@ -211,12 +216,15 @@
 	<Section {...sections[4]}>
 		<p>
 			Icons inherit surrounding font size and color unless explicitly set. Native span attributes
-			and events pass through, including <code>class</code> and <code>style</code>. Icon does not
-			accept a children snippet or expose an element binding.
+			and events pass through, including <code>class</code>
+			and
+			<code>style</code>
+			. Icon does not accept a children snippet or expose an element binding.
 		</p>
 		<p>
-			Load the Material Symbols font through <code>Theme</code> or an application font-face declaration.
-			The documentation layout loads Theme so these examples render the actual glyphs.
+			Load the Material Symbols font through <code>Theme</code>
+			 or an application font-face declaration. The documentation layout loads Theme so these examples
+			render the actual glyphs.
 		</p>
 		<div data-demo="inherited"><Icon name="star" /> Inherited size and color</div>
 		<Icon
@@ -233,8 +241,10 @@
 	</Section>
 	<Section {...sections[5]}>
 		<p>
-			Icons without <code>label</code> are decorative and hidden from assistive technology. Labeled
-			icons have <code>role="img"</code> and an accessible name.
+			Icons without <code>label</code>
+			are decorative and hidden from assistive technology. Labeled icons have
+			<code>role="img"</code>
+			 and an accessible name.
 		</p>
 		<p>
 			Put action names on containing buttons and leave their icons decorative. Icons alone are not
@@ -248,8 +258,10 @@
 	<Section {...sections[6]}>
 		<p>
 			Google Fonts Icons is a catalog for browsing and customizing Material Symbols. Find a symbol's
-			identifier there, then pass it to the <code>name</code> prop. This component requires the
-			Material Symbols font to be loaded by <code>Theme</code> or your application.
+			identifier there, then pass it to the <code>name</code>
+			prop. This component requires the Material Symbols font to be loaded by
+			<code>Theme</code>
+			 or your application.
 		</p>
 		<p>
 			<a href="https://fonts.google.com/icons" target="_blank" rel="noreferrer">

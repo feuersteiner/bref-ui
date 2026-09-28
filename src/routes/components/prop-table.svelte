@@ -38,13 +38,9 @@
 				<tr>
 					<th scope="row"><code>{prop.name}</code></th>
 					<td><code>{prop.type}</code></td>
-					<td
-						>{typeof prop.required === 'boolean'
-							? prop.required
-								? 'Yes'
-								: 'No'
-							: prop.required}</td
-					>
+					<td>
+						{typeof prop.required === 'boolean' ? (prop.required ? 'Yes' : 'No') : prop.required}
+					</td>
 					<td><code>{prop.default}</code></td>
 					<td>{prop.description}</td>
 				</tr>
