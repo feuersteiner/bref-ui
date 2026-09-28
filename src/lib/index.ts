@@ -1,19 +1,7 @@
-export { default as TextAndMedia } from './sections/text-and-media/text-and-media.svelte';
-export { default as BasicHero } from './sections/hero/basic-hero.svelte';
-export { default as MediaHero } from './sections/hero/media-hero.svelte';
-export { default as Layout } from './layout/layout.svelte';
-export { default as Footer } from './layout/footer/footer.svelte';
-export { default as Navbar } from './layout/navbar/navbar.svelte';
-export { default as Breadcrumbs } from './layout/breadcrumbs/breadcrumbs.svelte';
-export { default as FrequentlyAskedQuestions } from './sections/faq/faq.svelte';
-export { default as Features } from './sections/features/features.svelte';
-export { default as CallToAction } from './sections/cta/cta.svelte';
-export { default as PageSeo } from './sections/seo/page-seo.svelte';
-export { default as Brands } from './sections/brands/brands.svelte';
-export { default as Testimonials } from './sections/testimonials/testimonials.svelte';
-export { default as Pricing } from './sections/pricing/pricing.svelte';
-export { default as BlogListing } from './blog/listing/blog-listing.svelte';
-export { default as BlogPost } from './blog/blog-post.svelte';
-export { default as SectionContainer } from './shared/section/section-container.svelte';
-export { default as SubSectionContainer } from './shared/sub-section/sub-section-container.svelte';
-export { default as SectionHeader } from './shared/section/section-header.svelte';
+export type * from './types.js';
+
+export { default as Button } from './button/button.svelte';
+export { default as Icon } from './icon/icon.svelte';
+export { default as Surface } from './surface/surface.svelte';
+export { default as Theme } from './theme/theme.svelte';
+export { default as ThemeModeToggle } from './theme/theme-mode-toggle.svelte';
