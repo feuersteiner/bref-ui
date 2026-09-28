@@ -4,21 +4,32 @@
 	import Toc from './toc.svelte';
 	import NavigationLink from './navigation-link.svelte';
 	import { navigation, pageSections } from './navigation.js';
+
+	let groups = $derived(
+		navigation.map((group) => ({
+			...group,
+			links: group.links.map((link) => {
+				const path = resolve(link.href);
+
+				return { ...link, path, isCurrent: path === page.url.pathname };
+			})
+		}))
+	);
 </script>
 
 <nav aria-label="Documentation">
-	{#each navigation as group (group.title)}
+	{#each groups as group (group.title)}
 		<section aria-label={group.title}>
 			<h2>{group.title}</h2>
 			<ul>
 				{#each group.links as link (link.href)}
 					<li>
 						<NavigationLink
-							href={resolve(link.href)}
+							href={link.path}
 							title={link.title}
-							current={page.url.pathname === resolve(link.href) ? 'page' : undefined}
+							current={link.isCurrent ? 'page' : undefined}
 						/>
-						{#if page.url.pathname === resolve(link.href)}
+						{#if link.isCurrent}
 							<Toc sections={pageSections[page.route.id ?? ''] ?? []} />
 						{/if}
 					</li>

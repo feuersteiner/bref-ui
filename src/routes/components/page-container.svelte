@@ -39,13 +39,6 @@
 		gap: 24px;
 		padding: 24px 24px 48px;
 	}
-	header::before {
-		position: absolute;
-		inset: 0 0 auto;
-		border-top: 1px solid var(--docs-rule-strong);
-		content: '';
-		pointer-events: none;
-	}
 	h1 {
 		max-width: 12ch;
 		letter-spacing: -0.045em;
