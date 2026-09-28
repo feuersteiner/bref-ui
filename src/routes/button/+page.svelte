@@ -173,27 +173,27 @@
 			</label>
 			<label>
 				<input type="checkbox" bind:checked={leading} />
-				 Leading icon
+				Leading icon
 			</label>
 			<label>
 				<input type="checkbox" bind:checked={trailing} />
-				 Trailing icon
+				Trailing icon
 			</label>
 			<label>
 				<input type="checkbox" bind:checked={filled} />
-				 Filled icons
+				Filled icons
 			</label>
 			<label>
 				<input type="checkbox" bind:checked={disabled} />
-				 Disabled
+				Disabled
 			</label>
 			<label>
 				<input type="checkbox" bind:checked={wide} />
-				 Wide text button
+				Wide text button
 			</label>
 			<label>
 				<input type="checkbox" bind:checked={rounded} />
-				 Rounded icon button
+				Rounded icon button
 			</label>
 		</div>
 		<div data-demo="row">
@@ -385,7 +385,7 @@
 			<code>submit</code>
 			or
 			<code>reset</code>
-			 for native form actions. Button does not accept a children snippet or expose an element binding.
+			for native form actions. Button does not accept a children snippet or expose an element binding.
 		</p>
 		<div data-demo="row">
 			<Button label="Disabled" onClick={noop} disabled />
@@ -455,7 +455,7 @@
 	<Section {...sections[5]}>
 		<p>
 			Use a visible label for text buttons and <code>stylesOverride['aria-label']</code>
-			 for icon-only buttons. Icon-only names fall back to the icon label, then its name. Rendered icons
+			for icon-only buttons. Icon-only names fall back to the icon label, then its name. Rendered icons
 			are decorative.
 		</p>
 		<p>
