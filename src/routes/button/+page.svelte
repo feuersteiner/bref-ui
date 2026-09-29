@@ -117,6 +117,13 @@
 			description: 'Disables actions and navigation.'
 		},
 		{
+			name: 'openInNewTab',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Opens href in a new tab; navigation buttons only.'
+		},
+		{
 			name: 'stylesOverride',
 			type: 'HTMLButtonAttributes',
 			required: false,
@@ -420,6 +427,16 @@
 			onClick={noop}
 		/>
 		<Button
+			label="Full-width link in a new tab"
+			href="#native-behavior"
+			wide
+			openInNewTab
+			color="primary"
+			variant="soft"
+			trailingIcon={{ name: 'open_in_new' }}
+		/>
+		<Button label="Disabled link" href="#native-behavior" openInNewTab disabled />
+		<Button
 			label="A long label that wraps on a narrow screen without losing its meaning"
 			size="small"
 			onClick={noop}
@@ -449,7 +466,8 @@
 			label="Button native behavior code"
 			source={`<Button label="Saving…" icon={{ name: 'sync' }} variant="filled" onClick={save} disabled stylesOverride={{ 'aria-busy': true }} />
 <Button label="Submit" onClick={save} stylesOverride={{ type: 'submit', name: 'action', value: 'save' }} />
-<Button label="Reset" onClick={reset} stylesOverride={{ type: 'reset' }} />`}
+<Button label="Reset" onClick={reset} stylesOverride={{ type: 'reset' }} />
+<Button label="Full-width link in a new tab" href="#native-behavior" wide openInNewTab color="primary" variant="soft" trailingIcon={{ name: 'open_in_new' }} />`}
 		/>
 	</Section>
 	<Section {...sections[5]}>
