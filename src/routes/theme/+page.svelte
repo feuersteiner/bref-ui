@@ -12,7 +12,7 @@
 	const variants = ['neutral', 'soft', 'filled'] as const;
 	const noop = () => undefined;
 	const source = `<script>
-  import { Theme, ThemeModeToggle } from 'bref';
+  import { Theme, ThemeModeToggle } from 'bref-ui';
   let mode = $state('auto');
 <${'/'}script>
 
@@ -27,6 +27,14 @@
   </label>
 </Theme>`;
 	const props = [
+		{
+			name: 'Theme: palette',
+			type: 'Palette | { dark: Palette; light: Palette }',
+			required: false,
+			default: '{}',
+			description:
+				'Optional hex colors for the nine roles; a single palette applies to both modes. Invalid hex values throw.'
+		},
 		{
 			name: 'Theme: children',
 			type: 'Snippet',
@@ -119,6 +127,15 @@
 		</div>
 	</Section>
 	<Section {...sections[4]}>
+		<p>
+			Pass palette to the application-root Theme. Omitted roles retain defaults. Existing CSS
+			overrides still apply; verify contrast for custom colors.
+		</p>
+		<CodeSnippet
+			label="Palette prop usage"
+			source={`<Theme palette={{ primary: '#875000' }} />
+<Theme palette={{ light: { primary: '#875000' }, dark: { primary: '#e8bb75' } }} />`}
+		/>
 		<p>
 			Override light and dark variables such as <code>--color-primary-light</code>
 			and

@@ -1,0 +1,6 @@
+{
+	"id": "theme",
+	"files": ["cli-theme.svelte"],
+	"exports": { "Theme": "cli-theme.svelte" },
+	"dependencies": []
+}
