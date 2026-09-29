@@ -4,25 +4,23 @@
 
 	let {
 		items,
-		onDelete,
 		color = 'foreground',
 		size = 'medium',
 		variant = 'neutral',
+		renderItem,
+		ref = $bindable(),
 		...attributes
 	}: PillGroupProps = $props();
 </script>
 
-<ul {...attributes} data-size={size}>
+<ul bind:this={ref} {...attributes} data-size={size}>
 	{#each items as item (item.id)}
 		<li>
-			<Pill
-				label={item.label}
-				icon={item.icon}
-				{color}
-				{size}
-				{variant}
-				onDelete={onDelete ? () => onDelete?.(item.id) : undefined}
-			/>
+			{#if renderItem}
+				{@render renderItem(item)}
+			{:else}
+				<Pill {color} {size} {variant}>{item.label}</Pill>
+			{/if}
 		</li>
 	{/each}
 </ul>
