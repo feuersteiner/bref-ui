@@ -2,8 +2,8 @@
 
 [CLI overview](../README.md) · [Installation types](types.ts)
 
-Preparation, preview and copying are implemented.
-[`index.ts`](index.ts) and [`installed.ts`](installed.ts) remain WIP placeholders.
+Preparation, preview, copying and installed export preparation are implemented.
+[`index.ts`](index.ts) remains a WIP placeholder.
 
 ## Prepare source
 
@@ -72,7 +72,17 @@ installation/
     index.ts
     validate-overwrite-approvals.ts
     write-prepared-files.ts
-  installed.ts
+  exports/
+    index.ts
+    read-index.ts
+    collect-exports.ts
+    create-additions.ts
+    merge-content.ts
+    read-exported-names.ts
+    read-reexported-names.ts
+    read-declared-export-names.ts
+    types.ts
+    utils.ts
 ```
 
 ## Copy files
@@ -91,16 +101,32 @@ flowchart TD
     approved -->|Yes| copy["writePreparedFiles · skip identical files"]
 ```
 
-## Maintain installed exports — WIP
+## Prepare exports
 
-[`installed.ts`](installed.ts) is intended to add missing component exports to the destination
-`index.ts`, without duplicating or replacing existing exports. Its API and implementation
-are unfinished.
+[`prepareExports(entries, destination)`](exports/index.ts) returns a prepared `index.ts` without
+writing. It preserves existing text, skips matching direct default re-exports and appends
+missing component exports using the source folder names retained by `prepareSource`.
+New lines follow the existing LF or CRLF style.
+
+The stage's sole public entry is `exports/index.ts`, containing only `prepareExports`.
+It calls the sibling `read-index.ts`, `collect-exports.ts`, `create-additions.ts` and
+`merge-content.ts` steps. `readExportedNames` dispatches to sibling readers for export
+lists and exported declarations. Results use named `name` and `componentPath` fields:
+a path identifies a reusable default re-export; null marks a name occupied by another
+export. Default re-export path checks and destructuring helpers live in `exports/utils.ts`.
+
+Other exports using a requested name cause a conflict. Wildcard re-exports are rejected
+because their names cannot be determined from this file alone. Syntax and read errors
+propagate; only ENOENT means an empty index. The returned file joins prepared sources
+before preview and copying, so index overwrites require approval too.
 
 ```mermaid
 flowchart TD
-    exports["Installed component exports"] -.-> merge["Add missing exports; preserve existing exports"]
-    merge -.-> barrel["Destination index.ts"]
+    exports["prepareExports(entries, destination)"] --> read["readIndex"]
+    read --> parse["collectExports · readExportedNames"]
+    parse --> additions["createAdditions · skip matching exports; reject conflicting names"]
+    additions --> merge["mergeContent · append missing exports"]
+    merge --> barrel["PreparedFile for index.ts"]
 ```
 
 ## Coordinate installation — WIP
@@ -111,9 +137,11 @@ approval and cancellation behavior are not implemented.
 ```mermaid
 flowchart TD
     entries["Planned entries and destination"] -.-> prepare["prepareSource"]
-    prepare -.-> preview["previewChanges"]
+    entries -.-> exports["prepareExports"]
+    prepare -.-> files["Combine prepared sources and index.ts"]
+    exports -.-> files
+    files -.-> preview["previewChanges"]
     preview -.-> decisions["Required conflict and overwrite decisions"]
     decisions -.->|Cancel| stop["Stop without applying changes"]
     decisions -.->|Proceed| copy["copyFiles"]
-    copy -.-> exports["installed.ts · WIP"]
 ```

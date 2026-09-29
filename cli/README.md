@@ -21,10 +21,12 @@ flowchart TD
     resolve -.-> install["installation/index.ts · WIP"]
     plan -.-> install
     install -.-> prepare["prepareSource"]
-    prepare -.-> preview["previewChanges"]
+    install -.-> exports["prepareExports"]
+    prepare -.-> files["Prepared sources and index.ts"]
+    exports -.-> files
+    files -.-> preview["previewChanges"]
     preview -.-> decisions["Overwrite approval or cancellation"]
     decisions -.-> copy["copyFiles"]
-    copy -.-> exports["installation/installed.ts · WIP"]
 ```
 
 ## Workflow documentation
@@ -34,8 +36,8 @@ flowchart TD
 | [config](config/README.md)               | Read configuration; resolve the destination alias        | Implemented |
 | [registry](registry/README.md)           | Plan dependencies                                        | Implemented |
 | [registry/load](registry/load/README.md) | Discover and validate manifests and dependencies         | Implemented |
-| [installation](installation/README.md)   | Prepare sources; preview changes; copy files             | Implemented |
-| [installation](installation/README.md)   | Coordinate installation; maintain exports                | WIP         |
+| [installation](installation/README.md)   | Prepare sources and exports; preview changes; copy files | Implemented |
+| [installation](installation/README.md)   | Coordinate installation                                  | WIP         |
 | [commands](commands/README.md)           | Route commands; initialize configuration; add components | WIP         |
 
 ## Source layout
@@ -63,7 +65,13 @@ cli/
       index.ts
       validate-overwrite-approvals.ts
       write-prepared-files.ts
-    installed.ts
+    exports/
+      index.ts
+      collect-exports.ts
+      create-additions.ts
+      merge-content.ts
+      read-index.ts
+      utils.ts
     prepare/
       index.ts
       collect-source-files.ts
