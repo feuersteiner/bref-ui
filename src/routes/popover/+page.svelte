@@ -35,6 +35,13 @@
 			description: 'Disables the trigger button.'
 		},
 		{
+			name: 'triggerAttributes',
+			type: 'HTMLButtonAttributes',
+			required: false,
+			default: 'Omitted',
+			description: 'Native attributes and handlers for the trigger button.'
+		},
+		{
 			name: 'id',
 			type: 'string',
 			required: false,
@@ -76,7 +83,9 @@
 		<PropTable {props} />
 		<p>
 			Native div attributes, including ARIA attributes and event handlers, pass to the panel. The
-			trigger and panel use snippets. No bindable open state is exposed.
+			trigger and panel use snippets. Pass native trigger attributes through
+			<code>triggerAttributes</code>
+			. No bindable open state is exposed.
 		</p>
 	</Section>
 </Page>
