@@ -1,4 +1,4 @@
-import type { RegistryItem } from './types.js';
+import type { RegistryItem } from '../types.js';
 
 /**
  * Check for a lowercase kebab-case identifier beginning with a letter.

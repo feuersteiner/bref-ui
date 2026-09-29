@@ -1,4 +1,4 @@
-import type { RegistryEntry } from './types.js';
+import type { RegistryEntry } from '../types.js';
 import { parseItem } from './utils.js';
 
 /**
