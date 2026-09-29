@@ -4,6 +4,7 @@ import {
 } from '../../sections.js';
 import { chapter as buttonChapter, sections as buttonSections } from '../../button/sections.js';
 import { chapter as iconChapter, sections as iconSections } from '../../icon/sections.js';
+import { chapter as popoverChapter, sections as popoverSections } from '../../popover/sections.js';
 import { chapter as themeChapter, sections as themeSections } from '../../theme/sections.js';
 
 export const navigation = [
@@ -18,7 +19,8 @@ export const navigation = [
 		title: 'Components',
 		links: [
 			{ title: buttonChapter, href: '/button' },
-			{ title: iconChapter, href: '/icon' }
+			{ title: iconChapter, href: '/icon' },
+			{ title: popoverChapter, href: '/popover' }
 		]
 	}
 ] as const;
@@ -32,5 +34,6 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/': introductionSections,
 	'/button': buttonSections,
 	'/icon': iconSections,
+	'/popover': popoverSections,
 	'/theme': themeSections
 };
