@@ -3,3 +3,5 @@ export { default as Icon } from './icon/icon.svelte';
 export { default as Surface } from './surface/surface.svelte';
 export { default as Theme } from './theme/theme.svelte';
 export { default as ThemeModeToggle } from './theme/theme-mode-toggle.svelte';
+export { default as Progress } from './progress/progress.svelte';
+export { default as Spinner } from './spinner/spinner.svelte';
