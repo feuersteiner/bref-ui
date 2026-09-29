@@ -1,34 +1,54 @@
-import ts from 'typescript';
+import type { ExportNamedDeclaration, ExportSpecifier, Pattern } from 'estree';
 
 /**
- * Find the module path only when a specifier re-exports default as a runtime value.
- * Type-only exports, named exports and local export lists cannot identify an installed
- * component file and therefore return null.
- * @param declaration Export statement containing the specifier and optional module path.
- * @param specifier One item from its named export list, such as default as Button.
- * @returns The direct default re-export's module path, or null for other export forms.
+ * Read an AST identifier or string-literal name, including TypeScript declaration IDs.
+ * @param node Parser node with a name or string value, or an absent declaration name.
+ * @returns The name, or null when the node does not identify a public name.
  */
-export const readDefaultReExportPath = (
-	declaration: ts.ExportDeclaration,
-	specifier: ts.ExportSpecifier
-): string | null => {
-	if (declaration.isTypeOnly || specifier.isTypeOnly) return null;
-	const originalName = specifier.propertyName ?? specifier.name;
-	if (originalName.text !== 'default') return null;
-	const module = declaration.moduleSpecifier;
-	if (!module || !ts.isStringLiteral(module)) return null;
-	return module.text;
+export const readName = (node: unknown): string | null => {
+	if (typeof node !== 'object' || node === null) return null;
+	if ('name' in node && typeof node.name === 'string') return node.name;
+	return 'value' in node && typeof node.value === 'string' ? node.value : null;
 };
 
 /**
- * Read variable names from identifiers and nested destructuring patterns.
- * For example, { source: Button } declares Button, while [, Icon] declares only Icon.
- * @param binding Variable identifier or object/array binding pattern.
- * @returns Declared variable names in source order, skipping omitted array elements.
+ * Find a module path only for a direct runtime default re-export.
+ * @param declaration Export list containing the specifier and optional module path.
+ * @param specifier Named export such as default as Button.
+ * @returns Module path, or null for type-only, named or local exports.
  */
-export const readBindingNames = (binding: ts.BindingName): string[] => {
-	if (ts.isIdentifier(binding)) return [binding.text];
-	return binding.elements.flatMap((element) =>
-		ts.isBindingElement(element) ? readBindingNames(element.name) : []
-	);
+export const readDefaultReExportPath = (
+	declaration: ExportNamedDeclaration,
+	specifier: ExportSpecifier
+): string | null => {
+	if (
+		('exportKind' in declaration && declaration.exportKind === 'type') ||
+		('exportKind' in specifier && specifier.exportKind === 'type') ||
+		readName(specifier.local) !== 'default'
+	)
+		return null;
+	const module = declaration.source?.value;
+	return typeof module === 'string' ? module : null;
+};
+
+/**
+ * Read variable names from identifiers, defaults, rest and nested destructuring patterns.
+ * @param binding Variable binding pattern from an exported declaration.
+ * @returns Declared names in source order, skipping omitted array elements.
+ */
+export const readBindingNames = (binding: Pattern): string[] => {
+	if (binding.type === 'Identifier') return [binding.name];
+	if (binding.type === 'AssignmentPattern') return readBindingNames(binding.left);
+	if (binding.type === 'RestElement') return readBindingNames(binding.argument);
+	if (binding.type === 'ObjectPattern')
+		return binding.properties.flatMap((property) =>
+			readBindingNames(
+				property.type === 'RestElement' ? property.argument : (property.value as Pattern)
+			)
+		);
+	if (binding.type === 'ArrayPattern')
+		return binding.elements.flatMap((element) =>
+			element === null ? [] : readBindingNames(element)
+		);
+	return [];
 };

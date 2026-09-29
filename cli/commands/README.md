@@ -3,7 +3,8 @@
 [CLI overview](../README.md)
 
 The executable and init/add commands are implemented. Commands use the current directory
-as the consumer project; the registry comes from the source checkout.
+as the consumer project; the registry comes from canonical sources beside the executable,
+either in the installed package or the source checkout. Bun is required.
 
 ## Route commands
 

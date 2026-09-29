@@ -3,7 +3,7 @@ import { initConfig } from './init.js';
 import type { Command } from './types.js';
 
 /**
- * Run a validated request and print its outcome using the source checkout's registry.
+ * Run a validated request and print its outcome using the registry shipped beside the executable.
  * @param command Parsed help, init or add request.
  * @param projectRoot Consumer project directory, supplied by the executable's cwd.
  * @throws When initialization or installation fails; the executable reports the error.
@@ -11,7 +11,7 @@ import type { Command } from './types.js';
 export const execute = async (command: Command, projectRoot: string): Promise<void> => {
 	if (command.name === 'help') {
 		console.log(
-			'Usage: bun <path-to-cli>/index.ts <command>\n\n' +
+			'Usage: bref-ui <command>\n\n' +
 				'Commands:\n' +
 				'  init             Create bref.config.json with the default UI alias\n' +
 				'  add <component>  Preview and install a component and its dependencies\n\n' +
