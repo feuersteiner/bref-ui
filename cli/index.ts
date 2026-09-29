@@ -1,4 +1,4 @@
-/**
- * WIP: Route CLI arguments to the requested command.
- * Report command results and failures through the executable entry point.
- */
+#!/usr/bin/env bun
+import { runCommand } from './commands/index.js';
+
+if (import.meta.main) await runCommand(Bun.argv.slice(2), process.cwd());
