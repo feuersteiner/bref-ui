@@ -1,0 +1,6 @@
+{
+	"id": "tree-view",
+	"files": ["tree-view.svelte", "state.ts"],
+	"exports": { "TreeView": "tree-view.svelte" },
+	"dependencies": ["theme"]
+}
