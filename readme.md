@@ -4,10 +4,8 @@ A Svelte-first, human-first, agent-first UI library for building beautiful sites
 and apps with components you can make your own.
 
 [![npm](https://img.shields.io/npm/v/bref-ui?logo=npm)](https://www.npmjs.com/package/bref-ui)
-[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](DISCORD_INVITE_URL)
+[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.gg/JpgQRTUsVS)
 [![MIT license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-
-<!-- Replace DISCORD_INVITE_URL with the shared server invite before publishing. -->
 
 > <small>V2 is in development and has not been published to npm. The npm badge tracks the
 > published release; the examples below use the v2 development checkout. Button,
@@ -127,7 +125,7 @@ checks and generated CSS do not guarantee that every customization is accessible
 
 ## Community and contributing
 
-For questions and examples, join [Discord](DISCORD_INVITE_URL) and use the
+For questions and examples, join [Discord](https://discord.gg/JpgQRTUsVS) and use the
 `bref-ui` channel. Report bugs and suggest features through
 [GitHub Issues](https://github.com/feuersteiner/bref-ui/issues).
 
