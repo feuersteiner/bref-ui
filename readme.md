@@ -91,9 +91,7 @@ Symbols font dependency, so zero runtime dependencies beyond Svelte remains a go
 The local package includes the `bref` executable. After installing the tarball,
 preview and accept the setup and Button copies:
 
-Import `src/lib/bref/button/button.svelte` directly and import
-`src/lib/bref/theme.svelte` once, using paths relative to the host entry/layout.
-Button copies include Icon and required types. SvelteKit can use
+Run `bun run bref-ui add theme` to copy the default-only Theme source into the configured UI directory. The copied `Theme` has no `palette` prop; edit its CSS tokens directly. The package `Theme` retains the `palette` prop. Button copies include Icon and required types. SvelteKit can use
 `--alias '$lib/bref'` during init after its existing sync command.
 
 ## Documentation and demos
