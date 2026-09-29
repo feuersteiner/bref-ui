@@ -1,9 +1,15 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
+	import type { ThemeMode } from '$lib/types.js';
+	import { fly } from 'svelte/transition';
+
 	const user = 'feuersteiner';
 	const repo = 'bref-ui';
+	const theme = getContext<{ mode: ThemeMode }>('documentation-theme');
+	let themeMode = $derived(theme.mode);
 </script>
 
-<span>
+<span data-theme={themeMode}>
 	<a
 		href="https://github.com/{user}/{repo}"
 		target="_blank"
@@ -27,6 +33,7 @@
 				target="_blank"
 				rel="noopener"
 				aria-label="{count} stargazers on GitHub"
+				in:fly
 			>
 				{count}
 			</a>
@@ -81,6 +88,32 @@
 	a:hover {
 		--internal-background: #f0f0f0;
 		--internal-border: #bcbcbc;
+	}
+	span[data-theme='dark'] {
+		--internal-border: #41434a;
+		--internal-background: #24262b;
+		--internal-foreground: #eceef2;
+	}
+	span[data-theme='dark'] a:first-child {
+		background: linear-gradient(var(--internal-background), #303238);
+	}
+	span[data-theme='dark'] a:hover {
+		--internal-background: #303238;
+		--internal-border: #5a5d66;
+	}
+	@media (prefers-color-scheme: dark) {
+		span[data-theme='auto'] {
+			--internal-border: #41434a;
+			--internal-background: #24262b;
+			--internal-foreground: #eceef2;
+		}
+		span[data-theme='auto'] a:first-child {
+			background: linear-gradient(var(--internal-background), #303238);
+		}
+		span[data-theme='auto'] a:hover {
+			--internal-background: #303238;
+			--internal-border: #5a5d66;
+		}
 	}
 	a:focus-visible {
 		outline: 2px solid var(--color-primary);
