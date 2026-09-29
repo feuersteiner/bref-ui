@@ -85,7 +85,7 @@ listed files. Dependencies reference other component IDs and must not form cycle
 Keep type definitions out of copied files; copied components import their types from
 `bref-ui/types`. The local UI barrel exports components only.
 
-`cli/registry/index.ts` discovers manifests in immediate component folders under a
+`cli/registry/load/index.ts` discovers manifests in immediate component folders under a
 supplied source root. Its shared loader validates metadata, unique IDs/export names,
 file existence and the dependency graph. Development and CLI packaging reuse this
 loader; no separate development command is required.
