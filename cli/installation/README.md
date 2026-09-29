@@ -2,8 +2,7 @@
 
 [CLI overview](../README.md) · [Installation types](types.ts)
 
-Preparation, preview, copying and installed export preparation are implemented.
-[`index.ts`](index.ts) remains a WIP placeholder.
+Installation orchestration, preparation, preview, copying and export preparation are implemented.
 
 ## Prepare source
 
@@ -56,6 +55,8 @@ its sibling files contain the internal steps and are not re-exported.
 
 ```text
 installation/
+  index.ts
+  types.ts
   prepare/
     index.ts
     collect-source-files.ts
@@ -129,19 +130,30 @@ flowchart TD
     merge --> barrel["PreparedFile for index.ts"]
 ```
 
-## Coordinate installation — WIP
+## Coordinate installation
 
-[`index.ts`](index.ts) will coordinate these stages. Dashed arrows show proposed wiring;
-approval and cancellation behavior are not implemented.
+[`installComponent(entries, destination, review)`](index.ts) prepares sources and exports,
+then passes their combined preview to the caller's asynchronous review callback. Returning
+null cancels without writes; returning a list accepts installation and approves overwriting
+those relative paths. An empty list accepts additions and unchanged files only.
+
+The index is reviewed alongside component sources: an existing index requiring new exports
+needs explicit `index.ts` overwrite approval. Copying rechecks conflicts before writing;
+unapproved conflicts reject the installation. Successful copying returns `installed`,
+including repeated unchanged installations; cancellation returns `cancelled`.
+
+Preparation, preview and review failures propagate before writes. Copy failures can leave
+partial changes because writes are not atomic. The caller provides the review UI; command
+wiring remains unfinished.
 
 ```mermaid
 flowchart TD
-    entries["Planned entries and destination"] -.-> prepare["prepareSource"]
-    entries -.-> exports["prepareExports"]
-    prepare -.-> files["Combine prepared sources and index.ts"]
-    exports -.-> files
-    files -.-> preview["previewChanges"]
-    preview -.-> decisions["Required conflict and overwrite decisions"]
-    decisions -.->|Cancel| stop["Stop without applying changes"]
-    decisions -.->|Proceed| copy["copyFiles"]
+    entries["installComponent(entries, destination, review)"] --> prepare["prepareSource"]
+    prepare --> exports["prepareExports"]
+    exports --> files["Combine prepared sources and index.ts"]
+    files --> preview["previewChanges"]
+    preview --> decisions["review(changes)"]
+    decisions -->|null| stop["Return cancelled without writes"]
+    decisions -->|Approved overwrite paths| copy["copyFiles · recheck conflicts"]
+    copy --> done["Return installed"]
 ```
