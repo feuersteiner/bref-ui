@@ -13,3 +13,4 @@ export { default as TextArea } from './text-area/text-area.svelte';
 export { default as TreeView } from './tree-view/tree-view.svelte';
 export { default as Pill } from './pill/pill.svelte';
 export { default as PillGroup } from './pill-group/pill-group.svelte';
+export { default as PillChoiceGroup } from './pill-choice-group/pill-choice-group.svelte';
