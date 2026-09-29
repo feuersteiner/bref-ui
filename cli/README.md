@@ -22,7 +22,8 @@ flowchart TD
     plan -.-> install
     install -.-> prepare["prepareSource"]
     prepare -.-> preview["previewChanges"]
-    preview -.-> copy["installation/copy.ts · WIP"]
+    preview -.-> decisions["Overwrite approval or cancellation"]
+    decisions -.-> copy["copyFiles"]
     copy -.-> exports["installation/installed.ts · WIP"]
 ```
 
@@ -33,8 +34,8 @@ flowchart TD
 | [config](config/README.md)               | Read configuration; resolve the destination alias        | Implemented |
 | [registry](registry/README.md)           | Plan dependencies                                        | Implemented |
 | [registry/load](registry/load/README.md) | Discover and validate manifests and dependencies         | Implemented |
-| [installation](installation/README.md)   | Prepare sources; preview changes                         | Implemented |
-| [installation](installation/README.md)   | Coordinate installation; copy files; maintain exports    | WIP         |
+| [installation](installation/README.md)   | Prepare sources; preview changes; copy files             | Implemented |
+| [installation](installation/README.md)   | Coordinate installation; maintain exports                | WIP         |
 | [commands](commands/README.md)           | Route commands; initialize configuration; add components | WIP         |
 
 ## Source layout
@@ -42,30 +43,57 @@ flowchart TD
 ```text
 cli/
   index.ts
-  tsconfig.json
+  commands/
+    add.ts
+    init.ts
   config/
-    read.ts
-    resolve.ts
-    types.ts
-    schema.json
-  registry/
-    types.ts
-    load/
+    read/
       index.ts
-      utils.ts
-    plan.ts
+      normalize-config.ts
+      read-config-file.ts
+    resolve/
+      index.ts
+      resolve-alias-target.ts
+      resolve-alias.ts
+    schema.json
+    types.ts
   installation/
     index.ts
-    types.ts
-    prepare.ts
-    preview.ts
-    copy.ts
+    copy/
+      index.ts
+      validate-overwrite-approvals.ts
+      write-prepared-files.ts
     installed.ts
-  commands/
-    init.ts
-    add.ts
+    prepare/
+      index.ts
+      collect-source-files.ts
+      read-source-files.ts
+      rewrite-imports.ts
+      rewrite-source.ts
+      types.ts
+    preview/
+      index.ts
+      compare-prepared-files.ts
+      read-destination-files.ts
+      types.ts
+    types.ts
+  registry/
+    load/
+      index.ts
+      create-registry.ts
+      discover-manifests.ts
+      load-entry.ts
+      utils.ts
+      validate-dependencies.ts
+    plan/
+      index.ts
+      collect-entries.ts
+    types.ts
+  tsconfig.json
 ```
 
 Single-file stages use named files. Stages with supporting files use a folder whose
-`index.ts` is the sole public entry. Each functional module exposes one public function;
-helpers and types stay within their responsibility. See [CLI contribution rules](AGENTS.md).
+`index.ts` is the sole public entry. Each functional module exposes one public function.
+An entry file contains only its orchestration function, calling named steps in sibling
+files. General helpers live in the stage's `utils.ts`; types stay within their responsibility.
+See [CLI contribution rules](AGENTS.md).

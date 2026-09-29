@@ -8,12 +8,12 @@ the containing source `directory`.
 
 ## Plan dependencies
 
-[`planDependencies(componentId, registry)`](plan.ts) returns unique entries in dependency-first
+[`planDependencies(componentId, registry)`](plan/index.ts) returns unique entries in dependency-first
 order, preserving declared dependency order. It reads no files and writes no changes.
 
 ```mermaid
 flowchart TD
-    plan["planDependencies(componentId, registry)"] --> collect["collectEntries(id)"]
+    plan["planDependencies(componentId, registry)"] --> collect["collectEntries(id) · plan/collect-entries.ts"]
     collect --> seen{"Already planned?"}
     seen -->|Yes| empty["Return empty list"]
     seen -->|No| lookup{"Entry exists?"}

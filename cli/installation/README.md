@@ -2,19 +2,19 @@
 
 [CLI overview](../README.md) · [Installation types](types.ts)
 
-Preparation and preview are implemented. [`index.ts`](index.ts), [`copy.ts`](copy.ts) and
-[`installed.ts`](installed.ts) remain WIP placeholders in this checkout.
+Preparation, preview and copying are implemented.
+[`index.ts`](index.ts) and [`installed.ts`](installed.ts) remain WIP placeholders.
 
 ## Prepare source
 
-[`prepareSource(entries)`](prepare.ts) reads planned files and returns `PreparedFile[]`
+[`prepareSource(entries)`](prepare/index.ts) reads planned files and returns `PreparedFile[]`
 containing relative destination paths and source content. Paths retain source folder names;
 file order follows entries and their manifests.
 
 ```mermaid
 flowchart TD
-    prepare["prepareSource(entries)"] --> files["Build source and destination-relative paths"]
-    files --> read["Read each source, concurrently"]
+    prepare["prepareSource(entries)"] --> files["collectSourceFiles"]
+    files --> read["readSourceFiles · read concurrently"]
     read --> rewrite["rewriteSource(content, filename)"]
     rewrite --> kind{"Source kind?"}
     kind -->|Svelte| scripts["Parse module and instance scripts, last to first"]
@@ -32,34 +32,63 @@ preserve other text, including Svelte markup and CSS; read and parsing failures 
 
 ## Preview changes
 
-[`previewChanges(files, destination)`](preview.ts) compares prepared content with destination
+[`previewChanges(files, destination)`](preview/index.ts) compares prepared content with destination
 files without writing. Results retain prepared-file order.
 
 ```mermaid
 flowchart TD
-    preview["previewChanges(files, destination)"] --> read["Read each destination file, concurrently"]
-    read --> outcome{"Read result?"}
-    outcome -->|ENOENT| add["status: add"]
-    outcome -->|Other error| error["Throw error"]
-    outcome -->|Content| compare{"Matches prepared content?"}
-    compare -->|Yes| unchanged["status: unchanged"]
-    compare -->|No| conflict["status: conflict"]
+    preview["previewChanges(files, destination)"] --> read["readDestinationFiles · concurrent reads"]
+    read -->|Other read error| error["Throw error"]
+    read -->|Contents or missing markers| compare["comparePreparedFiles"]
+    compare --> exists{"Destination exists?"}
+    exists -->|No| add["status: add"]
+    exists -->|Yes| matches{"Matches prepared content?"}
+    matches -->|Yes| unchanged["status: unchanged"]
+    matches -->|No| conflict["status: conflict"]
 ```
 
 Preview reports statuses only; it does not request approval or perform copying.
 
-## Copy files — WIP
+## Stage layout
 
-The separate copying task targets explicit approved overwrite paths, skipping identical
-files and rejecting unapproved conflicts before any writes. This is the intended flow;
-[`copy.ts`](copy.ts) has no function yet in this checkout.
+Each stage directory exposes one public orchestration function from `index.ts`;
+its sibling files contain the internal steps and are not re-exported.
+
+```text
+installation/
+  prepare/
+    index.ts
+    collect-source-files.ts
+    read-source-files.ts
+    rewrite-source.ts
+    rewrite-imports.ts
+    types.ts
+  preview/
+    index.ts
+    read-destination-files.ts
+    compare-prepared-files.ts
+    types.ts
+  copy/
+    index.ts
+    validate-overwrite-approvals.ts
+    write-prepared-files.ts
+  installed.ts
+```
+
+## Copy files
+
+[`copyFiles(files, destination, overwrites)`](copy/index.ts) accepts explicit relative overwrite
+paths, skips identical files and rejects unapproved conflicts before any writes. Bun writes
+create missing directories. Checks and writes are not atomic; write failures may leave
+some files copied. Cancellation must skip this call.
 
 ```mermaid
 flowchart TD
-    input["Prepared files, destination and approved overwrite paths"] -.-> inspect["Check all destination files"]
-    inspect -.-> conflicts{"Any unapproved conflicts?"}
-    conflicts -.->|Yes| reject["Reject before writes"]
-    conflicts -.->|No| copy["Copy additions and approved overwrites; skip identical files"]
+    input["copyFiles(files, destination, overwrites)"] --> inspect["previewChanges"]
+    inspect --> conflicts["validateOverwriteApprovals"]
+    conflicts --> approved{"All conflicts approved?"}
+    approved -->|No| reject["Reject before writes"]
+    approved -->|Yes| copy["writePreparedFiles · skip identical files"]
 ```
 
 ## Maintain installed exports — WIP
@@ -85,6 +114,6 @@ flowchart TD
     prepare -.-> preview["previewChanges"]
     preview -.-> decisions["Required conflict and overwrite decisions"]
     decisions -.->|Cancel| stop["Stop without applying changes"]
-    decisions -.->|Proceed| copy["copy.ts · WIP"]
+    decisions -.->|Proceed| copy["copyFiles"]
     copy -.-> exports["installed.ts · WIP"]
 ```
