@@ -8,6 +8,8 @@ export type Dimension = 'fit' | 'fill';
 
 export type { ButtonProps } from './button/types.js';
 export type * from './icon/types.js';
+export type { InputProps } from './input/types.js';
 export type { SurfaceProps, SurfaceRadius } from './surface/types.js';
 export type * from './theme/types.ts';
-export type { SelectBaseProps, SelectOptionDataProps, SelectProps } from './select/types.js';
+export type { SelectOption, SelectProps } from './select/types.js';
+export type { TextareaProps } from './textarea/types.js';

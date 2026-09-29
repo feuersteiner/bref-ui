@@ -4,8 +4,10 @@ import {
 } from '../../sections.js';
 import { chapter as buttonChapter, sections as buttonSections } from '../../button/sections.js';
 import { chapter as iconChapter, sections as iconSections } from '../../icon/sections.js';
-import { chapter as themeChapter, sections as themeSections } from '../../theme/sections.js';
+import { chapter as inputChapter, sections as inputSections } from '../../input/sections.js';
+import { chapter as popoverChapter, sections as popoverSections } from '../../popover/sections.js';
 import { chapter as selectChapter, sections as selectSections } from '../../select/sections.js';
+import { chapter as themeChapter, sections as themeSections } from '../../theme/sections.js';
 
 export const navigation = [
 	{
@@ -19,7 +21,9 @@ export const navigation = [
 		title: 'Components',
 		links: [
 			{ title: buttonChapter, href: '/button' },
+			{ title: inputChapter, href: '/input' },
 			{ title: iconChapter, href: '/icon' },
+			{ title: popoverChapter, href: '/popover' },
 			{ title: selectChapter, href: '/select' }
 		]
 	}
@@ -33,7 +37,9 @@ export interface PageSection {
 export const pageSections: Record<string, readonly PageSection[]> = {
 	'/': introductionSections,
 	'/button': buttonSections,
+	'/input': inputSections,
 	'/icon': iconSections,
+	'/popover': popoverSections,
 	'/select': selectSections,
 	'/theme': themeSections
 };
