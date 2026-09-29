@@ -2,8 +2,8 @@
 
 [CLI overview](../README.md)
 
-The add command is implemented. The executable and init command remain WIP;
-invocation syntax and initialization behavior still need agreement.
+The init and add commands are implemented. The executable remains WIP;
+invocation syntax still needs agreement.
 Dashed arrows show proposed wiring.
 
 ## Route commands
@@ -13,22 +13,27 @@ Dashed arrows show proposed wiring.
 ```mermaid
 flowchart TD
     args["CLI arguments"] -.-> route["cli/index.ts · WIP"]
-    route -.-> init["init.ts · WIP"]
+    route -.-> init["initConfig"]
     route -.-> add["addComponent"]
-    init -.-> report["Report result or failure"]
+    init --> report["Report result or failure"]
     add --> report
 ```
 
 ## Initialize configuration
 
-[`init.ts`](init.ts) will initialize consumer project configuration. Handling existing
-configuration files still requires agreed behavior.
+[`initConfig(projectRoot)`](init.ts) creates `bref.config.json` with `{ "ui": "$lib/ui" }`
+and returns `created`. An existing file is preserved without parsing and returns `exists`,
+even if its contents are invalid. Checking or writing errors propagate, and the project
+directory must already exist. The Bun existence check and write are separate operations;
+concurrent initialization of the same project is unsupported.
 
 ```mermaid
 flowchart TD
-    project["Consumer project"] -.-> init["init.ts · WIP"]
-    init -.-> existing["Apply agreed existing-config behavior"]
-    existing -.-> config["Initialize bref.config.json"]
+    project["Existing consumer project directory"] --> init["initConfig(projectRoot)"]
+    init --> existing["Bun.file · check bref.config.json existence"]
+    existing -->|Present| preserve["Return exists · preserve contents"]
+    existing -->|Absent| config["Bun.write · default configuration"]
+    config --> created["Return created"]
 ```
 
 ## Add a component

@@ -7,14 +7,14 @@ configured UI directory, using package types from `bref-ui/types`.
 
 This diagram shows the intended composition. Dashed arrows are wiring still to implement;
 nodes marked WIP are placeholders. The named functions already exist as standalone stages.
-The add command connects the implemented stages. The executable, init command and CLI
-packaging remain unfinished.
+The add command connects the implemented stages, and init creates default configuration.
+The executable and CLI packaging remain unfinished.
 
 ```mermaid
 flowchart TD
-    entry["index.ts · WIP"] -.-> init["commands/init.ts · WIP"]
+    entry["index.ts · WIP"] -.-> init["initConfig"]
     entry -.-> add["addComponent"]
-    init -.-> config["bref.config.json"]
+    init --> config["bref.config.json"]
     add --> read["readConfig"]
     read --> resolve["resolveTargetDir"]
     add --> load["loadRegistry"]
@@ -40,7 +40,8 @@ flowchart TD
 | [installation](installation/README.md)   | Prepare sources and exports; preview changes; copy files | Implemented |
 | [installation](installation/README.md)   | Coordinate installation                                  | Implemented |
 | [commands](commands/README.md)           | Add components with terminal review                      | Implemented |
-| [commands](commands/README.md)           | Route commands; initialize configuration                 | WIP         |
+| [commands](commands/README.md)           | Initialize configuration                                 | Implemented |
+| [commands](commands/README.md)           | Route commands                                           | WIP         |
 
 ## Source layout
 
