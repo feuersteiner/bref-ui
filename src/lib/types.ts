@@ -24,3 +24,4 @@ export type { TextInputProps } from './text-input/types.js';
 export type { TextAreaProps } from './text-area/types.js';
 export type * from './tree-view/types.js';
 export type { PillDataProps, PillProps } from './pill/types.js';
+export type { PillGroupItem, PillGroupProps } from './pill-group/types.js';
