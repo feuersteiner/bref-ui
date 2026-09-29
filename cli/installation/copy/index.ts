@@ -1,5 +1,7 @@
-import { previewChanges } from './preview.js';
-import type { PreparedFile } from './types.js';
+import { previewChanges } from '../preview/index.js';
+import type { PreparedFile } from '../types.js';
+import { validateOverwriteApprovals } from './validate-overwrite-approvals.js';
+import { writePreparedFiles } from './write-prepared-files.js';
 
 /**
  * Copy prepared files after checking every conflict against explicit approvals.
@@ -18,20 +20,6 @@ export const copyFiles = async (
 	overwrites: string[] = []
 ): Promise<void> => {
 	const changes = await previewChanges(files, destination);
-	const approved = new Set(overwrites);
-	const conflict = changes.find(({ path, status }) => status === 'conflict' && !approved.has(path));
-
-	if (conflict) throw new Error(`Overwrite approval required for "${conflict.path}".`);
-
-	await Promise.all(
-		files.map(async ({ path, content }, index) => {
-			const { status } = changes[index];
-			if (status === 'unchanged') return;
-
-			const target = `${destination}/${path}`;
-			if (status === 'add' && (await Bun.file(target).exists()))
-				throw new Error(`Destination appeared after preview for "${path}".`);
-			await Bun.write(target, content, { createPath: true });
-		})
-	);
+	validateOverwriteApprovals(changes, overwrites);
+	await writePreparedFiles(files, changes, destination);
 };
