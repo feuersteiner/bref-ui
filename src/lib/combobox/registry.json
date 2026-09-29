@@ -1,0 +1,6 @@
+{
+	"id": "combobox",
+	"files": ["combobox.svelte"],
+	"exports": { "Combobox": "combobox.svelte" },
+	"dependencies": ["text-input", "select", "icon"]
+}
