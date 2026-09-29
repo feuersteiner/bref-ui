@@ -2,19 +2,27 @@
 
 [CLI overview](../README.md)
 
-The init and add commands are implemented. The executable remains WIP;
-invocation syntax still needs agreement.
-Dashed arrows show proposed wiring.
+The executable and init/add commands are implemented. Commands use the current directory
+as the consumer project; the registry comes from the source checkout.
 
 ## Route commands
 
-[`cli/index.ts`](../index.ts) will route arguments and report command results and failures.
+[`cli/index.ts`](../index.ts) calls [`runCommand`](index.ts), the commands directory’s
+sole routing entry. It calls `parse`, then `execute`. Its catch block prints a concise
+message directly with `console.error` and sets exit code 1.
+Help, successful commands and deliberate cancellation exit with code 0.
+
+Supported arguments are `init`, `add <component>`, `help`, `--help` and `-h`. No arguments
+also shows help; `init --help` and `add --help` are accepted. Unknown commands, unsupported
+options, missing component IDs and extra arguments fail before accessing project files.
 
 ```mermaid
 flowchart TD
-    args["CLI arguments"] -.-> route["cli/index.ts · WIP"]
-    route -.-> init["initConfig"]
-    route -.-> add["addComponent"]
+    args["CLI arguments"] --> parse["parse"]
+    parse --> route["execute"]
+    route --> help["Print help"]
+    route --> init["initConfig"]
+    route --> add["addComponent"]
     init --> report["Report result or failure"]
     add --> report
 ```

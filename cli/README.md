@@ -5,15 +5,21 @@ configured UI directory, using package types from `bref-ui/types`.
 
 ## Overview
 
-This diagram shows the intended composition. Dashed arrows are wiring still to implement;
-nodes marked WIP are placeholders. The named functions already exist as standalone stages.
-The add command connects the implemented stages, and init creates default configuration.
-The executable and CLI packaging remain unfinished.
+The executable routes init and add to the implemented stages. CLI packaging and automatic
+project alias discovery remain unfinished. Run commands from the consumer project directory:
+
+```sh
+bun /path/to/bref-ui/cli/index.ts init
+bun /path/to/bref-ui/cli/index.ts add button
+```
+
+The current executable loads the registry from this source checkout. The consumer needs
+`bref-ui` installed for copied component types. Use `--help` for usage.
 
 ```mermaid
 flowchart TD
-    entry["index.ts · WIP"] -.-> init["initConfig"]
-    entry -.-> add["addComponent"]
+    entry["index.ts"] --> init["initConfig"]
+    entry --> add["addComponent"]
     init --> config["bref.config.json"]
     add --> read["readConfig"]
     read --> resolve["resolveTargetDir"]
@@ -41,7 +47,7 @@ flowchart TD
 | [installation](installation/README.md)   | Coordinate installation                                  | Implemented |
 | [commands](commands/README.md)           | Add components with terminal review                      | Implemented |
 | [commands](commands/README.md)           | Initialize configuration                                 | Implemented |
-| [commands](commands/README.md)           | Route commands                                           | WIP         |
+| [commands](commands/README.md)           | Route commands                                           | Implemented |
 
 ## Source layout
 
@@ -49,6 +55,10 @@ flowchart TD
 cli/
   index.ts
   commands/
+    index.ts
+    execute.ts
+    parse.ts
+    types.ts
     add/
       index.ts
       approve-overwrites.ts
