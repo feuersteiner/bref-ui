@@ -7,6 +7,7 @@ export type Orientation = 'horizontal' | 'vertical';
 export type Dimension = 'fit' | 'fill';
 
 export type { ButtonProps } from './button/types.js';
+export type { DialogProps } from './dialog/types.js';
 export type * from './icon/types.js';
 export type { SurfaceProps, SurfaceRadius } from './surface/types.js';
 export type * from './theme/types.ts';
