@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import type { ScriptStatement } from '../parser/types.js';
 import { readReExportedNames } from './read-reexported-names.js';
 import { readDeclaredExportNames } from './read-declared-export-names.js';
 import type { ExistingExport } from './types.js';
@@ -11,7 +11,11 @@ import type { ExistingExport } from './types.js';
  * @returns Named records for its exports, or an empty list when it exports no names.
  * @throws For export *, whose names cannot be known without inspecting another file.
  */
-export const readExportedNames = (statement: ts.Statement): ExistingExport[] => {
-	if (ts.isExportDeclaration(statement)) return readReExportedNames(statement);
+export const readExportedNames = (statement: ScriptStatement): ExistingExport[] => {
+	if (
+		statement.type === 'ExportAllDeclaration' ||
+		(statement.type === 'ExportNamedDeclaration' && !statement.declaration)
+	)
+		return readReExportedNames(statement);
 	return readDeclaredExportNames(statement);
 };

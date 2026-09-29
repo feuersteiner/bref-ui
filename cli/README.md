@@ -5,16 +5,25 @@ configured UI directory, using package types from `bref-ui/types`.
 
 ## Overview
 
-The executable routes init and add to the implemented stages. CLI packaging and automatic
-project alias discovery remain unfinished. Run commands from the consumer project directory:
+The executable routes init and add to the implemented stages and ships in the local package.
+Automatic project alias discovery remains unfinished. Bun is required to run the CLI.
+Run commands from the consumer project directory:
 
 ```sh
-bun /path/to/bref-ui/cli/index.ts init
-bun /path/to/bref-ui/cli/index.ts add button
+bun run bref-ui init
+bun run bref-ui add button
 ```
 
-The current executable loads the registry from this source checkout. The consumer needs
-`bref-ui` installed for copied component types. Use `--help` for usage.
+Install the local tarball with `bun add /path/to/bref-ui-2.0.0.tgz`. The executable loads
+the canonical registry shipped in the package; copied components use its `bref-ui/types`
+entry. Use `bun run bref-ui --help` for usage. Direct source invocation remains available
+with `bun /path/to/bref-ui/cli/index.ts <command>`.
+
+`bun pm pack --destination .workbench/artifacts` validates manifests through `loadRegistry`,
+builds the library and runs publint before producing a local tarball. The package ships
+CLI TypeScript modules and canonical `src/lib` sources alongside `dist`. Import/export
+parsing reuses `svelte/compiler`; the TypeScript compiler remains development-only and
+is not installed for CLI consumers. Packing does not publish to npm.
 
 ```mermaid
 flowchart TD
@@ -54,6 +63,7 @@ flowchart TD
 ```text
 cli/
   index.ts
+  pack.ts
   commands/
     index.ts
     execute.ts
@@ -92,6 +102,10 @@ cli/
       read-exported-names.ts
       read-index.ts
       read-reexported-names.ts
+      types.ts
+      utils.ts
+    parser/
+      index.ts
       types.ts
       utils.ts
     prepare/

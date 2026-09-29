@@ -1,36 +1,24 @@
-import ts from 'typescript';
+import type { ScriptStatement } from '../parser/types.js';
 import type { ExistingExport } from './types.js';
-import { readBindingNames } from './utils.js';
+import { readBindingNames, readName } from './utils.js';
 
 /**
  * Reserve names defined by exported variables, functions, classes and type declarations.
- * These declarations are not default re-exports of installed component files, so their
- * component paths are always null. Default declarations reserve the name default.
+ * These declarations have no reusable component path; default declarations reserve default.
  * @param statement Parsed top-level declaration or another statement to ignore.
  * @returns Declared public names, including destructured variables, or an empty list.
  */
-export const readDeclaredExportNames = (statement: ts.Statement): ExistingExport[] => {
-	if (!ts.canHaveModifiers(statement)) return [];
-	const modifiers = ts.getModifiers(statement);
-	if (!modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword)) return [];
-	if (modifiers.some((modifier) => modifier.kind === ts.SyntaxKind.DefaultKeyword))
+export const readDeclaredExportNames = (statement: ScriptStatement): ExistingExport[] => {
+	if (statement.type === 'ExportDefaultDeclaration')
 		return [{ name: 'default', componentPath: null }];
+	if (statement.type !== 'ExportNamedDeclaration' || !statement.declaration) return [];
 
-	if (ts.isVariableStatement(statement))
-		return statement.declarationList.declarations.flatMap((declaration) =>
-			readBindingNames(declaration.name).map((name) => ({ name, componentPath: null }))
+	const declaration = statement.declaration;
+	if (declaration.type === 'VariableDeclaration')
+		return declaration.declarations.flatMap(({ id }) =>
+			readBindingNames(id).map((name) => ({ name, componentPath: null }))
 		);
 
-	if (
-		(ts.isFunctionDeclaration(statement) ||
-			ts.isClassDeclaration(statement) ||
-			ts.isInterfaceDeclaration(statement) ||
-			ts.isTypeAliasDeclaration(statement) ||
-			ts.isEnumDeclaration(statement) ||
-			ts.isModuleDeclaration(statement)) &&
-		statement.name
-	)
-		return [{ name: statement.name.text, componentPath: null }];
-
-	return [];
+	const name = 'id' in declaration ? readName(declaration.id) : null;
+	return name === null ? [] : [{ name, componentPath: null }];
 };

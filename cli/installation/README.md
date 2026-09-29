@@ -3,6 +3,10 @@
 [CLI overview](../README.md) · [Installation types](types.ts)
 
 Installation orchestration, preparation, preview, copying and export preparation are implemented.
+Source import rewriting and existing export inspection share [`parseScript`](parser/index.ts),
+which reuses Svelte’s TypeScript-aware parser without a runtime TypeScript dependency.
+It wraps standalone scripts for parsing, handles literal closing tags and preserves original
+module positions for text edits; it does not compile or regenerate consumer code.
 
 ## Prepare source
 
@@ -57,6 +61,10 @@ its sibling files contain the internal steps and are not re-exported.
 installation/
   index.ts
   types.ts
+  parser/
+    index.ts
+    types.ts
+    utils.ts
   prepare/
     index.ts
     collect-source-files.ts
