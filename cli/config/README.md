@@ -4,13 +4,14 @@
 
 ## Read configuration
 
-[`readConfig(projectRoot)`](read.ts) reads `bref.config.json` and returns `{ ui }`.
+[`readConfig(projectRoot)`](read/index.ts) reads `bref.config.json` and returns `{ ui }`.
 An omitted `ui` defaults to `$lib/ui`; a missing file is an error, not a default configuration.
 
 ```mermaid
 flowchart TD
-    read["readConfig(projectRoot)"] --> json["Read and parse bref.config.json"]
-    json --> object{"Root is an object?"}
+    read["readConfig(projectRoot)"] --> json["readConfigFile(projectRoot)"]
+    json --> normalize["normalizeConfig(configPath, config)"]
+    normalize --> object{"Root is an object?"}
     object -->|No| error["Throw error"]
     object -->|Yes| supplied{"ui supplied?"}
     supplied -->|No| default["Return ui: $lib/ui"]
@@ -24,18 +25,18 @@ are not returned.
 
 ## Resolve the destination
 
-[`resolveTargetDir(projectRoot, ui, aliases?)`](resolve.ts) returns a normalized absolute
+[`resolveTargetDir(projectRoot, ui, aliases?)`](resolve/index.ts) returns a normalized absolute
 destination without accessing the filesystem. Supplied mappings override `$lib → src/lib`.
 
 ```mermaid
 flowchart TD
-    resolve["resolveTargetDir(projectRoot, ui, aliases)"] --> merge["Merge default and supplied aliases"]
-    merge --> sort["Sort aliases by longest prefix"]
-    sort --> match{"Exact alias or alias/ prefix matches?"}
-    match -->|No| error["Throw unknown-alias error"]
-    match -->|Yes| target{"Alias target is absolute?"}
-    target -->|No| relative["Base target on projectRoot"]
-    target -->|Yes| absolute["Use target directly"]
+    resolve["resolveTargetDir(projectRoot, ui, aliases)"] --> match["resolveAlias(ui, aliases): merge and sort mappings"]
+    match --> found{"Exact alias or alias/ prefix matches?"}
+    found -->|No| error["Throw unknown-alias error"]
+    found -->|Yes| target["resolveAliasTarget(projectRoot, ui, alias, target)"]
+    target --> absoluteCheck{"Alias target is absolute?"}
+    absoluteCheck -->|No| relative["Base target on projectRoot"]
+    absoluteCheck -->|Yes| absolute["Use target directly"]
     relative --> result["Append suffix and normalize absolute path"]
     absolute --> result
 ```
