@@ -18,15 +18,15 @@ flowchart TD
     read -.-> resolve["resolveTargetDir"]
     add -.-> load["loadRegistry"]
     load -.-> plan["planDependencies"]
-    resolve -.-> install["installation/index.ts · WIP"]
+    resolve -.-> install["installComponent"]
     plan -.-> install
-    install -.-> prepare["prepareSource"]
-    install -.-> exports["prepareExports"]
-    prepare -.-> files["Prepared sources and index.ts"]
-    exports -.-> files
-    files -.-> preview["previewChanges"]
-    preview -.-> decisions["Overwrite approval or cancellation"]
-    decisions -.-> copy["copyFiles"]
+    install --> prepare["prepareSource"]
+    prepare --> exports["prepareExports"]
+    exports --> files["Prepared sources and index.ts"]
+    files --> preview["previewChanges"]
+    preview --> decisions["review · overwrite approval or cancellation"]
+    decisions -->|null| cancel["Return cancelled"]
+    decisions -->|Approved paths| copy["copyFiles"]
 ```
 
 ## Workflow documentation
@@ -37,7 +37,7 @@ flowchart TD
 | [registry](registry/README.md)           | Plan dependencies                                        | Implemented |
 | [registry/load](registry/load/README.md) | Discover and validate manifests and dependencies         | Implemented |
 | [installation](installation/README.md)   | Prepare sources and exports; preview changes; copy files | Implemented |
-| [installation](installation/README.md)   | Coordinate installation                                  | WIP         |
+| [installation](installation/README.md)   | Coordinate installation                                  | Implemented |
 | [commands](commands/README.md)           | Route commands; initialize configuration; add components | WIP         |
 
 ## Source layout
@@ -70,7 +70,11 @@ cli/
       collect-exports.ts
       create-additions.ts
       merge-content.ts
+      read-declared-export-names.ts
+      read-exported-names.ts
       read-index.ts
+      read-reexported-names.ts
+      types.ts
       utils.ts
     prepare/
       index.ts
