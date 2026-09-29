@@ -1,4 +1,27 @@
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import type { PreparedFile, PreviewChange } from './types.js';
+
 /**
- * WIP: Describe proposed file additions and conflicts before installation.
- * Present the changes needed for explicit overwrite or cancellation decisions.
+ * Compare prepared sources with destination files without writing changes.
+ * @param files Prepared files with paths relative to the destination directory.
+ * @param destination Consumer project's configured UI directory.
+ * @returns Addition, unchanged or conflict statuses in prepared-file order.
+ * @throws When an existing destination file cannot be read.
  */
+export const previewChanges = async (
+	files: PreparedFile[],
+	destination: string
+): Promise<PreviewChange[]> =>
+	Promise.all(
+		files.map(async ({ path, content }): Promise<PreviewChange> => {
+			try {
+				const existing = await readFile(join(destination, path), 'utf8');
+				return { path, status: existing === content ? 'unchanged' : 'conflict' };
+			} catch (error) {
+				if (error instanceof Error && 'code' in error && error.code === 'ENOENT')
+					return { path, status: 'add' };
+				throw error;
+			}
+		})
+	);
