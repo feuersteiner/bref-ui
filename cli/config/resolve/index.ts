@@ -1,3 +1,6 @@
+import { resolveAlias } from './resolve-alias.js';
+import { resolveAliasTarget } from './resolve-alias-target.js';
+
 /**
  * Resolve a UI alias using the longest matching alias prefix.
  * Supplied mappings override the default $lib mapping to src/lib.
@@ -12,14 +15,6 @@ export const resolveTargetDir = (
 	ui: string,
 	aliases: Record<string, string> = {}
 ): string => {
-	const mappings = Object.entries({ $lib: 'src/lib', ...aliases }).sort(
-		([left], [right]) => right.length - left.length
-	);
-	const match = mappings.find(([alias]) => ui === alias || ui.startsWith(`${alias}/`));
-
-	if (!match) throw new Error(`Cannot resolve UI alias "${ui}".`);
-
-	const [alias, target] = match;
-	const directory = target.startsWith('/') ? target : `${projectRoot}/${target}`;
-	return Bun.fileURLToPath(Bun.pathToFileURL(`${directory}${ui.slice(alias.length)}`));
+	const [alias, target] = resolveAlias(ui, aliases);
+	return resolveAliasTarget(projectRoot, ui, alias, target);
 };
