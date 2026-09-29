@@ -7,24 +7,25 @@ configured UI directory, using package types from `bref-ui/types`.
 
 This diagram shows the intended composition. Dashed arrows are wiring still to implement;
 nodes marked WIP are placeholders. The named functions already exist as standalone stages.
-The executable and commands are not connected yet, and CLI packaging is unfinished.
+The add command connects the implemented stages. The executable, init command and CLI
+packaging remain unfinished.
 
 ```mermaid
 flowchart TD
     entry["index.ts · WIP"] -.-> init["commands/init.ts · WIP"]
-    entry -.-> add["commands/add.ts · WIP"]
+    entry -.-> add["addComponent"]
     init -.-> config["bref.config.json"]
-    add -.-> read["readConfig"]
-    read -.-> resolve["resolveTargetDir"]
-    add -.-> load["loadRegistry"]
-    load -.-> plan["planDependencies"]
-    resolve -.-> install["installComponent"]
-    plan -.-> install
+    add --> read["readConfig"]
+    read --> resolve["resolveTargetDir"]
+    add --> load["loadRegistry"]
+    load --> plan["planDependencies"]
+    resolve --> install["installComponent"]
+    plan --> install
     install --> prepare["prepareSource"]
     prepare --> exports["prepareExports"]
     exports --> files["Prepared sources and index.ts"]
     files --> preview["previewChanges"]
-    preview --> decisions["review · overwrite approval or cancellation"]
+    preview --> decisions["reviewChanges · terminal approvals or cancellation"]
     decisions -->|null| cancel["Return cancelled"]
     decisions -->|Approved paths| copy["copyFiles"]
 ```
@@ -38,7 +39,8 @@ flowchart TD
 | [registry/load](registry/load/README.md) | Discover and validate manifests and dependencies         | Implemented |
 | [installation](installation/README.md)   | Prepare sources and exports; preview changes; copy files | Implemented |
 | [installation](installation/README.md)   | Coordinate installation                                  | Implemented |
-| [commands](commands/README.md)           | Route commands; initialize configuration; add components | WIP         |
+| [commands](commands/README.md)           | Add components with terminal review                      | Implemented |
+| [commands](commands/README.md)           | Route commands; initialize configuration                 | WIP         |
 
 ## Source layout
 
@@ -46,7 +48,12 @@ flowchart TD
 cli/
   index.ts
   commands/
-    add.ts
+    add/
+      index.ts
+      approve-overwrites.ts
+      display-changes.ts
+      review-changes.ts
+      utils.ts
     init.ts
   config/
     read/
