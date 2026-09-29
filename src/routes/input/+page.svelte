@@ -224,7 +224,11 @@
 			<label>Read only<Input readonly value="Fixed value" /></label>
 			<label>Required and empty<Input required aria-describedby="required-help" /></label>
 			<label>
-				Server error<Input aria-invalid="true" aria-describedby="input-error-help" value="Incorrect" />
+				Server error<Input
+					aria-invalid="true"
+					aria-describedby="input-error-help"
+					value="Incorrect"
+				/>
 			</label>
 			<label>Disabled textarea<Textarea disabled value="Unavailable" /></label>
 			<label>Read only textarea<Textarea readonly value="Fixed note" /></label>
