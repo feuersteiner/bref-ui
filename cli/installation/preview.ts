@@ -1,5 +1,3 @@
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
 import type { PreparedFile, PreviewChange } from './types.js';
 
 /**
@@ -16,7 +14,7 @@ export const previewChanges = async (
 	Promise.all(
 		files.map(async ({ path, content }): Promise<PreviewChange> => {
 			try {
-				const existing = await readFile(join(destination, path), 'utf8');
+				const existing = await Bun.file(`${destination}/${path}`).text();
 				return { path, status: existing === content ? 'unchanged' : 'conflict' };
 			} catch (error) {
 				if (error instanceof Error && 'code' in error && error.code === 'ENOENT')

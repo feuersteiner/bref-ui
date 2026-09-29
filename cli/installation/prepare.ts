@@ -1,4 +1,3 @@
-import { basename } from 'node:path';
 import { parse } from 'svelte/compiler';
 import ts from 'typescript';
 import type { RegistryEntry } from '../registry/types.js';
@@ -14,7 +13,7 @@ export const prepareSource = async (entries: RegistryEntry[]): Promise<PreparedF
 	const files = entries.flatMap((entry) =>
 		entry.files.map((file) => ({
 			source: `${entry.directory}/${file}`,
-			path: `${basename(entry.directory)}/${file}`
+			path: `${entry.directory.split('/').filter(Boolean).at(-1)}/${file}`
 		}))
 	);
 
