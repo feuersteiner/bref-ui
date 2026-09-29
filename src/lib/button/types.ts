@@ -23,11 +23,13 @@ interface IconButtonProps {
 interface HrefButtonProps {
 	href: string;
 	onClick?: never;
+	openInNewTab?: boolean;
 }
 
 interface ClickButtonProps {
 	href?: never;
 	onClick: (event: MouseEvent) => void;
+	openInNewTab?: never;
 }
 
 export type ButtonProps = {

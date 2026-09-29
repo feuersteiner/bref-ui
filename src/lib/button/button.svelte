@@ -1,6 +1,5 @@
 <script lang="ts">
-	/* eslint-disable max-lines, svelte/no-navigation-without-resolve -- Library hrefs are consumer-provided; keep the scoped styling recipe with its markup. */
-	import type { HTMLAnchorAttributes } from 'svelte/elements';
+	/* eslint-disable max-lines, svelte/consistent-selector-style -- Keep the shared button/link recipe scoped to .button. */
 	import Icon from '../icon/icon.svelte';
 	import type { ButtonProps } from './types.js';
 
@@ -15,64 +14,49 @@
 		rounded = false,
 		disabled = false,
 		href,
+		openInNewTab = false,
 		onClick,
 		stylesOverride
 	}: ButtonProps = $props();
 
 	const isIcon = $derived(label === undefined);
-	const anchorStylesOverride = $derived(stylesOverride as HTMLAnchorAttributes | undefined);
+	const isLink = $derived(href !== undefined);
 </script>
 
-{#snippet content()}
+<svelte:element
+	this={isLink ? 'a' : 'button'}
+	{...stylesOverride}
+	class={['button', stylesOverride?.class]}
+	type={!isLink ? (stylesOverride?.type ?? 'button') : undefined}
+	href={disabled ? undefined : href}
+	target={isLink && openInNewTab ? '_blank' : undefined}
+	rel={isLink && openInNewTab ? 'noopener noreferrer' : undefined}
+	disabled={!isLink ? disabled : undefined}
+	aria-disabled={isLink ? disabled : stylesOverride?.['aria-disabled']}
+	tabindex={isLink && disabled ? -1 : stylesOverride?.tabindex}
+	onclick={!isLink ? onClick : stylesOverride?.onclick}
+	aria-label={isIcon ? (icon?.label ?? icon?.name) : undefined}
+	data-color={color}
+	data-size={size}
+	data-variant={variant}
+	data-kind={isIcon ? 'icon' : 'normal'}
+	data-wide={wide && !isIcon ? '' : undefined}
+	data-rounded={rounded && isIcon ? '' : undefined}
+	style:--internal-color={`var(--color-${color}, #28231f)`}
+>
 	{#if icon}
-		<span><Icon {...icon} label={undefined} /></span>
+		<span><Icon {...icon} color={undefined} label={undefined} /></span>
 	{/if}
 	{#if !isIcon}
 		{label}
 		{#if trailingIcon}
-			<span><Icon {...trailingIcon} label={undefined} /></span>
+			<span><Icon {...trailingIcon} color={undefined} label={undefined} /></span>
 		{/if}
 	{/if}
-{/snippet}
-
-{#if href !== undefined}
-	<a
-		{...anchorStylesOverride}
-		href={disabled ? undefined : href}
-		aria-disabled={disabled}
-		tabindex={disabled ? -1 : undefined}
-		aria-label={isIcon ? (icon?.label ?? icon?.name) : undefined}
-		data-color={color}
-		data-size={size}
-		data-variant={variant}
-		data-kind={isIcon ? 'icon' : 'normal'}
-		data-wide={wide && !isIcon ? '' : undefined}
-		data-rounded={rounded && isIcon ? '' : undefined}
-		style:--internal-color={`var(--color-${color}, #28231f)`}
-	>
-		{@render content()}
-	</a>
-{:else}
-	<button
-		type="button"
-		{...stylesOverride}
-		{disabled}
-		onclick={onClick}
-		aria-label={isIcon ? (icon?.label ?? icon?.name) : undefined}
-		data-color={color}
-		data-size={size}
-		data-variant={variant}
-		data-kind={isIcon ? 'icon' : 'normal'}
-		data-wide={wide && !isIcon ? '' : undefined}
-		data-rounded={rounded && isIcon ? '' : undefined}
-		style:--internal-color={`var(--color-${color}, #28231f)`}
-	>
-		{@render content()}
-	</button>
-{/if}
+</svelte:element>
 
 <style>
-	:is(button, a) {
+	.button {
 		--internal-height: max(48px, 3rem);
 		--internal-padding: 1.125rem;
 		--internal-icon-size: calc(var(--internal-height) / 2 + 0.25rem);
@@ -113,23 +97,23 @@
 			box-shadow 120ms ease,
 			color 120ms ease;
 	}
-	:is(button, a)[data-size='x-small'] {
+	.button[data-size='x-small'] {
 		--internal-height: max(28px, 1.75rem);
 		--internal-padding: 0.5rem;
 	}
-	:is(button, a)[data-size='small'] {
+	.button[data-size='small'] {
 		--internal-height: max(40px, 2.5rem);
 		--internal-padding: 0.875rem;
 	}
-	:is(button, a)[data-size='large'] {
+	.button[data-size='large'] {
 		--internal-height: max(64px, 4rem);
 		--internal-padding: 1.5rem;
 	}
-	:is(button, a)[data-size='x-large'] {
+	.button[data-size='x-large'] {
 		--internal-height: max(80px, 5rem);
 		--internal-padding: 2rem;
 	}
-	:is(button, a)[data-kind='icon'] {
+	.button[data-kind='icon'] {
 		width: var(--internal-height);
 		height: var(--internal-height);
 		padding: 0;
@@ -139,77 +123,81 @@
 		display: inline-flex;
 		font-size: var(--internal-icon-size);
 	}
-	:is(button, a)[data-wide] {
+	.button[data-wide] {
 		width: 100%;
 	}
-	:is(button, a)[data-rounded] {
+	.button[data-rounded] {
 		border-radius: 50%;
 	}
-	:is(button, a)[data-variant='soft'] {
-		--internal-tint: 12%;
-		--internal-content: var(--internal-foreground);
-		--internal-surface: color-mix(in srgb, var(--internal-background) 80%, transparent);
+	.button[data-variant='soft'] {
+		--internal-tint: 16%;
+		--internal-content: color-mix(in srgb, var(--internal-color) 80%, var(--internal-foreground));
+		--internal-surface: var(--internal-background);
 		--internal-border: color-mix(in srgb, var(--internal-color) 30%, transparent);
 		--internal-highlight: color-mix(in srgb, var(--internal-foreground) 16%, transparent);
 	}
-	:is(button, a)[data-variant='filled'] {
-		--internal-fill: color-mix(in srgb, var(--internal-color) 97%, transparent);
-		--internal-content: var(--internal-background);
+	.button[data-variant='filled'] {
+		--internal-fill: color-mix(in srgb, var(--internal-color) 88%, var(--internal-foreground));
+		--internal-content: color-mix(in srgb, var(--internal-background) 90%, var(--internal-color));
 		--internal-border: color-mix(in srgb, var(--internal-color) 68%, var(--internal-foreground));
 		--internal-highlight: color-mix(in srgb, var(--internal-foreground) 28%, transparent);
 	}
-	:is(button, a):is([data-variant='soft'], [data-variant='filled']) {
+	.button:is([data-variant='soft'], [data-variant='filled']) {
 		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
 		backdrop-filter: blur(0.5rem) saturate(120%);
 	}
-	:is(button, a)[data-color='foreground'] {
+	.button[data-color='foreground'] {
 		--internal-state-color: var(--internal-background);
 	}
-	:is(button, a):not(:disabled, [aria-disabled='true']):is(:hover, :active) {
-		--internal-tint: 16%;
-		--internal-content: var(--internal-foreground);
-	}
-	:is(button, a)[data-variant='neutral']:not(:disabled, [aria-disabled='true']):is(
-			:hover,
-			:active
-		) {
-		--internal-surface: var(--internal-background);
-	}
-	:is(button, a):not(:disabled, [aria-disabled='true']):active {
+	.button:not(:disabled, [aria-disabled='true']):is(:hover, :active) {
 		--internal-tint: 22%;
+		--internal-border: color-mix(in srgb, var(--internal-color) 40%, transparent);
 	}
-	:is(button, a)[data-variant='filled']:not(:disabled, [aria-disabled='true']):is(:hover, :active) {
-		--internal-content: var(--internal-background);
-		--internal-fill: color-mix(in srgb, var(--internal-color) 92%, var(--internal-state-color));
+	.button:not(:disabled, [aria-disabled='true']):is(:hover, :active)[data-variant='neutral'] {
+		--internal-tint: 5%;
+		--internal-content: color-mix(in srgb, var(--internal-color) 90%, var(--internal-foreground));
 	}
-	:is(button, a)[data-variant='filled']:not(:disabled, [aria-disabled='true']):active {
-		--internal-fill: color-mix(in srgb, var(--internal-color) 84%, var(--internal-state-color));
+	.button:not(:disabled, [aria-disabled='true']):active {
+		--internal-tint: 28%;
 	}
-	:is(button, a):focus-visible {
-		outline: 2px solid var(--internal-foreground);
+	.button:not(:disabled, [aria-disabled='true']):active[data-variant='neutral'] {
+		--internal-tint: 10%;
+		--internal-content: color-mix(in srgb, var(--internal-color) 80%, var(--internal-foreground));
+	}
+	.button:not(:disabled, [aria-disabled='true']):active[data-variant='soft'] {
+		--internal-content: color-mix(in srgb, var(--internal-color) 70%, var(--internal-foreground));
+	}
+	.button:not(:disabled, [aria-disabled='true']):is(:hover, :active)[data-variant='filled'] {
+		--internal-fill: color-mix(in srgb, var(--internal-color) 86%, var(--internal-state-color));
+	}
+	.button:not(:disabled, [aria-disabled='true']):active[data-variant='filled'] {
+		--internal-fill: color-mix(in srgb, var(--internal-color) 80%, var(--internal-state-color));
+	}
+	.button:focus-visible {
+		outline: 2px solid var(--color-foreground, black);
 		outline-offset: 3px;
 	}
-	:is(button, a):is(:disabled, [aria-disabled='true']) {
+	.button:is(:disabled, [aria-disabled='true']) {
 		opacity: 0.45;
 		cursor: not-allowed;
 	}
 	@media (prefers-reduced-motion: reduce) {
-		:is(button, a) {
+		.button {
 			transition: none;
 		}
 	}
 	@media (forced-colors: active) {
-		:is(button, a) {
+		.button {
 			border-color: ButtonText;
 			box-shadow: none;
 			-webkit-backdrop-filter: none;
 			backdrop-filter: none;
 		}
-		:is(button, a):is(:disabled, [aria-disabled='true']) {
+		.button:is(:disabled, [aria-disabled='true']) {
 			color: GrayText;
 			opacity: 1;
 		}
-		:is(button, a):focus-visible {
+		.button:focus-visible {
 			outline-color: Highlight;
 		}
 	}
