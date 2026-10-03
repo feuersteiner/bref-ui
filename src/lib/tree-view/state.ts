@@ -54,16 +54,16 @@ export const nextFocusAfterChange = (
 	const survivors = new Set(current.map(({ item }) => item.id));
 	if (preferAncestor) {
 		let ancestor = previous.find(({ item }) => item.id === focusedId)?.parentId;
-		while (ancestor) {
+		while (ancestor !== undefined) {
 			if (survivors.has(ancestor)) return ancestor;
 			ancestor = previous.find(({ item }) => item.id === ancestor)?.parentId;
 		}
 	}
 	for (let distance = 1; distance < previous.length; distance++) {
 		const after = previous[previousIndex + distance]?.item.id;
-		if (after && survivors.has(after)) return after;
+		if (after !== undefined && survivors.has(after)) return after;
 		const before = previous[previousIndex - distance]?.item.id;
-		if (before && survivors.has(before)) return before;
+		if (before !== undefined && survivors.has(before)) return before;
 	}
 	return current[0]?.item.id;
 };
