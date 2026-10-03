@@ -1,16 +1,5 @@
-<script module lang="ts">
-	export const chapter = 'Tree view';
-
-	export const sections = [
-		{ id: 'example', title: 'Usage' },
-		{ id: 'playground', title: 'Selection and expansion' },
-		{ id: 'states', title: 'Nested, disabled and empty states' },
-		{ id: 'props', title: 'Props' },
-		{ id: 'accessibility', title: 'Keyboard and accessibility' }
-	] as const;
-</script>
-
 <script lang="ts">
+	import { chapter, sections } from './sections.js';
 	/* eslint-disable max-lines -- Gallery states and prop documentation stay together. */
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
@@ -229,7 +218,8 @@
 		<p>
 			Click a row to select or its chevron to expand. Bind <code>selection</code>
 			to a string for one item or an array for several. Initial and newly selected items reveal their
-			ancestors without opening the selected item's own children. Manual collapse does not clear selection
+			ancestors without opening the selected item's own children. Manually opened branches stay open.
+			Paths revealed by an external selection follow that selection. Manual collapse does not clear selection
 			or immediately reopen the branch. Sections are headers; every sectioned item states its own sectionId.
 			When onDelete is supplied, Delete or a row action calls it with the item ID. The caller updates
 			items.

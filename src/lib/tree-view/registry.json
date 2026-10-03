@@ -1,6 +1,15 @@
 {
 	"id": "tree-view",
-	"files": ["tree-view.svelte", "tree-view-section.svelte", "tree-node.svelte"],
+	"files": [
+		"tree-view.svelte",
+		"tree-view-section.svelte",
+		"tree-node.svelte",
+		"tree-row.svelte",
+		"tree.svelte.ts",
+		"hierarchy.ts",
+		"navigation.ts",
+		"focus.ts"
+	],
 	"exports": {
 		"TreeView": "tree-view.svelte"
 	},

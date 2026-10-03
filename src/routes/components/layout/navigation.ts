@@ -27,7 +27,7 @@ import {
 import {
 	chapter as treeViewChapter,
 	sections as treeViewSections
-} from '../../tree-view/+page.svelte';
+} from '../../tree-view/sections.js';
 
 export const navigation = [
 	{
