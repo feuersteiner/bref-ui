@@ -1,16 +1,23 @@
 <script lang="ts">
+	/* eslint-disable max-lines -- Keep the dialog's interactive gallery examples together. */
 	import { Dialog } from '$lib/index.js';
+	import type { DialogProps, StatusColor } from '$lib/types.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { chapter, sections } from './sections.js';
 
+	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large', 'full-screen'] as const;
+	const colors: StatusColor[] = ['info', 'success', 'warning', 'error'];
 	let open = $state(false);
-	let lockedOpen = $state(false);
+	let dismissalOpen = $state(false);
+	let actionOpen = $state(false);
+	let snippetOpen = $state(false);
 	let dismissible = $state(true);
-	let closeOnBackdropClick = $state(true);
-	let lastEvent = $state('No close event yet');
+	let selectedSize = $state<NonNullable<DialogProps['size']>>('medium');
+	let selectedColor = $state<StatusColor>('info');
+	let lastEvent = $state('No action yet');
 
 	const source = `<script lang="ts">
   import { Dialog } from 'bref-ui';
@@ -18,18 +25,17 @@
 <${'/'}script>
 
 <button onclick={() => open = true}>Open dialog</button>
-<Dialog bind:open title="Edit details" description="Changes are local until saved.">
-  <p>Compose content and actions here.</p>
-  <button onclick={() => open = false}>Done</button>
+<Dialog bind:open header={{ title: 'Edit details', description: 'Changes are local until saved.' }}>
+  <p>Compose content here.</p>
 </Dialog>`;
 
 	const props = [
 		{
-			name: 'title',
-			type: 'string',
+			name: 'header',
+			type: 'DialogHeaderProps',
 			required: true,
 			default: '—',
-			description: 'Visible accessible title.'
+			description: 'Title, optional description, and optional decorative icon.'
 		},
 		{
 			name: 'open',
@@ -39,99 +45,133 @@
 			description: 'Bindable modal state.'
 		},
 		{
-			name: 'description',
-			type: 'string',
-			required: false,
-			default: 'Omitted',
-			description: 'Visible accessible description.'
-		},
-		{
 			name: 'children',
 			type: 'Snippet',
 			required: false,
 			default: 'Omitted',
-			description: 'Content and application-owned actions.'
+			description: 'Dialog body.'
+		},
+		{
+			name: 'footer',
+			type: 'Snippet | { primary: DialogActionProps; secondary: DialogActionProps }',
+			required: false,
+			default: 'Omitted',
+			description:
+				'Custom footer or exactly two actions; each action accepts label, icon, onClick, disabled, and status color.'
 		},
 		{
 			name: 'dismissible',
 			type: 'boolean',
 			required: false,
 			default: 'true',
-			description: 'Allow Escape and the close button.'
+			description: 'Allow Escape and show the close button.'
 		},
 		{
-			name: 'closeOnBackdropClick',
-			type: 'boolean',
+			name: 'size',
+			type: "Size | 'full-screen'",
 			required: false,
-			default: 'true',
-			description: 'Allow pointer dismissal from the backdrop.'
+			default: 'medium',
+			description: 'Dialog width or full-screen; screens up to 36rem always use full-screen.'
 		}
 	];
 </script>
 
-<Page
-	title={chapter}
-	description="Present modal content with native keyboard focus, dismissal, and accessible naming."
->
+{#snippet customFooter()}
+	<button type="button" onclick={() => (snippetOpen = false)}>Done</button>
+{/snippet}
+
+<Page title={chapter} description="Present modal content with native focus and accessible naming.">
 	<Section {...sections[0]}>
-		<p>
-			Open a modal and compose its content with native elements. The dialog owns no business action.
-		</p>
+		<p>Open a modal with a named header and a body snippet.</p>
 		<button type="button" onclick={() => (open = true)}>Open dialog</button>
 		<Dialog
 			bind:open
-			title="Edit details"
-			description="Changes are local until saved."
+			header={{
+				title: 'Edit details',
+				description: 'Changes are local until saved.',
+				icon: { name: 'edit' }
+			}}
 			onclose={() => (lastEvent = 'Closed')}
 		>
 			<label>
 				Display name <input value="Example name" />
 			</label>
-			<div data-actions>
-				<button type="button" onclick={() => (open = false)}>Done</button>
-			</div>
+			<p>Backdrop clicks leave the dialog open.</p>
 		</Dialog>
 		<p aria-live="polite">{lastEvent}</p>
 		<CodeSnippet {source} label="Dialog usage code" />
 	</Section>
 	<Section {...sections[1]}>
 		<p>
-			Tab stays inside the open modal. Escape, the close button, backdrop clicks, and native dialog
-			forms update <code>bind:open</code>
-			. Closing returns focus to the opener.
+			Tab remains inside the modal. Escape and the close button follow the dismissible control.
+			Close from the caller by setting the state bound to <code>open</code>
+			to
+			<code>false</code>
+			. Focus returns to the opener after the exit animation.
 		</p>
 		<label>
 			<input type="checkbox" bind:checked={dismissible} />
 			Allow Escape and close button
 		</label>
-		<label>
-			<input type="checkbox" bind:checked={closeOnBackdropClick} />
-			Allow backdrop dismissal
-		</label>
-		<button type="button" onclick={() => (lockedOpen = true)}>Open dismissal demo</button>
+		<button type="button" onclick={() => (dismissalOpen = true)}>Open dismissal demo</button>
 		<Dialog
-			bind:open={lockedOpen}
-			title="Dismissal demo"
-			description="Try Tab, Shift+Tab, Escape, and the backdrop."
+			bind:open={dismissalOpen}
+			header={{
+				title: 'Dismissal demo',
+				description: 'Try Tab, Escape, the backdrop and the bound state.'
+			}}
 			{dismissible}
-			{closeOnBackdropClick}
 		>
-			<p>
-				The form below uses native <code>method="dialog"</code>
-				closing.
-			</p>
-			<form method="dialog"><button type="submit">Close with form</button></form>
+			<button type="button" onclick={() => (dismissalOpen = false)}>Close via binding</button>
 		</Dialog>
 	</Section>
 	<Section {...sections[2]}>
+		<p>
+			Choose a size and status color, then test the two action callbacks. Small screens always use
+			full-screen.
+		</p>
+		<label>
+			Size
+			<select bind:value={selectedSize}>
+				{#each sizes as size (size)}<option value={size}>{size}</option>{/each}
+			</select>
+		</label>
+		<label>
+			Action color
+			<select bind:value={selectedColor}>
+				{#each colors as color (color)}<option value={color}>{color}</option>{/each}
+			</select>
+		</label>
+		<button type="button" onclick={() => (actionOpen = true)}>Open action dialog</button>
+		<Dialog
+			bind:open={actionOpen}
+			header={{ title: 'Confirm changes', icon: { name: 'info' } }}
+			size={selectedSize}
+			footer={{
+				secondary: {
+					label: 'Keep editing',
+					onClick: () => (lastEvent = 'Secondary action')
+				},
+				primary: {
+					label: 'Save changes',
+					icon: { name: 'check' },
+					color: selectedColor,
+					onClick: () => (lastEvent = 'Primary action')
+				}
+			}}
+		>
+			<p>Actions run their callbacks and leave closing to the caller.</p>
+		</Dialog>
+		<button type="button" onclick={() => (snippetOpen = true)}>Open custom footer</button>
+		<Dialog bind:open={snippetOpen} header={{ title: 'Custom footer' }} footer={customFooter}>
+			<p>The caller controls this footer snippet.</p>
+		</Dialog>
+	</Section>
+	<Section {...sections[3]}>
 		<PropTable {props} />
 		<p>
-			Native dialog attributes and events are forwarded. The title and description set <code>
-				aria-labelledby
-			</code>
-			and
-			<code>aria-describedby</code>
-			. The browser manages modal focus and focus return.
+			The header title and optional description supply accessible names. Native dialog attributes,
+			close and cancel events are forwarded. The body and optional footer accept snippets.
 		</p>
 	</Section>
 </Page>
@@ -141,7 +181,8 @@
 		display: block;
 		margin-block: 0.75rem;
 	}
-	input:not([type='checkbox']) {
+	input:not([type='checkbox']),
+	select {
 		display: block;
 		width: 100%;
 		max-width: 24rem;
@@ -150,15 +191,12 @@
 	button {
 		min-height: 2.5rem;
 		padding: 0.5rem 1rem;
+		margin-right: 0.5rem;
 	}
 	button:focus-visible,
-	input:focus-visible {
+	input:focus-visible,
+	select:focus-visible {
 		outline: 2px solid var(--color-foreground);
 		outline-offset: 2px;
-	}
-	[data-actions] {
-		display: flex;
-		justify-content: flex-end;
-		margin-top: 1.5rem;
 	}
 </style>
