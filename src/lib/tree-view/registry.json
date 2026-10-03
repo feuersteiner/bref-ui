@@ -1,6 +1,6 @@
 {
 	"id": "tree-view",
-	"files": ["tree-view.svelte", "tree-branch.svelte", "tree-node.svelte"],
+	"files": ["tree-view.svelte", "tree-view-section.svelte", "tree-node.svelte"],
 	"exports": {
 		"TreeView": "tree-view.svelte"
 	},

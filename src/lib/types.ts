@@ -22,6 +22,4 @@ export type {
 } from './dialog/types.js';
 export type { TextInputProps } from './text-input/types.js';
 export type { TextAreaProps } from './text-area/types.js';
-export type { TreeViewProps } from './tree-view/tree-view.svelte';
-export type { TreeItemProps } from './tree-view/tree-node.svelte';
-export type { TreeSectionProps } from './tree-view/tree-branch.svelte';
+export type { TreeViewProps, TreeItemProps, TreeSectionProps } from './tree-view/tree-view.svelte';

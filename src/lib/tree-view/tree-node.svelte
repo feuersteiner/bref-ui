@@ -1,49 +1,47 @@
 <script module lang="ts">
 	import type { IconProps } from '../types.js';
-	export interface TreeItemProps {
+	export interface TreeNodeProps {
 		id: string;
 		label: string;
 		icon?: Omit<IconProps, 'label' | 'size' | 'color'>;
-		parentId?: string;
-		sectionId?: string;
+		onClose?: () => void;
+		onClick: () => void;
+		items?: TreeNodeProps[];
 		disabled?: boolean;
+		open?: boolean;
+		selected?: boolean;
+		tabIndex?: number;
+		level?: number;
+		position?: number;
+		siblingCount?: number;
+		onFocus?: () => void;
+		onToggle?: () => void;
 	}
 </script>
 
 <script lang="ts">
-	/* eslint-disable max-lines -- Keep the row markup and scoped styles together. */
+	/* eslint-disable max-lines -- Keep the recursive row markup and scoped styles together. */
 	import { prefersReducedMotion } from 'svelte/motion';
 	import { fly } from 'svelte/transition';
 	import Icon from '../icon/icon.svelte';
+	import RecursiveNode from './tree-node.svelte';
 	let {
-		node,
-		level,
+		id,
+		label,
+		icon,
+		onClose,
+		onClick,
+		items = [],
+		disabled,
+		open = false,
+		selected = false,
+		tabIndex = -1,
+		level = 0,
 		position,
 		siblingCount,
-		hasChildren,
-		open,
-		selected,
-		activeId,
 		onFocus,
-		onSelect,
-		onToggle,
-		onDelete,
-		focus
-	}: {
-		node: Pick<TreeItemProps, 'id' | 'label' | 'icon' | 'disabled'>;
-		level: number;
-		position: number;
-		siblingCount: number;
-		hasChildren: boolean;
-		open: boolean;
-		selected: boolean;
-		activeId?: string;
-		onFocus: (id: string) => void;
-		onSelect: (id: string) => void;
-		onToggle: (id: string) => void;
-		onDelete?: (id: string) => void;
-		focus: (id: string) => void;
-	} = $props();
+		onToggle
+	}: TreeNodeProps = $props();
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -53,78 +51,89 @@
 		y: prefersReducedMotion.current ? 0 : -6,
 		duration: prefersReducedMotion.current ? 0 : 150
 	}}
-	data-tree-id={node.id}
-	aria-label={node.label}
+	data-tree-id={id}
+	aria-label={label}
 	aria-level={level + 1}
 	style:--tree-level={level}
 	aria-posinset={position}
 	aria-setsize={siblingCount}
-	aria-expanded={hasChildren ? open : undefined}
-	aria-selected={node.disabled ? undefined : selected}
-	aria-disabled={node.disabled && !hasChildren ? true : undefined}
-	title={node.disabled && hasChildren ? 'Unavailable for selection' : undefined}
-	data-disabled={node.disabled ? 'true' : undefined}
-	tabindex={activeId === node.id ? 0 : -1}
+	aria-expanded={items.length ? open : undefined}
+	aria-selected={disabled ? undefined : selected}
+	aria-disabled={disabled && !items.length ? true : undefined}
+	title={disabled && items.length ? 'Unavailable for selection' : undefined}
+	data-disabled={disabled ? 'true' : undefined}
+	tabindex={tabIndex}
 	onfocus={(event) => {
-		if (event.target === event.currentTarget) onFocus(node.id);
+		if (event.target === event.currentTarget) onFocus?.();
 	}}
 	onclick={(event) => {
 		if (
 			event.target instanceof Element &&
 			event.target.closest('[role="treeitem"]') === event.currentTarget &&
 			!event.target.closest('button, [data-disclosure]')
-		) {
-			onSelect(node.id);
-			focus(node.id);
-		}
+		)
+			onClick();
 	}}
 >
 	<span data-row>
-		{#if hasChildren}
+		{#if items.length}
 			<button
 				type="button"
 				data-disclosure
-				aria-label={`${open ? 'Collapse' : 'Expand'} ${node.label}`}
+				aria-label={`${open ? 'Collapse' : 'Expand'} ${label}`}
 				tabindex="-1"
-				onfocus={() => onFocus(node.id)}
+				onfocus={() => onFocus?.()}
 				onclick={(event) => {
 					event.stopPropagation();
-					onToggle(node.id);
-					focus(node.id);
+					onToggle?.();
 				}}
 			>
 				<span data-chevron data-open={open}><Icon name="chevron_right" /></span>
 			</button>
 		{:else}<span data-spacer aria-hidden="true"></span>{/if}
 		<span data-icon>
-			{#if node.icon}<Icon {...node.icon} label={undefined} />{/if}
+			{#if icon}<Icon {...icon} label={undefined} />{/if}
 		</span>
-		<span data-label>{node.label}</span>
-		{#if onDelete}
+		<span data-label>{label}</span>
+		{#if onClose}
 			<button
 				type="button"
-				aria-label={`Delete ${node.label}`}
-				disabled={node.disabled}
+				aria-label={`Delete ${label}`}
+				{disabled}
 				tabindex="-1"
-				onfocus={() => onFocus(node.id)}
+				onfocus={() => onFocus?.()}
 				onclick={(event) => {
 					event.stopPropagation();
-					onDelete?.(node.id);
+					onClose?.();
 				}}
 			>
 				<Icon name="close" />
 			</button>
 		{/if}
 	</span>
+	{#if open && items.length}
+		<div role="group" data-children>
+			{#each items as item (item.id)}
+				<RecursiveNode {...item} />
+			{/each}
+		</div>
+	{/if}
 </div>
 
 <style>
 	[role='treeitem'] {
+		display: grid;
+		gap: 0.375rem;
 		width: 100%;
 		min-width: 0;
 		border-radius: 999px;
 		outline: none;
 		cursor: pointer;
+	}
+	[data-children] {
+		display: grid;
+		gap: 0.375rem;
+		min-width: 0;
 	}
 	[data-row] {
 		--tree-tint: 0%;
@@ -141,7 +150,7 @@
 		background: color-mix(in srgb, var(--color-primary) var(--tree-tint), transparent);
 		transition: all 150ms;
 	}
-	[role='treeitem']:not([data-disabled='true']):hover > [data-row] {
+	[role='treeitem']:not([data-disabled='true']) > [data-row]:hover {
 		--tree-tint: 8%;
 	}
 	[role='treeitem'][aria-selected='true'] > [data-row] {
@@ -159,14 +168,14 @@
 		backdrop-filter: blur(0.5rem) saturate(120%);
 		color: var(--color-primary);
 	}
-	[role='treeitem'][aria-selected='true']:hover > [data-row] {
+	[role='treeitem'][aria-selected='true'] > [data-row]:hover {
 		--tree-tint: 22%;
 		border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
 	}
-	[role='treeitem']:not([data-disabled='true']):active > [data-row] {
+	[role='treeitem']:not([data-disabled='true']) > [data-row]:active {
 		--tree-tint: 26%;
 	}
-	[role='treeitem'][aria-selected='true']:active > [data-row] {
+	[role='treeitem'][aria-selected='true'] > [data-row]:active {
 		--tree-tint: 28%;
 	}
 	[role='treeitem'][data-disabled='true'] > [data-row] {
