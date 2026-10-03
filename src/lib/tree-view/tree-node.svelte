@@ -25,34 +25,34 @@
 	};
 </script>
 
-<div>
+<div data-selected={selected}>
+	{#if item.children?.length}
+		<button
+			type="button"
+			aria-label={`Children of ${item.label}`}
+			aria-expanded={expanded}
+			aria-controls={childrenId}
+			onclick={() => (expanded = !expanded)}
+		>
+			<span data-chevron><Icon name="chevron_right" /></span>
+		</button>
+	{:else}
+		<span data-spacer aria-hidden="true"></span>
+	{/if}
 	<button type="button" aria-pressed={selected} disabled={item.disabled} onclick={select}>
-		{#if item.children?.length}
-			<button
-				type="button"
-				aria-label={`Children of ${item.label}`}
-				aria-expanded={expanded}
-				aria-controls={childrenId}
-				onclick={() => (expanded = !expanded)}
-			>
-				<span data-chevron><Icon name="chevron_right" /></span>
-			</button>
-		{:else}
-			<span data-spacer aria-hidden="true"></span>
-		{/if}
 		{#if item.icon}<Icon {...item.icon} label={undefined} />{/if}
 		<span>{item.label}</span>
-		{#if onDelete}
-			<button
-				type="button"
-				aria-label={`Delete ${item.label}`}
-				disabled={item.disabled}
-				onclick={() => onDelete?.(item.id)}
-			>
-				<Icon name="close" />
-			</button>
-		{/if}
 	</button>
+	{#if onDelete}
+		<button
+			type="button"
+			aria-label={`Delete ${item.label}`}
+			disabled={item.disabled}
+			onclick={() => onDelete?.(item.id)}
+		>
+			<Icon name="close" />
+		</button>
+	{/if}
 </div>
 {#if item.children?.length}
 	<ul id={childrenId} hidden={!expanded}>
@@ -67,8 +67,14 @@
 		min-width: 0;
 	}
 	div {
+		box-sizing: border-box;
 		display: flex;
+		align-items: center;
 		gap: 0.25rem;
+		min-height: var(--tree-height);
+		padding: 0.125rem 0.25rem;
+		border: 1px solid transparent;
+		border-radius: 999px;
 	}
 	[data-spacer] {
 		flex: 0 0 var(--tree-action-size);
@@ -97,9 +103,9 @@
 		justify-content: center;
 		gap: 0.5rem;
 		min-width: var(--tree-action-size);
-		min-height: var(--tree-height);
+		min-height: var(--tree-action-size);
 		padding: 0.25rem 0.5rem;
-		border: 1px solid transparent;
+		border: 0;
 		border-radius: 999px;
 		background: transparent;
 		color: inherit;
@@ -115,7 +121,7 @@
 	span {
 		overflow-wrap: anywhere;
 	}
-	button[aria-pressed='true'] {
+	div[data-selected='true'] {
 		border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
 		background: color-mix(in srgb, var(--color-primary) 16%, transparent);
 		color: var(--color-primary);
@@ -132,7 +138,7 @@
 		cursor: default;
 	}
 	@media (forced-colors: active) {
-		button[aria-pressed='true'] {
+		div[data-selected='true'] {
 			border-color: Highlight;
 			color: Highlight;
 		}
