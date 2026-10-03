@@ -26,20 +26,20 @@
 </script>
 
 <div>
-	{#if item.children?.length}
-		<button
-			type="button"
-			aria-label={`Children of ${item.label}`}
-			aria-expanded={expanded}
-			aria-controls={childrenId}
-			onclick={() => (expanded = !expanded)}
-		>
-			<span data-chevron><Icon name="chevron_right" /></span>
-		</button>
-	{:else}
-		<span data-spacer aria-hidden="true"></span>
-	{/if}
 	<button type="button" aria-pressed={selected} disabled={item.disabled} onclick={select}>
+		{#if item.children?.length}
+			<button
+				type="button"
+				aria-label={`Children of ${item.label}`}
+				aria-expanded={expanded}
+				aria-controls={childrenId}
+				onclick={() => (expanded = !expanded)}
+			>
+				<span data-chevron><Icon name="chevron_right" /></span>
+			</button>
+		{:else}
+			<span data-spacer aria-hidden="true"></span>
+		{/if}
 		{#if item.icon}<Icon {...item.icon} label={undefined} />{/if}
 		<span>{item.label}</span>
 	</button>
