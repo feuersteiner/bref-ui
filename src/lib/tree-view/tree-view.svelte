@@ -1,20 +1,102 @@
+<script module lang="ts">
+	import type { BaseSize } from '../types.js';
+	import type { TreeItemProps } from './tree-node.svelte';
+	import type { TreeSectionProps } from './tree-branch.svelte';
+	export interface TreeViewProps {
+		items: TreeItemProps[];
+		sections?: TreeSectionProps[];
+		label?: string;
+		size?: BaseSize;
+		/** Bindable node selection; newly selected nodes reveal their ancestors. */
+		selection?: string | string[];
+		defaultExpanded?: boolean;
+		onDelete?: (id: string) => void;
+	}
+</script>
+
 <script lang="ts">
-	/* eslint-disable max-lines, func-style -- Tree behavior and scoped styles share one component. */
+	/* eslint-disable max-lines, func-style -- Focus and keyboard behavior stay together. */
 	import { tick, untrack } from 'svelte';
-	import { prefersReducedMotion } from 'svelte/motion';
-	import { fly } from 'svelte/transition';
-	import Icon from '../icon/icon.svelte';
-	import { revealSelection } from './selection.js';
-	import type { TreeItemProps, TreeViewProps } from './types.js';
-	import {
+	import TreeBranch, {
 		childrenFor,
 		indexTree,
-		keyboardTarget,
-		nextFocusAfterChange,
-		rootsFor,
-		typeaheadMatch,
+		revealSelection,
 		visibleItems
-	} from './state.js';
+	} from './tree-branch.svelte';
+	import type { TreeIndex, VisibleItem } from './tree-branch.svelte';
+
+	const nextFocusAfterChange = (
+		previous: readonly VisibleItem[],
+		current: readonly VisibleItem[],
+		focusedId: string,
+		preferAncestor = true
+	): string | undefined => {
+		if (current.some(({ item }) => item.id === focusedId)) return focusedId;
+		const previousIndex = previous.findIndex(({ item }) => item.id === focusedId);
+		const survivors = new Set(current.map(({ item }) => item.id));
+		if (preferAncestor) {
+			let ancestor = previous.find(({ item }) => item.id === focusedId)?.parentId;
+			while (ancestor !== undefined) {
+				if (survivors.has(ancestor)) return ancestor;
+				ancestor = previous.find(({ item }) => item.id === ancestor)?.parentId;
+			}
+		}
+		for (let distance = 1; distance < previous.length; distance++) {
+			const after = previous[previousIndex + distance]?.item.id;
+			if (after !== undefined && survivors.has(after)) return after;
+			const before = previous[previousIndex - distance]?.item.id;
+			if (before !== undefined && survivors.has(before)) return before;
+		}
+		return current[0]?.item.id;
+	};
+
+	const typeaheadMatch = (
+		visible: readonly VisibleItem[],
+		currentId: string,
+		query: string
+	): string | undefined => {
+		if (!visible.length) return;
+		const start = visible.findIndex(({ item }) => item.id === currentId);
+		for (let offset = 1; offset <= visible.length; offset++) {
+			const candidate = visible[(start + offset) % visible.length].item;
+			if (candidate.label.toLocaleLowerCase().startsWith(query.toLocaleLowerCase()))
+				return candidate.id;
+		}
+	};
+
+	const keyboardTarget = (
+		visible: readonly VisibleItem[],
+		index: TreeIndex,
+		expanded: Record<string, boolean>,
+		defaultExpanded: boolean,
+		currentId: string,
+		key: string
+	): { focusId?: string; toggleId?: string } => {
+		const current = visible.findIndex(({ item }) => item.id === currentId);
+		const entry = visible[current];
+		if (!entry) return {};
+		switch (key) {
+			case 'ArrowDown':
+				return { focusId: visible[Math.min(current + 1, visible.length - 1)]?.item.id };
+			case 'ArrowUp':
+				return { focusId: visible[Math.max(current - 1, 0)]?.item.id };
+			case 'Home':
+				return { focusId: visible[0]?.item.id };
+			case 'End':
+				return { focusId: visible.at(-1)?.item.id };
+			case 'ArrowRight':
+				if (!childrenFor(index, currentId).length) return {};
+				return (expanded[currentId] ?? defaultExpanded)
+					? { focusId: visible[current + 1]?.item.id }
+					: { toggleId: currentId };
+			case 'ArrowLeft':
+				return childrenFor(index, currentId).length && (expanded[currentId] ?? defaultExpanded)
+					? { toggleId: currentId }
+					: { focusId: entry.parentId };
+			default:
+				return {};
+		}
+	};
 
 	let {
 		items,
@@ -160,86 +242,6 @@
 	}
 </script>
 
-{#snippet renderNode(node: TreeItemProps, level: number)}
-	{@const children = childrenFor(indexed, node.id)}
-	{@const siblings =
-		node.parentId === undefined
-			? rootsFor(indexed, node.sectionId)
-			: childrenFor(indexed, node.parentId)}
-	{@const open = expanded[node.id] ?? initialExpanded}
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<div
-		role="treeitem"
-		in:fly|global={{
-			y: prefersReducedMotion.current ? 0 : -6,
-			duration: prefersReducedMotion.current ? 0 : 150
-		}}
-		data-tree-id={node.id}
-		aria-label={node.label}
-		aria-level={level + 1}
-		style:--tree-level={level}
-		aria-posinset={siblings.indexOf(node) + 1}
-		aria-setsize={siblings.length}
-		aria-expanded={children.length ? open : undefined}
-		aria-selected={node.disabled ? undefined : selected.includes(node.id)}
-		aria-disabled={node.disabled && !children.length ? true : undefined}
-		title={node.disabled && children.length ? 'Unavailable for selection' : undefined}
-		data-disabled={node.disabled ? 'true' : undefined}
-		tabindex={activeId === node.id ? 0 : -1}
-		onfocus={(event) => {
-			if (event.target === event.currentTarget) focusId = node.id;
-		}}
-		onclick={(event) => {
-			if (
-				event.target instanceof Element &&
-				event.target.closest('[role="treeitem"]') === event.currentTarget &&
-				!event.target.closest('button, [data-disclosure]')
-			) {
-				select(node.id);
-				focus(node.id);
-			}
-		}}
-	>
-		<span data-row>
-			{#if children.length}
-				<button
-					type="button"
-					data-disclosure
-					aria-label={`${open ? 'Collapse' : 'Expand'} ${node.label}`}
-					tabindex="-1"
-					onfocus={() => (focusId = node.id)}
-					onclick={(event) => {
-						event.stopPropagation();
-						toggle(node.id);
-						focus(node.id);
-					}}
-				>
-					<span data-chevron data-open={open}><Icon name="chevron_right" /></span>
-				</button>
-			{:else}<span data-spacer aria-hidden="true"></span>{/if}
-			<span data-icon>
-				{#if node.icon}<Icon {...node.icon} label={undefined} />{/if}
-			</span>
-			<span data-label>{node.label}</span>
-			{#if onDelete}
-				<button
-					type="button"
-					aria-label={`Delete ${node.label}`}
-					disabled={node.disabled}
-					tabindex="-1"
-					onfocus={() => (focusId = node.id)}
-					onclick={(event) => {
-						event.stopPropagation();
-						deleteNode(node.id);
-					}}
-				>
-					<Icon name="close" />
-				</button>
-			{/if}
-		</span>
-	</div>
-{/snippet}
-
 <div
 	bind:this={tree}
 	role="tree"
@@ -249,23 +251,19 @@
 	tabindex={visible.length ? -1 : 0}
 	onkeydown={onKeydown}
 >
-	{#each indexed.sections as section (section?.id ?? '')}
-		{#if section}
-			<div role="group" aria-label={section.label} data-section-group>
-				<div data-section role="presentation">
-					{#if section.icon}<Icon {...section.icon} label={undefined} />{/if}
-					<span>{section.label}</span>
-				</div>
-				{#each visible.filter(({ item }) => item.sectionId === section.id) as entry (entry.item.id)}
-					{@render renderNode(entry.item, entry.level - 1)}
-				{/each}
-			</div>
-		{:else}
-			{#each visible.filter(({ item }) => item.sectionId === undefined) as entry (entry.item.id)}
-				{@render renderNode(entry.item, entry.level - 1)}
-			{/each}
-		{/if}
-	{/each}
+	<TreeBranch
+		{indexed}
+		{visible}
+		{expanded}
+		{initialExpanded}
+		{selected}
+		{activeId}
+		onFocus={(id) => (focusId = id)}
+		onSelect={select}
+		onToggle={toggle}
+		onDelete={onDelete ? deleteNode : undefined}
+		{focus}
+	/>
 </div>
 
 <style>
@@ -293,153 +291,13 @@
 		--tree-action-size: 2.5rem;
 		font-size: 1.125rem;
 	}
-	[data-section-group] {
-		display: grid;
-		gap: 0.375rem;
-		min-width: 0;
-	}
-	[role='treeitem'] {
-		width: 100%;
-		min-width: 0;
-		border-radius: 999px;
-		outline: none;
-		cursor: pointer;
-	}
-	[data-row] {
-		--tree-tint: 0%;
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		width: 100%;
-		min-height: var(--tree-height);
-		padding: 0.25rem 0.5rem;
-		padding-inline-start: calc(0.5rem + var(--tree-level) * 1.25rem);
-		border: 1px solid transparent;
-		border-radius: inherit;
-		background: color-mix(in srgb, var(--color-primary) var(--tree-tint), transparent);
-		transition: all 150ms;
-	}
-	[role='treeitem']:not([data-disabled='true']):hover > [data-row] {
-		--tree-tint: 8%;
-	}
-	[role='treeitem'][aria-selected='true'] > [data-row] {
-		--tree-tint: 16%;
-		background: color-mix(
-			in srgb,
-			color-mix(in srgb, var(--color-primary) var(--tree-tint), var(--color-background)) 85%,
-			transparent
-		);
-		border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
-		box-shadow:
-			inset 0 1px 0 color-mix(in srgb, var(--color-foreground) 16%, transparent),
-			0 2px 6px color-mix(in srgb, var(--color-foreground) 8%, transparent);
-		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
-		backdrop-filter: blur(0.5rem) saturate(120%);
-		color: var(--color-primary);
-	}
-	[role='treeitem'][aria-selected='true']:hover > [data-row] {
-		--tree-tint: 22%;
-		border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
-	}
-	[role='treeitem']:not([data-disabled='true']):active > [data-row] {
-		--tree-tint: 26%;
-	}
-	[role='treeitem'][aria-selected='true']:active > [data-row] {
-		--tree-tint: 28%;
-	}
-	[role='treeitem'][data-disabled='true'] > [data-row] {
-		color: var(--color-muted);
-	}
-	[role='treeitem']:focus-visible > [data-row] {
-		outline: 2px solid var(--color-primary);
-		outline-offset: -2px;
-	}
 	[role='tree']:focus-visible {
 		outline: 2px solid var(--color-primary);
 		outline-offset: 2px;
 	}
-	[data-spacer] {
-		flex: 0 0 var(--tree-action-size);
-	}
-	[data-icon] {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		flex: 0 0 var(--tree-icon-size);
-		font-size: var(--tree-icon-size);
-	}
-	[data-chevron] {
-		display: inline-flex;
-		transition: all 150ms;
-	}
-	[data-chevron][data-open='true'] {
-		transform: rotate(90deg);
-	}
-	[data-label] {
-		flex: 1;
-		min-width: 0;
-		overflow-wrap: anywhere;
-	}
-	[data-section] {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.75rem 0.5rem 0.25rem;
-		color: var(--color-muted);
-		font-size: 0.8em;
-		font-weight: 600;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-	}
-	button {
-		display: inline-grid;
-		place-items: center;
-		flex: 0 0 var(--tree-action-size);
-		width: var(--tree-action-size);
-		height: var(--tree-action-size);
-		padding: 0;
-		border: 0;
-		border-radius: 50%;
-		background: transparent;
-		color: inherit;
-		font-size: var(--tree-icon-size);
-		cursor: pointer;
-		transition: all 150ms;
-	}
-	button:not(:disabled):hover {
-		background: color-mix(in srgb, var(--color-primary) 12%, transparent);
-	}
-	button:focus-visible {
-		outline: 2px solid var(--color-primary);
-	}
-	button:disabled {
-		cursor: default;
-		opacity: 0.5;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		[data-row],
-		[data-chevron],
-		button {
-			transition: none;
-		}
-	}
 	@media (forced-colors: active) {
-		[role='treeitem'][aria-selected='true'] > [data-row] {
-			outline: 1px solid Highlight;
-			border-color: Highlight;
-			background: Canvas;
-			box-shadow: none;
-			-webkit-backdrop-filter: none;
-			backdrop-filter: none;
-			color: Highlight;
-		}
-		[role='treeitem']:focus-visible > [data-row],
 		[role='tree']:focus-visible {
 			outline-color: Highlight;
-		}
-		[role='treeitem'][data-disabled='true'] > [data-row] {
-			color: GrayText;
 		}
 	}
 </style>

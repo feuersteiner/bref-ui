@@ -1,6 +1,8 @@
 {
 	"id": "tree-view",
-	"files": ["tree-view.svelte", "state.ts", "selection.ts"],
-	"exports": { "TreeView": "tree-view.svelte" },
+	"files": ["tree-view.svelte", "tree-branch.svelte", "tree-node.svelte"],
+	"exports": {
+		"TreeView": "tree-view.svelte"
+	},
 	"dependencies": ["theme", "icon"]
 }

@@ -1,13 +1,24 @@
+<script module lang="ts">
+	export const chapter = 'Tree view';
+
+	export const sections = [
+		{ id: 'example', title: 'Usage' },
+		{ id: 'playground', title: 'Selection and expansion' },
+		{ id: 'states', title: 'Nested, disabled and empty states' },
+		{ id: 'props', title: 'Props' },
+		{ id: 'accessibility', title: 'Keyboard and accessibility' }
+	] as const;
+</script>
+
 <script lang="ts">
 	/* eslint-disable max-lines -- Gallery states and prop documentation stay together. */
-	import { chapter, sections } from './sections.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { Button, TreeView } from '$lib/index.js';
 	import type { BaseSize } from '$lib/types.js';
-	import type { TreeItemProps, TreeSectionProps } from '$lib/tree-view/types.js';
+	import type { TreeItemProps, TreeSectionProps } from '$lib/types.js';
 
 	const treeSections: TreeSectionProps[] = [
 		{ id: 'workspace', label: 'Workspace', icon: { name: 'folder' } },

@@ -10,4 +10,18 @@ export type { ButtonProps } from './button/types.js';
 export type * from './icon/types.js';
 export type { SurfaceProps, SurfaceRadius } from './surface/types.js';
 export type * from './theme/types.ts';
-export type { TreeItemProps, TreeSectionProps, TreeViewProps } from './tree-view/types.js';
+export type { CheckboxProps } from './checkbox/types.js';
+export type { SwitchProps } from './switch/types.js';
+export type { ProgressProps } from './progress/types.js';
+export type { SpinnerProps } from './spinner/types.js';
+export type {
+	DialogActionProps,
+	DialogHeaderDataProps,
+	DialogHeaderProps,
+	DialogProps
+} from './dialog/types.js';
+export type { TextInputProps } from './text-input/types.js';
+export type { TextAreaProps } from './text-area/types.js';
+export type { TreeViewProps } from './tree-view/tree-view.svelte';
+export type { TreeItemProps } from './tree-view/tree-node.svelte';
+export type { TreeSectionProps } from './tree-view/tree-branch.svelte';
