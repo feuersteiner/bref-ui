@@ -1,4 +1,4 @@
-export const chapter = 'Input and Textarea';
+export const chapter = 'Input';
 
 export const sections = [
 	{ id: 'usage', title: 'Usage' },

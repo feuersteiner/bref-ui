@@ -1,17 +1,23 @@
-import type { HTMLInputAttributes } from 'svelte/elements';
-import type { BaseSize } from '../types.js';
+import type { HTMLInputAttributes, HTMLTextareaAttributes } from 'svelte/elements';
+import type { BaseSize, Variant } from '../types.js';
+import type { IconProps } from '../icon/types.js';
 
-type NativeInputProps = Omit<HTMLInputAttributes, 'size' | 'type' | 'value'>;
-interface InputStyleProps {
+export interface InputBaseProps {
+	value?: string;
+	onChange?: (value: string) => void;
+	placeholder?: string;
+	icon?: IconProps;
 	size?: BaseSize;
-	variant?: 'neutral' | 'soft';
-	htmlSize?: number;
-	ref?: HTMLInputElement;
+	disabled?: boolean;
+	multiline?: boolean;
+	resizable?: boolean;
+	rows?: number;
+	wide?: boolean;
+	variant?: Exclude<Variant, 'filled'>;
 }
 
-export type InputProps = NativeInputProps &
-	InputStyleProps &
+export type InputProps = InputBaseProps &
 	(
-		| { type?: 'text' | 'email' | 'password' | 'search' | 'tel' | 'url'; value?: string }
-		| { type: 'number'; value?: number | undefined }
+		| ({ multiline?: false } & Omit<HTMLInputAttributes, keyof InputBaseProps>)
+		| ({ multiline: true } & Omit<HTMLTextareaAttributes, keyof InputBaseProps>)
 	);
