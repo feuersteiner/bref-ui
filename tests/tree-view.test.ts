@@ -2,25 +2,36 @@
 import { describe, expect, test } from 'bun:test';
 import {
 	indexTree,
-	keyboardTarget,
+	keyboardTarget as targetFor,
 	nextFocusAfterChange,
 	typeaheadMatch,
-	validIds,
-	visibleItems
+	visibleItems as rowsFor
 } from '../src/lib/tree-view/state.js';
-import type { TreeItem } from '../src/lib/tree-view/types.js';
+import type { TreeItemProps as TreeItem } from '../src/lib/tree-view/types.js';
 
 const items: TreeItem[] = [
-	{
-		id: 'a',
-		label: 'Alpha',
-		children: [
-			{ id: 'a1', label: 'Apple' },
-			{ id: 'a2', label: 'Apricot', disabled: true, children: [{ id: 'a21', label: 'Banana' }] }
-		]
-	},
+	{ id: 'a', label: 'Alpha' },
+	{ id: 'a1', label: 'Apple', parentId: 'a' },
+	{ id: 'a2', label: 'Apricot', disabled: true, parentId: 'a' },
+	{ id: 'a21', label: 'Banana', parentId: 'a2' },
 	{ id: 'b', label: 'Beta' }
 ];
+const visibleItems = (nodes: TreeItem[], expanded: string[]) =>
+	rowsFor(indexTree(nodes), Object.fromEntries(expanded.map((id) => [id, true])), false);
+const keyboardTarget = (
+	visible: ReturnType<typeof rowsFor>,
+	expanded: string[],
+	id: string,
+	key: string
+) =>
+	targetFor(
+		visible,
+		indexTree(items),
+		Object.fromEntries(expanded.map((id) => [id, true])),
+		false,
+		id,
+		key
+	);
 
 describe('tree state', () => {
 	test('rejects duplicate IDs and cycles', () => {
@@ -30,14 +41,11 @@ describe('tree state', () => {
 				{ id: 'a', label: 'Two' }
 			])
 		).toThrow();
-		const cycle: TreeItem = { id: 'cycle', label: 'Cycle' };
-		(cycle as { children?: TreeItem[] }).children = [cycle];
+		const cycle: TreeItem = { id: 'cycle', label: 'Cycle', parentId: 'cycle' };
 		expect(() => indexTree([cycle])).toThrow();
 	});
 
-	test('prunes unknown IDs and follows expansion through disabled parents', () => {
-		const indexed = indexTree(items);
-		expect(validIds(['a', 'missing', 'a', 'a2'], indexed)).toEqual(['a', 'a2']);
+	test('follows expansion through disabled parents', () => {
 		expect(visibleItems(items, ['a']).map(({ item }) => item.id)).toEqual(['a', 'a1', 'a2', 'b']);
 		expect(visibleItems(items, ['a', 'a2']).map(({ item }) => item.id)).toEqual([
 			'a',
@@ -55,7 +63,7 @@ describe('tree state', () => {
 			'b'
 		);
 		const removed = visibleItems(
-			[{ id: 'a', label: 'Alpha', children: [items[0].children![1]] }, items[1]],
+			items.filter((item) => item.id !== 'a1'),
 			['a']
 		);
 		expect(nextFocusAfterChange(before, removed, 'a1', false)).toBe('a2');
