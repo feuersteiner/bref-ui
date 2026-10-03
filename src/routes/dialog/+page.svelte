@@ -32,10 +32,17 @@
 	const props = [
 		{
 			name: 'header',
-			type: 'DialogHeaderProps',
+			type: 'DialogHeaderDataProps',
 			required: true,
 			default: '—',
 			description: 'Title, optional description, and optional decorative icon.'
+		},
+		{
+			name: 'children',
+			type: 'Snippet',
+			required: true,
+			default: '—',
+			description: 'Dialog body.'
 		},
 		{
 			name: 'open',
@@ -43,13 +50,6 @@
 			required: false,
 			default: 'false',
 			description: 'Bindable modal state.'
-		},
-		{
-			name: 'children',
-			type: 'Snippet',
-			required: false,
-			default: 'Omitted',
-			description: 'Dialog body.'
 		},
 		{
 			name: 'footer',

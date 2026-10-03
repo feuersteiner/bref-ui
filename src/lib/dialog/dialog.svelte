@@ -1,5 +1,6 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the native dialog lifecycle and transition styles together. */
+	import { tick } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { prefersReducedMotion } from 'svelte/motion';
 	import { MediaQuery } from 'svelte/reactivity';
@@ -25,13 +26,12 @@
 	const smallScreen = new MediaQuery('(max-width: 36rem)', false);
 	const effectiveSize = $derived(smallScreen.current ? 'full-screen' : size);
 
-	$effect(() => {
-		if (!dialog) return;
-		if (open && !dialog.open) {
-			returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-			dialog.showModal();
-		}
-	});
+	const showModal = (node: HTMLElement) => {
+		const modal = node.closest('dialog');
+		if (!modal || modal.open) return;
+		returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+		modal.showModal();
+	};
 
 	const requestClose = () => {
 		if (dismissible) open = false;
@@ -47,7 +47,11 @@
 	const handleClose = (event: Event & { currentTarget: EventTarget & HTMLDialogElement }) => {
 		open = false;
 		onclose?.(event);
-		queueMicrotask(() => {
+		tick().then(() => {
+			if (open && dialog?.isConnected) {
+				showModal(dialog);
+				return;
+			}
 			if (returnFocus?.isConnected) returnFocus.focus();
 			returnFocus = null;
 		});
@@ -67,6 +71,7 @@
 	{#if open}
 		<div
 			data-surface
+			use:showModal
 			transition:fly|global={{
 				y: prefersReducedMotion.current ? 0 : 16,
 				duration: prefersReducedMotion.current ? 0 : 300
@@ -75,14 +80,8 @@
 				if (!open) dialog.close();
 			}}
 		>
-			<Header
-				{header}
-				{dismissible}
-				titleId={`${id}-title`}
-				descriptionId={`${id}-description`}
-				onDismiss={requestClose}
-			/>
-			{#if children}<div data-content>{@render children()}</div>{/if}
+			<Header {...header} {dismissible} {id} onDismiss={requestClose} />
+			<div data-content>{@render children()}</div>
 			{#if footer}<Footer {footer} />{/if}
 		</div>
 	{/if}
