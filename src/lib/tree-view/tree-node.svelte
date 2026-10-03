@@ -1,4 +1,7 @@
 <script lang="ts">
+	/* eslint-disable max-lines -- Keep the node and its scoped interaction styles together. */
+	import { prefersReducedMotion } from 'svelte/motion';
+	import { fly } from 'svelte/transition';
 	import Icon from '../icon/icon.svelte';
 	import RecursiveNode from './tree-node.svelte';
 	import type { TreeNodeProps } from './types.js';
@@ -25,7 +28,11 @@
 	};
 </script>
 
-<div data-selected={selected} data-disabled={item.disabled}>
+<div
+	in:fly|global={{ y: -4, duration: prefersReducedMotion.current ? 0 : 150 }}
+	data-selected={selected}
+	data-disabled={item.disabled}
+>
 	{#if item.children?.length}
 		<button
 			type="button"
@@ -63,6 +70,9 @@
 {/if}
 
 <style>
+	* {
+		transition: all 150ms;
+	}
 	li {
 		min-width: 0;
 	}
@@ -147,6 +157,11 @@
 	button:disabled {
 		color: var(--color-muted);
 		cursor: default;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		* {
+			transition: none;
+		}
 	}
 	@media (forced-colors: active) {
 		div[data-selected='true'] {
