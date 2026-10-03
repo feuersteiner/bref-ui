@@ -1,6 +1,0 @@
-{
-	"id": "textarea",
-	"files": ["textarea.svelte"],
-	"exports": { "Textarea": "textarea.svelte" },
-	"dependencies": []
-}

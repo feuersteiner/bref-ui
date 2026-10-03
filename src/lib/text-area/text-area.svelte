@@ -1,62 +1,38 @@
 <script lang="ts">
-	/* eslint-disable max-lines -- Native input and textarea share one scoped style recipe. */
-	import { fly } from 'svelte/transition';
+	/* eslint-disable max-lines -- Keep the native control and its scoped style recipe together. */
 	import Icon from '../icon/icon.svelte';
-	import type { HTMLInputAttributes, HTMLTextareaAttributes } from 'svelte/elements';
-	import type { InputProps } from './types.js';
+	import type { TextAreaProps } from './types.js';
 
 	let {
 		value = $bindable(),
 		onChange,
-		placeholder,
 		icon,
 		size = 'medium',
-		disabled = false,
-		multiline = false,
-		resizable = true,
-		rows,
 		wide = false,
 		variant = 'neutral',
+		resizable = true,
 		oninput,
 		defaultValue,
 		...attributes
-	}: InputProps = $props();
+	}: TextAreaProps = $props();
 	const initialValue = value;
 
-	const handleInput = (event: Event) => {
-		onChange?.((event.currentTarget as HTMLInputElement | HTMLTextAreaElement).value);
-		(oninput as ((event: Event) => void) | undefined)?.(event);
+	const handleInput = (event: Event & { currentTarget: EventTarget & HTMLTextAreaElement }) => {
+		onChange?.(event.currentTarget.value);
+		oninput?.(event);
 	};
 </script>
 
 <div data-size={size} data-variant={variant} data-wide={wide || undefined}>
 	{#if icon}
-		{#key icon.name}
-			<span in:fly|global={{ delay: 100, duration: 200, x: -6 }}>
-				<Icon {...icon} label={undefined} />
-			</span>
-		{/key}
+		<span><Icon {...icon} label={undefined} /></span>
 	{/if}
-	{#if multiline}
-		<textarea
-			{...attributes as HTMLTextareaAttributes}
-			{placeholder}
-			{disabled}
-			{rows}
-			defaultValue={defaultValue ?? initialValue}
-			bind:value={() => value, (next) => (value = next)}
-			oninput={handleInput}
-			data-resizable={resizable}></textarea>
-	{:else}
-		<input
-			{...attributes as HTMLInputAttributes}
-			{placeholder}
-			{disabled}
-			defaultValue={defaultValue ?? initialValue}
-			bind:value={() => value, (next) => (value = next == null ? '' : String(next))}
-			oninput={handleInput}
-		/>
-	{/if}
+	<textarea
+		{...attributes}
+		defaultValue={defaultValue ?? initialValue}
+		bind:value={() => value, (next) => (value = next)}
+		oninput={handleInput}
+		data-resizable={resizable}></textarea>
 </div>
 
 <style>
@@ -72,7 +48,7 @@
 		--internal-highlight: color-mix(in srgb, var(--color-foreground, black) 12%, transparent);
 		box-sizing: border-box;
 		display: inline-flex;
-		align-items: center;
+		align-items: flex-start;
 		align-self: start;
 		gap: 0.6rem;
 		width: min(100%, 18rem);
@@ -80,6 +56,7 @@
 		max-width: 100%;
 		min-height: var(--internal-height);
 		padding-inline: var(--internal-padding);
+		padding-block: 0.65rem;
 		border: 1px solid var(--internal-border);
 		border-radius: 0.5rem;
 		background: color-mix(
@@ -127,21 +104,14 @@
 		);
 		box-shadow: inset 0 1px 0 var(--internal-highlight);
 	}
-	div:has(textarea) {
-		align-items: flex-start;
-		padding-block: 0.65rem;
-	}
 	span {
 		display: inline-flex;
 		flex: 0 0 auto;
 		color: var(--color-muted, #666);
 		font-size: var(--internal-icon-size);
+		padding-top: 0.1rem;
 		pointer-events: none;
 	}
-	div:has(textarea) span {
-		padding-top: 0.1rem;
-	}
-	input,
 	textarea {
 		box-sizing: border-box;
 		width: 100%;
@@ -156,25 +126,12 @@
 		font-weight: 200;
 		line-height: 1.4;
 	}
-	input {
-		height: calc(var(--internal-height) - 2px);
-	}
-	input[type='number'] {
-		appearance: textfield;
-		-moz-appearance: textfield;
-	}
-	input[type='number']::-webkit-inner-spin-button,
-	input[type='number']::-webkit-outer-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
 	textarea {
 		resize: vertical;
 	}
 	textarea[data-resizable='false'] {
 		resize: none;
 	}
-	input::placeholder,
 	textarea::placeholder {
 		color: var(--color-muted, #666);
 	}
@@ -186,7 +143,7 @@
 		--internal-strength-light: 6%;
 		--internal-strength-dark: 20%;
 	}
-	div:has(input:focus, textarea:focus) {
+	div:has(textarea:focus) {
 		--internal-tint: var(--color-primary, blue);
 		--internal-strength-light: 6%;
 		--internal-strength-dark: 12%;
@@ -195,7 +152,7 @@
 			inset 0 1px 0 var(--internal-highlight),
 			0 0 0 3px color-mix(in srgb, var(--internal-tint) 16%, transparent);
 	}
-	div:has(input:invalid, textarea:invalid, [aria-invalid='true']) {
+	div:has(textarea:invalid, [aria-invalid='true']) {
 		--internal-tint: var(--color-error, #bc2436);
 		--internal-border: color-mix(in srgb, var(--internal-tint) 65%, transparent);
 	}
@@ -203,7 +160,6 @@
 		opacity: 0.5;
 		cursor: not-allowed;
 	}
-	input:disabled,
 	textarea:disabled {
 		cursor: inherit;
 	}
@@ -221,7 +177,7 @@
 			-webkit-backdrop-filter: none;
 			backdrop-filter: none;
 		}
-		div:has(input:focus, textarea:focus) {
+		div:has(textarea:focus) {
 			outline: 2px solid Highlight;
 			outline-offset: 2px;
 			box-shadow: none;
