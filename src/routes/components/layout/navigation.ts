@@ -9,6 +9,7 @@ import {
 	chapter as checkboxChapter,
 	sections as checkboxSections
 } from '../../checkbox/sections.js';
+import { chapter as dialogChapter, sections as dialogSections } from '../../dialog/sections.js';
 import { chapter as switchChapter, sections as switchSections } from '../../switch/sections.js';
 
 export const navigation = [
@@ -24,6 +25,7 @@ export const navigation = [
 		links: [
 			{ title: buttonChapter, href: '/button' },
 			{ title: iconChapter, href: '/icon' },
+			{ title: dialogChapter, href: '/dialog' },
 			{ title: checkboxChapter, href: '/checkbox' },
 			{ title: switchChapter, href: '/switch' }
 		]
@@ -39,6 +41,7 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/': introductionSections,
 	'/button': buttonSections,
 	'/icon': iconSections,
+	'/dialog': dialogSections,
 	'/checkbox': checkboxSections,
 	'/switch': switchSections,
 	'/theme': themeSections
