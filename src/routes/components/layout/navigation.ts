@@ -4,12 +4,12 @@ import {
 } from '../../sections.js';
 import { chapter as buttonChapter, sections as buttonSections } from '../../button/sections.js';
 import { chapter as iconChapter, sections as iconSections } from '../../icon/sections.js';
+import { chapter as themeChapter, sections as themeSections } from '../../theme/sections.js';
 import {
 	chapter as progressChapter,
 	sections as progressSections
 } from '../../progress/sections.js';
 import { chapter as spinnerChapter, sections as spinnerSections } from '../../spinner/sections.js';
-import { chapter as themeChapter, sections as themeSections } from '../../theme/sections.js';
 
 export const navigation = [
 	{
