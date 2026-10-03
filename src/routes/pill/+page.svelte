@@ -1,11 +1,11 @@
 <script lang="ts">
-	/* eslint-disable max-lines -- Keep the Pill gallery matrix and usage together. */
 	import { chapter, sections } from './sections.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { Pill } from '$lib/index.js';
+	import PillGroupDemo from './pill-group-demo.svelte';
 	import type { Color, Size, Variant } from '$lib/types.js';
 
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
@@ -24,23 +24,8 @@
 	let variant = $state<Variant>('neutral');
 	let color = $state<Exclude<Color, 'background'>>('foreground');
 	let label = $state('Status');
-	let clicked = $state(0);
-	let removed = $state(0);
+	let ref = $state<HTMLSpanElement>();
 	const props = [
-		{
-			name: 'label',
-			type: 'string',
-			required: true,
-			default: '—',
-			description: 'Visible label.'
-		},
-		{
-			name: 'icon',
-			type: "Omit<IconProps, 'label' | 'size' | 'color'>",
-			required: false,
-			default: 'Omitted',
-			description: 'Decorative leading icon.'
-		},
 		{
 			name: 'children',
 			type: 'Snippet',
@@ -70,41 +55,28 @@
 			description: 'Theme role.'
 		},
 		{
-			name: 'onClick',
-			type: '(event: MouseEvent) => void',
+			name: 'ref',
+			type: 'HTMLSpanElement',
 			required: false,
 			default: 'Omitted',
-			description: 'Activate the Pill.'
-		},
-		{
-			name: 'onDelete',
-			type: '() => void',
-			required: false,
-			default: 'Omitted',
-			description: 'Show a labeled remove button.'
-		},
-		{
-			name: 'swoosh',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Animate the highlight.'
+			description: 'Bind to the native span.'
 		}
 	];
 </script>
 
-<Page title={chapter} description="A compact label for status, categories and optional actions.">
+<Page title={chapter} description="A passive label for short status or category text.">
 	<Section {...sections[0]}>
 		<div data-demo="row">
-			<Pill label="Draft" /><Pill label="Ready" color="success" variant="soft" /><Pill
-				label="Featured"
+			<Pill>Draft</Pill><Pill color="success" variant="soft">Ready</Pill><Pill
 				color="primary"
 				variant="filled"
-			/>
+			>
+				Featured
+			</Pill>
 		</div>
 		<CodeSnippet
 			label="Pill usage code"
-			source={`<script>\n  import { Pill } from 'bref-ui';\n<${'/'}script>\n\n<Pill label="Ready" color="success" variant="soft" />`}
+			source={`<script>\n  import { Pill } from 'bref-ui';\n<${'/'}script>\n\n<Pill color="success" variant="soft">Ready</Pill>`}
 		/>
 	</Section>
 	<Section {...sections[1]}>
@@ -129,38 +101,34 @@
 			</label>
 		</div>
 		<div data-demo="row">
-			<Pill {label} {size} {variant} {color} icon={{ name: 'star' }} title="Native title attribute">
-				<strong>snippet</strong>
-			</Pill>
-			<Pill label="Clickable" onClick={() => clicked++} />
-			<Pill label="Removable" onDelete={() => removed++} />
-			<Pill label="Combined" onClick={() => clicked++} onDelete={() => removed++} />
-			<Pill label="Animated" swoosh />
+			<Pill {size} {variant} {color} bind:ref title="Native title attribute">{label}</Pill>
 		</div>
-		<p>Clicks: {clicked}; removals: {removed}</p>
+		<p>Bound element: {ref?.tagName ?? 'pending'}</p>
 		{#each variants as variant (variant)}
 			<fieldset>
 				<legend>{variant}</legend>
 				<div data-demo="row">
-					{#each colors as color (color)}<Pill {variant} {color} label={color} />{/each}
+					{#each colors as color (color)}<Pill {variant} {color}>{color}</Pill>{/each}
 				</div>
 			</fieldset>
 		{/each}
 		<fieldset>
 			<legend>Sizes and long content</legend>
 			<div data-demo="row">
-				{#each sizes as size (size)}<Pill {size} color="primary" label={size} />{/each}<Pill
+				{#each sizes as size (size)}<Pill {size} color="primary">{size}</Pill>{/each}<Pill
 					color="primary"
-					label="A long category label that wraps on a narrow screen without losing its meaning"
-				/>
+				>
+					A long category label that wraps on a narrow screen without losing its meaning
+				</Pill>
 			</div>
 		</fieldset>
 	</Section>
 	<Section {...sections[2]}>
-		<PropTable {props} label="Pill props" />
+		<PillGroupDemo {size} {variant} {color} />
+		<PropTable {props} />
 		<p>
-			Pill accepts native div attributes and a children snippet. A clickable Pill supports Enter and
-			Space; its remove button has a separate accessible name.
+			Pill renders an inert span. Native span attributes pass through; <code>bind:ref</code>
+			exposes the element. Content is a children snippet. Compose actions or removal with separate controls.
 		</p>
 	</Section>
 </Page>
