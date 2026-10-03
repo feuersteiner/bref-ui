@@ -6,46 +6,34 @@
 		label,
 		id,
 		title,
+		'aria-label': ariaLabel,
 		'aria-describedby': describedBy,
 		'aria-labelledby': labelledBy,
 		value,
-		max = 1,
 		size = 'medium',
-		color = 'primary',
-		ref = $bindable(null),
 		onSeek,
-		onSeekCommit,
 		disabled = false,
 		...attributes
 	}: ProgressProps = $props();
 
-	const checkedMax = $derived.by(() => {
-		if (!Number.isFinite(max) || max <= 0)
-			throw new RangeError('Progress max must be finite and greater than zero');
-		return max;
-	});
 	const checkedValue = $derived.by(() => {
-		const limit = checkedMax;
 		if (value === undefined) return undefined;
 		if (!Number.isFinite(value)) throw new RangeError('Progress value must be finite');
-		return Math.min(limit, Math.max(0, value));
+		return Math.min(1, Math.max(0, value));
 	});
 	const seekable = $derived(onSeek !== undefined);
 	let draft = $state<number | undefined>(undefined);
 	const display = $derived(draft ?? checkedValue ?? 0);
-	const percentage = $derived((display / checkedMax) * 100);
+	const percentage = $derived(display * 100);
 
 	const handleInput = (event: Event) => {
 		if (disabled || !onSeek) return;
-		draft = (event.currentTarget as HTMLInputElement).valueAsNumber;
+		draft = Math.min(1, Math.max(0, (event.currentTarget as HTMLInputElement).valueAsNumber));
 		onSeek(draft);
 	};
 
 	const handleChange = () => {
-		if (draft === undefined) return;
-		const committed = draft;
 		draft = undefined;
-		if (!disabled) onSeekCommit?.(committed);
 	};
 </script>
 
@@ -54,18 +42,16 @@
 	data-size={size}
 	data-seekable={seekable}
 	data-unknown={checkedValue === undefined}
-	style:--progress-color={`var(--color-${color})`}
 >
 	<progress
 		{...attributes}
-		bind:this={ref}
 		id={seekable ? undefined : id}
 		title={seekable ? undefined : title}
 		aria-describedby={seekable ? undefined : describedBy}
 		aria-labelledby={seekable ? undefined : labelledBy}
-		aria-label={seekable ? undefined : label}
+		aria-label={seekable ? undefined : label || ariaLabel}
 		aria-hidden={seekable ? 'true' : undefined}
-		max={checkedMax}
+		max="1"
 		value={checkedValue}
 	></progress>
 	{#if seekable}
@@ -76,22 +62,33 @@
 			aria-describedby={describedBy}
 			aria-labelledby={labelledBy}
 			min="0"
-			max={checkedMax}
-			step={checkedMax / 100}
+			max="1"
+			step="0.01"
 			value={display}
-			aria-label={label}
+			aria-label={label || ariaLabel}
 			{disabled}
 			oninput={handleInput}
 			onchange={handleChange}
 			onpointercancel={() => (draft = undefined)}
 		/>
-		<span class="thumb" style:left={`${percentage}%`} aria-hidden="true"></span>
+		<span class="thumb" style:inset-inline-start={`${percentage}%`} aria-hidden="true"></span>
 	{/if}
 </div>
 
 <style>
 	.progress {
 		--progress-height: 0.375rem;
+		--progress-track: color-mix(
+			in srgb,
+			color-mix(in srgb, var(--color-foreground) 16%, var(--color-background)) 85%,
+			transparent
+		);
+		--progress-fill: color-mix(
+			in srgb,
+			color-mix(in srgb, var(--color-primary) 88%, var(--color-background)) 85%,
+			transparent
+		);
+		--progress-highlight: color-mix(in srgb, var(--color-foreground) 28%, transparent);
 		position: relative;
 		display: block;
 		width: 100%;
@@ -110,19 +107,26 @@
 		border: 0;
 		border-radius: 999px;
 		appearance: none;
-		background: color-mix(in srgb, var(--color-muted) 30%, transparent);
+		background: var(--progress-track);
+		box-shadow:
+			inset 0 1px 0 color-mix(in srgb, var(--color-foreground) 16%, transparent),
+			0 2px 6px color-mix(in srgb, var(--color-foreground) 8%, transparent);
+		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
+		backdrop-filter: blur(0.5rem) saturate(120%);
 		overflow: hidden;
 	}
 	progress::-webkit-progress-bar {
-		background: color-mix(in srgb, var(--color-muted) 30%, transparent);
+		background: transparent;
 	}
 	progress::-webkit-progress-value {
-		background: var(--progress-color);
+		background: var(--progress-fill);
 		border-radius: 999px;
+		box-shadow: inset 0 1px 0 var(--progress-highlight);
 	}
 	progress::-moz-progress-bar {
-		background: var(--progress-color);
+		background: var(--progress-fill);
 		border-radius: 999px;
+		box-shadow: inset 0 1px 0 var(--progress-highlight);
 	}
 	.progress[data-unknown='true'] progress::-webkit-progress-value {
 		background: transparent;
@@ -133,13 +137,15 @@
 	.progress[data-unknown='true']::after {
 		content: '';
 		position: absolute;
-		top: 0;
+		top: calc(50% - var(--progress-height) / 2);
 		left: 0;
-		width: 35%;
+		width: 100%;
 		height: var(--progress-height);
 		border-radius: 999px;
-		background: var(--progress-color);
-		animation: sweep 1.6s ease-in-out infinite alternate;
+		background: var(--progress-fill);
+		box-shadow: inset 0 1px 0 var(--progress-highlight);
+		transform-origin: left center;
+		animation: sweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 		pointer-events: none;
 	}
 	.progress[data-seekable='true'] {
@@ -164,16 +170,42 @@
 		cursor: not-allowed;
 	}
 	.thumb {
+		box-sizing: border-box;
 		position: absolute;
 		top: 50%;
 		width: 1.25rem;
 		height: 1.25rem;
 		border-radius: 50%;
-		background: var(--progress-color);
-		border: 2px solid var(--color-background);
-		box-shadow: 0 0 0 1px var(--progress-color);
-		transform: translate(-50%, -50%);
+		background: color-mix(in srgb, var(--color-background) 25%, transparent);
+		border: 1px solid color-mix(in srgb, var(--color-foreground) 30%, transparent);
+		box-shadow:
+			inset 0 1px 0 var(--progress-highlight),
+			0 2px 6px color-mix(in srgb, var(--color-foreground) 12%, transparent);
+		-webkit-backdrop-filter: blur(0.125rem) saturate(120%);
+		backdrop-filter: blur(0.125rem) saturate(120%);
+		transform: translate(var(--internal-thumb-offset, -50%), -50%);
+		transition:
+			transform 150ms ease,
+			box-shadow 150ms ease;
 		pointer-events: none;
+	}
+	@media (hover: hover) {
+		input:not(:disabled):hover + .thumb {
+			transform: translate(var(--internal-thumb-offset, -50%), -50%) scale(1.3);
+			box-shadow:
+				inset 0 1px 0 var(--progress-highlight),
+				0 3px 10px color-mix(in srgb, var(--color-foreground) 20%, transparent);
+		}
+	}
+	input:not(:disabled):active + .thumb {
+		transform: translate(var(--internal-thumb-offset, -50%), -50%) scale(1.5);
+		box-shadow:
+			inset 0 1px 0 var(--progress-highlight),
+			0 4px 14px color-mix(in srgb, var(--color-foreground) 24%, transparent),
+			0 0 0 4px color-mix(in srgb, var(--color-foreground) 12%, transparent);
+	}
+	.thumb:dir(rtl) {
+		--internal-thumb-offset: 50%;
 	}
 	input:focus-visible + .thumb {
 		outline: 2px solid var(--color-foreground);
@@ -183,23 +215,38 @@
 		opacity: 0.5;
 	}
 	@keyframes sweep {
-		to {
-			transform: translateX(185%);
+		0% {
+			transform: translateX(0) scaleX(0);
+		}
+		50% {
+			transform: translateX(25%) scaleX(0.5);
+		}
+		100% {
+			transform: translateX(100%) scaleX(0);
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
+		.thumb {
+			transition: none;
+		}
 		.progress[data-unknown='true']::after {
 			animation: none;
-			left: 32.5%;
+			transform: translateX(32.5%) scaleX(0.35);
 		}
 	}
 	@media (forced-colors: active) {
 		progress {
 			border: 1px solid CanvasText;
+			box-shadow: none;
+			-webkit-backdrop-filter: none;
+			backdrop-filter: none;
 		}
 		.thumb {
 			background: Highlight;
 			border-color: HighlightText;
+			box-shadow: none;
+			-webkit-backdrop-filter: none;
+			backdrop-filter: none;
 		}
 	}
 </style>

@@ -1,9 +1,7 @@
-import type { HTMLAttributes } from 'svelte/elements';
-import type { Color, Size } from '../types.js';
+import type { Size } from '../types.js';
 
-export type SpinnerProps = Omit<HTMLAttributes<HTMLSpanElement>, 'color' | 'size'> & {
-	label: string;
+export interface SpinnerProps {
+	/** Match Icon sizing in the styles. */
 	size?: Size;
-	color?: Color;
-	ref?: HTMLSpanElement | null;
-};
+	label?: string;
+}
