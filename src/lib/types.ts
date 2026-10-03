@@ -10,3 +10,5 @@ export type { ButtonProps } from './button/types.js';
 export type * from './icon/types.js';
 export type { SurfaceProps, SurfaceRadius } from './surface/types.js';
 export type * from './theme/types.ts';
+export type { ProgressProps } from './progress/types.js';
+export type { SpinnerProps } from './spinner/types.js';
