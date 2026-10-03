@@ -42,17 +42,17 @@
 		{/if}
 		{#if item.icon}<Icon {...item.icon} label={undefined} />{/if}
 		<span>{item.label}</span>
+		{#if onDelete}
+			<button
+				type="button"
+				aria-label={`Delete ${item.label}`}
+				disabled={item.disabled}
+				onclick={() => onDelete?.(item.id)}
+			>
+				<Icon name="close" />
+			</button>
+		{/if}
 	</button>
-	{#if onDelete}
-		<button
-			type="button"
-			aria-label={`Delete ${item.label}`}
-			disabled={item.disabled}
-			onclick={() => onDelete?.(item.id)}
-		>
-			<Icon name="close" />
-		</button>
-	{/if}
 </div>
 {#if item.children?.length}
 	<ul id={childrenId} hidden={!expanded}>
