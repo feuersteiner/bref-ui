@@ -1,8 +1,7 @@
 import type { HTMLInputAttributes } from 'svelte/elements';
+import type { Size } from '../types.js';
 
 export type CheckboxProps = Omit<HTMLInputAttributes, 'type' | 'size' | 'checked'> & {
-	size?: 'small' | 'medium' | 'large';
+	size?: Size;
 	checked?: boolean;
-	indeterminate?: boolean;
-	ref?: HTMLInputElement | undefined;
 };
