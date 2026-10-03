@@ -25,7 +25,7 @@
 	};
 </script>
 
-<div data-selected={selected}>
+<div data-selected={selected} data-disabled={item.disabled}>
 	{#if item.children?.length}
 		<button
 			type="button"
@@ -68,6 +68,7 @@
 	}
 	div {
 		box-sizing: border-box;
+		position: relative;
 		display: flex;
 		align-items: center;
 		gap: 0.25rem;
@@ -75,6 +76,7 @@
 		padding: 0.125rem 0.25rem;
 		border: 1px solid transparent;
 		border-radius: 999px;
+		overflow-wrap: anywhere;
 	}
 	[data-spacer] {
 		flex: 0 0 var(--tree-action-size);
@@ -117,19 +119,27 @@
 		min-width: 0;
 		justify-content: start;
 		text-align: start;
+		outline: none;
 	}
-	span {
-		overflow-wrap: anywhere;
+	button[aria-pressed]::before {
+		position: absolute;
+		inset: 0;
+		content: '';
+	}
+	button:not([aria-pressed]) {
+		position: relative;
+		z-index: 1;
 	}
 	div[data-selected='true'] {
 		border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
 		background: color-mix(in srgb, var(--color-primary) 16%, transparent);
 		color: var(--color-primary);
 	}
-	button:not(:disabled):hover {
+	div:not([data-selected='true'], [data-disabled='true']):hover {
 		background: color-mix(in srgb, var(--color-primary) 12%, transparent);
 	}
-	button:focus-visible {
+	div:has(> button[aria-pressed]:focus-visible),
+	button:not([aria-pressed]):focus-visible {
 		outline: 2px solid var(--color-primary);
 		outline-offset: -2px;
 	}
@@ -145,7 +155,8 @@
 		button:disabled {
 			color: GrayText;
 		}
-		button:focus-visible {
+		div:has(> button[aria-pressed]:focus-visible),
+		button:not([aria-pressed]):focus-visible {
 			outline-color: Highlight;
 		}
 	}
