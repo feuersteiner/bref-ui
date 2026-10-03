@@ -1,0 +1,8 @@
+{
+	"id": "text-area",
+	"files": ["text-area.svelte"],
+	"exports": {
+		"TextArea": "text-area.svelte"
+	},
+	"dependencies": ["icon"]
+}

@@ -1,0 +1,8 @@
+{
+	"id": "text-input",
+	"files": ["text-input.svelte"],
+	"exports": {
+		"TextInput": "text-input.svelte"
+	},
+	"dependencies": ["icon"]
+}
