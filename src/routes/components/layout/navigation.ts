@@ -5,7 +5,6 @@ import {
 import { chapter as buttonChapter, sections as buttonSections } from '../../button/sections.js';
 import { chapter as iconChapter, sections as iconSections } from '../../icon/sections.js';
 import { chapter as themeChapter, sections as themeSections } from '../../theme/sections.js';
-
 import { chapter as inputChapter, sections as inputSections } from '../../input/sections.js';
 import { chapter as selectChapter, sections as selectSections } from '../../select/sections.js';
 import {
