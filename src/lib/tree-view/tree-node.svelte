@@ -135,7 +135,8 @@
 		background: color-mix(in srgb, var(--color-primary) 16%, transparent);
 		color: var(--color-primary);
 	}
-	div:not([data-selected='true'], [data-disabled='true']):hover {
+	div:not([data-selected='true'], [data-disabled='true']):hover,
+	button:not([aria-pressed], :disabled):hover {
 		background: color-mix(in srgb, var(--color-primary) 12%, transparent);
 	}
 	div:has(> button[aria-pressed]:focus-visible),
