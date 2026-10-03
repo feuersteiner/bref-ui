@@ -11,3 +11,4 @@ export type * from './icon/types.js';
 export type { SurfaceProps, SurfaceRadius } from './surface/types.js';
 export type * from './theme/types.ts';
 export type { PillDataProps, PillProps } from './pill/types.js';
+export type { PillGroupProps } from './pill-group/types.js';

@@ -6,6 +6,10 @@ import { chapter as buttonChapter, sections as buttonSections } from '../../butt
 import { chapter as iconChapter, sections as iconSections } from '../../icon/sections.js';
 import { chapter as themeChapter, sections as themeSections } from '../../theme/sections.js';
 import { chapter as pillChapter, sections as pillSections } from '../../pill/sections.js';
+import {
+	chapter as pillGroupChapter,
+	sections as pillGroupSections
+} from '../../pill-group/sections.js';
 
 export const navigation = [
 	{
@@ -20,7 +24,8 @@ export const navigation = [
 		links: [
 			{ title: buttonChapter, href: '/button' },
 			{ title: iconChapter, href: '/icon' },
-			{ title: pillChapter, href: '/pill' }
+			{ title: pillChapter, href: '/pill' },
+			{ title: pillGroupChapter, href: '/pill-group' }
 		]
 	}
 ] as const;
@@ -35,5 +40,6 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/button': buttonSections,
 	'/icon': iconSections,
 	'/pill': pillSections,
+	'/pill-group': pillGroupSections,
 	'/theme': themeSections
 };
