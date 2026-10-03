@@ -3,33 +3,16 @@
 	import Icon from '../icon/icon.svelte';
 	import type { DialogHeaderProps } from './types.js';
 
-	let {
-		header,
-		dismissible,
-		titleId,
-		descriptionId,
-		onDismiss
-	}: {
-		header: DialogHeaderProps;
-		dismissible: boolean;
-		titleId: string;
-		descriptionId: string;
-		onDismiss: () => void;
-	} = $props();
+	let { title, description, icon, dismissible, id, onDismiss }: DialogHeaderProps = $props();
 </script>
 
 <header>
 	<div>
 		<div data-title>
-			{#if header.icon}<Icon
-					{...header.icon}
-					size="medium"
-					color="foreground"
-					label={undefined}
-				/>{/if}
-			<h2 id={titleId}>{header.title}</h2>
+			{#if icon}<Icon {...icon} size="medium" color="foreground" label={undefined} />{/if}
+			<h2 id={`${id}-title`}>{title}</h2>
 		</div>
-		{#if header.description}<p id={descriptionId}>{header.description}</p>{/if}
+		{#if description}<p id={`${id}-description`}>{description}</p>{/if}
 	</div>
 	{#if dismissible}
 		<Button

@@ -1,24 +1,16 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
 	import Button from '../button/button.svelte';
-	import type { ButtonProps, Variant } from '../types.js';
 	import type { DialogProps } from './types.js';
 
 	let { footer }: { footer: NonNullable<DialogProps['footer']> } = $props();
-	const isSnippet = (value: NonNullable<DialogProps['footer']>): value is Snippet =>
-		typeof value === 'function';
-	type Action = Exclude<NonNullable<DialogProps['footer']>, Snippet>['primary'];
-	// Pick<ButtonProps> loses Button's required union branches; the action API stays intentionally narrow.
-	const buttonProps = (action: Action, variant: Variant): ButtonProps =>
-		({ ...action, size: 'small', variant }) as ButtonProps;
 </script>
 
 <footer>
-	{#if isSnippet(footer)}
+	{#if typeof footer === 'function'}
 		{@render footer()}
 	{:else}
-		<Button {...buttonProps(footer.secondary, 'neutral')} />
-		<Button {...buttonProps(footer.primary, 'filled')} />
+		<Button {...footer.secondary} size="small" variant="neutral" />
+		<Button {...footer.primary} size="small" variant="filled" />
 	{/if}
 </footer>
 
