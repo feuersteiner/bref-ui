@@ -1,17 +1,10 @@
 import type { HTMLAttributes } from 'svelte/elements';
-import type { Snippet } from 'svelte';
-import type { PillProps } from '../pill/types.js';
-
-export interface PillGroupItem {
-	id: string;
-	label: string;
-}
+import type { PillDataProps, PillProps } from '../pill/types.js';
 
 export type PillGroupProps = Omit<HTMLAttributes<HTMLUListElement>, 'children' | 'color'> & {
-	items: readonly PillGroupItem[];
+	items: readonly PillDataProps[];
+	onDelete?: (id: string) => void;
 	color?: PillProps['color'];
 	size?: PillProps['size'];
 	variant?: PillProps['variant'];
-	renderItem?: Snippet<[PillGroupItem]>;
-	ref?: HTMLUListElement | undefined;
 };

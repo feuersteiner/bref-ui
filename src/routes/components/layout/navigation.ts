@@ -10,6 +10,10 @@ import {
 	chapter as pillGroupChapter,
 	sections as pillGroupSections
 } from '../../pill-group/sections.js';
+import {
+	chapter as pillChoiceGroupChapter,
+	sections as pillChoiceGroupSections
+} from '../../pill-choice-group/sections.js';
 
 export const navigation = [
 	{
@@ -25,7 +29,8 @@ export const navigation = [
 			{ title: buttonChapter, href: '/button' },
 			{ title: iconChapter, href: '/icon' },
 			{ title: pillChapter, href: '/pill' },
-			{ title: pillGroupChapter, href: '/pill-group' }
+			{ title: pillGroupChapter, href: '/pill-group' },
+			{ title: pillChoiceGroupChapter, href: '/pill-choice-group' }
 		]
 	}
 ] as const;
@@ -41,5 +46,6 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/icon': iconSections,
 	'/pill': pillSections,
 	'/pill-group': pillGroupSections,
+	'/pill-choice-group': pillChoiceGroupSections,
 	'/theme': themeSections
 };

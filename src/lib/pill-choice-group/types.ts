@@ -1,15 +1,12 @@
 import type { HTMLAttributes } from 'svelte/elements';
-import type { PillGroupItem } from '../pill-group/types.js';
-import type { PillProps } from '../pill/types.js';
+import type { Size, Variant } from '../types.js';
+import type { PillDataProps } from '../pill/types.js';
 
 export type PillChoiceGroupProps = Omit<HTMLAttributes<HTMLUListElement>, 'children' | 'color'> & {
-	items: readonly PillGroupItem[];
-	label: string;
-	selection?: 'single' | 'multiple';
-	selectedIds?: string[];
-	name?: string;
+	items: readonly PillDataProps[];
+	onDelete?: (id: string) => void;
+	selection: string | string[];
 	disabled?: boolean;
-	size?: PillProps['size'];
-	variant?: PillProps['variant'];
-	ref?: HTMLUListElement | undefined;
+	size?: Size;
+	variant?: Exclude<Variant, 'filled'>;
 };
