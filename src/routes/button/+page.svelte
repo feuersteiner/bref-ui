@@ -5,6 +5,7 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
+	import MovingBackground from '../components/moving-background.svelte';
 	import { Button } from '$lib/index.js';
 	import type { Color, Size, Variant } from '$lib/types.js';
 
@@ -34,6 +35,7 @@
 	let pressed = $state(false);
 	let submitted = $state('No submission yet.');
 	let matrixOpen = $state(false);
+	let movingBackground = $state(false);
 	const previewLabel = $derived(label.trim() || 'Save');
 	const noop = () => undefined;
 	const source = `<script>
@@ -202,29 +204,36 @@
 				<input type="checkbox" bind:checked={rounded} />
 				Rounded icon button
 			</label>
+			<label>
+				<input type="checkbox" role="switch" bind:checked={movingBackground} />
+				Moving background
+			</label>
 		</div>
-		<div data-demo="row">
-			<Button
-				label={previewLabel}
-				{size}
-				{variant}
-				{color}
-				{wide}
-				icon={leading ? { name: 'save', filled } : undefined}
-				trailingIcon={trailing ? { name: 'arrow_forward', filled } : undefined}
-				{disabled}
-				onClick={() => clicks++}
-			/>
-			<Button
-				{size}
-				{variant}
-				{color}
-				{rounded}
-				icon={{ name: 'favorite', filled }}
-				{disabled}
-				onClick={() => clicks++}
-				stylesOverride={{ 'aria-label': 'Favorite' }}
-			/>
+		<div data-demo="stage" data-transparency={movingBackground}>
+			{#if movingBackground}<MovingBackground />{/if}
+			<div data-demo="row">
+				<Button
+					label={previewLabel}
+					{size}
+					{variant}
+					{color}
+					{wide}
+					icon={leading ? { name: 'save', filled } : undefined}
+					trailingIcon={trailing ? { name: 'arrow_forward', filled } : undefined}
+					{disabled}
+					onClick={() => clicks++}
+				/>
+				<Button
+					{size}
+					{variant}
+					{color}
+					{rounded}
+					icon={{ name: 'favorite', filled }}
+					{disabled}
+					onClick={() => clicks++}
+					stylesOverride={{ 'aria-label': 'Favorite' }}
+				/>
+			</div>
 		</div>
 		<p role="status">Activated {clicks} times. Try Tab, Enter and Space.</p>
 		<CodeSnippet
@@ -234,7 +243,8 @@
 		/>
 	</Section>
 	<Section {...sections[2]}>
-		<div data-demo="matrix">
+		<div data-demo="matrix" data-transparency={movingBackground}>
+			{#if movingBackground}<MovingBackground />{/if}
 			<fieldset>
 				<legend>Sizes</legend>
 				<div data-demo="row">
@@ -507,6 +517,23 @@
 	[data-demo='matrix'] {
 		display: grid;
 		gap: 24px;
+	}
+	[data-transparency] {
+		position: relative;
+		isolation: isolate;
+	}
+	[data-transparency='true'] {
+		padding: 2rem;
+	}
+	[data-demo='stage'][data-transparency='true'] {
+		display: grid;
+		align-items: center;
+		min-height: 16rem;
+	}
+	[data-transparency] > [data-demo='row'],
+	[data-transparency] > fieldset {
+		position: relative;
+		z-index: 1;
 	}
 	fieldset {
 		min-width: 0;

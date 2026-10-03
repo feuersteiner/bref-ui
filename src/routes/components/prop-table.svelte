@@ -2,8 +2,10 @@
 	import { Surface } from '$lib/index.js';
 
 	let {
-		props
+		props,
+		label = 'Component props'
 	}: {
+		label?: string;
 		props: {
 			name: string;
 			type: string;
@@ -17,13 +19,13 @@
 <Surface
 	stylesOverride={{
 		role: 'region',
-		'aria-label': 'Component props',
+		'aria-label': label,
 		tabindex: 0,
 		style: 'max-width: 100%; overflow-x: auto; border-block: 1px solid var(--docs-rule);'
 	}}
 >
 	<table>
-		<caption>Component props</caption>
+		<caption>{label}</caption>
 		<thead>
 			<tr>
 				<th scope="col">Prop</th>
