@@ -7,3 +7,4 @@ export { default as Checkbox } from './checkbox/checkbox.svelte';
 export { default as Switch } from './switch/switch.svelte';
 export { default as Progress } from './progress/progress.svelte';
 export { default as Spinner } from './spinner/spinner.svelte';
+export { default as Dialog } from './dialog/dialog.svelte';

@@ -14,3 +14,9 @@ export type { CheckboxProps } from './checkbox/types.js';
 export type { SwitchProps } from './switch/types.js';
 export type { ProgressProps } from './progress/types.js';
 export type { SpinnerProps } from './spinner/types.js';
+export type {
+	DialogActionProps,
+	DialogHeaderDataProps,
+	DialogHeaderProps,
+	DialogProps
+} from './dialog/types.js';
