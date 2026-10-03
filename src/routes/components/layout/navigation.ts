@@ -11,6 +11,11 @@ import {
 } from '../../checkbox/sections.js';
 import { chapter as dialogChapter, sections as dialogSections } from '../../dialog/sections.js';
 import { chapter as switchChapter, sections as switchSections } from '../../switch/sections.js';
+import {
+	chapter as progressChapter,
+	sections as progressSections
+} from '../../progress/sections.js';
+import { chapter as spinnerChapter, sections as spinnerSections } from '../../spinner/sections.js';
 
 export const navigation = [
 	{
@@ -27,7 +32,9 @@ export const navigation = [
 			{ title: iconChapter, href: '/icon' },
 			{ title: dialogChapter, href: '/dialog' },
 			{ title: checkboxChapter, href: '/checkbox' },
-			{ title: switchChapter, href: '/switch' }
+			{ title: switchChapter, href: '/switch' },
+			{ title: progressChapter, href: '/progress' },
+			{ title: spinnerChapter, href: '/spinner' }
 		]
 	}
 ] as const;
@@ -44,5 +51,7 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/dialog': dialogSections,
 	'/checkbox': checkboxSections,
 	'/switch': switchSections,
+	'/progress': progressSections,
+	'/spinner': spinnerSections,
 	'/theme': themeSections
 };
