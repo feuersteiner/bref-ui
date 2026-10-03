@@ -22,34 +22,34 @@
 	};
 </script>
 
-<li>
-	<div>
-		<button type="button" aria-pressed={selected} disabled={item.disabled} onclick={select}>
-			{#if item.icon}<Icon {...item.icon} label={undefined} />{/if}
-			<span>{item.label}</span>
+<div>
+	<button type="button" aria-pressed={selected} disabled={item.disabled} onclick={select}>
+		{#if item.icon}<Icon {...item.icon} label={undefined} />{/if}
+		<span>{item.label}</span>
+	</button>
+	{#if onDelete}
+		<button
+			type="button"
+			aria-label={`Delete ${item.label}`}
+			disabled={item.disabled}
+			onclick={() => onDelete?.(item.id)}
+		>
+			<Icon name="close" />
 		</button>
-		{#if onDelete}
-			<button
-				type="button"
-				aria-label={`Delete ${item.label}`}
-				disabled={item.disabled}
-				onclick={() => onDelete?.(item.id)}
-			>
-				<Icon name="close" />
-			</button>
-		{/if}
-	</div>
-	{#if item.children?.length}
-		<details open={defaultExpanded}>
-			<summary aria-label={`Children of ${item.label}`}></summary>
-			<ul>
-				{#each item.children as child (child.id)}
-					<RecursiveNode item={child} bind:selection {defaultExpanded} {onDelete} />
-				{/each}
-			</ul>
-		</details>
 	{/if}
-</li>
+</div>
+{#if item.children?.length}
+	<details open={defaultExpanded}>
+		<summary aria-label={`Children of ${item.label}`}>
+			<span><Icon name="chevron_right" /></span>
+		</summary>
+		<ul>
+			{#each item.children as child (child.id)}
+				<li><RecursiveNode item={child} bind:selection {defaultExpanded} {onDelete} /></li>
+			{/each}
+		</ul>
+	</details>
+{/if}
 
 <style>
 	li {
@@ -62,15 +62,26 @@
 		padding-inline-start: var(--tree-action-size);
 	}
 	summary {
+		display: grid;
+		place-items: center;
 		position: absolute;
 		inset-block-start: 0;
 		inset-inline-start: 0;
 		width: var(--tree-action-size);
-		line-height: var(--tree-height);
+		height: var(--tree-height);
 		border-radius: 999px;
-		list-style-position: inside;
-		text-align: center;
+		list-style: none;
 		cursor: pointer;
+	}
+	summary::-webkit-details-marker {
+		display: none;
+	}
+	summary span {
+		display: inline-flex;
+		font-size: 1.25em;
+	}
+	details[open] > summary span {
+		transform: rotate(90deg);
 	}
 	ul {
 		display: grid;
