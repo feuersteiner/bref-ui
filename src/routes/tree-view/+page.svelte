@@ -1,57 +1,77 @@
 <script lang="ts">
+	/* eslint-disable max-lines -- Keep live examples and their prop documentation together. */
 	import { chapter, sections } from './sections.js';
-	/* eslint-disable max-lines -- Gallery states and prop documentation stay together. */
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { Button, TreeView } from '$lib/index.js';
-	import type { BaseSize } from '$lib/types.js';
-	import type { TreeItemProps, TreeSectionProps } from '$lib/types.js';
+	import type { BaseSize, TreeItemProps, TreeSectionProps } from '$lib/types.js';
 
-	const treeSections: TreeSectionProps[] = [
-		{ id: 'workspace', label: 'Workspace', icon: { name: 'folder' } },
-		{ id: 'personal', label: 'Personal', icon: { name: 'home' } }
+	const exampleItems: TreeItemProps[] = [
+		{ id: 'projects', label: 'Projects', children: [{ id: 'notes', label: 'Notes' }] }
 	];
-	let items = $state<TreeItemProps[]>([
-		{ id: 'overview', label: 'Overview', icon: { name: 'home' } },
-		{ id: 'projects', label: 'Projects', sectionId: 'workspace', icon: { name: 'folder' } },
+	const initialSections: TreeSectionProps[] = [
 		{
-			id: 'design',
-			label: 'Design',
-			parentId: 'projects',
-			sectionId: 'workspace',
-			icon: { name: 'folder' }
+			id: 'workspace',
+			label: 'Workspace',
+			icon: { name: 'folder' },
+			items: [
+				{
+					id: 'projects',
+					label: 'Projects',
+					icon: { name: 'folder' },
+					children: [
+						{
+							id: 'design',
+							label: 'Design',
+							children: [
+								{ id: 'tokens', label: 'Tokens' },
+								{ id: 'components', label: 'Components' }
+							]
+						},
+						{
+							id: 'archive',
+							label: 'Archive',
+							disabled: true,
+							children: [{ id: 'past-work', label: 'Past work' }]
+						}
+					]
+				}
+			]
 		},
-		{ id: 'tokens', label: 'Tokens', parentId: 'design', sectionId: 'workspace' },
-		{ id: 'components', label: 'Components', parentId: 'design', sectionId: 'workspace' },
 		{
-			id: 'archive',
-			label: 'Archive',
-			parentId: 'projects',
-			sectionId: 'workspace',
-			disabled: true
-		},
-		{ id: 'past-work', label: 'Past work', parentId: 'archive', sectionId: 'workspace' },
-		{ id: 'settings', label: 'Settings', sectionId: 'personal', icon: { name: 'settings' } }
-	]);
+			id: 'personal',
+			label: 'Personal',
+			icon: { name: 'home' },
+			items: [{ id: 'settings', label: 'Settings', icon: { name: 'settings' } }]
+		}
+	];
+	let treeSections = $state(initialSections);
 	let selection = $state<string | string[]>('tokens');
 	let size = $state<BaseSize>('medium');
-	let showDesign = $state(true);
 	let allowDelete = $state(false);
-	const shownItems = $derived(
-		showDesign
-			? items
-			: items.filter((item) => !['design', 'tokens', 'components'].includes(item.id))
-	);
+	let exampleSelection = $state<string>();
+	const removeItem = (items: TreeItemProps[], id: string): TreeItemProps[] =>
+		items
+			.filter((item) => item.id !== id)
+			.map((item) => ({ ...item, children: item.children && removeItem(item.children, id) }));
+	const deleteItem = (id: string) => {
+		treeSections = treeSections.map((section) => ({
+			...section,
+			items: removeItem(section.items, id)
+		}));
+	};
 	const source = `<script lang="ts">
   import { TreeView } from 'bref-ui';
-  const treeSections = [{ id: 'workspace', label: 'Workspace' }];
-  const items = [{ id: 'projects', label: 'Projects', sectionId: 'workspace' }];
-  let selection = $state<string>('projects');
+  const items = [{
+    id: 'projects', label: 'Projects',
+    children: [{ id: 'notes', label: 'Notes' }]
+  }];
+  let selection = $state<string>();
 <${'/'}script>
 
-<TreeView items={items} sections={treeSections} label="Files" bind:selection />`;
+<TreeView {items} label="Files" bind:selection />`;
 	const props = [
 		{
 			name: 'items',
@@ -59,21 +79,21 @@
 			required: true,
 			default: '—',
 			description:
-				'Flat items with unique IDs; parentId and sectionId define hierarchy and membership.'
+				'Nested items with id, label, optional icon, children and disabled. IDs must be unique across the component.'
 		},
 		{
 			name: 'sections',
 			type: 'TreeSectionProps[]',
 			required: false,
 			default: '[]',
-			description: 'Ordered, nonselectable section headers with id, label and optional icon.'
+			description: 'Ordered headers with id, label, optional icon and their own items array.'
 		},
 		{
 			name: 'label',
 			type: 'string',
 			required: false,
 			default: 'Tree view',
-			description: 'Accessible name for the tree.'
+			description: 'Accessible name for the group of lists.'
 		},
 		{
 			name: 'size',
@@ -88,50 +108,33 @@
 			required: false,
 			default: 'Omitted',
 			description:
-				'Bindable selection of individual nodes; an array enables multiple selection. New selections reveal their ancestors.'
+				'Bindable selected IDs. A string selects one item; an array toggles individual items independently.'
 		},
 		{
 			name: 'defaultExpanded',
 			type: 'boolean',
 			required: false,
 			default: 'false',
-			description:
-				'Initial branch expansion. Selected ancestors are revealed; manual collapse persists until a new selection needs that path.'
+			description: 'Opens branches when rendered. Changing this prop updates their open state.'
 		},
 		{
 			name: 'onDelete',
 			type: '(id: string) => void',
 			required: false,
 			default: 'Omitted',
-			description: 'Shows delete actions; the caller updates items and decides descendant policy.'
+			description:
+				'Shows a delete button for each item; the caller updates the nested data and selection.'
 		}
 	];
-
-	const deleteItem = (id: string) => {
-		const removed = [id];
-		let changed = true;
-		while (changed) {
-			changed = false;
-			for (const item of items)
-				if (item.parentId && removed.includes(item.parentId) && !removed.includes(item.id)) {
-					removed.push(item.id);
-					changed = true;
-				}
-		}
-		items = items.filter((item) => !removed.includes(item.id));
-	};
 </script>
 
-<Page
-	title={chapter}
-	description="A labeled hierarchy with flat item data, sections, private expansion and keyboard navigation."
->
+<Page title={chapter} description="Nested lists with native disclosures and selectable items.">
 	<Section {...sections[0]}>
-		<TreeView {items} sections={treeSections} label="Files" bind:selection />
+		<TreeView items={exampleItems} label="Files" bind:selection={exampleSelection} />
 		<CodeSnippet {source} label="Tree view usage code" />
 	</Section>
 	<Section {...sections[1]}>
-		<div data-demo="controls">
+		<div data-controls>
 			<label>
 				Size
 				<select bind:value={size}>
@@ -141,46 +144,26 @@
 				</select>
 			</label>
 			<label>
-				Selection shape
-				<select
-					value={Array.isArray(selection) ? 'multiple' : 'single'}
-					onchange={(event) =>
-						(selection =
-							event.currentTarget.value === 'multiple'
-								? typeof selection === 'string'
-									? [selection]
-									: selection
-								: Array.isArray(selection)
-									? (selection[0] ?? '')
-									: selection)}
-				>
-					<option value="single">Single</option>
-					<option value="multiple">Multiple</option>
-				</select>
+				Multiple selection
+				<input
+					type="checkbox"
+					checked={Array.isArray(selection)}
+					onchange={(event) => (selection = event.currentTarget.checked ? [] : '')}
+				/>
 			</label>
 			<label>
-				<input type="checkbox" bind:checked={showDesign} />
-				Include Design branch
-			</label>
-			<label>
-				<input type="checkbox" bind:checked={allowDelete} />
 				Enable delete action
+				<input type="checkbox" bind:checked={allowDelete} />
 			</label>
-			<Button
-				label="Select Projects"
-				size="small"
-				variant="soft"
-				onClick={() => (selection = Array.isArray(selection) ? ['projects'] : 'projects')}
-			/>
 			<Button
 				label="Select Tokens"
 				size="small"
-				variant="soft"
 				onClick={() => (selection = Array.isArray(selection) ? ['tokens'] : 'tokens')}
 			/>
+			<Button label="Reset items" size="small" onClick={() => (treeSections = initialSections)} />
 		</div>
 		<TreeView
-			items={shownItems}
+			items={[]}
 			sections={treeSections}
 			label="Interactive files"
 			{size}
@@ -192,57 +175,64 @@
 			Selected: {Array.isArray(selection) ? selection.join(', ') || 'none' : selection || 'none'}
 		</p>
 		<p>
-			Rows select individual nodes; chevrons only expand or collapse. Collapse preserves selection.
-			Select Projects, collapse it, then Select Tokens to reveal the selected item's ancestors.
+			Selecting an item does not expand its ancestors. Collapse Projects, then select Tokens to
+			check that the branch stays closed.
 		</p>
 	</Section>
 	<Section {...sections[2]}>
-		<p>Disabled Archive can take focus and expand. Its child remains selectable.</p>
+		<p>
+			Disabled Archive cannot be selected or deleted. Its disclosure remains available, and its
+			child can be selected.
+		</p>
 		<TreeView
-			{items}
-			sections={treeSections}
-			label="Expanded example"
+			items={[
+				{
+					id: 'archive',
+					label: 'Archive',
+					disabled: true,
+					children: [{ id: 'past-work', label: 'Past work' }]
+				},
+				{
+					id: 'long',
+					label:
+						'A long item label that wraps naturally on narrow screens without hiding the item name'
+				}
+			]}
+			label="Disabled and long items"
 			defaultExpanded
-			selection="past-work"
 		/>
 		<TreeView items={[]} label="Empty files" />
 	</Section>
 	<Section {...sections[3]}><PropTable {props} /></Section>
 	<Section {...sections[4]}>
 		<p>
-			Tab enters on the selected item or first visible item. Arrow keys move focus and expand or
-			collapse; Home and End reach the extremes. Typing finds matching labels. Enter and Space
-			select. In multiple selection, Space or a row click toggles only that node. Focus, selection
-			and expansion remain separate; parent selection does not select descendants.
+			Tab and Shift+Tab move between selection buttons, delete buttons and disclosures. Enter or
+			Space activates the focused control. Disabled buttons are skipped. Each branch uses native
+			details and summary elements; arrow keys retain browser behavior.
 		</p>
 		<p>
-			Click a row to select or its chevron to expand. Bind <code>selection</code>
-			to a string for one item or an array for several. Initial and newly selected items reveal their
-			ancestors without opening the selected item's own children. Manually opened branches stay open.
-			Paths revealed by an external selection follow that selection. Manual collapse does not clear selection
-			or immediately reopen the branch. Sections are headers; every sectioned item states its own sectionId.
-			When onDelete is supplied, Delete or a row action calls it with the item ID. The caller updates
-			items.
+			The item label selects; the disclosure marker expands or collapses. An array enables
+			independent multiple selection. Parent selection does not select descendants, and collapse
+			preserves selection. The caller owns data removal and stale selected IDs.
+		</p>
+		<p>
+			This component uses ordinary lists and buttons. Focus follows browser behavior when items
+			disappear. Selection is bindable; there are no item snippets or forwarded native attributes.
 		</p>
 	</Section>
 </Page>
 
 <style>
-	[data-demo='controls'] {
+	[data-controls] {
 		display: flex;
 		flex-wrap: wrap;
+		align-items: center;
 		gap: 1rem;
 		margin-block: 1rem;
 	}
 	label {
-		display: grid;
-		gap: 0.35rem;
-	}
-	label:has(input) {
 		display: flex;
 		align-items: center;
-	}
-	:global([role='tree']) {
-		max-width: 32rem;
+		gap: 0.5rem;
 	}
 </style>
