@@ -7,16 +7,15 @@
 	import { chapter, sections } from './sections.js';
 
 	let checked = $state(false);
-	let indeterminate = $state(true);
 	let submitted = $state('No submission yet.');
-	const sizes = ['small', 'medium', 'large'] as const;
+	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const props = [
 		{
 			name: 'size',
-			type: 'BaseSize',
+			type: 'Size',
 			required: false,
 			default: 'medium',
-			description: 'Small, medium or large native checkbox.'
+			description: 'Checkbox size from x-small through x-large.'
 		},
 		{
 			name: 'checked',
@@ -24,25 +23,11 @@
 			required: false,
 			default: 'false',
 			description: 'Bind to the checked state.'
-		},
-		{
-			name: 'indeterminate',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Bind to the mixed visual state; this does not affect form submission.'
-		},
-		{
-			name: 'ref',
-			type: 'HTMLInputElement',
-			required: false,
-			default: 'undefined',
-			description: 'Bind to the input element.'
 		}
 	];
 </script>
 
-<Page title={chapter} description="A native checkbox for selecting a form value.">
+<Page title={chapter} description="A glass checkbox for selecting a form value.">
 	<Section {...sections[0]}>
 		<label><Checkbox name="updates" value="yes" bind:checked /> Receive updates</label>
 		<p role="status">{checked ? 'Selected' : 'Not selected'}</p>
@@ -57,24 +42,16 @@
 				<label><Checkbox {size} /> {size}</label>
 				<label><Checkbox {size} checked /> Checked {size}</label>
 			{/each}
-			<label><Checkbox bind:indeterminate /> Mixed</label>
 			<label><Checkbox disabled /> Disabled</label>
 			<label><Checkbox checked disabled /> Disabled checked</label>
 			<label><Checkbox required /> Required</label>
 		</div>
-		<button type="button" onclick={() => (indeterminate = !indeterminate)}>
-			Toggle mixed state
-		</button>
 	</Section>
 	<Section {...sections[2]}>
 		<PropTable {props} />
 		<p>
 			Native input attributes, events, labels, validation, form values and keyboard activation are
 			forwarded. Use <code>bind:checked</code>
-			,
-			<code>bind:indeterminate</code>
-			and
-			<code>bind:ref</code>
 			when needed. A checked box submits its value; an unchecked box submits nothing.
 		</p>
 		<form

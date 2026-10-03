@@ -2,5 +2,5 @@
 	"id": "checkbox",
 	"files": ["checkbox.svelte", "types.ts"],
 	"exports": { "Checkbox": "checkbox.svelte" },
-	"dependencies": []
+	"dependencies": ["icon"]
 }
