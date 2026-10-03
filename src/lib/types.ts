@@ -10,4 +10,4 @@ export type { ButtonProps } from './button/types.js';
 export type * from './icon/types.js';
 export type { SurfaceProps, SurfaceRadius } from './surface/types.js';
 export type * from './theme/types.ts';
-export type { TreeItem, TreeViewProps } from './tree-view/types.js';
+export type { TreeItemProps, TreeSectionProps, TreeViewProps } from './tree-view/types.js';

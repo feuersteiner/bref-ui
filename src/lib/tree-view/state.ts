@@ -1,46 +1,82 @@
-import type { TreeItem } from './types.js';
+import type { TreeItemProps, TreeSectionProps } from './types.js';
 
 export interface VisibleItem {
-	item: TreeItem;
+	item: TreeItemProps;
 	parentId?: string;
 	level: number;
 }
 
-export const indexTree = (items: readonly TreeItem[]): Map<string, TreeItem> => {
-	const indexed = new Map<string, TreeItem>();
-	const ancestors = new Set<TreeItem>();
-	const visit = (nodes: readonly TreeItem[]) => {
-		for (const node of nodes) {
-			if (ancestors.has(node)) throw new Error('TreeView items contain a cycle');
-			if (indexed.has(node.id)) throw new Error(`TreeView item ID is duplicated: ${node.id}`);
-			indexed.set(node.id, node);
-			ancestors.add(node);
-			if (node.children) visit(node.children);
-			ancestors.delete(node);
+export interface TreeIndex {
+	items: Map<string, TreeItemProps>;
+	children: Map<string, TreeItemProps[]>;
+	sections: (TreeSectionProps | undefined)[];
+}
+
+const rootKey = (sectionId?: string) => `root:${JSON.stringify(sectionId)}`;
+const childKey = (id: string) => `child:${id}`;
+
+export const indexTree = (items: TreeItemProps[], sections: TreeSectionProps[] = []): TreeIndex => {
+	const indexed = new Map<string, TreeItemProps>();
+	const children = new Map<string, TreeItemProps[]>();
+	const sectionIds = new Set<string>();
+	for (const section of sections) {
+		if (sectionIds.has(section.id))
+			throw new Error(`TreeView section ID is duplicated: ${section.id}`);
+		sectionIds.add(section.id);
+	}
+	for (const item of items) {
+		if (indexed.has(item.id)) throw new Error(`TreeView item ID is duplicated: ${item.id}`);
+		if (item.sectionId !== undefined && !sectionIds.has(item.sectionId))
+			throw new Error(`TreeView item ${item.id} has an unknown section: ${item.sectionId}`);
+		indexed.set(item.id, item);
+	}
+	for (const item of items) {
+		if (item.parentId !== undefined) {
+			const parent = indexed.get(item.parentId);
+			if (!parent)
+				throw new Error(`TreeView item ${item.id} has an unknown parent: ${item.parentId}`);
+			if (parent.sectionId !== item.sectionId)
+				throw new Error(`TreeView item ${item.id} crosses a section boundary`);
 		}
-	};
-	visit(items);
-	return indexed;
+		const key = item.parentId === undefined ? rootKey(item.sectionId) : childKey(item.parentId);
+		const siblings = children.get(key) ?? [];
+		siblings.push(item);
+		children.set(key, siblings);
+	}
+	const done = new Set<string>();
+	for (const item of items) {
+		const visiting = new Set<string>();
+		let cursor: TreeItemProps | undefined = item;
+		while (cursor && !done.has(cursor.id)) {
+			if (visiting.has(cursor.id)) throw new Error('TreeView items contain a cycle');
+			visiting.add(cursor.id);
+			cursor = cursor.parentId === undefined ? undefined : indexed.get(cursor.parentId);
+		}
+		for (const id of visiting) done.add(id);
+	}
+	return { items: indexed, children, sections: [undefined, ...sections] };
 };
+
+export const rootsFor = (index: TreeIndex, sectionId?: string) =>
+	index.children.get(rootKey(sectionId)) ?? [];
+
+export const childrenFor = (index: TreeIndex, id: string) => index.children.get(childKey(id)) ?? [];
 
 export const visibleItems = (
-	items: readonly TreeItem[],
-	expandedIds: readonly string[]
+	index: TreeIndex,
+	expanded: Record<string, boolean>,
+	defaultExpanded: boolean
 ): VisibleItem[] => {
-	const expanded = new Set(expandedIds);
 	const result: VisibleItem[] = [];
-	const visit = (nodes: readonly TreeItem[], parentId: string | undefined, level: number) => {
+	const visit = (nodes: TreeItemProps[], parentId: string | undefined, level: number) => {
 		for (const item of nodes) {
 			result.push({ item, parentId, level });
-			if (item.children?.length && expanded.has(item.id)) visit(item.children, item.id, level + 1);
+			if (childrenFor(index, item.id).length && (expanded[item.id] ?? defaultExpanded))
+				visit(childrenFor(index, item.id), item.id, level + 1);
 		}
 	};
-	visit(items, undefined, 1);
+	for (const section of index.sections) visit(rootsFor(index, section?.id), undefined, 1);
 	return result;
-};
-
-export const validIds = (ids: readonly string[], indexed: Map<string, TreeItem>): string[] => {
-	return [...new Set(ids)].filter((id) => indexed.has(id));
 };
 
 export const nextFocusAfterChange = (
@@ -84,7 +120,9 @@ export const typeaheadMatch = (
 
 export const keyboardTarget = (
 	visible: readonly VisibleItem[],
-	expandedIds: readonly string[],
+	index: TreeIndex,
+	expanded: Record<string, boolean>,
+	defaultExpanded: boolean,
 	currentId: string,
 	key: string
 ): { focusId?: string; toggleId?: string } => {
@@ -101,12 +139,12 @@ export const keyboardTarget = (
 		case 'End':
 			return { focusId: visible.at(-1)?.item.id };
 		case 'ArrowRight':
-			if (!entry.item.children?.length) return {};
-			return expandedIds.includes(currentId)
+			if (!childrenFor(index, currentId).length) return {};
+			return (expanded[currentId] ?? defaultExpanded)
 				? { focusId: visible[current + 1]?.item.id }
 				: { toggleId: currentId };
 		case 'ArrowLeft':
-			return entry.item.children?.length && expandedIds.includes(currentId)
+			return childrenFor(index, currentId).length && (expanded[currentId] ?? defaultExpanded)
 				? { toggleId: currentId }
 				: { focusId: entry.parentId };
 		default:

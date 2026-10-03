@@ -37,6 +37,6 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/': introductionSections,
 	'/button': buttonSections,
 	'/icon': iconSections,
-	'/theme': themeSections,
-	'/tree-view': treeViewSections
+	'/tree-view': treeViewSections,
+	'/theme': themeSections
 };
