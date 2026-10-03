@@ -1,0 +1,6 @@
+{
+	"id": "switch",
+	"files": ["switch.svelte"],
+	"exports": { "Switch": "switch.svelte" },
+	"dependencies": ["theme"]
+}

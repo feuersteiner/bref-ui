@@ -11,3 +11,4 @@ export type * from './icon/types.js';
 export type { SurfaceProps, SurfaceRadius } from './surface/types.js';
 export type * from './theme/types.ts';
 export type { CheckboxProps } from './checkbox/types.js';
+export type { SwitchProps } from './switch/types.js';

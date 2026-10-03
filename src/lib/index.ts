@@ -4,3 +4,4 @@ export { default as Surface } from './surface/surface.svelte';
 export { default as Theme } from './theme/theme.svelte';
 export { default as ThemeModeToggle } from './theme/theme-mode-toggle.svelte';
 export { default as Checkbox } from './checkbox/checkbox.svelte';
+export { default as Switch } from './switch/switch.svelte';
