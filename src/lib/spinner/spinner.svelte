@@ -1,58 +1,77 @@
 <script lang="ts">
 	import type { SpinnerProps } from './types.js';
 
-	let {
-		label,
-		size = 'medium',
-		color = 'primary',
-		ref = $bindable(null),
-		...attributes
-	}: SpinnerProps = $props();
+	let { label, size }: SpinnerProps = $props();
 </script>
 
 <span
-	{...attributes}
-	bind:this={ref}
-	role="status"
+	data-spinner
+	role={label ? 'status' : undefined}
+	aria-hidden={label ? undefined : 'true'}
 	data-size={size}
-	style:--spinner-color={`var(--color-${color})`}
 >
 	<span aria-hidden="true"></span>
-	<span class="sr-only">{label}</span>
+	{#if label}<span class="sr-only">{label}</span>{/if}
 </span>
 
 <style>
-	span[role='status'] {
+	@property --spinner-sweep {
+		syntax: '<angle>';
+		inherits: false;
+		initial-value: 90deg;
+	}
+	span[data-spinner] {
+		--spinner-track: color-mix(
+			in srgb,
+			color-mix(in srgb, var(--color-foreground) 16%, var(--color-background)) 85%,
+			transparent
+		);
+		--spinner-fill: color-mix(
+			in srgb,
+			color-mix(in srgb, var(--color-primary) 88%, var(--color-background)) 85%,
+			transparent
+		);
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--spinner-size);
-		height: var(--spinner-size);
-		color: var(--spinner-color);
+		width: 1em;
+		height: 1em;
+		font-size: inherit;
+		color: var(--color-primary);
 	}
-	span[role='status'][data-size='x-small'] {
-		--spinner-size: 0.875rem;
+	span[data-spinner][data-size='x-small'] {
+		font-size: 0.875rem;
 	}
-	span[role='status'][data-size='small'] {
-		--spinner-size: 1rem;
+	span[data-spinner][data-size='small'] {
+		font-size: 1rem;
 	}
-	span[role='status'][data-size='medium'] {
-		--spinner-size: 1.5rem;
+	span[data-spinner][data-size='medium'] {
+		font-size: 1.5rem;
 	}
-	span[role='status'][data-size='large'] {
-		--spinner-size: 2.5rem;
+	span[data-spinner][data-size='large'] {
+		font-size: 2.5rem;
 	}
-	span[role='status'][data-size='x-large'] {
-		--spinner-size: 5rem;
+	span[data-spinner][data-size='x-large'] {
+		font-size: 5rem;
 	}
-	span[aria-hidden='true'] {
+	span[data-spinner] > span[aria-hidden='true'] {
 		box-sizing: border-box;
 		width: 80%;
 		height: 80%;
-		border: max(2px, 0.12em) solid color-mix(in srgb, currentColor 25%, transparent);
-		border-top-color: currentColor;
+		padding: max(2px, 0.12em);
+		background: conic-gradient(
+			var(--spinner-fill) 0deg var(--spinner-sweep),
+			var(--spinner-track) var(--spinner-sweep) 360deg
+		);
+		box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-foreground) 28%, transparent);
+		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
+		backdrop-filter: blur(0.5rem) saturate(120%);
+		mask:
+			linear-gradient(black, black) content-box,
+			linear-gradient(black, black);
+		mask-composite: exclude;
 		border-radius: 50%;
-		animation: spin 0.8s linear infinite;
+		animation: spin 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 	}
 	.sr-only {
 		position: absolute;
@@ -66,19 +85,35 @@
 		border: 0;
 	}
 	@keyframes spin {
-		to {
+		0% {
+			--spinner-sweep: 30deg;
+			transform: rotate(0deg);
+		}
+		50% {
+			--spinner-sweep: 270deg;
+			transform: rotate(180deg);
+		}
+		100% {
+			--spinner-sweep: 30deg;
 			transform: rotate(360deg);
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		span[aria-hidden='true'] {
+		span[data-spinner] > span[aria-hidden='true'] {
 			animation: none;
 		}
 	}
 	@media (forced-colors: active) {
-		span[aria-hidden='true'] {
+		span[data-spinner] > span[aria-hidden='true'] {
+			padding: 0;
+			mask: none;
+			border: max(2px, 0.12em) solid CanvasText;
 			border-color: CanvasText;
 			border-top-color: Highlight;
+			background: none;
+			box-shadow: none;
+			-webkit-backdrop-filter: none;
+			backdrop-filter: none;
 		}
 	}
 </style>

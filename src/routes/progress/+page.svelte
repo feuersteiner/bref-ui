@@ -1,7 +1,6 @@
 <script lang="ts">
-	/* eslint-disable max-lines -- The examples, controls and prop table belong on one documentation page. */
 	import { Progress } from '$lib/index.js';
-	import type { BaseSize, Color } from '$lib/types.js';
+	import type { BaseSize } from '$lib/types.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
@@ -9,65 +8,37 @@
 	import { chapter, sections } from './sections.js';
 
 	const sizes: BaseSize[] = ['small', 'medium', 'large'];
-	const colors: Color[] = [
-		'primary',
-		'secondary',
-		'foreground',
-		'background',
-		'muted',
-		'info',
-		'success',
-		'warning',
-		'error'
-	];
 	let value = $state(0.35);
-	let max = $state(1);
 	let disabled = $state(false);
-	let color = $state<Color>('primary');
 	let size = $state<BaseSize>('medium');
-	let committed = $state(0.35);
 	const props = [
 		{
 			name: 'label',
 			type: 'string',
-			required: true,
+			required: false,
 			default: '—',
-			description: 'Accessible name of the indicator or seek control.'
+			description: 'Optional accessible name of the indicator or seek control.'
 		},
 		{
 			name: 'value',
 			type: 'number',
 			required: false,
 			default: 'Omitted',
-			description: 'Finite progress value. Omit for indeterminate mode; required for seeking.'
-		},
-		{
-			name: 'max',
-			type: 'number',
-			required: false,
-			default: '1',
-			description: 'Finite positive upper bound. Values clamp to 0 through max.'
+			description: 'Normalized value from 0 to 1. Omit for indeterminate progress.'
 		},
 		{
 			name: 'onSeek',
 			type: '(value: number) => void',
 			required: false,
 			default: 'Omitted',
-			description: 'Makes progress seekable; update the controlled value.'
-		},
-		{
-			name: 'onSeekCommit',
-			type: '(value: number) => void',
-			required: false,
-			default: 'Omitted',
-			description: 'Runs when a seek interaction ends.'
+			description: 'Makes progress seekable and emits normalized values on edits.'
 		},
 		{
 			name: 'disabled',
 			type: 'boolean',
 			required: false,
 			default: 'false',
-			description: 'Disables only seekable progress.'
+			description: 'Disables the seek control when present.'
 		},
 		{
 			name: 'size',
@@ -75,20 +46,6 @@
 			required: false,
 			default: 'medium',
 			description: 'Track thickness: small, medium, or large.'
-		},
-		{
-			name: 'color',
-			type: 'Color',
-			required: false,
-			default: 'primary',
-			description: 'Theme color for the filled track.'
-		},
-		{
-			name: 'ref',
-			type: 'HTMLProgressElement',
-			required: false,
-			default: 'null',
-			description: 'Bindable native progress element reference.'
 		}
 	];
 </script>
@@ -105,7 +62,10 @@
 		/>
 	</Section>
 	<Section {...sections[1]}>
-		<h3>Determinate and indeterminate</h3>
+		<div class="example">
+			<span>0 / 0.5 / 1</span>
+			<Progress value={0} /><Progress value={0.5} /><Progress value={1} />
+		</div>
 		{#each sizes as size (size)}
 			<div class="example">
 				<span>{size}</span>
@@ -115,13 +75,6 @@
 				/>
 			</div>
 		{/each}
-		<h3>Colors</h3>
-		{#each colors as color (color)}
-			<div class="example">
-				<span>{color}</span>
-				<Progress label={`${color} progress`} {color} value={0.6} />
-			</div>
-		{/each}
 	</Section>
 	<Section {...sections[2]}>
 		<div class="controls">
@@ -129,7 +82,7 @@
 				Value <input
 					type="number"
 					min="0"
-					{max}
+					max="1"
 					step="0.01"
 					{value}
 					oninput={(event) => {
@@ -139,25 +92,8 @@
 				/>
 			</label>
 			<label>
-				Maximum <input
-					type="number"
-					min="0.01"
-					step="0.01"
-					value={max}
-					oninput={(event) => {
-						const next = event.currentTarget.valueAsNumber;
-						if (Number.isFinite(next) && next > 0) max = next;
-					}}
-				/>
-			</label>
-			<label>
 				Size <select bind:value={size}>
 					{#each sizes as item (item)}<option value={item}>{item}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Color <select bind:value={color}>
-					{#each colors as item (item)}<option value={item}>{item}</option>{/each}
 				</select>
 			</label>
 			<label>
@@ -168,16 +104,13 @@
 		<Progress
 			label="Playback position"
 			{value}
-			{max}
 			{size}
-			{color}
 			{disabled}
 			onSeek={(next) => (value = next)}
-			onSeekCommit={(next) => (committed = next)}
 		/>
 		<p>
-			Current: {value.toFixed(2)}; last committed: {committed.toFixed(2)}. Drag, tap, or use Arrow,
-			Home, and End keys.
+			Current: {value.toFixed(2)} ({Math.round(value * 100)}%). Drag, tap, or use Arrow, Home, and
+			End keys.
 		</p>
 		<CodeSnippet
 			label="Seekable progress code"
@@ -187,12 +120,16 @@
 	<Section {...sections[3]}>
 		<PropTable {props} />
 		<p>
-			The indicator uses a native progress element. Seekable progress exposes a native range control
-			with a single accessible name. Native progress attributes, including <code>id</code>
+			The indicator uses a native progress element with a fixed maximum of 1. Seekable progress
+			exposes a native range control. Add a label or an external label association when an
+			accessible name is needed. Native progress attributes forward to the indicator; <code>
+				id
+			</code>
 			and
 			<code>aria-describedby</code>
-			, forward to the progress element. Indeterminate progress omits its value. No live region repeats
-			value changes. Motion stops when reduced motion is requested.
+			attach to the range control when seeking. Indeterminate progress omits its value. No live region
+			repeats value changes. The fill uses the primary theme color. Motion stops when reduced motion is
+			requested.
 		</p>
 	</Section>
 </Page>
@@ -200,7 +137,7 @@
 <style>
 	.example {
 		display: grid;
-		grid-template-columns: minmax(5rem, 8rem) minmax(0, 1fr) minmax(0, 1fr);
+		grid-template-columns: minmax(5rem, 8rem) repeat(3, minmax(0, 1fr));
 		align-items: center;
 		gap: 1rem;
 	}
