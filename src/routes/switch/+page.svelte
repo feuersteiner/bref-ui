@@ -4,13 +4,13 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Switch } from '$lib/index.js';
+	import { Icon, Switch } from '$lib/index.js';
 	import type { BaseSize } from '$lib/types.js';
 
 	const sizes: BaseSize[] = ['small', 'medium', 'large'];
 	let enabled = $state(false);
 	let submitted = $state('No submission yet.');
-	const source = `<script>\n  import { Switch } from 'bref-ui';\n  let enabled = $state(false);\n<${'/'}script>\n\n<label><Switch name="notifications" bind:checked={enabled} /> Notifications</label>`;
+	const source = `<script>\n  import { Icon, Switch } from 'bref-ui';\n  let enabled = $state(false);\n<${'/'}script>\n\n<label>\n  <Switch name="notifications" bind:checked={enabled}>\n    {#if enabled}<Icon name="dark_mode" />{:else}<Icon name="light_mode" />{/if}\n  </Switch>\n  Notifications\n</label>`;
 	const props = [
 		{
 			name: 'checked',
@@ -27,18 +27,23 @@
 			description: 'small, medium or large.'
 		},
 		{
-			name: 'ref',
-			type: 'HTMLInputElement',
+			name: 'children',
+			type: 'Snippet',
 			required: false,
-			default: 'undefined',
-			description: 'Bindable native input reference.'
+			default: 'Omitted',
+			description: 'Decorative content rendered inside the thumb.'
 		}
 	];
 </script>
 
 <Page title={chapter} description="A checkbox-based on/off control with native form behavior.">
 	<Section {...sections[0]}>
-		<label><Switch name="notifications" bind:checked={enabled} /> Notifications</label>
+		<label>
+			<Switch name="notifications" bind:checked={enabled}>
+				{#if enabled}<Icon name="dark_mode" />{:else}<Icon name="light_mode" />{/if}
+			</Switch>
+			Notifications
+		</label>
 		<p role="status">Notifications {enabled ? 'on' : 'off'}.</p>
 		<CodeSnippet {source} label="Switch usage code" />
 	</Section>
@@ -60,9 +65,8 @@
 			</code>
 			for an accessible name. Bind
 			<code>checked</code>
-			and
-			<code>ref</code>
-			as needed.
+			as needed. The optional children snippet renders decorative content inside the thumb; keep interactive
+			elements outside the switch.
 		</p>
 	</Section>
 	<Section {...sections[3]}>
