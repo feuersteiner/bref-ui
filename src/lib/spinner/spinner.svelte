@@ -4,15 +4,10 @@
 	let { label, size }: SpinnerProps = $props();
 </script>
 
-<span
-	data-spinner
-	role={label ? 'status' : undefined}
-	aria-hidden={label ? undefined : 'true'}
-	data-size={size}
->
+<div role={label ? 'status' : undefined} aria-hidden={label ? undefined : 'true'} data-size={size}>
 	<span aria-hidden="true"></span>
-	{#if label}<span class="sr-only">{label}</span>{/if}
-</span>
+	{#if label}<i>{label}</i>{/if}
+</div>
 
 <style>
 	@property --spinner-sweep {
@@ -20,7 +15,7 @@
 		inherits: false;
 		initial-value: 90deg;
 	}
-	span[data-spinner] {
+	div {
 		--spinner-track: color-mix(
 			in srgb,
 			color-mix(in srgb, var(--color-foreground) 16%, var(--color-background)) 85%,
@@ -39,22 +34,22 @@
 		font-size: inherit;
 		color: var(--color-primary);
 	}
-	span[data-spinner][data-size='x-small'] {
+	div[data-size='x-small'] {
 		font-size: 0.875rem;
 	}
-	span[data-spinner][data-size='small'] {
+	div[data-size='small'] {
 		font-size: 1rem;
 	}
-	span[data-spinner][data-size='medium'] {
+	div[data-size='medium'] {
 		font-size: 1.5rem;
 	}
-	span[data-spinner][data-size='large'] {
+	div[data-size='large'] {
 		font-size: 2.5rem;
 	}
-	span[data-spinner][data-size='x-large'] {
+	div[data-size='x-large'] {
 		font-size: 5rem;
 	}
-	span[data-spinner] > span[aria-hidden='true'] {
+	span {
 		box-sizing: border-box;
 		width: 80%;
 		height: 80%;
@@ -73,7 +68,7 @@
 		border-radius: 50%;
 		animation: spin 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 	}
-	.sr-only {
+	i {
 		position: absolute;
 		width: 1px;
 		height: 1px;
@@ -99,12 +94,12 @@
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		span[data-spinner] > span[aria-hidden='true'] {
+		span {
 			animation: none;
 		}
 	}
 	@media (forced-colors: active) {
-		span[data-spinner] > span[aria-hidden='true'] {
+		span {
 			padding: 0;
 			mask: none;
 			border: max(2px, 0.12em) solid CanvasText;

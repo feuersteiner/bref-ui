@@ -1,7 +1,10 @@
-import type { HTMLProgressAttributes } from 'svelte/elements';
+import type { HTMLAttributes } from 'svelte/elements';
 import type { BaseSize } from '../types.js';
 
-export type ProgressProps = Omit<HTMLProgressAttributes, 'value' | 'max' | 'size' | 'color'> & {
+export type ProgressProps = Omit<
+	HTMLAttributes<HTMLProgressElement | HTMLInputElement>,
+	'color'
+> & {
 	/** Normalized progress from 0 to 1; omit for indeterminate progress. */
 	value?: number;
 	label?: string;
