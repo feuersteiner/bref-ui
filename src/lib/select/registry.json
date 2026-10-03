@@ -1,6 +1,6 @@
 {
 	"id": "select",
-	"files": ["select.svelte"],
+	"files": ["select.svelte", "option.svelte"],
 	"exports": { "Select": "select.svelte" },
-	"dependencies": ["popover"]
+	"dependencies": ["icon"]
 }
