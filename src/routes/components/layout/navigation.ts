@@ -16,6 +16,14 @@ import {
 	sections as progressSections
 } from '../../progress/sections.js';
 import { chapter as spinnerChapter, sections as spinnerSections } from '../../spinner/sections.js';
+import {
+	chapter as textInputChapter,
+	sections as textInputSections
+} from '../../text-input/sections.js';
+import {
+	chapter as textAreaChapter,
+	sections as textAreaSections
+} from '../../text-area/sections.js';
 
 export const navigation = [
 	{
@@ -34,7 +42,9 @@ export const navigation = [
 			{ title: checkboxChapter, href: '/checkbox' },
 			{ title: switchChapter, href: '/switch' },
 			{ title: progressChapter, href: '/progress' },
-			{ title: spinnerChapter, href: '/spinner' }
+			{ title: spinnerChapter, href: '/spinner' },
+			{ title: textInputChapter, href: '/text-input' },
+			{ title: textAreaChapter, href: '/text-area' }
 		]
 	}
 ] as const;
@@ -53,5 +63,7 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/switch': switchSections,
 	'/progress': progressSections,
 	'/spinner': spinnerSections,
+	'/text-input': textInputSections,
+	'/text-area': textAreaSections,
 	'/theme': themeSections
 };
