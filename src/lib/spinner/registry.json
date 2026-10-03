@@ -1,0 +1,6 @@
+{
+	"id": "spinner",
+	"files": ["spinner.svelte"],
+	"exports": { "Spinner": "spinner.svelte" },
+	"dependencies": ["theme"]
+}

@@ -1,0 +1,6 @@
+{
+	"id": "progress",
+	"files": ["progress.svelte"],
+	"exports": { "Progress": "progress.svelte" },
+	"dependencies": ["theme"]
+}
