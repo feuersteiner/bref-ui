@@ -62,17 +62,15 @@
 		--internal-icon-size: calc(var(--internal-height) / 2 + 0.25rem);
 		--internal-background: var(--color-background, white);
 		--internal-foreground: var(--color-foreground, black);
-		--internal-state-color: var(--internal-foreground);
-		--internal-surface: transparent;
 		--internal-fill: color-mix(
 			in srgb,
-			var(--internal-color) var(--internal-tint),
-			var(--internal-surface)
+			color-mix(in srgb, var(--internal-color) var(--internal-tint), var(--internal-background)) 85%,
+			transparent
 		);
 		--internal-content: var(--internal-color);
-		--internal-tint: 0%;
-		--internal-border: transparent;
-		--internal-highlight: transparent;
+		--internal-tint: 3%;
+		--internal-border: color-mix(in srgb, var(--internal-color) 20%, transparent);
+		--internal-highlight: color-mix(in srgb, var(--internal-foreground) 16%, transparent);
 		box-sizing: border-box;
 		display: inline-flex;
 		align-items: center;
@@ -85,7 +83,11 @@
 		border: 1px solid var(--internal-border);
 		border-radius: 0.45rem;
 		background: var(--internal-fill);
-		box-shadow: inset 0 1px 0 var(--internal-highlight);
+		box-shadow:
+			inset 0 1px 0 var(--internal-highlight),
+			0 2px 6px color-mix(in srgb, var(--internal-foreground) 8%, transparent);
+		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
+		backdrop-filter: blur(0.5rem) saturate(120%);
 		color: var(--internal-content);
 		font: inherit;
 		font-size: 1rem;
@@ -132,22 +134,14 @@
 	.button[data-variant='soft'] {
 		--internal-tint: 16%;
 		--internal-content: color-mix(in srgb, var(--internal-color) 80%, var(--internal-foreground));
-		--internal-surface: var(--internal-background);
 		--internal-border: color-mix(in srgb, var(--internal-color) 30%, transparent);
 		--internal-highlight: color-mix(in srgb, var(--internal-foreground) 16%, transparent);
 	}
 	.button[data-variant='filled'] {
-		--internal-fill: color-mix(in srgb, var(--internal-color) 88%, var(--internal-foreground));
+		--internal-tint: 88%;
 		--internal-content: color-mix(in srgb, var(--internal-background) 90%, var(--internal-color));
 		--internal-border: color-mix(in srgb, var(--internal-color) 68%, var(--internal-foreground));
 		--internal-highlight: color-mix(in srgb, var(--internal-foreground) 28%, transparent);
-	}
-	.button:is([data-variant='soft'], [data-variant='filled']) {
-		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
-		backdrop-filter: blur(0.5rem) saturate(120%);
-	}
-	.button[data-color='foreground'] {
-		--internal-state-color: var(--internal-background);
 	}
 	.button:not(:disabled, [aria-disabled='true']):is(:hover, :active) {
 		--internal-tint: 22%;
@@ -168,10 +162,10 @@
 		--internal-content: color-mix(in srgb, var(--internal-color) 70%, var(--internal-foreground));
 	}
 	.button:not(:disabled, [aria-disabled='true']):is(:hover, :active)[data-variant='filled'] {
-		--internal-fill: color-mix(in srgb, var(--internal-color) 86%, var(--internal-state-color));
+		--internal-tint: 86%;
 	}
 	.button:not(:disabled, [aria-disabled='true']):active[data-variant='filled'] {
-		--internal-fill: color-mix(in srgb, var(--internal-color) 80%, var(--internal-state-color));
+		--internal-tint: 80%;
 	}
 	.button:focus-visible {
 		outline: 2px solid var(--color-foreground, black);
