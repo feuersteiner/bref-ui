@@ -1,4 +1,5 @@
 <script lang="ts">
+	/* eslint-disable max-lines -- Keep the Pill gallery matrix and usage together. */
 	import { chapter, sections } from './sections.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
@@ -23,8 +24,23 @@
 	let variant = $state<Variant>('neutral');
 	let color = $state<Exclude<Color, 'background'>>('foreground');
 	let label = $state('Status');
-	let ref = $state<HTMLSpanElement>();
+	let clicked = $state(0);
+	let removed = $state(0);
 	const props = [
+		{
+			name: 'label',
+			type: 'string',
+			required: true,
+			default: '—',
+			description: 'Visible label.'
+		},
+		{
+			name: 'icon',
+			type: "Omit<IconProps, 'label' | 'size' | 'color'>",
+			required: false,
+			default: 'Omitted',
+			description: 'Decorative leading icon.'
+		},
 		{
 			name: 'children',
 			type: 'Snippet',
@@ -54,28 +70,41 @@
 			description: 'Theme role.'
 		},
 		{
-			name: 'ref',
-			type: 'HTMLSpanElement',
+			name: 'onClick',
+			type: '(event: MouseEvent) => void',
 			required: false,
 			default: 'Omitted',
-			description: 'Bind to the native span.'
+			description: 'Activate the Pill.'
+		},
+		{
+			name: 'onDelete',
+			type: '() => void',
+			required: false,
+			default: 'Omitted',
+			description: 'Show a labeled remove button.'
+		},
+		{
+			name: 'swoosh',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Animate the highlight.'
 		}
 	];
 </script>
 
-<Page title={chapter} description="A passive label for short status or category text.">
+<Page title={chapter} description="A compact label for status, categories and optional actions.">
 	<Section {...sections[0]}>
 		<div data-demo="row">
-			<Pill>Draft</Pill><Pill color="success" variant="soft">Ready</Pill><Pill
+			<Pill label="Draft" /><Pill label="Ready" color="success" variant="soft" /><Pill
+				label="Featured"
 				color="primary"
 				variant="filled"
-			>
-				Featured
-			</Pill>
+			/>
 		</div>
 		<CodeSnippet
 			label="Pill usage code"
-			source={`<script>\n  import { Pill } from 'bref-ui';\n<${'/'}script>\n\n<Pill color="success" variant="soft">Ready</Pill>`}
+			source={`<script>\n  import { Pill } from 'bref-ui';\n<${'/'}script>\n\n<Pill label="Ready" color="success" variant="soft" />`}
 		/>
 	</Section>
 	<Section {...sections[1]}>
@@ -100,33 +129,38 @@
 			</label>
 		</div>
 		<div data-demo="row">
-			<Pill {size} {variant} {color} bind:ref title="Native title attribute">{label}</Pill>
+			<Pill {label} {size} {variant} {color} icon={{ name: 'star' }} title="Native title attribute">
+				<strong>snippet</strong>
+			</Pill>
+			<Pill label="Clickable" onClick={() => clicked++} />
+			<Pill label="Removable" onDelete={() => removed++} />
+			<Pill label="Combined" onClick={() => clicked++} onDelete={() => removed++} />
+			<Pill label="Animated" swoosh />
 		</div>
-		<p>Bound element: {ref?.tagName ?? 'pending'}</p>
+		<p>Clicks: {clicked}; removals: {removed}</p>
 		{#each variants as variant (variant)}
 			<fieldset>
 				<legend>{variant}</legend>
 				<div data-demo="row">
-					{#each colors as color (color)}<Pill {variant} {color}>{color}</Pill>{/each}
+					{#each colors as color (color)}<Pill {variant} {color} label={color} />{/each}
 				</div>
 			</fieldset>
 		{/each}
 		<fieldset>
 			<legend>Sizes and long content</legend>
 			<div data-demo="row">
-				{#each sizes as size (size)}<Pill {size} color="primary">{size}</Pill>{/each}<Pill
+				{#each sizes as size (size)}<Pill {size} color="primary" label={size} />{/each}<Pill
 					color="primary"
-				>
-					A long category label that wraps on a narrow screen without losing its meaning
-				</Pill>
+					label="A long category label that wraps on a narrow screen without losing its meaning"
+				/>
 			</div>
 		</fieldset>
 	</Section>
 	<Section {...sections[2]}>
-		<PropTable {props} />
+		<PropTable {props} label="Pill props" />
 		<p>
-			Pill renders an inert span. Native span attributes pass through; <code>bind:ref</code>
-			exposes the element. Content is a children snippet. Compose actions or removal with separate controls.
+			Pill accepts native div attributes and a children snippet. A clickable Pill supports Enter and
+			Space; its remove button has a separate accessible name.
 		</p>
 	</Section>
 </Page>
