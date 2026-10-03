@@ -10,6 +10,9 @@
 		onDelete
 	}: TreeNodeProps = $props();
 
+	let expanded = $derived(defaultExpanded);
+	const childrenId = $props.id();
+
 	const selected = $derived(
 		Array.isArray(selection) ? selection.includes(item.id) : selection === item.id
 	);
@@ -23,6 +26,19 @@
 </script>
 
 <div>
+	{#if item.children?.length}
+		<button
+			type="button"
+			aria-label={`Children of ${item.label}`}
+			aria-expanded={expanded}
+			aria-controls={childrenId}
+			onclick={() => (expanded = !expanded)}
+		>
+			<span data-chevron><Icon name="chevron_right" /></span>
+		</button>
+	{:else}
+		<span data-spacer aria-hidden="true"></span>
+	{/if}
 	<button type="button" aria-pressed={selected} disabled={item.disabled} onclick={select}>
 		{#if item.icon}<Icon {...item.icon} label={undefined} />{/if}
 		<span>{item.label}</span>
@@ -39,48 +55,29 @@
 	{/if}
 </div>
 {#if item.children?.length}
-	<details open={defaultExpanded}>
-		<summary aria-label={`Children of ${item.label}`}>
-			<span><Icon name="chevron_right" /></span>
-		</summary>
-		<ul>
-			{#each item.children as child (child.id)}
-				<li><RecursiveNode item={child} bind:selection {defaultExpanded} {onDelete} /></li>
-			{/each}
-		</ul>
-	</details>
+	<ul id={childrenId} hidden={!expanded}>
+		{#each item.children as child (child.id)}
+			<li><RecursiveNode item={child} bind:selection {defaultExpanded} {onDelete} /></li>
+		{/each}
+	</ul>
 {/if}
 
 <style>
 	li {
-		position: relative;
 		min-width: 0;
 	}
 	div {
 		display: flex;
 		gap: 0.25rem;
-		padding-inline-start: var(--tree-action-size);
 	}
-	summary {
-		display: grid;
-		place-items: center;
-		position: absolute;
-		inset-block-start: 0;
-		inset-inline-start: 0;
-		width: var(--tree-action-size);
-		height: var(--tree-height);
-		border-radius: 999px;
-		list-style: none;
-		cursor: pointer;
+	[data-spacer] {
+		flex: 0 0 var(--tree-action-size);
 	}
-	summary::-webkit-details-marker {
-		display: none;
-	}
-	summary span {
+	[data-chevron] {
 		display: inline-flex;
 		font-size: 1.25em;
 	}
-	details[open] > summary span {
+	button[aria-expanded='true'] [data-chevron] {
 		transform: rotate(90deg);
 	}
 	ul {
@@ -90,6 +87,9 @@
 		padding: 0;
 		padding-inline-start: 1.25rem;
 		list-style: none;
+	}
+	ul[hidden] {
+		display: none;
 	}
 	button {
 		display: inline-flex;
@@ -120,12 +120,10 @@
 		background: color-mix(in srgb, var(--color-primary) 16%, transparent);
 		color: var(--color-primary);
 	}
-	button:not(:disabled):hover,
-	summary:hover {
+	button:not(:disabled):hover {
 		background: color-mix(in srgb, var(--color-primary) 12%, transparent);
 	}
-	button:focus-visible,
-	summary:focus-visible {
+	button:focus-visible {
 		outline: 2px solid var(--color-primary);
 		outline-offset: -2px;
 	}
@@ -141,8 +139,7 @@
 		button:disabled {
 			color: GrayText;
 		}
-		button:focus-visible,
-		summary:focus-visible {
+		button:focus-visible {
 			outline-color: Highlight;
 		}
 	}
