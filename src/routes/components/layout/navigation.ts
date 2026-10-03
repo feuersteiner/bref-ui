@@ -3,12 +3,12 @@ import {
 	sections as introductionSections
 } from '../../sections.js';
 import { chapter as buttonChapter, sections as buttonSections } from '../../button/sections.js';
+import { chapter as iconChapter, sections as iconSections } from '../../icon/sections.js';
+import { chapter as themeChapter, sections as themeSections } from '../../theme/sections.js';
 import {
 	chapter as checkboxChapter,
 	sections as checkboxSections
 } from '../../checkbox/sections.js';
-import { chapter as iconChapter, sections as iconSections } from '../../icon/sections.js';
-import { chapter as themeChapter, sections as themeSections } from '../../theme/sections.js';
 
 export const navigation = [
 	{
@@ -22,8 +22,8 @@ export const navigation = [
 		title: 'Components',
 		links: [
 			{ title: buttonChapter, href: '/button' },
-			{ title: checkboxChapter, href: '/checkbox' },
-			{ title: iconChapter, href: '/icon' }
+			{ title: iconChapter, href: '/icon' },
+			{ title: checkboxChapter, href: '/checkbox' }
 		]
 	}
 ] as const;
@@ -36,7 +36,7 @@ export interface PageSection {
 export const pageSections: Record<string, readonly PageSection[]> = {
 	'/': introductionSections,
 	'/button': buttonSections,
-	'/checkbox': checkboxSections,
 	'/icon': iconSections,
+	'/checkbox': checkboxSections,
 	'/theme': themeSections
 };
