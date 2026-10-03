@@ -1,26 +1,19 @@
-<script module lang="ts">
-	import type { TreeNodeProps } from './tree-node.svelte';
-	export interface TreeViewSectionProps {
-		sectionProps?: { icon?: TreeNodeProps['icon']; title: string };
-		items: TreeNodeProps[];
-	}
-</script>
-
 <script lang="ts">
+	import type { TreeViewSectionProps } from './types.js';
 	import Icon from '../icon/icon.svelte';
 	import TreeNode from './tree-node.svelte';
-	let { sectionProps, items }: TreeViewSectionProps = $props();
+	let { section, items, actions }: TreeViewSectionProps = $props();
 </script>
 
-<div role="group" aria-label={sectionProps?.title} data-section-group>
-	{#if sectionProps}
+<div role="group" aria-label={section?.label} data-section-group>
+	{#if section}
 		<div data-section role="presentation">
-			{#if sectionProps.icon}<Icon {...sectionProps.icon} label={undefined} />{/if}
-			<span>{sectionProps.title}</span>
+			{#if section.icon}<Icon {...section.icon} label={undefined} />{/if}
+			<span>{section.label}</span>
 		</div>
 	{/if}
 	{#each items as item (item.id)}
-		<TreeNode {...item} />
+		<TreeNode node={item} {actions} />
 	{/each}
 </div>
 
