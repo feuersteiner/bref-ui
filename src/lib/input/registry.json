@@ -1,0 +1,6 @@
+{
+	"id": "input",
+	"files": ["input.svelte"],
+	"exports": { "Input": "input.svelte" },
+	"dependencies": []
+}
