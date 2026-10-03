@@ -1,0 +1,6 @@
+{
+	"id": "dialog",
+	"files": ["dialog.svelte"],
+	"exports": { "Dialog": "dialog.svelte" },
+	"dependencies": ["theme"]
+}
