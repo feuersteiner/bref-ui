@@ -17,7 +17,7 @@
 {#snippet nodes(items: TreeViewProps['items'])}
 	<ul>
 		{#each items as item (item.id)}
-			<TreeNode {item} bind:selection {defaultExpanded} {onDelete} />
+			<li><TreeNode {item} bind:selection {defaultExpanded} {onDelete} /></li>
 		{/each}
 	</ul>
 {/snippet}
@@ -54,6 +54,10 @@
 		--tree-height: 3.25rem;
 		--tree-action-size: 2.5rem;
 		font-size: 1.125rem;
+	}
+	li {
+		position: relative;
+		min-width: 0;
 	}
 	ul {
 		display: grid;
