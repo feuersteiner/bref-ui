@@ -1,7 +1,14 @@
 <script module lang="ts">
-	import type { BaseSize } from '../types.js';
-	import type { TreeItemProps } from './tree-node.svelte';
-	import type { TreeSectionProps } from './tree-branch.svelte';
+	import type { BaseSize, IconProps } from '../types.js';
+	export interface TreeItemProps {
+		id: string;
+		label: string;
+		icon?: Omit<IconProps, 'label' | 'size' | 'color'>;
+		parentId?: string;
+		sectionId?: string;
+		disabled?: boolean;
+	}
+	export type TreeSectionProps = Pick<TreeItemProps, 'id' | 'label' | 'icon'>;
 	export interface TreeViewProps {
 		items: TreeItemProps[];
 		sections?: TreeSectionProps[];
@@ -15,15 +22,110 @@
 </script>
 
 <script lang="ts">
-	/* eslint-disable max-lines, func-style -- Focus and keyboard behavior stay together. */
+	/* eslint-disable max-lines, func-style, svelte/prefer-svelte-reactivity -- Keep hierarchy processing and coordinated tree state in the container. */
 	import { tick, untrack } from 'svelte';
-	import TreeBranch, {
-		childrenFor,
-		indexTree,
-		revealSelection,
-		visibleItems
-	} from './tree-branch.svelte';
-	import type { TreeIndex, VisibleItem } from './tree-branch.svelte';
+	import TreeViewSection from './tree-view-section.svelte';
+	import type { TreeNodeProps } from './tree-node.svelte';
+	interface VisibleItem {
+		item: TreeItemProps;
+		parentId?: string;
+		level: number;
+	}
+
+	interface TreeIndex {
+		items: Map<string, TreeItemProps>;
+		children: Map<string, TreeItemProps[]>;
+		sections: (TreeSectionProps | undefined)[];
+	}
+
+	const rootKey = (sectionId?: string) => `root:${JSON.stringify(sectionId)}`;
+	const childKey = (id: string) => `child:${id}`;
+
+	const indexTree = (items: TreeItemProps[], sections: TreeSectionProps[] = []): TreeIndex => {
+		const indexed = new Map<string, TreeItemProps>();
+		const children = new Map<string, TreeItemProps[]>();
+		const sectionIds = new Set<string>();
+		for (const section of sections) {
+			if (sectionIds.has(section.id))
+				throw new Error(`TreeView section ID is duplicated: ${section.id}`);
+			sectionIds.add(section.id);
+		}
+		for (const item of items) {
+			if (indexed.has(item.id)) throw new Error(`TreeView item ID is duplicated: ${item.id}`);
+			if (item.sectionId !== undefined && !sectionIds.has(item.sectionId))
+				throw new Error(`TreeView item ${item.id} has an unknown section: ${item.sectionId}`);
+			indexed.set(item.id, item);
+		}
+		for (const item of items) {
+			if (item.parentId !== undefined) {
+				const parent = indexed.get(item.parentId);
+				if (!parent)
+					throw new Error(`TreeView item ${item.id} has an unknown parent: ${item.parentId}`);
+				if (parent.sectionId !== item.sectionId)
+					throw new Error(`TreeView item ${item.id} crosses a section boundary`);
+			}
+			const key = item.parentId === undefined ? rootKey(item.sectionId) : childKey(item.parentId);
+			const siblings = children.get(key) ?? [];
+			siblings.push(item);
+			children.set(key, siblings);
+		}
+		const done = new Set<string>();
+		for (const item of items) {
+			const visiting = new Set<string>();
+			let cursor: TreeItemProps | undefined = item;
+			while (cursor && !done.has(cursor.id)) {
+				if (visiting.has(cursor.id)) throw new Error('TreeView items contain a cycle');
+				visiting.add(cursor.id);
+				cursor = cursor.parentId === undefined ? undefined : indexed.get(cursor.parentId);
+			}
+			for (const id of visiting) done.add(id);
+		}
+		return { items: indexed, children, sections: [undefined, ...sections] };
+	};
+
+	const rootsFor = (index: TreeIndex, sectionId?: string) =>
+		index.children.get(rootKey(sectionId)) ?? [];
+
+	const childrenFor = (index: TreeIndex, id: string) => index.children.get(childKey(id)) ?? [];
+
+	const visibleItems = (
+		index: TreeIndex,
+		expanded: Record<string, boolean>,
+		defaultExpanded: boolean
+	): VisibleItem[] => {
+		const result: VisibleItem[] = [];
+		const visit = (nodes: TreeItemProps[], parentId: string | undefined, level: number) => {
+			for (const item of nodes) {
+				result.push({ item, parentId, level });
+				if (childrenFor(index, item.id).length && (expanded[item.id] ?? defaultExpanded))
+					visit(childrenFor(index, item.id), item.id, level + 1);
+			}
+		};
+		for (const section of index.sections) visit(rootsFor(index, section?.id), undefined, 1);
+		return result;
+	};
+
+	const revealSelection = (
+		index: TreeIndex,
+		expanded: Record<string, boolean>,
+		previous: readonly string[],
+		selected: readonly string[]
+	): Record<string, boolean> => {
+		const existing = new Set(previous);
+		let result = expanded;
+		for (const id of selected) {
+			if (existing.has(id)) continue;
+			let parentId = index.items.get(id)?.parentId;
+			while (parentId !== undefined) {
+				if (result[parentId] !== true) {
+					if (result === expanded) result = { ...expanded };
+					result[parentId] = true;
+				}
+				parentId = index.items.get(parentId)?.parentId;
+			}
+		}
+		return result;
+	};
 
 	const nextFocusAfterChange = (
 		previous: readonly VisibleItem[],
@@ -240,6 +342,38 @@
 		event.preventDefault();
 		if (next !== undefined) focus(next);
 	}
+
+	const groupedItems = $derived.by(() => {
+		const nodesFor = (nodes: TreeItemProps[], level: number): TreeNodeProps[] =>
+			nodes.map((item, position) => ({
+				id: item.id,
+				label: item.label,
+				icon: item.icon,
+				disabled: item.disabled,
+				level,
+				position: position + 1,
+				siblingCount: nodes.length,
+				open: expanded[item.id] ?? initialExpanded,
+				selected: selected.includes(item.id),
+				tabIndex: activeId === item.id ? 0 : -1,
+				onFocus: () => (focusId = item.id),
+				onClick: () => {
+					select(item.id);
+					focus(item.id);
+				},
+				onToggle: () => {
+					toggle(item.id);
+					focus(item.id);
+				},
+				onClose: onDelete ? () => deleteNode(item.id) : undefined,
+				items: nodesFor(childrenFor(indexed, item.id), level + 1)
+			}));
+		return indexed.sections.map((section) => ({
+			id: section?.id,
+			sectionProps: section ? { icon: section.icon, title: section.label } : undefined,
+			items: nodesFor(rootsFor(indexed, section?.id), 0)
+		}));
+	});
 </script>
 
 <div
@@ -251,19 +385,9 @@
 	tabindex={visible.length ? -1 : 0}
 	onkeydown={onKeydown}
 >
-	<TreeBranch
-		{indexed}
-		{visible}
-		{expanded}
-		{initialExpanded}
-		{selected}
-		{activeId}
-		onFocus={(id) => (focusId = id)}
-		onSelect={select}
-		onToggle={toggle}
-		onDelete={onDelete ? deleteNode : undefined}
-		{focus}
-	/>
+	{#each groupedItems as group (group.id)}
+		<TreeViewSection sectionProps={group.sectionProps} items={group.items} />
+	{/each}
 </div>
 
 <style>
