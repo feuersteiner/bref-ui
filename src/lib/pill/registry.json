@@ -1,0 +1,6 @@
+{
+	"id": "pill",
+	"files": ["pill.svelte"],
+	"exports": { "Pill": "pill.svelte" },
+	"dependencies": ["theme", "icon", "button"]
+}
