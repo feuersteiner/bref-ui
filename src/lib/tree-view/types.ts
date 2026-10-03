@@ -1,30 +1,23 @@
-import type { Snippet } from 'svelte';
-import type { HTMLAttributes } from 'svelte/elements';
-import type { BaseSize } from '../types.js';
+import type { IconProps, BaseSize } from '../types.js';
 
-export interface TreeItem {
+export interface TreeItemProps {
 	id: string;
 	label: string;
-	children?: readonly TreeItem[];
+	icon?: Omit<IconProps, 'label' | 'size' | 'color'>;
+	parentId?: string;
+	sectionId?: string;
 	disabled?: boolean;
 }
 
-type NativeTreeAttributes = Omit<
-	HTMLAttributes<HTMLDivElement>,
-	'children' | 'aria-label' | 'aria-labelledby'
->;
+export type TreeSectionProps = Pick<TreeItemProps, 'id' | 'label' | 'icon'>;
 
-type TreeName =
-	| { 'aria-label': string; 'aria-labelledby'?: string }
-	| { 'aria-label'?: string; 'aria-labelledby': string };
-
-export type TreeViewProps = NativeTreeAttributes &
-	TreeName & {
-		items: readonly TreeItem[];
-		size?: BaseSize;
-		selection?: 'single' | 'multiple';
-		selectedIds?: string[];
-		expandedIds?: string[];
-		item?: Snippet<[TreeItem]>;
-		ref?: HTMLDivElement;
-	};
+export interface TreeViewProps {
+	items: TreeItemProps[];
+	sections?: TreeSectionProps[];
+	label?: string;
+	size?: BaseSize;
+	/** Bindable node selection; newly selected nodes reveal their ancestors. */
+	selection?: string | string[];
+	defaultExpanded?: boolean;
+	onDelete?: (id: string) => void;
+}
