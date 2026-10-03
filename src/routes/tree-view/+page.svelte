@@ -128,7 +128,7 @@
 	];
 </script>
 
-<Page title={chapter} description="Nested lists with native disclosures and selectable items.">
+<Page title={chapter} description="Nested lists with expandable branches and selectable items.">
 	<Section {...sections[0]}>
 		<TreeView items={exampleItems} label="Files" bind:selection={exampleSelection} />
 		<CodeSnippet {source} label="Tree view usage code" />
@@ -207,8 +207,8 @@
 	<Section {...sections[4]}>
 		<p>
 			Tab and Shift+Tab move between selection buttons, delete buttons and disclosures. Enter or
-			Space activates the focused control. Disabled buttons are skipped. Each branch uses native
-			details and summary elements; arrow keys retain browser behavior.
+			Space activates the focused control. Disabled buttons are skipped. Each branch has a separate
+			expand/collapse button; arrow keys retain browser behavior.
 		</p>
 		<p>
 			The item label selects; the disclosure marker expands or collapses. An array enables

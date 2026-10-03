@@ -56,7 +56,6 @@
 		font-size: 1.125rem;
 	}
 	li {
-		position: relative;
 		min-width: 0;
 	}
 	ul {
