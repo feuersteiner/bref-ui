@@ -1,5 +1,5 @@
 <script lang="ts">
-	/* eslint-disable max-lines, svelte/consistent-selector-style -- Keep the native progress and seek recipes together. */
+	/* eslint-disable max-lines -- Keep the native progress and seek recipes together. */
 	import type { ProgressProps } from './types.js';
 
 	let {
@@ -13,6 +13,9 @@
 		size = 'medium',
 		onSeek,
 		disabled = false,
+		oninput,
+		onchange,
+		onpointercancel,
 		...attributes
 	}: ProgressProps = $props();
 
@@ -26,25 +29,22 @@
 	const display = $derived(draft ?? checkedValue ?? 0);
 	const percentage = $derived(display * 100);
 
-	const handleInput = (event: Event) => {
+	const handleInput = (event: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
+		oninput?.(event);
 		if (disabled || !onSeek) return;
 		draft = Math.min(1, Math.max(0, (event.currentTarget as HTMLInputElement).valueAsNumber));
 		onSeek(draft);
 	};
 
-	const handleChange = () => {
+	const handleChange = (event: Event & { currentTarget: EventTarget & HTMLInputElement }) => {
 		draft = undefined;
+		onchange?.(event);
 	};
 </script>
 
-<div
-	class="progress"
-	data-size={size}
-	data-seekable={seekable}
-	data-unknown={checkedValue === undefined}
->
+<div data-size={size} data-seekable={seekable} data-unknown={checkedValue === undefined}>
 	<progress
-		{...attributes}
+		{...seekable ? {} : { ...attributes, oninput, onchange, onpointercancel }}
 		id={seekable ? undefined : id}
 		title={seekable ? undefined : title}
 		aria-describedby={seekable ? undefined : describedBy}
@@ -56,6 +56,7 @@
 	></progress>
 	{#if seekable}
 		<input
+			{...attributes}
 			type="range"
 			{id}
 			{title}
@@ -69,14 +70,17 @@
 			{disabled}
 			oninput={handleInput}
 			onchange={handleChange}
-			onpointercancel={() => (draft = undefined)}
+			onpointercancel={(event) => {
+				draft = undefined;
+				onpointercancel?.(event);
+			}}
 		/>
-		<span class="thumb" style:inset-inline-start={`${percentage}%`} aria-hidden="true"></span>
+		<span style:inset-inline-start={`${percentage}%`} aria-hidden="true"></span>
 	{/if}
 </div>
 
 <style>
-	.progress {
+	div {
 		--progress-height: 0.375rem;
 		--progress-track: color-mix(
 			in srgb,
@@ -94,10 +98,10 @@
 		width: 100%;
 		min-width: 0;
 	}
-	.progress[data-size='small'] {
+	div[data-size='small'] {
 		--progress-height: 0.25rem;
 	}
-	.progress[data-size='large'] {
+	div[data-size='large'] {
 		--progress-height: 0.5rem;
 	}
 	progress {
@@ -128,13 +132,13 @@
 		border-radius: 999px;
 		box-shadow: inset 0 1px 0 var(--progress-highlight);
 	}
-	.progress[data-unknown='true'] progress::-webkit-progress-value {
+	div[data-unknown='true'] progress::-webkit-progress-value {
 		background: transparent;
 	}
-	.progress[data-unknown='true'] progress::-moz-progress-bar {
+	div[data-unknown='true'] progress::-moz-progress-bar {
 		background: transparent;
 	}
-	.progress[data-unknown='true']::after {
+	div[data-unknown='true']::after {
 		content: '';
 		position: absolute;
 		top: calc(50% - var(--progress-height) / 2);
@@ -148,12 +152,12 @@
 		animation: sweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 		pointer-events: none;
 	}
-	.progress[data-seekable='true'] {
+	div[data-seekable='true'] {
 		min-height: 2.75rem;
 		display: flex;
 		align-items: center;
 	}
-	.progress[data-seekable='true'] progress {
+	div[data-seekable='true'] progress {
 		pointer-events: none;
 	}
 	input {
@@ -169,7 +173,7 @@
 	input:disabled {
 		cursor: not-allowed;
 	}
-	.thumb {
+	span {
 		box-sizing: border-box;
 		position: absolute;
 		top: 50%;
@@ -190,28 +194,28 @@
 		pointer-events: none;
 	}
 	@media (hover: hover) {
-		input:not(:disabled):hover + .thumb {
+		input:not(:disabled):hover + span {
 			transform: translate(var(--internal-thumb-offset, -50%), -50%) scale(1.3);
 			box-shadow:
 				inset 0 1px 0 var(--progress-highlight),
 				0 3px 10px color-mix(in srgb, var(--color-foreground) 20%, transparent);
 		}
 	}
-	input:not(:disabled):active + .thumb {
+	input:not(:disabled):active + span {
 		transform: translate(var(--internal-thumb-offset, -50%), -50%) scale(1.5);
 		box-shadow:
 			inset 0 1px 0 var(--progress-highlight),
 			0 4px 14px color-mix(in srgb, var(--color-foreground) 24%, transparent),
 			0 0 0 4px color-mix(in srgb, var(--color-foreground) 12%, transparent);
 	}
-	.thumb:dir(rtl) {
+	span:dir(rtl) {
 		--internal-thumb-offset: 50%;
 	}
-	input:focus-visible + .thumb {
+	input:focus-visible + span {
 		outline: 2px solid var(--color-foreground);
 		outline-offset: 3px;
 	}
-	input:disabled + .thumb {
+	input:disabled + span {
 		opacity: 0.5;
 	}
 	@keyframes sweep {
@@ -226,10 +230,10 @@
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.thumb {
+		span {
 			transition: none;
 		}
-		.progress[data-unknown='true']::after {
+		div[data-unknown='true']::after {
 			animation: none;
 			transform: translateX(32.5%) scaleX(0.35);
 		}
@@ -241,7 +245,7 @@
 			-webkit-backdrop-filter: none;
 			backdrop-filter: none;
 		}
-		.thumb {
+		span {
 			background: Highlight;
 			border-color: HighlightText;
 			box-shadow: none;

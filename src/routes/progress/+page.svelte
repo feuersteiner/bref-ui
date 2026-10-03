@@ -122,14 +122,12 @@
 		<p>
 			The indicator uses a native progress element with a fixed maximum of 1. Seekable progress
 			exposes a native range control. Add a label or an external label association when an
-			accessible name is needed. Native progress attributes forward to the indicator; <code>
-				id
-			</code>
+			accessible name is needed. Native attributes and events forward to the progress indicator, or
+			to the range control when seeking, including <code>aria-valuetext</code>
 			and
-			<code>aria-describedby</code>
-			attach to the range control when seeking. Indeterminate progress omits its value. No live region
-			repeats value changes. The fill uses the primary theme color. Motion stops when reduced motion is
-			requested.
+			<code>aria-controls</code>
+			. Indeterminate progress omits its value. No live region repeats value changes. The fill uses the
+			primary theme color. Motion stops when reduced motion is requested.
 		</p>
 	</Section>
 </Page>
