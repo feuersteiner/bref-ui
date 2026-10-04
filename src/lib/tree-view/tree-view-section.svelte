@@ -6,18 +6,19 @@
 </script>
 
 <header>
-	{#if icon}<Icon {...icon} label={undefined} />{/if}
 	<div>
+		{#if icon}<Icon {...icon} label={undefined} />{/if}
 		<span>{label}</span>
-		{#if description}<p>{description}</p>{/if}
 	</div>
+	{#if description}<p>{description}</p>{/if}
 </header>
 
 <style>
 	header {
 		display: flex;
-		align-items: center;
-		gap: 0.5rem;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.25rem;
 		padding: 0.75rem 0.5rem 0.25rem;
 		color: var(--color-muted);
 		font-size: 0.8em;
@@ -27,10 +28,13 @@
 		overflow-wrap: anywhere;
 	}
 	div {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
 		min-width: 0;
 	}
 	p {
-		margin: 0.25rem 0 0;
+		margin: 0;
 		font-weight: 400;
 		letter-spacing: normal;
 		text-transform: none;
