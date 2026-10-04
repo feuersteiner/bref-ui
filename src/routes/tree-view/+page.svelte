@@ -15,6 +15,7 @@
 		{
 			id: 'workspace',
 			label: 'Workspace',
+			description: 'Projects and shared files',
 			icon: { name: 'folder' },
 			items: [
 				{
@@ -86,14 +87,15 @@
 			type: 'TreeSectionProps[]',
 			required: false,
 			default: '[]',
-			description: 'Ordered headers with id, label, optional icon and their own items array.'
+			description:
+				'Ordered headers with id, label, optional description and icon, and their own items array.'
 		},
 		{
 			name: 'label',
 			type: 'string',
 			required: false,
 			default: 'Tree view',
-			description: 'Accessible name for the group of lists.'
+			description: 'Accessible name for the group of items.'
 		},
 		{
 			name: 'size',
@@ -115,7 +117,7 @@
 			type: 'boolean',
 			required: false,
 			default: 'false',
-			description: 'Opens branches when rendered. Changing this prop updates their open state.'
+			description: 'Sets the initial open state of each branch.'
 		},
 		{
 			name: 'onDelete',
@@ -128,7 +130,7 @@
 	];
 </script>
 
-<Page title={chapter} description="Nested lists with expandable branches and selectable items.">
+<Page title={chapter} description="Nested items with expandable branches and selectable rows.">
 	<Section {...sections[0]}>
 		<TreeView items={exampleItems} label="Files" bind:selection={exampleSelection} />
 		<CodeSnippet {source} label="Tree view usage code" />
@@ -216,7 +218,7 @@
 			preserves selection. The caller owns data removal and stale selected IDs.
 		</p>
 		<p>
-			This component uses ordinary lists and buttons. Focus follows browser behavior when items
+			This component uses grouped native buttons. Focus follows browser behavior when items
 			disappear. Selection is bindable; there are no item snippets or forwarded native attributes.
 		</p>
 	</Section>
