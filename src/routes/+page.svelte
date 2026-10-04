@@ -46,8 +46,9 @@
 		<ul>
 			<li><a href={resolve('/button')}>Button: actions, sizes, variants and icons</a></li>
 			<li><a href={resolve('/icon')}>Icon: Material Symbols and accessible names</a></li>
+			<li><a href={resolve('/surface')}>Surface: semantic containers, layout and treatments</a></li>
 			<li><a href={resolve('/theme')}>Theme: palette, modes and customization</a></li>
 		</ul>
-		<p>Surface and ThemeModeToggle are also available from the package exports.</p>
+		<p>ThemeModeToggle is also available from the package exports.</p>
 	</Section>
 </Page>
