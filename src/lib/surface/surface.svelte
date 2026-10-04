@@ -14,8 +14,7 @@
 		radius,
 		shadow = false,
 		hover,
-		scroll = false,
-		...attributes
+		scroll = false
 	}: SurfaceProps = $props();
 
 	const radiusScale: Record<Size, string> = {
@@ -32,7 +31,6 @@
 
 <svelte:element
 	this={as}
-	{...attributes}
 	data-surface
 	data-variant={variant}
 	data-spacing={spacing}
@@ -42,6 +40,7 @@
 	data-shadow={shadow || undefined}
 	data-hover={hover}
 	data-scroll={scroll || undefined}
+	tabindex={scroll ? 0 : undefined}
 	style:--surface-tint={`var(--color-${tint}, var(--color-background, white))`}
 	style:--surface-radius={borderRadius}
 >
@@ -78,7 +77,7 @@
 			border-color 150ms ease,
 			box-shadow 150ms ease;
 	}
-	[data-surface]:not([hidden]) {
+	[data-surface] {
 		display: flex;
 	}
 	[data-orientation='horizontal'] {
@@ -152,20 +151,20 @@
 		--surface-hover: 8%;
 		--surface-glow: 1.5rem;
 	}
-	[data-hover]:not([aria-disabled='true']):is(:hover, :focus-visible) {
+	[data-hover]:is(:hover, :focus-visible) {
 		--surface-border-strength: calc(16% + var(--surface-hover));
 		box-shadow:
 			var(--surface-shadow),
 			var(--surface-highlight),
 			0 0 var(--surface-glow) color-mix(in srgb, var(--surface-tint) 10%, transparent);
 	}
-	[data-variant='neutral'][data-hover]:not([aria-disabled='true']):is(:hover, :focus-visible) {
+	[data-variant='neutral'][data-hover]:is(:hover, :focus-visible) {
 		background: color-mix(in srgb, var(--surface-tint) var(--surface-hover), transparent);
 	}
-	[data-variant='soft'][data-hover]:not([aria-disabled='true']):is(:hover, :focus-visible) {
+	[data-variant='soft'][data-hover]:is(:hover, :focus-visible) {
 		--surface-strength: calc(6% + var(--surface-hover));
 	}
-	[data-variant='filled'][data-hover]:not([aria-disabled='true']):is(:hover, :focus-visible) {
+	[data-variant='filled'][data-hover]:is(:hover, :focus-visible) {
 		--surface-strength: calc(11% + var(--surface-hover));
 	}
 	[data-scroll] {

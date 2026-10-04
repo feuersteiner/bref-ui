@@ -1,10 +1,9 @@
 import type { Snippet } from 'svelte';
-import type { HTMLAttributes } from 'svelte/elements';
 import type { BaseSize, Color, Dimension, Orientation, Size, Variant } from '../types.js';
 
 export type SurfaceRadius = Size | `${number}rem` | `${number}%`;
 
-export interface SurfaceProps extends HTMLAttributes<HTMLElement> {
+export interface SurfaceProps {
 	/** Native root element; defaults to div. */
 	as?: 'div' | 'section' | 'span';
 	children?: Snippet;
