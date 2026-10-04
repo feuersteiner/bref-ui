@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { untrack } from 'svelte';
 	import Pill from '../pill/pill.svelte';
+	import Container from '../pill-group/container.svelte';
 	import type { PillChoiceGroupProps } from './types.js';
 
 	let {
@@ -13,13 +14,13 @@
 		...attributes
 	}: PillChoiceGroupProps = $props();
 
-	let list: HTMLUListElement;
 	const radioName = $props.id();
 	const multiple = $derived(Array.isArray(selection));
 
-	onMount(() => {
-		const initialSelection = Array.isArray(selection) ? [...selection] : selection;
-		const form = list.closest('form');
+	const initialSelection = untrack(() => (Array.isArray(selection) ? [...selection] : selection));
+
+	const attachReset = (element: HTMLUListElement) => {
+		const form = element.closest('form');
 		if (!form) return;
 		let timer: ReturnType<typeof setTimeout>;
 		const reset = (event: Event) => {
@@ -27,7 +28,7 @@
 			timer = setTimeout(() => {
 				if (event.defaultPrevented) return;
 				selection = Array.isArray(initialSelection) ? [...initialSelection] : initialSelection;
-				list.querySelectorAll('input').forEach((input) => {
+				element.querySelectorAll('input').forEach((input) => {
 					input.checked = Array.isArray(initialSelection)
 						? initialSelection.includes(input.value)
 						: input.value === initialSelection;
@@ -39,7 +40,7 @@
 			clearTimeout(timer);
 			form.removeEventListener('reset', reset);
 		};
-	});
+	};
 
 	const select = (id: string, checked: boolean) => {
 		if (disabled) return;
@@ -51,10 +52,16 @@
 	};
 </script>
 
-<ul bind:this={list} {...attributes} data-size={size} role={multiple ? 'group' : 'radiogroup'}>
-	{#each items as item (item.id)}
+<Container
+	{@attach attachReset}
+	{...attributes}
+	{items}
+	{size}
+	role={multiple ? 'group' : 'radiogroup'}
+>
+	{#snippet renderItem(item)}
 		{@const selected = multiple ? (selection as string[]).includes(item.id) : selection === item.id}
-		<li data-disabled={disabled || undefined}>
+		<div data-disabled={disabled || undefined}>
 			<input
 				id={`${radioName}-${item.id}`}
 				aria-label={item.label}
@@ -75,33 +82,12 @@
 			>
 				<label for={`${radioName}-${item.id}`}></label>
 			</Pill>
-		</li>
-	{/each}
-</ul>
+		</div>
+	{/snippet}
+</Container>
 
 <style>
-	ul {
-		--pill-group-gap: 0.5rem;
-		list-style: none;
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--pill-group-gap);
-		margin: 0;
-		padding: 0;
-	}
-	ul[data-size='x-small'] {
-		--pill-group-gap: 0.25rem;
-	}
-	ul[data-size='small'] {
-		--pill-group-gap: 0.375rem;
-	}
-	ul[data-size='large'] {
-		--pill-group-gap: 0.75rem;
-	}
-	ul[data-size='x-large'] {
-		--pill-group-gap: 1rem;
-	}
-	li {
+	div {
 		display: inline-flex;
 		max-width: 100%;
 		min-width: 0;
@@ -119,20 +105,20 @@
 		clip-path: inset(50%);
 		overflow: hidden;
 	}
-	li:has(input:focus-visible) {
+	div:has(input:focus-visible) {
 		outline: 2px solid var(--color-primary, currentColor);
 		outline-offset: 3px;
 		border-radius: 999px;
 	}
-	li[data-disabled] label {
+	div[data-disabled] label {
 		pointer-events: none;
 	}
-	li[data-disabled] {
+	div[data-disabled] {
 		opacity: 0.45;
 		cursor: not-allowed;
 	}
 	@media (forced-colors: active) {
-		li:has(input:checked) {
+		div:has(input:checked) {
 			outline: 2px solid Highlight;
 			border-radius: 999px;
 		}
