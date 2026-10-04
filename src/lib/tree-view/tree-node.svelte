@@ -10,10 +10,12 @@
 		item,
 		selection = $bindable(),
 		defaultExpanded = false,
-		onDelete
+		onDelete,
+		indent = 0
 	}: TreeNodeProps = $props();
 
-	let expanded = $derived(defaultExpanded);
+	// svelte-ignore state_referenced_locally
+	let expanded = $state(defaultExpanded);
 	const childrenId = $props.id();
 
 	const selected = $derived(
@@ -32,6 +34,7 @@
 	in:fly|global={{ y: -4, duration: prefersReducedMotion.current ? 0 : 150 }}
 	data-selected={selected}
 	data-disabled={item.disabled}
+	style:padding-left={`calc(0.25rem + ${indent * 1.25}rem)`}
 >
 	{#if item.children?.length}
 		<button
@@ -62,19 +65,14 @@
 	{/if}
 </div>
 {#if item.children?.length}
-	<ul id={childrenId} hidden={!expanded}>
-		{#each item.children as child (child.id)}
-			<li><RecursiveNode item={child} bind:selection {defaultExpanded} {onDelete} /></li>
-		{/each}
-	</ul>
+	{#each item.children as child (child.id)}
+		<RecursiveNode indent={indent + 1} item={child} bind:selection {defaultExpanded} {onDelete} />
+	{/each}
 {/if}
 
 <style>
 	* {
 		transition: all 150ms;
-	}
-	li {
-		min-width: 0;
 	}
 	div {
 		box-sizing: border-box;
@@ -97,17 +95,6 @@
 	}
 	button[aria-expanded='true'] [data-chevron] {
 		transform: rotate(90deg);
-	}
-	ul {
-		display: grid;
-		gap: 0.375rem;
-		margin: 0.375rem 0 0;
-		padding: 0;
-		padding-inline-start: 1.25rem;
-		list-style: none;
-	}
-	ul[hidden] {
-		display: none;
 	}
 	button {
 		display: inline-flex;
