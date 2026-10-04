@@ -18,7 +18,7 @@ file order follows entries and their manifests.
 flowchart TD
     prepare["prepareSource(entries)"] --> files["collectSourceFiles"]
     files --> read["readSourceFiles · read concurrently"]
-    read --> rewrite["rewriteSource(content, filename)"]
+    read --> rewrite["rewriteSource(content, filename, copiedFiles)"]
     rewrite --> kind{"Source kind?"}
     kind -->|Svelte| scripts["Parse module and instance scripts, last to first"]
     kind -->|JS or TS| imports["rewriteImports"]
@@ -29,8 +29,10 @@ flowchart TD
 ```
 
 `rewriteImports` redirects relative, type-only imports to `bref-ui/types`, except imports
-ending in `.svelte`. Runtime imports and non-relative imports remain unchanged. Relative
-non-component imports mixing inline type and value specifiers are rejected. Script edits
+ending in `.svelte` or targeting files included in the copy plan. Copied private type files
+keep local imports; `.js` imports also resolve to copied `.ts` sources. Runtime imports and
+non-relative imports remain unchanged. Uncopied relative non-component imports mixing
+inline type and value specifiers are rejected. Script edits
 preserve other text, including Svelte markup and CSS; read and parsing failures propagate.
 
 ## Preview changes
