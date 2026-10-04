@@ -1,6 +1,6 @@
 {
 	"id": "pill-group",
-	"files": ["pill-group.svelte", "container.svelte"],
+	"files": ["pill-group.svelte", "container.svelte", "types.ts"],
 	"exports": { "PillGroup": "pill-group.svelte" },
 	"dependencies": ["pill"]
 }
