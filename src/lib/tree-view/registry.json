@@ -1,0 +1,15 @@
+{
+	"id": "tree-view",
+	"files": [
+		"tree-view.svelte",
+		"tree-view-section.svelte",
+		"tree-node/tree-node.svelte",
+		"tree-node/chevron-button.svelte",
+		"tree-node/delete-button.svelte",
+		"tree-node/content.svelte"
+	],
+	"exports": {
+		"TreeView": "tree-view.svelte"
+	},
+	"dependencies": ["theme", "icon"]
+}

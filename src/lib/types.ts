@@ -22,3 +22,4 @@ export type {
 } from './dialog/types.js';
 export type { TextInputProps } from './text-input/types.js';
 export type { TextAreaProps } from './text-area/types.js';
+export type * from './tree-view/types.js';

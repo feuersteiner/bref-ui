@@ -24,6 +24,10 @@ import {
 	chapter as textAreaChapter,
 	sections as textAreaSections
 } from '../../text-area/sections.js';
+import {
+	chapter as treeViewChapter,
+	sections as treeViewSections
+} from '../../tree-view/sections.js';
 
 export const navigation = [
 	{
@@ -44,7 +48,8 @@ export const navigation = [
 			{ title: progressChapter, href: '/progress' },
 			{ title: spinnerChapter, href: '/spinner' },
 			{ title: textInputChapter, href: '/text-input' },
-			{ title: textAreaChapter, href: '/text-area' }
+			{ title: textAreaChapter, href: '/text-area' },
+			{ title: treeViewChapter, href: '/tree-view' }
 		]
 	}
 ] as const;
@@ -65,5 +70,6 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/spinner': spinnerSections,
 	'/text-input': textInputSections,
 	'/text-area': textAreaSections,
+	'/tree-view': treeViewSections,
 	'/theme': themeSections
 };
