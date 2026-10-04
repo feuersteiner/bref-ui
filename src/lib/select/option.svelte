@@ -2,17 +2,10 @@
 	import Icon from '../icon/icon.svelte';
 	import type { OptionProps } from './types.js';
 
-	let { label, icon, disabled, selected, multiple, panelId, onSelect }: OptionProps = $props();
+	let { label, icon, disabled, selected, onSelect }: OptionProps = $props();
 </script>
 
-<button
-	type="button"
-	aria-pressed={selected}
-	popovertarget={multiple ? undefined : panelId}
-	popovertargetaction="hide"
-	{disabled}
-	onclick={onSelect}
->
+<button type="button" aria-pressed={selected} {disabled} onclick={onSelect}>
 	{#if icon}<span data-icon><Icon {...icon} /></span>{/if}
 	<span data-label>{label}</span>
 	{#if selected}<span data-icon><Icon name="check" /></span>{/if}

@@ -72,7 +72,7 @@
 			type: 'boolean',
 			required: false,
 			default: 'false',
-			description: 'Disable the trigger and remove the popup.'
+			description: 'Disable the trigger and close the popup.'
 		}
 	];
 </script>

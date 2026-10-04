@@ -1,9 +1,9 @@
 <script lang="ts">
+	import Popover from '../popover/popover.svelte';
 	import Trigger from './trigger.svelte';
 	import List from './list.svelte';
 	import type { SelectProps } from './types.js';
 
-	const componentId = $props.id();
 	let {
 		id,
 		items,
@@ -14,7 +14,10 @@
 		disabled = false,
 		emptyMessage = { message: 'No options found' }
 	}: SelectProps = $props();
-	const panelId = `${componentId}-options`;
+	let open = $state(false);
+	$effect(() => {
+		if (disabled && open) open = false;
+	});
 	const selected = $derived(
 		items.filter((item) => (Array.isArray(value) ? value.includes(item.id) : item.id === value))
 	);
@@ -22,6 +25,7 @@
 		if (Array.isArray(value))
 			value = value.includes(id) ? value.filter((selectedId) => selectedId !== id) : [...value, id];
 		else {
+			open = false;
 			if (value === id) return;
 			value = id;
 		}
@@ -29,11 +33,13 @@
 	};
 </script>
 
-<div data-size={size} style={`--internal-anchor: --select-${componentId}`}>
-	<Trigger {id} {panelId} {selected} {placeholder} {disabled} />
-	{#if !disabled}
-		<List id={panelId} {items} {value} {emptyMessage} onSelect={select} />
-	{/if}
+<div data-size={size}>
+	<Popover bind:open>
+		{#snippet trigger(popover)}
+			<Trigger {id} {popover} {selected} {placeholder} {disabled} />
+		{/snippet}
+		<List {items} {value} {emptyMessage} onSelect={select} />
+	</Popover>
 </div>
 
 <style>
@@ -41,7 +47,6 @@
 		--internal-height: 2.5rem;
 		--internal-padding: 0.85rem;
 		--internal-icon-size: 1.25rem;
-		anchor-name: var(--internal-anchor);
 		position: relative;
 		width: 100%;
 		min-width: 0;

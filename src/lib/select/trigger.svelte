@@ -2,10 +2,10 @@
 	import Icon from '../icon/icon.svelte';
 	import type { SelectTriggerProps } from './types.js';
 
-	let { id, panelId, selected, placeholder, disabled }: SelectTriggerProps = $props();
+	let { id, popover, selected, placeholder, disabled }: SelectTriggerProps = $props();
 </script>
 
-<button {id} type="button" popovertarget={panelId} aria-controls={panelId} {disabled}>
+<button {...popover} {id} type="button" {disabled}>
 	{#if selected.length === 1 && selected[0].icon}
 		<span data-icon><Icon {...selected[0].icon} /></span>
 	{/if}
