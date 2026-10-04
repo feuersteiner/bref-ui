@@ -1,13 +1,28 @@
 <script lang="ts">
+	import { createAttachmentKey } from 'svelte/attachments';
 	import Surface from '../surface/surface.svelte';
 	import type { PopoverProps } from './types.js';
 
 	let { trigger, children, open = $bindable(false) }: PopoverProps = $props();
 	const id = $props.id();
-	let button: HTMLButtonElement;
+	let button = $state<HTMLElement>();
+	const attachmentKey = createAttachmentKey();
+	const attach = (element: HTMLElement) => {
+		button = element;
+		return () => {
+			if (button === element) button = undefined;
+		};
+	};
+	const wiring = $derived({
+		popovertarget: id,
+		'aria-controls': id,
+		'aria-expanded': open,
+		[attachmentKey]: attach
+	});
 	let panel: HTMLDivElement;
 
 	const position = () => {
+		if (!button) return;
 		const viewport = window.visualViewport;
 		const left = (viewport?.offsetLeft ?? 0) + 8;
 		const top = (viewport?.offsetTop ?? 0) + 8;
@@ -27,7 +42,7 @@
 	};
 
 	const returnFocus = (event: ToggleEvent) => {
-		if (event.newState !== 'closed' || !panel.contains(document.activeElement)) return;
+		if (!button || event.newState !== 'closed' || !panel.contains(document.activeElement)) return;
 		const focusButton = button;
 		const focusPanel = panel;
 		queueMicrotask(() => {
@@ -65,16 +80,7 @@
 	});
 </script>
 
-<button
-	bind:this={button}
-	id={`${id}-trigger`}
-	type="button"
-	popovertarget={id}
-	aria-controls={id}
-	aria-expanded={open}
->
-	{@render trigger()}
-</button>
+{@render trigger(wiring)}
 <div
 	bind:this={panel}
 	{id}
@@ -88,39 +94,6 @@
 </div>
 
 <style>
-	button {
-		box-sizing: border-box;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
-		max-width: 100%;
-		min-height: 2.75rem;
-		padding: 0.5rem 1rem;
-		border: 1px solid color-mix(in srgb, var(--color-foreground, black) 20%, transparent);
-		border-radius: 0.75rem;
-		background: color-mix(
-			in srgb,
-			var(--color-foreground, black) 6%,
-			var(--color-background, white)
-		);
-		color: var(--color-foreground, black);
-		font: inherit;
-		overflow-wrap: anywhere;
-		cursor: pointer;
-	}
-	button:hover,
-	button[aria-expanded='true'] {
-		background: color-mix(
-			in srgb,
-			var(--color-foreground, black) 12%,
-			var(--color-background, white)
-		);
-	}
-	button:focus-visible {
-		outline: 2px solid var(--color-primary, blue);
-		outline-offset: 3px;
-	}
 	div[popover] {
 		box-sizing: border-box;
 		position: fixed;
@@ -141,16 +114,5 @@
 	div[data-content] {
 		flex: none;
 		min-width: 0;
-	}
-	@media (forced-colors: active) {
-		button {
-			border-color: ButtonText;
-			background: Canvas;
-			color: CanvasText;
-			box-shadow: none;
-		}
-		button:focus-visible {
-			outline-color: Highlight;
-		}
 	}
 </style>

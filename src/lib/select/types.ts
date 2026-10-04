@@ -1,4 +1,5 @@
 import type { BaseSize } from '../types.js';
+import type { PopoverTriggerProps } from '../popover/types.js';
 import type { IconName } from '../icon/types.js';
 
 interface SelectIconProps {
@@ -31,14 +32,13 @@ export interface SelectProps {
 
 export interface SelectTriggerProps {
 	id?: string;
-	panelId: string;
+	popover: PopoverTriggerProps;
 	selected: readonly SelectOptionDataProps[];
 	placeholder: string;
 	disabled?: boolean;
 }
 
 export interface SelectListProps {
-	id: string;
 	items: readonly SelectOptionDataProps[];
 	value?: string | string[];
 	emptyMessage: SelectEmptyProps;
@@ -47,7 +47,5 @@ export interface SelectListProps {
 
 export interface OptionProps extends SelectOptionDataProps {
 	selected: boolean;
-	multiple: boolean;
-	panelId: string;
 	onSelect: () => void;
 }
