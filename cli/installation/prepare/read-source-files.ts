@@ -12,6 +12,10 @@ export const readSourceFiles = async (files: SourceFile[]): Promise<PreparedFile
 	Promise.all(
 		files.map(async ({ source, path }) => ({
 			path,
-			content: rewriteSource(await Bun.file(source).text(), source)
+			content: rewriteSource(
+				await Bun.file(source).text(),
+				source,
+				files.map((file) => file.source)
+			)
 		}))
 	);

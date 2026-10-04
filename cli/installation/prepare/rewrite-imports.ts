@@ -1,13 +1,19 @@
+import { dirname, resolve } from 'node:path';
 import { parseScript } from '../parser/index.js';
 
 /**
  * Replace only the module text of relative, type-only imports.
  * @param content Script content to parse as TypeScript.
  * @param filename Source path included in preparation errors.
+ * @param copiedFiles Source files copied alongside this file, whose relative imports stay local.
  * @returns Script text preserving import syntax, quotes, formatting and runtime imports.
  * @throws When syntax is invalid or a relative non-component import mixes type and value specifiers.
  */
-export const rewriteImports = (content: string, filename: string): string => {
+export const rewriteImports = (
+	content: string,
+	filename: string,
+	copiedFiles: readonly string[] = []
+): string => {
 	const { statements, offset } = parseScript(content, filename);
 	return statements.reduceRight((source, statement) => {
 		if (statement.type !== 'ImportDeclaration' || typeof statement.source.value !== 'string')
@@ -16,6 +22,14 @@ export const rewriteImports = (content: string, filename: string): string => {
 		const module = statement.source;
 		const path = module.value as string;
 		if (!/^\.{1,2}\//.test(path) || path.endsWith('.svelte')) return source;
+		const importedFile = resolve(dirname(filename), path);
+		if (
+			copiedFiles.some((file) => {
+				const copiedFile = resolve(file);
+				return copiedFile === importedFile || copiedFile === importedFile.replace(/\.js$/, '.ts');
+			})
+		)
+			return source;
 		const specifiers = statement.specifiers;
 		if (specifiers.length === 0) return source;
 
