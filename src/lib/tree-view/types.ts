@@ -27,4 +27,5 @@ export interface TreeNodeProps extends Pick<
 	'selection' | 'defaultExpanded' | 'onDelete'
 > {
 	item: TreeItemProps;
+	indent?: number;
 }

@@ -15,11 +15,11 @@
 </script>
 
 {#snippet nodes(items: TreeViewProps['items'])}
-	<ul>
+	<div data-nodes>
 		{#each items as item (item.id)}
-			<li><TreeNode {item} bind:selection {defaultExpanded} {onDelete} /></li>
+			<TreeNode {item} bind:selection {defaultExpanded} {onDelete} />
 		{/each}
-	</ul>
+	</div>
 {/snippet}
 
 <div role="group" aria-label={label} data-size={size}>
@@ -55,16 +55,6 @@
 		--tree-action-size: 2.5rem;
 		font-size: 1.125rem;
 	}
-	li {
-		min-width: 0;
-	}
-	ul {
-		display: grid;
-		gap: 0.375rem;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
 	header {
 		display: flex;
 		align-items: center;
@@ -75,5 +65,10 @@
 		font-weight: 600;
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
+	}
+	div[data-nodes] {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
 	}
 </style>
