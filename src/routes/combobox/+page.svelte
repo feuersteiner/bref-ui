@@ -19,10 +19,9 @@
 	let disabled = $state(false);
 	let submitted = $state('No submission yet.');
 	let changes = $state(0);
-	const source = `<script>
+	const source = `<script lang="ts">
   import { Combobox } from 'bref-ui';
-  let fruit = $state<string | undefined>();
-  const items = [{ id: 'apple', label: 'Apple' }];
+  let fruit = $state<string | undefined>(); const items = [{ id: 'apple', label: 'Apple' }];
 <${'/'}script>
 
 <Combobox aria-label="Fruit" {items} bind:value={fruit} name="fruit" />`;
@@ -56,18 +55,11 @@
 			description: 'Empty selection and empty results text.'
 		},
 		{
-			name: 'size / variant / wide',
+			name: 'size / variant / wide / disabled',
 			type: 'BaseSize / neutral | soft / boolean',
 			required: false,
 			default: 'medium / soft / false',
-			description: 'Control appearance and width.'
-		},
-		{
-			name: 'name / form / required / disabled',
-			type: 'native input attributes',
-			required: false,
-			default: 'Omitted',
-			description: 'Form association, validation and availability.'
+			description: 'Control appearance, width and availability.'
 		}
 	];
 </script>
@@ -84,7 +76,7 @@
 	<Section {...sections[1]}>
 		<div data-demo="row">
 			<Combobox aria-label="Small fruit" {items} size="small" />
-			<Combobox aria-label="Medium fruit" {items} />
+			<Combobox aria-label="Medium neutral fruit" {items} variant="neutral" />
 			<Combobox aria-label="Large soft fruit" {items} size="large" variant="soft" />
 		</div>
 		<Combobox aria-label="Wide fruit" {items} wide />
@@ -95,6 +87,7 @@
 				Disabled
 			</label>
 			<Combobox aria-label="Disabled fruit" {items} {disabled} />
+			<Combobox aria-label="Read-only fruit" {items} value="apple" readonly />
 			<Combobox
 				aria-label="Empty fruit"
 				items={[]}
@@ -129,9 +122,19 @@
 	<Section {...sections[3]}>
 		<PropTable {props} />
 		<p>
-			Native input attributes and events are forwarded. Use a label or ARIA name. <code>
-				bind:value
+			Supported native attributes: <code>
+				id, title, autocomplete, autofocus, tabindex, readonly, name, form, required
 			</code>
+			. Use an external label or
+			<code>aria-label / aria-labelledby</code>
+			;
+			<code>aria-describedby, aria-invalid, aria-errormessage</code>
+			are forwarded. Supported events:
+			<code>
+				oninput, onkeydown, onblur, onfocus, onclick, oncompositionstart, oncompositionend
+			</code>
+			.
+			<code>bind:value</code>
 			tracks selected IDs; typed text remains private. No snippets are exposed.
 		</p>
 	</Section>

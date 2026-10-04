@@ -1,4 +1,7 @@
-import { chapter as comboboxChapter, sections as comboboxSections } from '../../combobox/sections.js';
+import {
+	chapter as comboboxChapter,
+	sections as comboboxSections
+} from '../../combobox/sections.js';
 import { chapter as selectChapter, sections as selectSections } from '../../select/sections.js';
 import {
 	chapter as introductionChapter,
