@@ -2,5 +2,5 @@
 	"id": "pill-choice-group",
 	"files": ["pill-choice-group.svelte"],
 	"exports": { "PillChoiceGroup": "pill-choice-group.svelte" },
-	"dependencies": ["pill"]
+	"dependencies": ["pill-group"]
 }
