@@ -8,6 +8,7 @@ export { default as Switch } from './switch/switch.svelte';
 export { default as Progress } from './progress/progress.svelte';
 export { default as Spinner } from './spinner/spinner.svelte';
 export { default as Dialog } from './dialog/dialog.svelte';
+export { default as Popover } from './popover/popover.svelte';
 export { default as TextInput } from './text-input/text-input.svelte';
 export { default as TextArea } from './text-area/text-area.svelte';
 export { default as TreeView } from './tree-view/tree-view.svelte';

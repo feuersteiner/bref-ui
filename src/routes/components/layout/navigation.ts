@@ -11,6 +11,7 @@ import {
 	sections as checkboxSections
 } from '../../checkbox/sections.js';
 import { chapter as dialogChapter, sections as dialogSections } from '../../dialog/sections.js';
+import { chapter as popoverChapter, sections as popoverSections } from '../../popover/sections.js';
 import { chapter as switchChapter, sections as switchSections } from '../../switch/sections.js';
 import {
 	chapter as progressChapter,
@@ -54,6 +55,7 @@ export const navigation = [
 			{ title: iconChapter, href: '/icon' },
 			{ title: surfaceChapter, href: '/surface' },
 			{ title: dialogChapter, href: '/dialog' },
+			{ title: popoverChapter, href: '/popover' },
 			{ title: checkboxChapter, href: '/checkbox' },
 			{ title: switchChapter, href: '/switch' },
 			{ title: progressChapter, href: '/progress' },
@@ -79,6 +81,7 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/icon': iconSections,
 	'/surface': surfaceSections,
 	'/dialog': dialogSections,
+	'/popover': popoverSections,
 	'/checkbox': checkboxSections,
 	'/switch': switchSections,
 	'/progress': progressSections,
