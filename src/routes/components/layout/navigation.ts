@@ -28,6 +28,7 @@ import {
 	chapter as treeViewChapter,
 	sections as treeViewSections
 } from '../../tree-view/sections.js';
+import { chapter as pillChapter, sections as pillSections } from '../../pill/sections.js';
 
 export const navigation = [
 	{
@@ -49,7 +50,8 @@ export const navigation = [
 			{ title: spinnerChapter, href: '/spinner' },
 			{ title: textInputChapter, href: '/text-input' },
 			{ title: textAreaChapter, href: '/text-area' },
-			{ title: treeViewChapter, href: '/tree-view' }
+			{ title: treeViewChapter, href: '/tree-view' },
+			{ title: pillChapter, href: '/pill' }
 		]
 	}
 ] as const;
@@ -71,5 +73,6 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/text-input': textInputSections,
 	'/text-area': textAreaSections,
 	'/tree-view': treeViewSections,
+	'/pill': pillSections,
 	'/theme': themeSections
 };
