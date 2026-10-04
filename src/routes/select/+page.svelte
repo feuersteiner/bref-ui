@@ -1,5 +1,4 @@
 <script lang="ts">
-	/* eslint-disable max-lines -- Keep the Select states, overflow example and form demos together. */
 	import { Select } from '$lib/index.js';
 	import type { SelectOptionDataProps } from '$lib/select/types.js';
 	import Page from '../components/page-container.svelte';
@@ -22,9 +21,7 @@
 	}));
 	let value = $state<string | undefined>();
 	let many = $state<string[]>([]);
-	let requiredValue = $state<string | undefined>();
 	let disabled = $state(false);
-	let submitted = $state('No submission yet.');
 	let changeCount = $state(0);
 	const source = `<script>
   import { Select } from 'bref-ui';
@@ -32,7 +29,8 @@
   const items = [{ id: 'draft', label: 'Draft' }];
 <${'/'}script>
 
-<Select aria-label="Status" {items} bind:value={status} name="status" />`;
+<label for="status">Status</label>
+<Select id="status" {items} bind:value={status} />`;
 	const props = [
 		{
 			name: 'items',
@@ -63,89 +61,82 @@
 			description: 'Empty selection and empty list text.'
 		},
 		{
-			name: 'size / variant / wide',
-			type: 'BaseSize / neutral | soft / boolean',
+			name: 'id / size',
+			type: 'string / BaseSize',
 			required: false,
-			default: 'medium / soft / false',
-			description: 'Control appearance and width.'
+			default: 'Omitted / medium',
+			description: 'Trigger ID for labels; control and option size.'
 		},
 		{
-			name: 'name / form / required / disabled',
-			type: 'native select attributes',
+			name: 'disabled',
+			type: 'boolean',
 			required: false,
-			default: 'Omitted',
-			description: 'Form association, validation and availability.'
+			default: 'false',
+			description: 'Disable the trigger and remove the popup.'
 		}
 	];
 </script>
 
 <Page title={chapter} description="Choose one or more labeled options by ID.">
 	<Section {...sections[0]}>
-		<Select aria-label="Status" {items} bind:value onChange={() => changeCount++} />
+		<label for="status">Status</label>
+		<Select id="status" {items} bind:value onChange={() => changeCount++} />
 		<p role="status">Selected: {value ?? 'none'}; changes: {changeCount}</p>
 		<CodeSnippet {source} label="Select usage code" />
 	</Section>
 	<Section {...sections[1]}>
 		<div data-demo="row">
-			{#each sizes as size (size)}<Select aria-label={`${size} status`} {items} {size} />{/each}
+			{#each sizes as size (size)}
+				<div>
+					<label for={`${size}-status`}>{size} status</label>
+					<Select id={`${size}-status`} {items} {size} />
+				</div>
+			{/each}
 		</div>
-		<div data-demo="row">
-			<Select aria-label="Soft status" {items} variant="soft" wide />
-			<Select aria-label="Multiple statuses" {items} bind:value={many} />
-		</div>
+		<label for="multiple-statuses">Multiple statuses</label>
+		<Select id="multiple-statuses" {items} bind:value={many} />
 		<p role="status">Multiple: {many.join(', ') || 'none'}</p>
 		<div data-demo="row">
 			<label>
 				<input type="checkbox" bind:checked={disabled} />
 				Disabled
 			</label>
-			<Select aria-label="Disabled status" {items} {disabled} />
-			<Select
-				aria-label="Empty choices"
-				items={[]}
-				emptyMessage={{ message: 'Nothing available', icon: { name: 'search' } }}
-			/>
+			<div>
+				<label for="disabled-status">Disabled status</label>
+				<Select id="disabled-status" {items} {disabled} />
+			</div>
+			<div>
+				<label for="empty-choices">Empty choices</label>
+				<Select
+					id="empty-choices"
+					items={[]}
+					emptyMessage={{ message: 'Nothing available', icon: { name: 'search' } }}
+				/>
+			</div>
 		</div>
 		<p>Archived is disabled. The shared theme control switches light and dark modes.</p>
 		<h3>Long labels and scrolling</h3>
-		<Select
-			aria-label="Overflow choices"
-			items={overflowItems}
-			placeholder="Open 24 long options"
-		/>
+		<label for="overflow-choices">Overflow choices</label>
+		<Select id="overflow-choices" items={overflowItems} placeholder="Open 24 long options" />
 		<p>
-			Long labels truncate with an ellipsis. Open the list and scroll, or press End to bring the
-			last option into view.
+			Long labels truncate with an ellipsis. Open the list and scroll, or Tab through the options.
 		</p>
 	</Section>
 	<Section {...sections[2]}>
-		<form
-			onsubmit={(event) => {
-				event.preventDefault();
-				const data = new FormData(event.currentTarget);
-				submitted = `Single: ${data.get('status')}; multiple: ${data.getAll('statuses').join(', ')}`;
-			}}
-		>
-			<label for="required-status">Required status</label>
-			<Select id="required-status" {items} bind:value={requiredValue} name="status" required />
-			<Select aria-label="Statuses" {items} bind:value={many} name="statuses" />
-			<div data-demo="row">
-				<button type="submit">Submit</button>
-				<button type="reset">Reset</button>
-			</div>
-		</form>
-		<p role="status">{submitted} Current value: {requiredValue ?? 'none'}</p>
+		<label for="labeled-status">Status</label>
+		<Select id="labeled-status" {items} bind:value placeholder="Choose a status" />
 		<p>
-			Enter or Space opens the list. Arrows, Home, End and typing move the active option; Enter or
-			Space selects. Escape closes. Native form submission and reset use selected IDs.
+			Enter or Space opens the popup. Tab and Shift+Tab move between option buttons; Enter or Space
+			selects. Single selection closes the popup; multiple selection keeps it open. Escape or a
+			click outside closes it.
 		</p>
 	</Section>
 	<Section {...sections[3]}>
 		<PropTable {props} />
 		<p>
-			Native select attributes and events are forwarded to the backing select. Labels target the
-			trigger ID. Selection uses <code>bind:value</code>
-			; no snippets are exposed.
+			Labels target the trigger ID. Icons accept only name and filled. Native HTML attributes and
+			events are not forwarded. Selection uses bind:value and onChange; an array toggles multiple
+			IDs. Form submission and reset belong to the caller; snippets are not exposed.
 		</p>
 	</Section>
 </Page>
@@ -159,14 +150,9 @@
 		margin-block: 1rem;
 		max-width: 100%;
 	}
-	[data-demo='row'] > :global(*) {
-		min-width: 0;
-	}
-	form {
-		display: grid;
-		gap: 1rem;
-		justify-items: start;
-		max-width: 100%;
+	[data-demo='row'] > div {
+		flex: 1;
+		min-width: min(100%, 12rem);
 	}
 	label {
 		display: inline-flex;

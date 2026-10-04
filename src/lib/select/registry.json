@@ -1,6 +1,6 @@
 {
 	"id": "select",
-	"files": ["select.svelte", "option.svelte"],
+	"files": ["select.svelte", "trigger.svelte", "list.svelte", "option.svelte", "empty.svelte"],
 	"exports": { "Select": "select.svelte" },
 	"dependencies": ["icon"]
 }
