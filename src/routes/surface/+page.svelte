@@ -33,9 +33,7 @@
 	let shadow = $state(false);
 	let hover = $state<SurfaceProps['hover']>();
 	let scroll = $state(false);
-	let hidden = $state(false);
 	let clicks = $state(0);
-	let focused = $state(0);
 	const items = [
 		{ id: 'one', label: 'Design' },
 		{ id: 'two', label: 'Development' }
@@ -44,10 +42,15 @@
   import { Surface } from 'bref-ui';
 <${'/'}script>
 
-<Surface as="section" variant="soft" spacing="medium" radius="small" aria-label="Details">
+<Surface as="section" variant="soft" spacing="medium" radius="small">
   <h2>Details</h2>
   <p>Content inside the surface.</p>
 </Surface>`;
+	const scrollSource = `<div style="height: 12rem;">
+  <Surface scroll height="fill">
+    Content
+  </Surface>
+</div>`;
 	const props = [
 		['as', "'div' | 'section' | 'span'", 'div', 'Native root element.'],
 		['children', 'Snippet', 'Omitted', 'Content rendered directly inside the root.'],
@@ -90,7 +93,7 @@
 	description="A semantic flex container with theme tints, glass or opaque treatments, shared spacing, corner rounding and optional scrolling."
 >
 	<Section {...sections[0]}>
-		<Surface as="section" variant="soft" spacing="medium" radius="small" aria-label="Details">
+		<Surface as="section" variant="soft" spacing="medium" radius="small">
 			<h2>Details</h2>
 			<p>Content inside the surface.</p>
 		</Surface>
@@ -160,9 +163,8 @@
 				Scroll
 			</label>
 		</div>
-		<div data-stage>
+		<div data-stage id="surface-playground">
 			<Surface
-				id="surface-playground"
 				{as}
 				{variant}
 				{tint}
@@ -174,7 +176,6 @@
 				{shadow}
 				{hover}
 				{scroll}
-				style="max-height: 100%;"
 			>
 				<strong>Surface</strong>
 				<span>
@@ -192,10 +193,12 @@
 		<div data-matrix>
 			{#each colors as color (color)}
 				{#each variants as variant (variant)}
-					<Surface tint={color} {variant} spacing="medium" radius="small" data-matrix-surface>
-						<strong>{color}</strong>
-						<span>{variant}</span>
-					</Surface>
+					<div data-matrix-cell>
+						<Surface tint={color} {variant} spacing="medium" radius="small">
+							<strong>{color}</strong>
+							<span>{variant}</span>
+						</Surface>
+					</div>
 				{/each}
 			{/each}
 		</div>
@@ -246,58 +249,26 @@
 	</Section>
 	<Section {...sections[4]}>
 		<p>
-			Native attributes, lowercase events, class and style pass to the root. Explicit styles
-			override the recipe. There is no element binding or automatic click behavior; children is a
-			Svelte snippet.
+			Surface accepts only the listed props. Content uses a Svelte children snippet; place native
+			attributes, events and styling on surrounding HTML elements.
 		</p>
 		<p>
-			Set a height or max-height to constrain scrolling. Tab to the region and use arrow keys to
-			scroll. Visible overflow preserves child focus outlines.
+			Give the parent a fixed height and use height="fill" to constrain scrolling. A scrollable
+			Surface can receive keyboard focus; use arrow keys to scroll.
 		</p>
-		<Surface
-			id="scroll-surface"
-			scroll
-			tabindex={0}
-			role="region"
-			aria-label="Scrollable Surface"
-			variant="soft"
-			spacing="small"
-			radius="small"
-			style="max-height: 9rem;"
-			onfocus={() => focused++}
-		>
-			{#each Array.from({ length: 12 }, (_, index) => index + 1) as index (index)}<p>
-					Scrollable content, row {index}.
-				</p>{/each}
-		</Surface>
-		<p role="status">Region focused {focused} times.</p>
-		<Surface
-			id="style-surface"
-			spacing="large"
-			radius="large"
-			class="custom-surface"
-			style="padding: 0.75rem; gap: 0.25rem; border-radius: 0.25rem;"
-			title="Native style override"
-		>
-			<strong>Explicit styling</strong>
-			<span>Overrides padding, gap and radius.</span>
-		</Surface>
-		<label>
-			<input type="checkbox" bind:checked={hidden} />
-			Hide the next Surface
-		</label>
-		<Surface id="hidden-surface" {hidden} variant="soft" spacing="small">
-			<span>Native hidden attribute is preserved.</span>
-		</Surface>
-		<CodeSnippet
-			label="Surface scrolling code"
-			source={'<Surface scroll tabindex={0} role="region" aria-label="Results" style="max-height: 12rem;">\n  Content\n</Surface>'}
-		/>
+		<div id="scroll-surface" data-scroll-demo>
+			<Surface scroll height="fill" variant="soft" spacing="small" radius="small">
+				{#each Array.from({ length: 12 }, (_, index) => index + 1) as index (index)}
+					<p>Scrollable content, row {index}.</p>
+				{/each}
+			</Surface>
+		</div>
+		<CodeSnippet label="Surface scrolling code" source={scrollSource} />
 	</Section>
 	<Section {...sections[5]}>
 		<PropTable {props} />
 		<p>
-			Migration: pass attributes directly instead of stylesOverride; hover replaces hoverEffect.
+			Migration: move stylesOverride attributes to surrounding HTML; hover replaces hoverEffect.
 			Replace capsule with a named size, a rem value, or a percentage radius. Use scroll for
 			automatic overflow.
 		</p>
@@ -329,6 +300,12 @@
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: 1rem;
+	}
+	[data-matrix-cell] {
+		min-width: 0;
+	}
+	[data-scroll-demo] {
+		height: 9rem;
 	}
 	[data-sized-parent] {
 		height: 8rem;

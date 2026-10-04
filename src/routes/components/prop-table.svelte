@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { Surface } from '$lib/index.js';
-
 	let {
 		props,
 		label = 'Component props'
@@ -16,13 +14,8 @@
 	} = $props();
 </script>
 
-<Surface
-	role="region"
-	aria-label={label}
-	tabindex={0}
-	scroll
-	style="max-width: 100%; border-block: 1px solid var(--docs-rule);"
->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex (The overflow region needs keyboard scrolling.) -->
+<div role="region" aria-label={label} tabindex={0}>
 	<table>
 		<caption>{label}</caption>
 		<thead>
@@ -48,9 +41,18 @@
 			{/each}
 		</tbody>
 	</table>
-</Surface>
+</div>
 
 <style>
+	div {
+		max-width: 100%;
+		overflow: auto;
+		border-block: 1px solid var(--docs-rule);
+	}
+	div:focus-visible {
+		outline: 2px solid var(--color-primary, currentColor);
+		outline-offset: 3px;
+	}
 	table {
 		width: 100%;
 		min-width: 48rem;
