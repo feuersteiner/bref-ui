@@ -3,7 +3,7 @@
 	import { chapter, sections } from './sections.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import type { Size, Variant } from '$lib/types.js';
+	import type { Color, Size, Variant } from '$lib/types.js';
 	import { Button, PillChoiceGroup } from '$lib/index.js';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
@@ -21,9 +21,21 @@
 	let movingBackground = $state(false);
 	let size = $state<Size>('medium');
 	let variant = $state<Exclude<Variant, 'filled'>>('neutral');
+	let color = $state<Exclude<Color, 'background'>>('foreground');
 	let disabled = $state(false);
+	let animateSelected = $state(false);
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const variants = ['neutral', 'soft'] as const;
+	const colors = [
+		'primary',
+		'secondary',
+		'foreground',
+		'muted',
+		'info',
+		'success',
+		'warning',
+		'error'
+	] as const;
 	const props = [
 		{
 			name: 'items',
@@ -61,6 +73,20 @@
 			required: false,
 			default: 'neutral',
 			description: 'Neutral selects soft; soft selects filled.'
+		},
+		{
+			name: 'color',
+			type: "Exclude<Color, 'background'>",
+			required: false,
+			default: 'foreground',
+			description: 'Theme role for every pill, including selected choices.'
+		},
+		{
+			name: 'animateSelected',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Enable the pill highlight animation.'
 		}
 	];
 </script>
@@ -86,8 +112,17 @@
 				</select>
 			</label>
 			<label>
+				Color <select bind:value={color}>
+					{#each colors as value (value)}<option>{value}</option>{/each}
+				</select>
+			</label>
+			<label>
 				<input type="checkbox" bind:checked={disabled} />
 				Disabled
+			</label>
+			<label>
+				<input type="checkbox" bind:checked={animateSelected} />
+				Animate selected
 			</label>
 		</div>
 		<label data-background-toggle>
@@ -102,7 +137,9 @@
 					items={moodItems}
 					{size}
 					{variant}
+					{color}
 					{disabled}
+					{animateSelected}
 					aria-label="Mood"
 					bind:selection={mood}
 					onDelete={(id) => {
@@ -118,7 +155,9 @@
 					items={filterItems}
 					{size}
 					{variant}
+					{color}
 					{disabled}
+					{animateSelected}
 					aria-label="Filters"
 					bind:selection={filters}
 					onDelete={(id) => {
@@ -134,6 +173,8 @@
 					{items}
 					{size}
 					{variant}
+					{color}
+					{animateSelected}
 					aria-label="Unavailable choices"
 					disabled
 					selection="calm"
@@ -150,6 +191,33 @@
 				/>
 			</div>
 		</form>
+		<div data-choice-demo>
+			<strong>Animated choices</strong>
+			<PillChoiceGroup
+				{items}
+				selection="focus"
+				color="primary"
+				animateSelected
+				aria-label="Animated choices"
+			/>
+		</div>
+		{#each variants as variant (variant)}
+			<fieldset>
+				<legend>{variant}</legend>
+				{#each colors as color (color)}
+					<div data-choice-demo>
+						<strong>{color}</strong>
+						<PillChoiceGroup
+							{items}
+							{variant}
+							{color}
+							selection="focus"
+							aria-label={`${color} ${variant} choices`}
+						/>
+					</div>
+				{/each}
+			</fieldset>
+		{/each}
 	</Section>
 	<Section {...sections[2]}>
 		<PropTable {props} label="PillChoiceGroup props" />
@@ -166,9 +234,14 @@
 
 <style>
 	form,
+	fieldset,
 	[data-choice-demo] {
 		display: grid;
 		gap: 1rem;
+	}
+	fieldset {
+		min-width: 0;
+		border: 1px solid var(--docs-rule);
 	}
 	[data-controls] {
 		display: flex;

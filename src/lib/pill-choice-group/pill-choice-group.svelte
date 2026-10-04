@@ -11,6 +11,8 @@
 		disabled = false,
 		size = 'medium',
 		variant = 'neutral',
+		color = 'foreground',
+		animateSelected = false,
 		...attributes
 	}: PillChoiceGroupProps = $props();
 
@@ -50,6 +52,8 @@
 				: selection.filter((selected) => selected !== id)
 			: id;
 	};
+
+	const selectedVariant = $derived(variant === 'soft' ? 'filled' : 'soft');
 </script>
 
 <Container
@@ -75,8 +79,9 @@
 			<Pill
 				label={item.label}
 				icon={item.icon}
-				color={selected ? 'primary' : 'foreground'}
-				variant={selected ? (variant === 'neutral' ? 'soft' : 'filled') : variant}
+				{color}
+				swoosh={selected && animateSelected}
+				variant={selected ? selectedVariant : variant}
 				{size}
 				onDelete={onDelete && !disabled ? () => onDelete?.(item.id) : undefined}
 			>
