@@ -4,24 +4,23 @@
 
 	let { trigger, children, open = $bindable(false) }: PopoverProps = $props();
 	const id = $props.id();
-	const anchorName = `--popover-${id}`;
 	let anchor: HTMLDivElement;
 
 	const syncPopover = (node: HTMLDivElement, initialOpen: boolean) => {
-		const update = (force: boolean) => node.togglePopover({ force, source: anchor });
+		const update = (force: boolean) =>
+			node.togglePopover({ force, source: anchor.firstElementChild as HTMLElement });
 		update(initialOpen);
 		return { update };
 	};
 </script>
 
-<div data-trigger bind:this={anchor} style:anchor-name={anchorName}>
+<div data-trigger bind:this={anchor}>
 	{@render trigger()}
 </div>
 <div
 	use:syncPopover={open}
 	{id}
 	popover="auto"
-	style:position-anchor={anchorName}
 	ontoggle={(event) => (open = event.newState === 'open')}
 >
 	<Surface variant="filled" spacing="medium" radius="0.75rem" shadow scroll>
@@ -31,13 +30,12 @@
 
 <style>
 	div[data-trigger] {
-		display: inline-flex;
-		align-self: start;
-		width: fit-content;
-		min-width: 0;
-		max-width: 100%;
+		display: contents;
 	}
 	div[popover] {
+		--internal-duration: 250ms;
+		--internal-delay: 150ms;
+		--internal-easing: cubic-bezier(0.3333, 1, 0.6667, 1);
 		box-sizing: border-box;
 		position: fixed;
 		inset: auto;
@@ -53,12 +51,32 @@
 		border: 0;
 		background: transparent;
 		color: var(--color-foreground, black);
+		opacity: 0;
+		transform: translateY(10px);
+		transition:
+			opacity var(--internal-duration) var(--internal-easing) var(--internal-delay),
+			transform var(--internal-duration) var(--internal-easing) var(--internal-delay),
+			display calc(var(--internal-duration) + var(--internal-delay)) allow-discrete,
+			overlay calc(var(--internal-duration) + var(--internal-delay)) allow-discrete;
 	}
 	div:popover-open {
 		display: flex;
+		opacity: 1;
+		transform: translateY(0);
+	}
+	@starting-style {
+		div:popover-open {
+			opacity: 0;
+			transform: translateY(10px);
+		}
 	}
 	div[data-content] {
 		flex: none;
 		min-width: 0;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		div[popover] {
+			transition: none;
+		}
 	}
 </style>

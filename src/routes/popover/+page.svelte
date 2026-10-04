@@ -8,12 +8,13 @@
 	import { Popover, TextInput } from '$lib/index.js';
 
 	let inputOpen = $state(false);
+	let inputWide = $state(false);
 	let open = $state(false);
 	let longOpen = $state(false);
 	let anotherOpen = $state(false);
 	let initiallyOpen = $state(true);
 	let formOpen = $state(false);
-	const source = `<script>\n  import { Popover, TextInput } from 'bref-ui';\n  let open = $state(false);\n<${'/'}script>\n\n<Popover bind:open>\n  {#snippet trigger()}\n    <TextInput value="Sample text" aria-label="Search" aria-expanded={open}\n      oninput={() => open = true} onclick={() => open = true} />\n  {/snippet}\n  <p>Helpful details beside the input.</p>\n</Popover>`;
+	const source = `<script>\n  import { Popover, TextInput } from 'bref-ui';\n  let open = $state(false);\n  let wide = $state(false);\n<${'/'}script>\n\n<label><input type="checkbox" bind:checked={wide} /> Wide input</label>\n<Popover bind:open>\n  {#snippet trigger()}\n    <TextInput {wide} value="Sample text" aria-label="Search" aria-expanded={open}\n      oninput={() => open = true} onclick={() => open = true} />\n  {/snippet}\n  <p>Helpful details beside the input.</p>\n</Popover>`;
 	const boundSource = `<script>\n  import { Popover } from 'bref-ui';\n  let open = $state(false);\n<${'/'}script>\n\n<Popover bind:open>\n  {#snippet trigger()}\n    <button type="button" aria-expanded={open} onclick={() => open = !open}>\n      Edit settings\n    </button>\n  {/snippet}\n  <button type="button" onclick={() => open = false}>Done</button>\n</Popover>`;
 	const props = [
 		{
@@ -45,10 +46,15 @@
 	description="An anchored native popover whose trigger snippet renders the owning control or component."
 >
 	<Section {...sections[0]}>
+		<label data-wide-control>
+			<input type="checkbox" bind:checked={inputWide} />
+			<span>Wide input</span>
+		</label>
 		<div data-demo>
 			<Popover bind:open={inputOpen}>
 				{#snippet trigger()}
 					<TextInput
+						wide={inputWide}
 						value="Sample text"
 						aria-label="Search"
 						aria-expanded={inputOpen}
@@ -62,7 +68,8 @@
 		</div>
 		<p>
 			The trigger snippet renders TextInput directly. Its input and click handlers open the panel;
-			click outside or press Escape to dismiss. The Surface panel matches the trigger width.
+			click outside or press Escape to dismiss. The Surface panel matches the trigger width. Toggle
+			wide to check that the trigger follows its child's sizing.
 		</p>
 		<CodeSnippet {source} label="Popover usage code" />
 	</Section>
@@ -165,6 +172,15 @@
 </Page>
 
 <style>
+	label[data-wide-control] {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	input[type='checkbox'] {
+		width: auto;
+		min-height: auto;
+	}
 	div[data-demo] {
 		box-sizing: border-box;
 		min-height: 18rem;
