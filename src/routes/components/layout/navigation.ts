@@ -3,6 +3,7 @@ import {
 	sections as introductionSections
 } from '../../sections.js';
 import { chapter as buttonChapter, sections as buttonSections } from '../../button/sections.js';
+import { chapter as surfaceChapter, sections as surfaceSections } from '../../surface/sections.js';
 import { chapter as iconChapter, sections as iconSections } from '../../icon/sections.js';
 import { chapter as themeChapter, sections as themeSections } from '../../theme/sections.js';
 import {
@@ -51,6 +52,7 @@ export const navigation = [
 		links: [
 			{ title: buttonChapter, href: '/button' },
 			{ title: iconChapter, href: '/icon' },
+			{ title: surfaceChapter, href: '/surface' },
 			{ title: dialogChapter, href: '/dialog' },
 			{ title: checkboxChapter, href: '/checkbox' },
 			{ title: switchChapter, href: '/switch' },
@@ -75,6 +77,7 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/': introductionSections,
 	'/button': buttonSections,
 	'/icon': iconSections,
+	'/surface': surfaceSections,
 	'/dialog': dialogSections,
 	'/checkbox': checkboxSections,
 	'/switch': switchSections,

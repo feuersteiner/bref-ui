@@ -17,12 +17,11 @@
 </script>
 
 <Surface
-	stylesOverride={{
-		role: 'region',
-		'aria-label': label,
-		tabindex: 0,
-		style: 'max-width: 100%; overflow-x: auto; border-block: 1px solid var(--docs-rule);'
-	}}
+	role="region"
+	aria-label={label}
+	tabindex={0}
+	scroll
+	style="max-width: 100%; border-block: 1px solid var(--docs-rule);"
 >
 	<table>
 		<caption>{label}</caption>

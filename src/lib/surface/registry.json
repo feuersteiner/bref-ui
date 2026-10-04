@@ -1,0 +1,6 @@
+{
+	"id": "surface",
+	"files": ["surface.svelte"],
+	"exports": { "Surface": "surface.svelte" },
+	"dependencies": ["theme"]
+}
