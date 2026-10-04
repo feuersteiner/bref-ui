@@ -1,3 +1,4 @@
+import type { HTMLButtonAttributes } from 'svelte/elements';
 import type { BaseSize, IconProps } from '../types.js';
 
 export interface TreeItemProps {
@@ -9,6 +10,7 @@ export interface TreeItemProps {
 }
 
 export interface TreeSectionProps extends Pick<TreeItemProps, 'id' | 'label' | 'icon'> {
+	description?: string;
 	items: TreeItemProps[];
 }
 
@@ -28,4 +30,8 @@ export interface TreeNodeProps extends Pick<
 > {
 	item: TreeItemProps;
 	indent?: number;
+}
+
+export interface TreeNodeContentProps extends HTMLButtonAttributes {
+	item: TreeItemProps;
 }

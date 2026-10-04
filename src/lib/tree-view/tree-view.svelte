@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Icon from '../icon/icon.svelte';
-	import TreeNode from './tree-node.svelte';
+	import TreeNode from './tree-node/tree-node.svelte';
+	import TreeViewSection from './tree-view-section.svelte';
 	import type { TreeViewProps } from './types.js';
 
 	let {
@@ -26,10 +26,7 @@
 	{@render nodes(items)}
 	{#each sections as section (section.id)}
 		<section aria-label={section.label}>
-			<header>
-				{#if section.icon}<Icon {...section.icon} label={undefined} />{/if}
-				{section.label}
-			</header>
+			<TreeViewSection {...section} />
 			{@render nodes(section.items)}
 		</section>
 	{/each}
@@ -54,17 +51,6 @@
 		--tree-height: 3.25rem;
 		--tree-action-size: 2.5rem;
 		font-size: 1.125rem;
-	}
-	header {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.75rem 0.5rem 0.25rem;
-		color: var(--color-muted);
-		font-size: 0.8em;
-		font-weight: 600;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
 	}
 	div[data-nodes] {
 		display: flex;
