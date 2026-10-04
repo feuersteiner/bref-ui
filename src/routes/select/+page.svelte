@@ -1,4 +1,5 @@
 <script lang="ts">
+	/* eslint-disable max-lines -- Keep the Select states, overflow example and form demos together. */
 	import { Select } from '$lib/index.js';
 	import type { SelectOptionDataProps } from '$lib/select/types.js';
 	import Page from '../components/page-container.svelte';
@@ -14,6 +15,11 @@
 		{ id: 'published', label: 'Published', icon: { name: 'check_circle' } }
 	];
 	const sizes = ['small', 'medium', 'large'] as const;
+	const overflowItems: SelectOptionDataProps[] = Array.from({ length: 24 }, (_, index) => ({
+		id: `option-${index + 1}`,
+		label: `Option ${index + 1}: A long label that exceeds the available option width`,
+		icon: { name: 'description' }
+	}));
 	let value = $state<string | undefined>();
 	let many = $state<string[]>([]);
 	let requiredValue = $state<string | undefined>();
@@ -101,6 +107,16 @@
 			/>
 		</div>
 		<p>Archived is disabled. The shared theme control switches light and dark modes.</p>
+		<h3>Long labels and scrolling</h3>
+		<Select
+			aria-label="Overflow choices"
+			items={overflowItems}
+			placeholder="Open 24 long options"
+		/>
+		<p>
+			Long labels truncate with an ellipsis. Open the list and scroll, or press End to bring the
+			last option into view.
+		</p>
 	</Section>
 	<Section {...sections[2]}>
 		<form
