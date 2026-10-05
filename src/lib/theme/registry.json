@@ -1,6 +1,13 @@
 {
 	"id": "theme",
-	"files": ["cli-theme.svelte"],
+	"files": [
+		"cli-theme.svelte",
+		"colors.svelte",
+		"surfaces.svelte",
+		"fonts.svelte",
+		"styles.svelte",
+		"surface.ts"
+	],
 	"exports": { "Theme": "cli-theme.svelte" },
 	"dependencies": []
 }

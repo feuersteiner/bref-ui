@@ -1,6 +1,7 @@
 <script lang="ts">
-	/* eslint-disable max-lines, svelte/consistent-selector-style -- Keep the shared button/link recipe scoped to .button. */
+	/* eslint-disable svelte/consistent-selector-style -- Keep the shared button/link geometry scoped to .button. */
 	import Icon from '../icon/icon.svelte';
+	import { surface } from '../theme/surface.js';
 	import type { ButtonProps } from './types.js';
 
 	let {
@@ -26,7 +27,11 @@
 <svelte:element
 	this={isLink ? 'a' : 'button'}
 	{...stylesOverride}
-	class={['button', stylesOverride?.class]}
+	class={[
+		'button',
+		surface({ variant, color, shadow: 'small', hover: 'medium' }),
+		stylesOverride?.class
+	]}
 	type={!isLink ? (stylesOverride?.type ?? 'button') : undefined}
 	href={disabled ? undefined : href}
 	target={isLink && openInNewTab ? '_blank' : undefined}
@@ -42,7 +47,6 @@
 	data-kind={isIcon ? 'icon' : 'normal'}
 	data-wide={wide && !isIcon ? '' : undefined}
 	data-rounded={rounded && isIcon ? '' : undefined}
-	style:--internal-color={`var(--color-${color}, #28231f)`}
 >
 	{#if icon}
 		<span><Icon {...icon} color={undefined} label={undefined} /></span>
@@ -60,17 +64,6 @@
 		--internal-height: max(48px, 3rem);
 		--internal-padding: 1.125rem;
 		--internal-icon-size: calc(var(--internal-height) / 2 + 0.25rem);
-		--internal-background: var(--color-background, white);
-		--internal-foreground: var(--color-foreground, black);
-		--internal-fill: color-mix(
-			in srgb,
-			color-mix(in srgb, var(--internal-color) var(--internal-tint), var(--internal-background)) 85%,
-			transparent
-		);
-		--internal-content: var(--internal-color);
-		--internal-tint: 3%;
-		--internal-border: color-mix(in srgb, var(--internal-color) 20%, transparent);
-		--internal-highlight: color-mix(in srgb, var(--internal-foreground) 16%, transparent);
 		box-sizing: border-box;
 		display: inline-flex;
 		align-items: center;
@@ -80,24 +73,10 @@
 		min-height: var(--internal-height);
 		min-width: 24px;
 		padding: 0.25rem var(--internal-padding);
-		border: 1px solid var(--internal-border);
 		border-radius: 0.45rem;
-		background: var(--internal-fill);
-		box-shadow:
-			inset 0 1px 0 var(--internal-highlight),
-			0 2px 6px color-mix(in srgb, var(--internal-foreground) 8%, transparent);
-		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
-		backdrop-filter: blur(0.5rem) saturate(120%);
-		color: var(--internal-content);
 		font: inherit;
 		font-size: 1rem;
-		cursor: pointer;
 		text-decoration: none;
-		transition:
-			background-color 120ms ease,
-			border-color 120ms ease,
-			box-shadow 120ms ease,
-			color 120ms ease;
 	}
 	.button[data-size='x-small'] {
 		--internal-height: max(28px, 1.75rem);
@@ -130,69 +109,5 @@
 	}
 	.button[data-rounded] {
 		border-radius: 50%;
-	}
-	.button[data-variant='soft'] {
-		--internal-tint: 16%;
-		--internal-content: color-mix(in srgb, var(--internal-color) 80%, var(--internal-foreground));
-		--internal-border: color-mix(in srgb, var(--internal-color) 30%, transparent);
-		--internal-highlight: color-mix(in srgb, var(--internal-foreground) 16%, transparent);
-	}
-	.button[data-variant='filled'] {
-		--internal-tint: 88%;
-		--internal-content: color-mix(in srgb, var(--internal-background) 90%, var(--internal-color));
-		--internal-border: color-mix(in srgb, var(--internal-color) 68%, var(--internal-foreground));
-		--internal-highlight: color-mix(in srgb, var(--internal-foreground) 28%, transparent);
-	}
-	.button:not(:disabled, [aria-disabled='true']):is(:hover, :active) {
-		--internal-tint: 22%;
-		--internal-border: color-mix(in srgb, var(--internal-color) 40%, transparent);
-	}
-	.button:not(:disabled, [aria-disabled='true']):is(:hover, :active)[data-variant='neutral'] {
-		--internal-tint: 5%;
-		--internal-content: color-mix(in srgb, var(--internal-color) 90%, var(--internal-foreground));
-	}
-	.button:not(:disabled, [aria-disabled='true']):active {
-		--internal-tint: 28%;
-	}
-	.button:not(:disabled, [aria-disabled='true']):active[data-variant='neutral'] {
-		--internal-tint: 10%;
-		--internal-content: color-mix(in srgb, var(--internal-color) 80%, var(--internal-foreground));
-	}
-	.button:not(:disabled, [aria-disabled='true']):active[data-variant='soft'] {
-		--internal-content: color-mix(in srgb, var(--internal-color) 70%, var(--internal-foreground));
-	}
-	.button:not(:disabled, [aria-disabled='true']):is(:hover, :active)[data-variant='filled'] {
-		--internal-tint: 86%;
-	}
-	.button:not(:disabled, [aria-disabled='true']):active[data-variant='filled'] {
-		--internal-tint: 80%;
-	}
-	.button:focus-visible {
-		outline: 2px solid var(--color-foreground, black);
-		outline-offset: 3px;
-	}
-	.button:is(:disabled, [aria-disabled='true']) {
-		opacity: 0.45;
-		cursor: not-allowed;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		.button {
-			transition: none;
-		}
-	}
-	@media (forced-colors: active) {
-		.button {
-			border-color: ButtonText;
-			box-shadow: none;
-			-webkit-backdrop-filter: none;
-			backdrop-filter: none;
-		}
-		.button:is(:disabled, [aria-disabled='true']) {
-			color: GrayText;
-			opacity: 1;
-		}
-		.button:focus-visible {
-			outline-color: Highlight;
-		}
 	}
 </style>

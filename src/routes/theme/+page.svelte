@@ -155,6 +155,13 @@
 			Theme applies a global reset and loads Material Symbols. Components do not import it
 			automatically.
 		</p>
+		<p>
+			Theme composes internal colors, surfaces, fonts and styles components. Surface and Button
+			share the surface paint recipe. Use the typed helper from <code>bref-ui</code>
+			on native HTML; copied sources include it at
+			<code>theme/surface.ts</code>
+			.
+		</p>
 		<div data-demo="row">
 			<Button color="primary" label="Default primary" onClick={noop} />
 			<Button

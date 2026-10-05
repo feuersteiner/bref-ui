@@ -7,6 +7,7 @@
 	import PropTable from '../components/prop-table.svelte';
 	import {
 		Surface,
+		surface,
 		Button,
 		Icon,
 		TextInput,
@@ -34,13 +35,13 @@
 	const radii: SurfaceRadius[] = [...sizes, '0rem', '2rem', '50%'];
 	let as = $state<SurfaceProps['as']>('div');
 	let variant = $state<Variant>('soft');
-	let tint = $state<Color>('background');
+	let color = $state<Color>('background');
 	let spacing = $state<Size | undefined>('medium');
 	let orientation = $state<SurfaceProps['orientation']>('vertical');
 	let width = $state<SurfaceProps['width']>('fill');
 	let height = $state<SurfaceProps['height']>('fit');
 	let radius = $state<SurfaceRadius | undefined>('small');
-	let shadow = $state(false);
+	let shadow = $state<SurfaceProps['shadow']>(false);
 	let hover = $state<SurfaceProps['hover']>();
 	let scroll = $state(false);
 	let clicks = $state(0);
@@ -61,10 +62,18 @@
     Content
   </Surface>
 </div>`;
+	const helperSource = `<script>
+  import { Theme, surface } from 'bref-ui';
+<${'/'}script>
+
+<Theme />
+<button class={surface({ variant: 'filled', color: 'primary', shadow: 'small', hover: 'medium' })}>
+  Save
+</button>`;
 	const props = [
 		['as', "'div' | 'section' | 'span'", 'div', 'Native root element.'],
 		['children', 'Snippet', 'Omitted', 'Content rendered directly inside the root.'],
-		['tint', 'Color', 'background', 'Theme tint; text color inherits.'],
+		['color', 'Color', 'background', 'Theme color; the shared recipe supplies content color.'],
 		['variant', 'Variant', 'neutral', 'Transparent neutral, frosted soft, or opaque filled panel.'],
 		['spacing', 'Size', 'Omitted', 'Shared padding and gap; omitted means zero.'],
 		[
@@ -81,7 +90,7 @@
 			'Omitted (0)',
 			'Named corner scale or an explicit rem/percentage radius.'
 		],
-		['shadow', 'boolean', 'false', 'Enables a depth shadow.'],
+		['shadow', 'BaseSize | boolean', 'false', 'Shadow strength; true selects medium.'],
 		[
 			'hover',
 			'BaseSize',
@@ -108,6 +117,24 @@
 			<p>Content inside the surface.</p>
 		</Surface>
 		<CodeSnippet {source} label="Surface usage code" />
+		<p>
+			Render Theme once to load the shared paint recipes. The typed surface helper applies the same
+			recipes to native HTML; component styles supply padding, radius and layout.
+		</p>
+		<div data-row>
+			{#each variants as variant (variant)}
+				<button
+					class={surface({ variant, color: 'primary', shadow: 'small', hover: 'medium' })}
+					onclick={() => clicks++}
+				>
+					{variant}
+				</button>
+			{/each}
+			<button class={surface({ variant: 'filled', color: 'primary', hover: 'medium' })} disabled>
+				Disabled
+			</button>
+		</div>
+		<CodeSnippet source={helperSource} label="Typed surface helper usage" />
 	</Section>
 	<Section {...sections[1]}>
 		<div data-controls>
@@ -128,11 +155,11 @@
 				/>
 			</div>
 			<div data-control>
-				<label for="surface-tint">Tint</label>
+				<label for="surface-color">Color</label>
 				<Select
-					id="surface-tint"
+					id="surface-color"
 					items={colors.map((id) => ({ id, label: id }))}
-					bind:value={() => tint, (next) => (tint = next as typeof tint)}
+					bind:value={() => color, (next) => (color = next as typeof color)}
 				/>
 			</div>
 			<div data-control>
@@ -206,10 +233,24 @@
 					}
 				/>
 			</div>
-			<label>
-				<Checkbox bind:checked={shadow} />
-				Shadow
-			</label>
+			<div data-control>
+				<label for="surface-shadow">Shadow</label>
+				<Select
+					id="surface-shadow"
+					items={[
+						{ id: 'none', label: 'None' },
+						{ id: 'true', label: 'Medium (true)' },
+						{ id: 'small', label: 'small' },
+						{ id: 'medium', label: 'medium' },
+						{ id: 'large', label: 'large' }
+					]}
+					bind:value={
+						() => (shadow === true ? 'true' : shadow || 'none'),
+						(next) =>
+							(shadow = next === 'none' ? false : next === 'true' ? true : (next as typeof shadow))
+					}
+				/>
+			</div>
 			<label>
 				<Checkbox bind:checked={scroll} />
 				Scroll
@@ -219,7 +260,7 @@
 			<Surface
 				{as}
 				{variant}
-				{tint}
+				{color}
 				{spacing}
 				{orientation}
 				{width}
@@ -239,14 +280,14 @@
 	</Section>
 	<Section {...sections[2]}>
 		<p>
-			Switch the shared theme control to compare light and dark. Text inherits independently from
-			the tint.
+			Switch the shared theme control to compare light and dark. Filled uses a strong opaque color;
+			background-tinted panels retain the foreground text color.
 		</p>
 		<div data-matrix>
 			{#each colors as color (color)}
 				{#each variants as variant (variant)}
 					<div data-matrix-cell>
-						<Surface tint={color} {variant} spacing="medium" radius="small">
+						<Surface {color} {variant} spacing="medium" radius="small">
 							<strong>{color}</strong>
 							<span>{variant}</span>
 						</Surface>
@@ -339,6 +380,11 @@
 		display: flex;
 		gap: 0.5rem;
 		align-items: center;
+	}
+	button {
+		padding: 0.5rem 1rem;
+		border-radius: 0.5rem;
+		font: inherit;
 	}
 	[data-stage] {
 		height: 12rem;
