@@ -5,8 +5,10 @@
 	import { getContext } from 'svelte';
 	import GithubStars from './github-stars.svelte';
 
-	let { navOpen = $bindable(false) }: { navOpen?: boolean } = $props();
-	let menuButton: HTMLButtonElement | undefined;
+	let {
+		navOpen = $bindable(false),
+		smallScreen = false
+	}: { navOpen?: boolean; smallScreen?: boolean } = $props();
 	const theme = getContext<{ mode: ThemeMode }>('documentation-theme');
 	const modes: ThemeMode[] = ['auto', 'light', 'dark'];
 	const labels: Record<ThemeMode, string> = {
@@ -25,16 +27,20 @@
 	};
 </script>
 
-<svelte:window
-	onkeydown={(event) => {
-		if (event.key === 'Escape' && navOpen) {
-			navOpen = false;
-			menuButton?.focus();
-		}
-	}}
-/>
 <header>
 	<div>
+		{#if smallScreen}
+			<Button
+				size="small"
+				icon={{ name: 'menu', label: 'Documentation navigation' }}
+				stylesOverride={{
+					'aria-controls': 'documentation-navigation',
+					'aria-expanded': navOpen,
+					'aria-haspopup': 'dialog'
+				}}
+				onClick={() => (navOpen = true)}
+			/>
+		{/if}
 		<a href={resolve('/')} aria-label="Bref documentation home" data-logo>
 			<img src={asset('/favicon.svg')} alt="" width="40" height="40" />
 			<strong>
@@ -46,26 +52,13 @@
 		<p>Svelte components, simply.</p>
 		<ThemeModeToggle mode={theme.mode} />
 		<span data-actions>
+			<GithubStars />
 			<Button
 				variant="neutral"
 				rounded
 				size="small"
 				icon={{ name: icons[theme.mode], label: labels[theme.mode] }}
 				onClick={cycleTheme}
-			/>
-			<GithubStars />
-		</span>
-		<span data-menu>
-			<Button
-				icon={{ name: navOpen ? 'close' : 'menu', label: 'Documentation navigation' }}
-				stylesOverride={{
-					'aria-controls': 'documentation-navigation',
-					'aria-expanded': navOpen
-				}}
-				onClick={(event) => {
-					menuButton = event.currentTarget as HTMLButtonElement;
-					navOpen = !navOpen;
-				}}
 			/>
 		</span>
 	</div>
@@ -108,15 +101,13 @@
 		font-family: var(--font-display);
 		font-weight: 700;
 		font-size: 1.5rem;
+		white-space: nowrap;
 	}
 	strong [data-slash] {
 		color: var(--color-primary);
 	}
 	header p {
 		color: var(--color-muted);
-	}
-	[data-menu] {
-		display: none;
 	}
 	@supports (width: round(down, 100px, 24px)) {
 		header > div {
@@ -125,13 +116,27 @@
 	}
 	@media (max-width: 815px) {
 		header > div {
-			grid-template-columns: 1fr auto 48px;
+			grid-template-columns: 40px minmax(0, 1fr) auto;
+			gap: 12px;
 		}
 		header p {
 			display: none;
 		}
-		[data-menu] {
-			display: inline-flex;
+		[data-logo] {
+			gap: 8px;
+		}
+	}
+	@media (max-width: 512px) {
+		[data-logo] img {
+			display: none;
+		}
+	}
+	@media (max-width: 360px) {
+		header > div {
+			gap: 6px;
+		}
+		strong {
+			font-size: 1rem;
 		}
 	}
 </style>
