@@ -4,7 +4,13 @@
 	import Surface from '../surface/surface.svelte';
 	import type { PopoverProps } from './types.js';
 
-	let { trigger, children, open = $bindable(false), ...surfaceProps }: PopoverProps = $props();
+	let {
+		trigger,
+		children,
+		open = $bindable(false),
+		disabled = false,
+		...surfaceProps
+	}: PopoverProps = $props();
 	const id = $props.id();
 	let anchor: HTMLDivElement;
 	let returnFocus: HTMLElement | null = null;
@@ -19,7 +25,7 @@
 <div data-trigger bind:this={anchor}>
 	{@render trigger()}
 </div>
-{#if open}
+{#if open && !disabled}
 	<div
 		use:showPopover
 		{id}

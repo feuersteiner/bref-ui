@@ -1,6 +1,13 @@
 {
 	"id": "select",
-	"files": ["select.svelte", "trigger.svelte", "list.svelte", "option.svelte", "empty.svelte"],
+	"files": [
+		"select.svelte",
+		"trigger.svelte",
+		"list.svelte",
+		"option.svelte",
+		"empty.svelte",
+		"types.ts"
+	],
 	"exports": { "Select": "select.svelte" },
 	"dependencies": ["icon", "popover", "surface"]
 }

@@ -44,9 +44,10 @@
 		editing = false;
 		activeId = undefined;
 	};
-	$effect(() => {
-		if (!open || disabled || attributes.readonly) cancel();
-	});
+	const setOpen = (next: boolean) => {
+		if (next) open = true;
+		else cancel();
+	};
 	$effect(() => {
 		if (activeId && !results.some((item) => item.id === activeId && !item.disabled))
 			activeId = undefined;
@@ -88,7 +89,15 @@
 		if (!event.currentTarget.contains(event.relatedTarget as Node | null)) cancel();
 	}}
 >
-	<Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>
+	<Popover
+		bind:open={() => open, setOpen}
+		variant="filled"
+		spacing="small"
+		radius="small"
+		shadow
+		scroll
+		disabled={disabled || !!attributes.readonly}
+	>
 		{#snippet trigger()}
 			<Input
 				{attributes}

@@ -3,7 +3,7 @@
 	import Surface from '../surface/surface.svelte';
 	import type { SelectTriggerProps } from './types.js';
 
-	let { id, open, selected, placeholder, disabled, onToggle }: SelectTriggerProps = $props();
+	let { id, open, selected, placeholder, disabled, onToggle, size }: SelectTriggerProps = $props();
 </script>
 
 <button {id} type="button" {disabled} aria-expanded={open} onclick={onToggle}>
@@ -12,7 +12,7 @@
 		variant="soft"
 		tint="foreground"
 		orientation="horizontal"
-		radius="small"
+		radius={size}
 		hover={disabled ? undefined : 'small'}
 	>
 		<span data-content>
