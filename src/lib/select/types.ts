@@ -1,47 +1,35 @@
 import type { BaseSize } from '../types.js';
-import type { IconName } from '../icon/types.js';
-
-interface SelectIconProps {
-	name: IconName;
-	filled?: boolean;
-}
+import type { IconProps } from '../icon/types.js';
 
 export interface SelectOptionDataProps {
 	id: string;
 	label: string;
-	icon?: SelectIconProps;
+	icon?: Pick<IconProps, 'name' | 'filled'>;
 	disabled?: boolean;
 }
 
-export interface SelectEmptyProps {
+export interface SelectEmptyProps extends Pick<SelectOptionDataProps, 'icon'> {
 	message: string;
-	icon?: SelectIconProps;
 }
 
-export interface SelectProps {
-	id?: string;
+export interface SelectProps extends Partial<Pick<SelectOptionDataProps, 'id' | 'disabled'>> {
 	items: readonly SelectOptionDataProps[];
 	value?: string | string[];
 	onChange?: (value: string | string[]) => void;
 	placeholder?: string;
 	size?: BaseSize;
-	disabled?: boolean;
 	emptyMessage?: SelectEmptyProps;
 }
 
-export interface SelectTriggerProps {
-	id?: string;
+export interface SelectTriggerProps
+	extends Pick<SelectProps, 'id' | 'disabled'>, Required<Pick<SelectProps, 'placeholder'>> {
 	open: boolean;
 	selected: readonly SelectOptionDataProps[];
-	placeholder: string;
-	disabled?: boolean;
 	onToggle: () => void;
 }
 
-export interface SelectListProps {
-	items: readonly SelectOptionDataProps[];
-	value?: string | string[];
-	emptyMessage: SelectEmptyProps;
+export interface SelectListProps
+	extends Pick<SelectProps, 'items' | 'value'>, Required<Pick<SelectProps, 'emptyMessage'>> {
 	onSelect: (id: string) => void;
 }
 
