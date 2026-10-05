@@ -5,7 +5,7 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Button, TreeView } from '$lib/index.js';
+	import { Button, TreeView, Select, Checkbox } from '$lib/index.js';
 	import type { BaseSize, TreeItemProps, TreeSectionProps } from '$lib/types.js';
 
 	const exampleItems: TreeItemProps[] = [
@@ -137,25 +137,28 @@
 	</Section>
 	<Section {...sections[1]}>
 		<div data-controls>
-			<label>
-				Size
-				<select bind:value={size}>
-					<option>small</option>
-					<option>medium</option>
-					<option>large</option>
-				</select>
-			</label>
+			<div data-control>
+				<label for="tree-view-size">Size</label>
+				<Select
+					id="tree-view-size"
+					items={[
+						{ id: 'small', label: 'small' },
+						{ id: 'medium', label: 'medium' },
+						{ id: 'large', label: 'large' }
+					]}
+					bind:value={() => size, (next) => (size = next as typeof size)}
+				/>
+			</div>
 			<label>
 				Multiple selection
-				<input
-					type="checkbox"
+				<Checkbox
 					checked={Array.isArray(selection)}
 					onchange={(event) => (selection = event.currentTarget.checked ? [] : '')}
 				/>
 			</label>
 			<label>
 				Enable delete action
-				<input type="checkbox" bind:checked={allowDelete} />
+				<Checkbox bind:checked={allowDelete} />
 			</label>
 			<Button
 				label="Select Tokens"
@@ -236,5 +239,11 @@
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
+	}
+	[data-control] {
+		display: grid;
+		gap: 0.5rem;
+		width: min(100%, 12rem);
+		min-width: 0;
 	}
 </style>

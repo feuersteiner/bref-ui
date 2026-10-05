@@ -5,7 +5,17 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Surface, Button, Icon, TextInput, PillGroup, Progress, Spinner } from '$lib/index.js';
+	import {
+		Surface,
+		Button,
+		Icon,
+		TextInput,
+		PillGroup,
+		Progress,
+		Spinner,
+		Select,
+		Checkbox
+	} from '$lib/index.js';
 	import type { Color, Size, SurfaceProps, SurfaceRadius, Variant } from '$lib/types.js';
 
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
@@ -101,65 +111,107 @@
 	</Section>
 	<Section {...sections[1]}>
 		<div data-controls>
+			<div data-control>
+				<label for="surface-as">Element</label>
+				<Select
+					id="surface-as"
+					items={['div', 'section', 'span'].map((id) => ({ id, label: id }))}
+					bind:value={() => as, (next) => (as = next as typeof as)}
+				/>
+			</div>
+			<div data-control>
+				<label for="surface-variant">Variant</label>
+				<Select
+					id="surface-variant"
+					items={variants.map((id) => ({ id, label: id }))}
+					bind:value={() => variant, (next) => (variant = next as typeof variant)}
+				/>
+			</div>
+			<div data-control>
+				<label for="surface-tint">Tint</label>
+				<Select
+					id="surface-tint"
+					items={colors.map((id) => ({ id, label: id }))}
+					bind:value={() => tint, (next) => (tint = next as typeof tint)}
+				/>
+			</div>
+			<div data-control>
+				<label for="surface-spacing">Spacing</label>
+				<Select
+					id="surface-spacing"
+					items={[{ id: 'none', label: 'None' }, ...sizes.map((id) => ({ id, label: id }))]}
+					bind:value={
+						() => spacing ?? 'none',
+						(next) => (spacing = next === 'none' ? undefined : (next as typeof spacing))
+					}
+				/>
+			</div>
+			<div data-control>
+				<label for="surface-orientation">Orientation</label>
+				<Select
+					id="surface-orientation"
+					items={[
+						{ id: 'vertical', label: 'vertical' },
+						{ id: 'horizontal', label: 'horizontal' }
+					]}
+					bind:value={() => orientation, (next) => (orientation = next as typeof orientation)}
+				/>
+			</div>
+			<div data-control>
+				<label for="surface-width">Width</label>
+				<Select
+					id="surface-width"
+					items={[
+						{ id: 'fill', label: 'fill' },
+						{ id: 'fit', label: 'fit' }
+					]}
+					bind:value={() => width, (next) => (width = next as typeof width)}
+				/>
+			</div>
+			<div data-control>
+				<label for="surface-height">Height</label>
+				<Select
+					id="surface-height"
+					items={[
+						{ id: 'fit', label: 'fit' },
+						{ id: 'fill', label: 'fill' }
+					]}
+					bind:value={() => height, (next) => (height = next as typeof height)}
+				/>
+			</div>
+			<div data-control>
+				<label for="surface-radius">Radius</label>
+				<Select
+					id="surface-radius"
+					items={[{ id: 'none', label: 'None' }, ...radii.map((id) => ({ id, label: id }))]}
+					bind:value={
+						() => radius ?? 'none',
+						(next) => (radius = next === 'none' ? undefined : (next as typeof radius))
+					}
+				/>
+			</div>
+			<div data-control>
+				<label for="surface-hover">Hover</label>
+				<Select
+					id="surface-hover"
+					items={[
+						{ id: 'none', label: 'None' },
+						{ id: 'small', label: 'small' },
+						{ id: 'medium', label: 'medium' },
+						{ id: 'large', label: 'large' }
+					]}
+					bind:value={
+						() => hover ?? 'none',
+						(next) => (hover = next === 'none' ? undefined : (next as typeof hover))
+					}
+				/>
+			</div>
 			<label>
-				Element <select bind:value={as}>
-					{#each ['div', 'section', 'span'] as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Variant <select bind:value={variant}>
-					{#each variants as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Tint <select bind:value={tint}>
-					{#each colors as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Spacing <select bind:value={spacing}>
-					<option value={undefined}>None</option>
-					{#each sizes as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Orientation <select bind:value={orientation}>
-					<option>vertical</option>
-					<option>horizontal</option>
-				</select>
-			</label>
-			<label>
-				Width <select bind:value={width}>
-					<option>fill</option>
-					<option>fit</option>
-				</select>
-			</label>
-			<label>
-				Height <select bind:value={height}>
-					<option>fit</option>
-					<option>fill</option>
-				</select>
-			</label>
-			<label>
-				Radius <select bind:value={radius}>
-					<option value={undefined}>None</option>
-					{#each radii as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Hover <select bind:value={hover}>
-					<option value={undefined}>None</option>
-					<option>small</option>
-					<option>medium</option>
-					<option>large</option>
-				</select>
-			</label>
-			<label>
-				<input type="checkbox" bind:checked={shadow} />
+				<Checkbox bind:checked={shadow} />
 				Shadow
 			</label>
 			<label>
-				<input type="checkbox" bind:checked={scroll} />
+				<Checkbox bind:checked={scroll} />
 				Scroll
 			</label>
 		</div>
@@ -288,10 +340,6 @@
 		gap: 0.5rem;
 		align-items: center;
 	}
-	input,
-	select {
-		max-width: 100%;
-	}
 	[data-stage] {
 		height: 12rem;
 		min-width: 0;
@@ -314,5 +362,11 @@
 		[data-matrix] {
 			grid-template-columns: minmax(0, 1fr);
 		}
+	}
+	[data-control] {
+		display: grid;
+		gap: 0.5rem;
+		width: min(100%, 12rem);
+		min-width: 0;
 	}
 </style>
