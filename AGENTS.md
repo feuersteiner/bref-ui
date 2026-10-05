@@ -139,5 +139,9 @@ changes, resolve dependencies and handle overwrites explicitly.
 
 Record results and independent code/rendered review evidence using
 [the ticket template](.tasks/TEMPLATE.md). Static checks do not grant visual approval.
+For UI changes, include tightly cropped screenshots of the actual rendered components
+in the PR description, showing all available variants and relevant interaction states,
+with before/after comparisons when useful. Keep screenshots only in the PR
+description—never commit image files or include them in the diff.
 For documentation only, check formatting, links, mirror equality and reference ignores.
 Authorized commits use a type-plus-emoji prefix such as `fix🐛:`; no agent co-author.
