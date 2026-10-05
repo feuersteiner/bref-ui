@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Select } from '$lib/index.js';
+	import { Checkbox, Select } from '$lib/index.js';
 	import type { SelectOptionDataProps } from '$lib/select/types.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
@@ -55,7 +55,7 @@
 		},
 		{
 			name: 'placeholder / emptyMessage',
-			type: 'string / { message; icon? }',
+			type: 'string / SelectEmptyProps',
 			required: false,
 			default: 'Select… / No options found',
 			description: 'Empty selection and empty list text.'
@@ -98,7 +98,7 @@
 		<p role="status">Multiple: {many.join(', ') || 'none'}</p>
 		<div data-demo="row">
 			<label>
-				<input type="checkbox" bind:checked={disabled} />
+				<Checkbox bind:checked={disabled} />
 				Disabled
 			</label>
 			<div>
