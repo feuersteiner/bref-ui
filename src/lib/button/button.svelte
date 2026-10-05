@@ -3,6 +3,7 @@
 	import Icon from '../icon/icon.svelte';
 	import { surface } from '../theme/surface.js';
 	import type { ButtonProps } from './types.js';
+	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 
 	let {
 		color = 'foreground',
@@ -15,39 +16,26 @@
 		rounded = false,
 		disabled = false,
 		href,
-		openInNewTab = false,
 		onClick,
-		stylesOverride
+		class: className,
+		...attributes
 	}: ButtonProps = $props();
 
 	const isIcon = $derived(label === undefined);
 	const isLink = $derived(href !== undefined);
+	const common = $derived({
+		class: ['button', surface({ variant, color, shadow: 'small', hover: 'medium' }), className],
+		'aria-label': attributes['aria-label'] ?? (isIcon ? (icon?.label ?? icon?.name) : undefined),
+		'data-color': color,
+		'data-size': size,
+		'data-variant': variant,
+		'data-kind': isIcon ? 'icon' : 'normal',
+		'data-wide': wide && !isIcon ? '' : undefined,
+		'data-rounded': rounded && isIcon ? '' : undefined
+	});
 </script>
 
-<svelte:element
-	this={isLink ? 'a' : 'button'}
-	{...stylesOverride}
-	class={[
-		'button',
-		surface({ variant, color, shadow: 'small', hover: 'medium' }),
-		stylesOverride?.class
-	]}
-	type={!isLink ? (stylesOverride?.type ?? 'button') : undefined}
-	href={disabled ? undefined : href}
-	target={isLink && openInNewTab ? '_blank' : undefined}
-	rel={isLink && openInNewTab ? 'noopener noreferrer' : undefined}
-	disabled={!isLink ? disabled : undefined}
-	aria-disabled={isLink ? disabled : stylesOverride?.['aria-disabled']}
-	tabindex={isLink && disabled ? -1 : stylesOverride?.tabindex}
-	onclick={!isLink ? onClick : stylesOverride?.onclick}
-	aria-label={isIcon ? (icon?.label ?? icon?.name) : undefined}
-	data-color={color}
-	data-size={size}
-	data-variant={variant}
-	data-kind={isIcon ? 'icon' : 'normal'}
-	data-wide={wide && !isIcon ? '' : undefined}
-	data-rounded={rounded && isIcon ? '' : undefined}
->
+{#snippet content()}
 	{#if icon}
 		<span><Icon {...icon} color={undefined} label={undefined} /></span>
 	{/if}
@@ -57,7 +45,32 @@
 			<span><Icon {...trailingIcon} color={undefined} label={undefined} /></span>
 		{/if}
 	{/if}
-</svelte:element>
+{/snippet}
+
+{#if isLink}
+	<!-- eslint-disable svelte/no-navigation-without-resolve -- Native library links also support consumers outside SvelteKit. -->
+	<a
+		{...attributes as HTMLAnchorAttributes}
+		{...common}
+		href={disabled ? undefined : href}
+		aria-disabled={disabled ? true : attributes['aria-disabled']}
+		tabindex={disabled ? -1 : attributes.tabindex}
+		onclick={disabled ? (event) => event.preventDefault() : onClick}
+	>
+		{@render content()}
+	</a>
+	<!-- eslint-enable svelte/no-navigation-without-resolve -->
+{:else}
+	<button
+		{...attributes as HTMLButtonAttributes}
+		{...common}
+		type={(attributes as HTMLButtonAttributes).type ?? 'button'}
+		{disabled}
+		onclick={onClick}
+	>
+		{@render content()}
+	</button>
+{/if}
 
 <style>
 	.button {

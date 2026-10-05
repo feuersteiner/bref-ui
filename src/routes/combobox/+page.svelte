@@ -120,8 +120,8 @@
 			<Combobox id="fruit-field" {items} bind:value={formValue} name="fruit" required />
 			<Combobox aria-label="Fruits" {items} bind:value={many} name="fruits" />
 			<div data-demo="row">
-				<Button label="Submit" onClick={() => undefined} stylesOverride={{ type: 'submit' }} />
-				<Button label="Reset" onClick={() => undefined} stylesOverride={{ type: 'reset' }} />
+				<Button label="Submit" onClick={() => undefined} type="submit" />
+				<Button label="Reset" onClick={() => undefined} type="reset" />
 			</div>
 		</form>
 		<p role="status">{submitted} Current value: {formValue ?? 'none'}</p>

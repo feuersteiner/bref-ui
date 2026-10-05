@@ -196,8 +196,8 @@
 			<label for="form-text-area">Note</label>
 			<TextArea id="form-text-area" name="entry" value="Initial note" required rows={2} />
 			<div data-demo="actions">
-				<Button label="Submit" onClick={() => undefined} stylesOverride={{ type: 'submit' }} />
-				<Button label="Reset" onClick={() => undefined} stylesOverride={{ type: 'reset' }} />
+				<Button label="Submit" onClick={() => undefined} type="submit" />
+				<Button label="Reset" onClick={() => undefined} type="reset" />
 			</div>
 		</form>
 		<p role="status">{submitted}</p>

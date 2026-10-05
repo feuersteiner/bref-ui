@@ -33,11 +33,9 @@
 			<Button
 				size="small"
 				icon={{ name: 'menu', label: 'Documentation navigation' }}
-				stylesOverride={{
-					'aria-controls': 'documentation-navigation',
-					'aria-expanded': navOpen,
-					'aria-haspopup': 'dialog'
-				}}
+				aria-controls="documentation-navigation"
+				aria-expanded={navOpen}
+				aria-haspopup="dialog"
 				onClick={() => (navOpen = true)}
 			/>
 		{/if}

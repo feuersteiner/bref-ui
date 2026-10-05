@@ -191,10 +191,8 @@
 				color="primary"
 				variant="soft"
 				onClick={() => (matrixOpen = !matrixOpen)}
-				stylesOverride={{
-					'aria-controls': 'exhaustive-icon-matrix',
-					'aria-expanded': matrixOpen
-				}}
+				aria-controls="exhaustive-icon-matrix"
+				aria-expanded={matrixOpen}
 			/>
 		</div>
 		<div id="exhaustive-icon-matrix">

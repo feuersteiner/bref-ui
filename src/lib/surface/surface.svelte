@@ -14,7 +14,9 @@
 		radius,
 		shadow = false,
 		hover,
-		scroll = false
+		scroll = false,
+		class: className,
+		...attributes
 	}: SurfaceProps = $props();
 
 	const radiusScale: Record<Size, string> = {
@@ -31,8 +33,9 @@
 
 <svelte:element
 	this={as}
+	{...attributes}
 	data-surface
-	class={surface({ variant, color, shadow, hover })}
+	class={[surface({ variant, color, shadow, hover }), className]}
 	data-variant={variant}
 	data-spacing={spacing}
 	data-orientation={orientation}
@@ -41,7 +44,7 @@
 	data-shadow={shadow || undefined}
 	data-hover={hover}
 	data-scroll={scroll || undefined}
-	tabindex={scroll ? 0 : undefined}
+	tabindex={attributes.tabindex ?? (scroll ? 0 : undefined)}
 	style:--surface-radius={borderRadius}
 >
 	{@render children?.()}

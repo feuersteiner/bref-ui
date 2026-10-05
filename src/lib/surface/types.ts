@@ -1,4 +1,4 @@
-import type { Snippet } from 'svelte';
+import type { HTMLAttributes } from 'svelte/elements';
 import type { BaseSize, Color, Dimension, Orientation, Size, Variant } from '../types.js';
 
 export type SurfaceRadius = Size | `${number}rem` | `${number}%`;
@@ -13,10 +13,9 @@ export interface SurfaceBaseProps {
 	hover?: BaseSize;
 }
 
-export interface SurfaceProps extends SurfaceBaseProps {
+export interface SurfaceProps extends SurfaceBaseProps, Omit<HTMLAttributes<HTMLElement>, 'color'> {
 	/** Native root element; defaults to div. */
 	as?: 'div' | 'section' | 'span';
-	children?: Snippet;
 	/** Shared padding and gap; omitted spacing means none. */
 	spacing?: Size;
 	orientation?: Orientation;

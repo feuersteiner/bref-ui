@@ -168,13 +168,13 @@
 				color="primary"
 				label="Local color override"
 				onClick={noop}
-				stylesOverride={{ style: '--color-primary: var(--color-secondary);' }}
+				style="--color-primary: var(--color-secondary);"
 			/>
 		</div>
 		<CodeSnippet
 			label="Theme customization code"
 			source={`<Button color="primary" label="Default primary" onClick={save} />
-<Button color="primary" label="Local color override" onClick={save} stylesOverride={{ style: '--color-primary: var(--color-secondary);' }} />`}
+<Button color="primary" label="Local color override" onClick={save} style="--color-primary: var(--color-secondary);" />`}
 		/>
 	</Section>
 </Page>

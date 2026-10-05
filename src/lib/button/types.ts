@@ -1,8 +1,8 @@
-import type { HTMLButtonAttributes } from 'svelte/elements';
+import type { DOMAttributes, HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 import type { Color, Size, Variant } from '../types.js';
 import type { IconProps } from '../icon/types.js';
 
-type ButtonIconProps = Exclude<IconProps, 'label' | 'size' | 'color'>;
+type ButtonIconProps = Omit<IconProps, 'size' | 'color'>;
 
 interface TextButtonProps {
 	rounded?: never;
@@ -20,23 +20,23 @@ interface IconButtonProps {
 	trailingIcon?: never;
 }
 
-interface HrefButtonProps {
+type HrefButtonProps = Omit<
+	HTMLAnchorAttributes,
+	keyof DOMAttributes<HTMLElement> | 'color' | 'href'
+> & {
 	href: string;
-	onClick?: never;
-	openInNewTab?: boolean;
-}
+};
 
-interface ClickButtonProps {
+type ClickButtonProps = Omit<HTMLButtonAttributes, keyof DOMAttributes<HTMLElement> | 'color'> & {
 	href?: never;
-	onClick: (event: MouseEvent) => void;
-	openInNewTab?: never;
-}
+};
 
 export type ButtonProps = {
 	color?: Exclude<Color, 'background'>;
 	size?: Size;
 	variant?: Variant;
-	stylesOverride?: HTMLButtonAttributes;
 	disabled?: boolean;
-} & (TextButtonProps | IconButtonProps) &
+	onClick?: DOMAttributes<HTMLButtonElement | HTMLAnchorElement>['onclick'];
+} & Omit<DOMAttributes<HTMLButtonElement | HTMLAnchorElement>, 'children' | 'onclick'> &
+	(TextButtonProps | IconButtonProps) &
 	(HrefButtonProps | ClickButtonProps);

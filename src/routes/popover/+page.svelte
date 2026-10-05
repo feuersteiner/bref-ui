@@ -37,7 +37,7 @@
 <Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>
   {#snippet trigger()}
     <Button label="Edit settings" onClick={() => open = !open}
-      stylesOverride={{ 'aria-expanded': open }} />
+      aria-expanded={open} />
   {/snippet}
   <label>Display name <TextInput value="Example" /></label>
   <Button label="Done" onClick={() => open = false} />
@@ -111,11 +111,7 @@
 		<div data-controls>
 			<Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>
 				{#snippet trigger()}
-					<Button
-						label="Edit settings"
-						onClick={() => (open = !open)}
-						stylesOverride={{ 'aria-expanded': open }}
-					/>
+					<Button label="Edit settings" onClick={() => (open = !open)} aria-expanded={open} />
 				{/snippet}
 				<label>
 					Display name <TextInput value="Example" />
@@ -135,7 +131,7 @@
 					<Button
 						label="Long content"
 						onClick={() => (longOpen = !longOpen)}
-						stylesOverride={{ 'aria-expanded': longOpen }}
+						aria-expanded={longOpen}
 					/>
 				{/snippet}
 				<h3>Scrollable details</h3>
@@ -157,7 +153,7 @@
 					<Button
 						label="Another instance"
 						onClick={() => (anotherOpen = !anotherOpen)}
-						stylesOverride={{ 'aria-expanded': anotherOpen }}
+						aria-expanded={anotherOpen}
 					/>
 				{/snippet}
 				<p>Opening this dismisses the other independent popover.</p>
@@ -174,7 +170,7 @@
 					<Button
 						label="Initially open"
 						onClick={() => (initiallyOpen = !initiallyOpen)}
-						stylesOverride={{ 'aria-expanded': initiallyOpen }}
+						aria-expanded={initiallyOpen}
 					/>
 				{/snippet}
 				<p>This bound example starts open when the page loads.</p>
@@ -212,7 +208,7 @@
 					<Button
 						label="Inside a form"
 						onClick={() => (formOpen = !formOpen)}
-						stylesOverride={{ 'aria-expanded': formOpen }}
+						aria-expanded={formOpen}
 					/>
 				{/snippet}
 				<p>The trigger is a button and does not submit the form.</p>
@@ -220,7 +216,7 @@
 					Example field <TextInput name="example" />
 				</label>
 			</Popover>
-			<Button label="Submit form" onClick={() => undefined} stylesOverride={{ type: 'submit' }} />
+			<Button label="Submit form" onClick={() => undefined} type="submit" />
 		</form>
 	</Section>
 </Page>

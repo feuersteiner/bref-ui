@@ -182,8 +182,8 @@
 			<label for="form-text-input">Email</label>
 			<TextInput id="form-text-input" name="entry" value="name@example.com" required type="email" />
 			<div data-demo="actions">
-				<Button label="Submit" onClick={() => undefined} stylesOverride={{ type: 'submit' }} />
-				<Button label="Reset" onClick={() => undefined} stylesOverride={{ type: 'reset' }} />
+				<Button label="Submit" onClick={() => undefined} type="submit" />
+				<Button label="Reset" onClick={() => undefined} type="reset" />
 			</div>
 		</form>
 		<p role="status">{submitted}</p>

@@ -45,6 +45,7 @@
 	let hover = $state<SurfaceProps['hover']>();
 	let scroll = $state(false);
 	let clicks = $state(0);
+	let nativeFocuses = $state(0);
 	const items = [
 		{ id: 'one', label: 'Design' },
 		{ id: 'two', label: 'Development' }
@@ -342,9 +343,28 @@
 	</Section>
 	<Section {...sections[4]}>
 		<p>
-			Surface accepts only the listed props. Content uses a Svelte children snippet; place native
-			attributes, events and styling on surrounding HTML elements.
+			Surface forwards native attributes and events to its root. Pass class, style, ARIA attributes
+			and event handlers directly; content uses a Svelte children snippet. Explicit tabindex
+			overrides the scroll focus default.
 		</p>
+		<Surface
+			as="section"
+			id="native-surface"
+			class="custom-surface"
+			style="font-style: italic;"
+			title="Native surface title"
+			aria-label="Native surface attributes"
+			tabindex={0}
+			onfocus={() => nativeFocuses++}
+		>
+			<p>Focused {nativeFocuses} times.</p>
+		</Surface>
+		<CodeSnippet
+			label="Surface native attributes code"
+			source={`<Surface as="section" id="details" class="custom-surface" style="font-style: italic;" aria-label="Details" tabindex={0} onfocus={onFocus}>
+  <p>Content inside the surface.</p>
+</Surface>`}
+		/>
 		<p>
 			Give the parent a fixed height and use height="fill" to constrain scrolling. A scrollable
 			Surface can receive keyboard focus; use arrow keys to scroll.
@@ -361,9 +381,9 @@
 	<Section {...sections[5]}>
 		<PropTable {props} />
 		<p>
-			Migration: move stylesOverride attributes to surrounding HTML; hover replaces hoverEffect.
-			Replace capsule with a named size, a rem value, or a percentage radius. Use scroll for
-			automatic overflow.
+			Migration: pass native attributes directly to Surface; hover replaces hoverEffect. Replace
+			capsule with a named size, a rem value, or a percentage radius. Use scroll for automatic
+			overflow.
 		</p>
 	</Section>
 </Page>

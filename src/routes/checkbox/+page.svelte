@@ -63,8 +63,8 @@
 		>
 			<label><Checkbox name="consent" value="yes" required /> Consent required</label>
 			<div data-demo="examples">
-				<Button label="Submit" onClick={() => undefined} stylesOverride={{ type: 'submit' }} />
-				<Button label="Reset" onClick={() => undefined} stylesOverride={{ type: 'reset' }} />
+				<Button label="Submit" onClick={() => undefined} type="submit" />
+				<Button label="Reset" onClick={() => undefined} type="reset" />
 			</div>
 		</form>
 		<p role="status">{submitted}</p>

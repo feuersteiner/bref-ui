@@ -81,8 +81,8 @@
 			}}
 		>
 			<label><Switch name="updates" value="yes" /> Receive updates</label>
-			<Button label="Submit" onClick={() => undefined} stylesOverride={{ type: 'submit' }} />
-			<Button label="Reset" onClick={() => undefined} stylesOverride={{ type: 'reset' }} />
+			<Button label="Submit" onClick={() => undefined} type="submit" />
+			<Button label="Reset" onClick={() => undefined} type="reset" />
 		</form>
 		<p role="status">Submitted: {submitted}</p>
 	</Section>

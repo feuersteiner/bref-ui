@@ -44,17 +44,10 @@
 
 <Button label="Save" onClick={save} />
 <Button label="Next" href="/next" color="primary" variant="filled" trailingIcon={{ name: 'arrow_forward' }} />
-<Button icon={{ name: 'favorite', filled: true }} rounded onClick={favorite} stylesOverride={{ 'aria-label': 'Favorite' }} />
+<Button icon={{ name: 'favorite', filled: true }} rounded onClick={favorite} aria-label="Favorite" />
 <Button label="Unavailable" onClick={save} disabled />`;
 
 	const props = [
-		{
-			name: 'onClick / href',
-			type: 'MouseEvent handler / string',
-			required: true,
-			default: '—',
-			description: 'Use onClick for actions or href for navigation.'
-		},
 		{
 			name: 'label',
 			type: 'string',
@@ -119,18 +112,11 @@
 			description: 'Disables actions and navigation.'
 		},
 		{
-			name: 'openInNewTab',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Opens href in a new tab; navigation buttons only.'
-		},
-		{
-			name: 'stylesOverride',
-			type: 'HTMLButtonAttributes',
+			name: 'onClick',
+			type: 'MouseEvent handler',
 			required: false,
 			default: 'Omitted',
-			description: 'Additional native attributes.'
+			description: 'Click handler for actions and links; replaces native onclick.'
 		}
 	];
 </script>
@@ -153,7 +139,7 @@
 				icon={{ name: 'favorite', filled: true }}
 				rounded
 				onClick={noop}
-				stylesOverride={{ 'aria-label': 'Favorite' }}
+				aria-label="Favorite"
 			/>
 			<Button label="Unavailable" onClick={noop} disabled />
 		</div>
@@ -240,7 +226,7 @@
 					icon={{ name: 'favorite', filled }}
 					{disabled}
 					onClick={() => clicks++}
-					stylesOverride={{ 'aria-label': 'Favorite' }}
+					aria-label="Favorite"
 				/>
 			</div>
 		</div>
@@ -248,7 +234,7 @@
 		<CodeSnippet
 			label="Button playground code"
 			source={`<Button label={${JSON.stringify(previewLabel)}} size="${size}" variant="${variant}" color="${color}" wide={${wide}} icon={${leading ? `{ name: 'save', filled: ${filled} }` : 'undefined'}} trailingIcon={${trailing ? `{ name: 'arrow_forward', filled: ${filled} }` : 'undefined'}} disabled={${disabled}} onClick={() => clicks++} />
-<Button size="${size}" variant="${variant}" color="${color}" rounded={${rounded}} icon={{ name: 'favorite', filled: ${filled} }} disabled={${disabled}} onClick={() => clicks++} stylesOverride={{ 'aria-label': 'Favorite' }} />`}
+<Button size="${size}" variant="${variant}" color="${color}" rounded={${rounded}} icon={{ name: 'favorite', filled: ${filled} }} disabled={${disabled}} onClick={() => clicks++} aria-label="Favorite" />`}
 		/>
 	</Section>
 	<Section {...sections[2]}>
@@ -282,18 +268,13 @@
 				<legend>Text and icon shapes</legend>
 				<div data-demo="row">
 					<Button color="primary" label="Save" icon={{ name: 'save' }} onClick={noop} />
-					<Button
-						color="primary"
-						icon={{ name: 'add' }}
-						onClick={noop}
-						stylesOverride={{ 'aria-label': 'Add' }}
-					/>
+					<Button color="primary" icon={{ name: 'add' }} onClick={noop} aria-label="Add" />
 					<Button
 						color="primary"
 						rounded
 						icon={{ name: 'favorite', filled: true }}
 						onClick={noop}
-						stylesOverride={{ 'aria-label': 'Favorite' }}
+						aria-label="Favorite"
 					/>
 				</div>
 			</fieldset>
@@ -305,10 +286,8 @@
 				color="primary"
 				variant="soft"
 				onClick={() => (matrixOpen = !matrixOpen)}
-				stylesOverride={{
-					'aria-controls': 'exhaustive-button-matrix',
-					'aria-expanded': matrixOpen
-				}}
+				aria-controls="exhaustive-button-matrix"
+				aria-expanded={matrixOpen}
 			/>
 		</div>
 		<div id="exhaustive-button-matrix">
@@ -337,7 +316,7 @@
 											icon={{ name: 'add' }}
 											{disabled}
 											onClick={noop}
-											stylesOverride={{ 'aria-label': `Add (${size}, ${value})` }}
+											aria-label={`Add (${size}, ${value})`}
 										/>
 										<Button
 											{size}
@@ -347,9 +326,7 @@
 											icon={{ name: 'favorite', filled: true }}
 											{disabled}
 											onClick={noop}
-											stylesOverride={{
-												'aria-label': `Favorite (${size}, ${value})`
-											}}
+											aria-label={`Favorite (${size}, ${value})`}
 										/>
 									</div>
 								{/each}
@@ -367,7 +344,7 @@
 											icon={{ name: 'add' }}
 											{disabled}
 											onClick={noop}
-											stylesOverride={{ 'aria-label': `Add (${color}, ${value})` }}
+											aria-label={`Add (${color}, ${value})`}
 										/>
 										<Button
 											{color}
@@ -376,9 +353,7 @@
 											icon={{ name: 'favorite', filled: true }}
 											{disabled}
 											onClick={noop}
-											stylesOverride={{
-												'aria-label': `Favorite (${color}, ${value})`
-											}}
+											aria-label={`Favorite (${color}, ${value})`}
 										/>
 									</div>
 								{/each}
@@ -395,9 +370,12 @@
 			Use <code>onClick</code>
 			for actions or
 			<code>href</code>
-			for navigation. Pass other native attributes through
-			<code>stylesOverride</code>
-			, including form attributes, ARIA attributes,
+			for navigation. Pass native button or anchor attributes directly, including form attributes, ARIA
+			attributes and events except
+			<code>onclick</code>
+			, which uses
+			<code>onClick</code>
+			,
 			<code>class</code>
 			and
 			<code>style</code>
@@ -406,12 +384,19 @@
 		<p>
 			Button uses <code>type="button"</code>
 			unless overridden. Set
-			<code>stylesOverride.type</code>
+			<code>type</code>
 			to
 			<code>submit</code>
 			or
 			<code>reset</code>
 			for native form actions. Button does not accept a children snippet or expose an element binding.
+		</p>
+		<p>
+			Use native <code>target</code>
+			and
+			<code>rel</code>
+			for links. Event handlers are optional; button handlers receive an HTMLButtonElement currentTarget
+			and link handlers an HTMLAnchorElement.
 		</p>
 		<div data-demo="row">
 			<Button label="Disabled" onClick={noop} disabled />
@@ -421,21 +406,19 @@
 				icon={{ name: 'sync' }}
 				onClick={noop}
 				disabled
-				stylesOverride={{ 'aria-busy': true }}
+				aria-busy={true}
 			/>
 			<Button
 				label={pressed ? 'Selected' : 'Select'}
 				onClick={() => (pressed = !pressed)}
-				stylesOverride={{ 'aria-pressed': pressed }}
+				aria-pressed={pressed}
 			/>
 			<Button
 				label="Style override"
 				onClick={noop}
-				stylesOverride={{
-					class: 'custom-button',
-					style: 'font-style: italic;',
-					title: 'Native title attribute'
-				}}
+				class="custom-button"
+				style="font-style: italic;"
+				title="Native title attribute"
 			/>
 		</div>
 		<Button
@@ -449,12 +432,19 @@
 			label="Full-width link in a new tab"
 			href="#native-behavior"
 			wide
-			openInNewTab
+			target="_blank"
+			rel="noopener noreferrer"
 			color="primary"
 			variant="soft"
 			trailingIcon={{ name: 'open_in_new' }}
 		/>
-		<Button label="Disabled link" href="#native-behavior" openInNewTab disabled />
+		<Button
+			label="Disabled link"
+			href="#native-behavior"
+			target="_blank"
+			rel="noopener noreferrer"
+			disabled
+		/>
 		<Button
 			label="A long label that wraps on a narrow screen without losing its meaning"
 			size="small"
@@ -472,26 +462,22 @@
 				Message <TextInput name="message" value="Hello" required />
 			</label>
 			<div data-demo="row">
-				<Button
-					label="Submit"
-					onClick={noop}
-					stylesOverride={{ type: 'submit', name: 'action', value: 'save' }}
-				/>
-				<Button label="Reset" onClick={noop} stylesOverride={{ type: 'reset' }} />
+				<Button label="Submit" onClick={noop} type="submit" name="action" value="save" />
+				<Button label="Reset" onClick={noop} type="reset" />
 			</div>
 		</form>
 		<p role="status">{submitted}</p>
 		<CodeSnippet
 			label="Button native behavior code"
-			source={`<Button label="Saving…" icon={{ name: 'sync' }} variant="filled" onClick={save} disabled stylesOverride={{ 'aria-busy': true }} />
-<Button label="Submit" onClick={save} stylesOverride={{ type: 'submit', name: 'action', value: 'save' }} />
-<Button label="Reset" onClick={reset} stylesOverride={{ type: 'reset' }} />
-<Button label="Full-width link in a new tab" href="#native-behavior" wide openInNewTab color="primary" variant="soft" trailingIcon={{ name: 'open_in_new' }} />`}
+			source={`<Button label="Saving…" icon={{ name: 'sync' }} variant="filled" onClick={save} disabled aria-busy={true} />
+<Button label="Submit" onClick={save} type="submit" name="action" value="save" />
+<Button label="Reset" onClick={reset} type="reset" />
+<Button label="Full-width link in a new tab" href="#native-behavior" wide target="_blank" rel="noopener noreferrer" color="primary" variant="soft" trailingIcon={{ name: 'open_in_new' }} />`}
 		/>
 	</Section>
 	<Section {...sections[5]}>
 		<p>
-			Use a visible label for text buttons and <code>stylesOverride['aria-label']</code>
+			Use a visible label for text buttons and <code>aria-label</code>
 			for icon-only buttons. Icon-only names fall back to the icon label, then its name. Rendered icons
 			are decorative.
 		</p>
@@ -499,7 +485,7 @@
 			Enter and Space activate focused buttons; disabled buttons skip keyboard navigation. Compose
 			pending states with <code>disabled</code>
 			and
-			<code>stylesOverride['aria-busy']</code>
+			<code>aria-busy</code>
 			; there is no loading prop. Verify contrast when changing colors or surfaces.
 		</p>
 	</Section>

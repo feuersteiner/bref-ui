@@ -15,9 +15,10 @@ export interface DialogHeaderProps extends DialogHeaderDataProps {
 }
 
 export type DialogActionProps = Pick<
-	Extract<ButtonProps, { label: string; onClick: unknown }>,
-	'label' | 'icon' | 'onClick' | 'disabled'
+	Extract<ButtonProps, { label: string; href?: never }>,
+	'label' | 'icon' | 'disabled'
 > & {
+	onClick: (event: MouseEvent) => void;
 	color?: StatusColor;
 };
 
