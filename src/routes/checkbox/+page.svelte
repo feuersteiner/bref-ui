@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Checkbox } from '$lib/index.js';
+	import { Checkbox, Button } from '$lib/index.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
@@ -63,8 +63,8 @@
 		>
 			<label><Checkbox name="consent" value="yes" required /> Consent required</label>
 			<div data-demo="examples">
-				<button type="submit">Submit</button>
-				<button type="reset">Reset</button>
+				<Button label="Submit" onClick={() => undefined} stylesOverride={{ type: 'submit' }} />
+				<Button label="Reset" onClick={() => undefined} stylesOverride={{ type: 'reset' }} />
 			</div>
 		</form>
 		<p role="status">{submitted}</p>

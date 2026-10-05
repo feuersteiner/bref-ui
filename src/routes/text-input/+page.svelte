@@ -1,6 +1,6 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the native form examples and component matrix together on the documentation page. */
-	import { TextInput } from '$lib/index.js';
+	import { TextInput, Select, Checkbox, Switch, Button } from '$lib/index.js';
 	import type { BaseSize, Variant } from '$lib/types.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
@@ -116,29 +116,33 @@
 	</Section>
 	<Section {...sections[3]}>
 		<div data-demo="controls">
-			<label>
-				Size
-				<select bind:value={size}>
-					{#each sizes as option (option)}<option>{option}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Variant
-				<select bind:value={variant}>
-					{#each variants as option (option)}<option>{option}</option>{/each}
-				</select>
-			</label>
-			<label>
-				<input type="checkbox" bind:checked={withIcon} />
+			<div data-control>
+				<label for="text-input-size">Size</label>
+				<Select
+					id="text-input-size"
+					items={sizes.map((id) => ({ id, label: id }))}
+					bind:value={() => size, (next) => (size = next as typeof size)}
+				/>
+			</div>
+			<div data-control>
+				<label for="text-input-variant">Variant</label>
+				<Select
+					id="text-input-variant"
+					items={variants.map((id) => ({ id, label: id }))}
+					bind:value={() => variant, (next) => (variant = next as typeof variant)}
+				/>
+			</div>
+			<label data-toggle>
+				<Checkbox bind:checked={withIcon} />
 				Icon
 			</label>
-			<label>
-				<input type="checkbox" bind:checked={wide} />
+			<label data-toggle>
+				<Checkbox bind:checked={wide} />
 				Wide
 			</label>
 		</div>
-		<label data-background-toggle>
-			<input type="checkbox" role="switch" bind:checked={movingBackground} />
+		<label data-toggle data-background-toggle>
+			<Switch bind:checked={movingBackground} />
 			Moving background
 		</label>
 		<div data-demo="playground">
@@ -178,8 +182,8 @@
 			<label for="form-text-input">Email</label>
 			<TextInput id="form-text-input" name="entry" value="name@example.com" required type="email" />
 			<div data-demo="actions">
-				<button type="submit">Submit</button>
-				<button type="reset">Reset</button>
+				<Button label="Submit" onClick={() => undefined} stylesOverride={{ type: 'submit' }} />
+				<Button label="Reset" onClick={() => undefined} stylesOverride={{ type: 'reset' }} />
 			</div>
 		</form>
 		<p role="status">{submitted}</p>
@@ -241,12 +245,14 @@
 		gap: 16px;
 		margin-block: 24px;
 	}
-	[data-demo='controls'] label:has(input[type='checkbox']) {
+	[data-demo='controls'] label[data-toggle] {
 		display: flex;
 		align-items: center;
 	}
-	button,
-	select {
-		min-height: 40px;
+	[data-control] {
+		display: grid;
+		gap: 0.5rem;
+		width: min(100%, 12rem);
+		min-width: 0;
 	}
 </style>

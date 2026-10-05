@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Progress } from '$lib/index.js';
+	/* eslint-disable max-lines -- Keep the progress controls and interactive examples together. */
+	import { Progress, TextInput, Select, Checkbox } from '$lib/index.js';
 	import type { BaseSize } from '$lib/types.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
@@ -79,25 +80,28 @@
 	<Section {...sections[2]}>
 		<div class="controls">
 			<label>
-				Value <input
+				Value <TextInput
 					type="number"
 					min="0"
 					max="1"
 					step="0.01"
-					{value}
+					value={String(value)}
 					oninput={(event) => {
 						const next = event.currentTarget.valueAsNumber;
 						if (Number.isFinite(next)) value = next;
 					}}
 				/>
 			</label>
+			<div data-control>
+				<label for="progress-size">Size</label>
+				<Select
+					id="progress-size"
+					items={sizes.map((id) => ({ id, label: id }))}
+					bind:value={() => size, (next) => (size = next as typeof size)}
+				/>
+			</div>
 			<label>
-				Size <select bind:value={size}>
-					{#each sizes as item (item)}<option value={item}>{item}</option>{/each}
-				</select>
-			</label>
-			<label>
-				<input type="checkbox" bind:checked={disabled} />
+				<Checkbox bind:checked={disabled} />
 				Disabled
 			</label>
 		</div>
@@ -149,12 +153,15 @@
 		align-items: center;
 		gap: 0.5rem;
 	}
-	.controls input[type='number'] {
-		width: 5rem;
-	}
 	@media (max-width: 575px) {
 		.example {
 			grid-template-columns: minmax(0, 1fr);
 		}
+	}
+	[data-control] {
+		display: grid;
+		gap: 0.5rem;
+		width: min(100%, 12rem);
+		min-width: 0;
 	}
 </style>

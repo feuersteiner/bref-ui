@@ -6,7 +6,7 @@
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import MovingBackground from '../components/moving-background.svelte';
-	import { Button } from '$lib/index.js';
+	import { Button, TextInput, Select, Checkbox, Switch } from '$lib/index.js';
 	import type { Color, Size, Variant } from '$lib/types.js';
 
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
@@ -39,7 +39,7 @@
 	const previewLabel = $derived(label.trim() || 'Save');
 	const noop = () => undefined;
 	const source = `<script>
-  import { Button } from 'bref';
+  import { Button } from 'bref-ui';
 <${'/'}script>
 
 <Button label="Save" onClick={save} />
@@ -163,49 +163,58 @@
 		<p>Change every custom prop together; text and icon-only buttons share the controls.</p>
 		<div data-demo="controls">
 			<label>
-				Label <input bind:value={label} placeholder="Save" />
+				Label <TextInput bind:value={label} placeholder="Save" />
 			</label>
-			<label>
-				Size <select bind:value={size}>
-					{#each sizes as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Variant <select bind:value={variant}>
-					{#each variants as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Color <select bind:value={color}>
-					{#each colors as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				<input type="checkbox" bind:checked={leading} />
+			<div data-control>
+				<label for="button-size">Size</label>
+				<Select
+					id="button-size"
+					items={sizes.map((id) => ({ id, label: id }))}
+					bind:value={() => size, (next) => (size = next as typeof size)}
+				/>
+			</div>
+			<div data-control>
+				<label for="button-variant">Variant</label>
+				<Select
+					id="button-variant"
+					items={variants.map((id) => ({ id, label: id }))}
+					bind:value={() => variant, (next) => (variant = next as typeof variant)}
+				/>
+			</div>
+			<div data-control>
+				<label for="button-color">Color</label>
+				<Select
+					id="button-color"
+					items={colors.map((id) => ({ id, label: id }))}
+					bind:value={() => color, (next) => (color = next as typeof color)}
+				/>
+			</div>
+			<label data-toggle>
+				<Checkbox bind:checked={leading} />
 				Leading icon
 			</label>
-			<label>
-				<input type="checkbox" bind:checked={trailing} />
+			<label data-toggle>
+				<Checkbox bind:checked={trailing} />
 				Trailing icon
 			</label>
-			<label>
-				<input type="checkbox" bind:checked={filled} />
+			<label data-toggle>
+				<Checkbox bind:checked={filled} />
 				Filled icons
 			</label>
-			<label>
-				<input type="checkbox" bind:checked={disabled} />
+			<label data-toggle>
+				<Checkbox bind:checked={disabled} />
 				Disabled
 			</label>
-			<label>
-				<input type="checkbox" bind:checked={wide} />
+			<label data-toggle>
+				<Checkbox bind:checked={wide} />
 				Wide text button
 			</label>
-			<label>
-				<input type="checkbox" bind:checked={rounded} />
+			<label data-toggle>
+				<Checkbox bind:checked={rounded} />
 				Rounded icon button
 			</label>
-			<label>
-				<input type="checkbox" role="switch" bind:checked={movingBackground} />
+			<label data-toggle>
+				<Switch bind:checked={movingBackground} />
 				Moving background
 			</label>
 		</div>
@@ -460,7 +469,7 @@
 			onreset={() => (submitted = 'Form reset.')}
 		>
 			<label>
-				Message <input name="message" value="Hello" required />
+				Message <TextInput name="message" value="Hello" required />
 			</label>
 			<div data-demo="row">
 				<Button
@@ -509,8 +518,8 @@
 		gap: 12px;
 		color: var(--color-muted);
 	}
-	[data-demo='controls'] > label:has(input[type='checkbox']) {
-		grid-template-columns: 20px 1fr;
+	[data-demo='controls'] > label[data-toggle] {
+		grid-template-columns: auto 1fr;
 		align-items: center;
 		color: var(--color-foreground);
 	}
@@ -557,8 +566,10 @@
 		display: grid;
 		gap: 24px;
 	}
-	input,
-	select {
-		max-width: 100%;
+	[data-control] {
+		display: grid;
+		gap: 0.5rem;
+		width: min(100%, 12rem);
+		min-width: 0;
 	}
 </style>
