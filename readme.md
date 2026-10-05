@@ -75,8 +75,7 @@ Button use the same paint recipe; apply it to native HTML with the typed helper:
 
 ```svelte
 <script>
-	import { Theme } from 'bref-ui';
-	import { surface } from 'bref-ui/surface';
+	import { Theme, surface } from 'bref-ui';
 </script>
 
 <Theme />
@@ -86,8 +85,10 @@ Button use the same paint recipe; apply it to native HTML with the typed helper:
 ```
 
 All options are optional: variant defaults to neutral and color to foreground;
-shadow and hover accept small, medium or large. Supply padding, radius and layout
-in element styles. The helper adds classes only; Theme loads their CSS. SurfaceOptions
+shadow and hover accept small, medium or large. Shadow also accepts true for medium
+and false for none. SurfaceProps extends SurfaceBaseProps with component props.
+Supply padding, radius and layout
+in element styles. The helper adds classes only; Theme loads their CSS. SurfaceBaseProps
 is available from `bref-ui/types`. Copied components include the helper in
 `theme/surface.ts`; the local UI barrel keeps component exports only.
 

@@ -157,7 +157,7 @@
 		</p>
 		<p>
 			Theme composes internal colors, surfaces, fonts and styles components. Surface and Button
-			share the surface paint recipe. Use the typed helper from <code>bref-ui/surface</code>
+			share the surface paint recipe. Use the typed helper from <code>bref-ui</code>
 			on native HTML; copied sources include it at
 			<code>theme/surface.ts</code>
 			.

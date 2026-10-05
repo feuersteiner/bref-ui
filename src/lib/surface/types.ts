@@ -3,14 +3,20 @@ import type { BaseSize, Color, Dimension, Orientation, Size, Variant } from '../
 
 export type SurfaceRadius = Size | `${number}rem` | `${number}%`;
 
-export interface SurfaceProps {
+/** Shared paint props for the surface helper and Surface component. */
+export interface SurfaceBaseProps {
+	variant?: Variant;
+	color?: Color;
+	/** Shadow strength; true enables the medium shadow and false disables it. */
+	shadow?: BaseSize | boolean;
+	/** Optional hover treatment strength. */
+	hover?: BaseSize;
+}
+
+export interface SurfaceProps extends SurfaceBaseProps {
 	/** Native root element; defaults to div. */
 	as?: 'div' | 'section' | 'span';
 	children?: Snippet;
-	/** Surface tint; defaults to background. The recipe supplies its content color. */
-	tint?: Color;
-	/** Transparent wrapper, frosted glass, or opaque panel. */
-	variant?: Variant;
 	/** Shared padding and gap; omitted spacing means none. */
 	spacing?: Size;
 	orientation?: Orientation;
@@ -18,9 +24,6 @@ export interface SurfaceProps {
 	height?: Dimension;
 	/** Corner radius; omitted radius means zero. */
 	radius?: SurfaceRadius;
-	shadow?: boolean;
-	/** Optional hover treatment strength. */
-	hover?: BaseSize;
 	/** Enable scrolling; false or omitted keeps overflow visible. */
 	scroll?: boolean;
 }
