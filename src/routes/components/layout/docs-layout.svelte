@@ -1,20 +1,37 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
+	import { Dialog } from '$lib/index.js';
 	import type { Snippet } from 'svelte';
+	import { MediaQuery } from 'svelte/reactivity';
 	import SiteHeader from './header.svelte';
 	import Sidebar from './sidebar.svelte';
 
 	let { children }: { children: Snippet } = $props();
 	let navOpen = $state(false);
+	const smallScreen = new MediaQuery('(max-width: 815px)', false);
+	$effect(() => {
+		if (!smallScreen.current) navOpen = false;
+	});
 	afterNavigate(() => {
 		navOpen = false;
 	});
 </script>
 
 <a href="#content">Skip to content</a>
-<SiteHeader bind:navOpen />
+<SiteHeader bind:navOpen smallScreen={smallScreen.current} />
+<Dialog
+	id="documentation-navigation"
+	bind:open={navOpen}
+	header={{ title: 'Documentation navigation' }}
+	size="full-screen"
+	onclick={(event) => {
+		if (event.target instanceof Element && event.target.closest('a')) navOpen = false;
+	}}
+>
+	<Sidebar />
+</Dialog>
 <div data-layout>
-	<div id="documentation-navigation" data-open={navOpen}><Sidebar /></div>
+	{#if !smallScreen.current}<aside><Sidebar /></aside>{/if}
 	<main id="content" tabindex="-1">{@render children()}</main>
 </div>
 
@@ -41,7 +58,7 @@
 		margin-inline: auto;
 		padding-block: 48px;
 	}
-	div[id='documentation-navigation'] {
+	aside {
 		position: sticky;
 		top: 72px;
 		height: calc(100dvh - 72px);
@@ -67,22 +84,11 @@
 			grid-template-columns: var(--article-width);
 			padding-block: 24px;
 		}
-		div[id='documentation-navigation'] {
+		aside {
 			display: none;
-			position: static;
-			height: auto;
-			margin-block: 0;
-			padding-block: 0;
-			border-right: 0;
-		}
-		div[id='documentation-navigation'][data-open='true'] {
-			display: block;
 		}
 		main {
 			grid-column: 1;
-			grid-row: auto;
-		}
-		div[id='documentation-navigation'] {
 			grid-row: auto;
 		}
 	}

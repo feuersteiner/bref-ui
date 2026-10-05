@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { asset, resolve } from '$app/paths';
-	import { Button, Icon, ThemeModeToggle } from '$lib/index.js';
+	import { Button, ThemeModeToggle } from '$lib/index.js';
 	import type { IconName, ThemeMode } from '$lib/types.js';
 	import { getContext } from 'svelte';
 	import GithubStars from './github-stars.svelte';
 
-	let { navOpen = $bindable(false) }: { navOpen?: boolean } = $props();
-	let menuButton: HTMLButtonElement;
+	let {
+		navOpen = $bindable(false),
+		smallScreen = false
+	}: { navOpen?: boolean; smallScreen?: boolean } = $props();
 	const theme = getContext<{ mode: ThemeMode }>('documentation-theme');
 	const modes: ThemeMode[] = ['auto', 'light', 'dark'];
 	const labels: Record<ThemeMode, string> = {
@@ -25,16 +27,20 @@
 	};
 </script>
 
-<svelte:window
-	onkeydown={(event) => {
-		if (event.key === 'Escape' && navOpen) {
-			navOpen = false;
-			menuButton.focus();
-		}
-	}}
-/>
 <header>
 	<div>
+		{#if smallScreen}
+			<Button
+				size="small"
+				icon={{ name: 'menu', label: 'Documentation navigation' }}
+				stylesOverride={{
+					'aria-controls': 'documentation-navigation',
+					'aria-expanded': navOpen,
+					'aria-haspopup': 'dialog'
+				}}
+				onClick={() => (navOpen = true)}
+			/>
+		{/if}
 		<a href={resolve('/')} aria-label="Bref documentation home" data-logo>
 			<img src={asset('/favicon.svg')} alt="" width="40" height="40" />
 			<strong>
@@ -46,6 +52,7 @@
 		<p>Svelte components, simply.</p>
 		<ThemeModeToggle mode={theme.mode} />
 		<span data-actions>
+			<GithubStars />
 			<Button
 				variant="neutral"
 				rounded
@@ -53,18 +60,7 @@
 				icon={{ name: icons[theme.mode], label: labels[theme.mode] }}
 				onClick={cycleTheme}
 			/>
-			<GithubStars />
 		</span>
-		<button
-			bind:this={menuButton}
-			type="button"
-			aria-label="Documentation navigation"
-			aria-controls="documentation-navigation"
-			aria-expanded={navOpen}
-			onclick={() => (navOpen = !navOpen)}
-		>
-			<Icon name={navOpen ? 'close' : 'menu'} size="medium" />
-		</button>
 	</div>
 </header>
 
@@ -105,24 +101,13 @@
 		font-family: var(--font-display);
 		font-weight: 700;
 		font-size: 1.5rem;
+		white-space: nowrap;
 	}
 	strong [data-slash] {
 		color: var(--color-primary);
 	}
 	header p {
 		color: var(--color-muted);
-	}
-	button {
-		display: none;
-		width: 48px;
-		height: 48px;
-		align-items: center;
-		justify-content: center;
-		border: 1px solid var(--docs-rule);
-		border-radius: 8px;
-		background: transparent;
-		color: var(--color-foreground);
-		cursor: pointer;
 	}
 	@supports (width: round(down, 100px, 24px)) {
 		header > div {
@@ -131,13 +116,27 @@
 	}
 	@media (max-width: 815px) {
 		header > div {
-			grid-template-columns: 1fr auto 48px;
+			grid-template-columns: 40px minmax(0, 1fr) auto;
+			gap: 12px;
 		}
 		header p {
 			display: none;
 		}
-		button {
-			display: inline-flex;
+		[data-logo] {
+			gap: 8px;
+		}
+	}
+	@media (max-width: 512px) {
+		[data-logo] img {
+			display: none;
+		}
+	}
+	@media (max-width: 360px) {
+		header > div {
+			gap: 6px;
+		}
+		strong {
+			font-size: 1rem;
 		}
 	}
 </style>
