@@ -5,4 +5,5 @@ export interface PopoverProps extends SurfaceProps {
 	trigger: Snippet;
 	children: Snippet;
 	open?: boolean;
+	disabled?: boolean;
 }
