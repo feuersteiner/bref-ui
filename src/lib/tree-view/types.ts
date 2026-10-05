@@ -1,3 +1,4 @@
+import type { Snippet } from 'svelte';
 import type { HTMLButtonAttributes } from 'svelte/elements';
 import type { BaseSize, IconProps } from '../types.js';
 
@@ -22,6 +23,7 @@ export interface TreeViewProps {
 	selection?: string | string[];
 	defaultExpanded?: boolean;
 	onDelete?: (id: string) => void;
+	node?: Snippet<[TreeItemProps]>;
 }
 
 export interface TreeNodeProps extends Pick<

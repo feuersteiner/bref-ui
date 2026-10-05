@@ -126,6 +126,14 @@
 			default: 'Omitted',
 			description:
 				'Shows a delete button for each item; the caller updates the nested data and selection.'
+		},
+		{
+			name: 'node',
+			type: 'Snippet<[TreeItemProps]>',
+			required: false,
+			default: 'Omitted',
+			description:
+				'Replaces each top-level node in items and sections. The snippet owns its links, children, expansion, selection and actions.'
 		}
 	];
 </script>
@@ -207,6 +215,11 @@
 			defaultExpanded
 		/>
 		<TreeView items={[]} label="Empty files" />
+		<TreeView items={[{ id: 'props-link', label: 'Tree view props' }]} label="Custom links">
+			{#snippet node(item)}
+				<a href="#props">{item.label}</a>
+			{/snippet}
+		</TreeView>
 	</Section>
 	<Section {...sections[3]}><PropTable {props} /></Section>
 	<Section {...sections[4]}>
@@ -221,8 +234,12 @@
 			preserves selection. The caller owns data removal and stale selected IDs.
 		</p>
 		<p>
-			This component uses grouped native buttons. Focus follows browser behavior when items
-			disappear. Selection is bindable; there are no item snippets or forwarded native attributes.
+			This component uses grouped native buttons by default. Focus follows browser behavior when
+			items disappear. Selection is bindable; native attributes are not forwarded. Supply a
+			<code>node</code>
+			snippet to render custom links or rows; the snippet owns the entire node, including descendants
+			and interaction behavior. The documentation sidebar uses this slot for native links and collapsible
+			page sections.
 		</p>
 	</Section>
 </Page>

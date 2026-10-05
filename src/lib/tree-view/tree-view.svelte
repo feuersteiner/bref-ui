@@ -10,14 +10,19 @@
 		size = 'medium',
 		selection = $bindable(),
 		defaultExpanded = false,
-		onDelete
+		onDelete,
+		node
 	}: TreeViewProps = $props();
 </script>
 
 {#snippet nodes(items: TreeViewProps['items'])}
 	<div data-nodes>
 		{#each items as item (item.id)}
-			<TreeNode {item} bind:selection {defaultExpanded} {onDelete} />
+			{#if node}
+				{@render node(item)}
+			{:else}
+				<TreeNode {item} bind:selection {defaultExpanded} {onDelete} />
+			{/if}
 		{/each}
 	</div>
 {/snippet}
