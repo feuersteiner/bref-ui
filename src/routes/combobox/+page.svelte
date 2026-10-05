@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Combobox } from '$lib/index.js';
+	/* eslint-disable max-lines -- Keep the size, state and native form examples together on the documentation page. */
+	import { Button, Checkbox, Combobox } from '$lib/index.js';
 	import type { SelectOptionDataProps } from '$lib/select/types.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
@@ -13,6 +14,7 @@
 		{ id: 'banana', label: 'Banana' },
 		{ id: 'pear', label: 'Pear', disabled: true }
 	];
+	const sizes = ['small', 'medium', 'large'] as const;
 	let value = $state<string | undefined>('banana');
 	let many = $state<string[]>([]);
 	let formValue = $state<string | undefined>();
@@ -49,7 +51,7 @@
 		},
 		{
 			name: 'placeholder / emptyMessage',
-			type: 'string / { message; icon? }',
+			type: 'string / SelectEmptyProps',
 			required: false,
 			default: 'Select… / No options found',
 			description: 'Empty selection and empty results text.'
@@ -59,7 +61,7 @@
 			type: 'BaseSize / neutral | soft / boolean',
 			required: false,
 			default: 'medium / soft / false',
-			description: 'Control appearance, width and availability.'
+			description: 'Control and popup spacing/radius size, appearance, width and availability.'
 		}
 	];
 </script>
@@ -75,15 +77,24 @@
 	</Section>
 	<Section {...sections[1]}>
 		<div data-demo="row">
-			<Combobox aria-label="Small fruit" {items} size="small" />
+			{#each sizes as size (size)}
+				<div data-demo-size>
+					<label for={`${size}-fruit`}>{size} fruit</label>
+					<Combobox id={`${size}-fruit`} {items} {size} value="apple" wide />
+				</div>
+			{/each}
+		</div>
+		<p>Size applies to the input, options, popup spacing and corner radius.</p>
+	</Section>
+	<Section {...sections[2]}>
+		<div data-demo="row">
 			<Combobox aria-label="Medium neutral fruit" {items} variant="neutral" />
-			<Combobox aria-label="Large soft fruit" {items} size="large" variant="soft" />
 		</div>
 		<Combobox aria-label="Wide fruit" {items} wide />
 		<div data-demo="row">
 			<Combobox aria-label="Multiple fruit" {items} bind:value={many} />
 			<label>
-				<input type="checkbox" bind:checked={disabled} />
+				<Checkbox bind:checked={disabled} />
 				Disabled
 			</label>
 			<Combobox aria-label="Disabled fruit" {items} {disabled} />
@@ -97,7 +108,7 @@
 		<p role="status">Multiple: {many.join(', ') || 'none'}</p>
 		<p>Pear is disabled. The shared theme control switches light and dark modes.</p>
 	</Section>
-	<Section {...sections[2]}>
+	<Section {...sections[3]}>
 		<form
 			onsubmit={(event) => {
 				event.preventDefault();
@@ -109,8 +120,8 @@
 			<Combobox id="fruit-field" {items} bind:value={formValue} name="fruit" required />
 			<Combobox aria-label="Fruits" {items} bind:value={many} name="fruits" />
 			<div data-demo="row">
-				<button type="submit">Submit</button>
-				<button type="reset">Reset</button>
+				<Button label="Submit" onClick={() => undefined} stylesOverride={{ type: 'submit' }} />
+				<Button label="Reset" onClick={() => undefined} stylesOverride={{ type: 'reset' }} />
 			</div>
 		</form>
 		<p role="status">{submitted} Current value: {formValue ?? 'none'}</p>
@@ -119,7 +130,7 @@
 			restores the selection. A composition Enter does not select. Form reset restores initial IDs.
 		</p>
 	</Section>
-	<Section {...sections[3]}>
+	<Section {...sections[4]}>
 		<PropTable {props} />
 		<p>
 			Supported native attributes: <code>
@@ -148,6 +159,13 @@
 		gap: 1rem;
 		margin-block: 1rem;
 		max-width: 100%;
+	}
+	[data-demo-size] {
+		display: grid;
+		gap: 0.5rem;
+		flex: 1;
+		align-self: flex-start;
+		min-width: min(100%, 12rem);
 	}
 	form {
 		display: grid;
