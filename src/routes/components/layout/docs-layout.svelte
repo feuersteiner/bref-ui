@@ -9,9 +9,7 @@
 	let { children }: { children: Snippet } = $props();
 	let navOpen = $state(false);
 	const smallScreen = new MediaQuery('(max-width: 815px)', false);
-	$effect(() => {
-		if (!smallScreen.current) navOpen = false;
-	});
+	const dialogOpen = $derived(smallScreen.current && navOpen);
 	afterNavigate(() => {
 		navOpen = false;
 	});
@@ -21,7 +19,7 @@
 <SiteHeader bind:navOpen smallScreen={smallScreen.current} />
 <Dialog
 	id="documentation-navigation"
-	bind:open={navOpen}
+	bind:open={() => dialogOpen, (open) => (navOpen = open)}
 	header={{ title: 'Documentation navigation' }}
 	size="full-screen"
 	onclick={(event) => {
