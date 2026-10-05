@@ -4,7 +4,7 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Icon, Switch } from '$lib/index.js';
+	import { Icon, Switch, Button } from '$lib/index.js';
 	import type { BaseSize } from '$lib/types.js';
 
 	const sizes: BaseSize[] = ['small', 'medium', 'large'];
@@ -81,8 +81,8 @@
 			}}
 		>
 			<label><Switch name="updates" value="yes" /> Receive updates</label>
-			<button type="submit">Submit</button>
-			<button type="reset">Reset</button>
+			<Button label="Submit" onClick={() => undefined} stylesOverride={{ type: 'submit' }} />
+			<Button label="Reset" onClick={() => undefined} stylesOverride={{ type: 'reset' }} />
 		</form>
 		<p role="status">Submitted: {submitted}</p>
 	</Section>

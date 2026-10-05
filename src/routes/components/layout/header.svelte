@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { asset, resolve } from '$app/paths';
-	import { Button, Icon, ThemeModeToggle } from '$lib/index.js';
+	import { Button, ThemeModeToggle } from '$lib/index.js';
 	import type { IconName, ThemeMode } from '$lib/types.js';
 	import { getContext } from 'svelte';
 	import GithubStars from './github-stars.svelte';
 
 	let { navOpen = $bindable(false) }: { navOpen?: boolean } = $props();
-	let menuButton: HTMLButtonElement;
+	let menuButton: HTMLButtonElement | undefined;
 	const theme = getContext<{ mode: ThemeMode }>('documentation-theme');
 	const modes: ThemeMode[] = ['auto', 'light', 'dark'];
 	const labels: Record<ThemeMode, string> = {
@@ -29,7 +29,7 @@
 	onkeydown={(event) => {
 		if (event.key === 'Escape' && navOpen) {
 			navOpen = false;
-			menuButton.focus();
+			menuButton?.focus();
 		}
 	}}
 />
@@ -55,16 +55,19 @@
 			/>
 			<GithubStars />
 		</span>
-		<button
-			bind:this={menuButton}
-			type="button"
-			aria-label="Documentation navigation"
-			aria-controls="documentation-navigation"
-			aria-expanded={navOpen}
-			onclick={() => (navOpen = !navOpen)}
-		>
-			<Icon name={navOpen ? 'close' : 'menu'} size="medium" />
-		</button>
+		<span data-menu>
+			<Button
+				icon={{ name: navOpen ? 'close' : 'menu', label: 'Documentation navigation' }}
+				stylesOverride={{
+					'aria-controls': 'documentation-navigation',
+					'aria-expanded': navOpen
+				}}
+				onClick={(event) => {
+					menuButton = event.currentTarget as HTMLButtonElement;
+					navOpen = !navOpen;
+				}}
+			/>
+		</span>
 	</div>
 </header>
 
@@ -112,17 +115,8 @@
 	header p {
 		color: var(--color-muted);
 	}
-	button {
+	[data-menu] {
 		display: none;
-		width: 48px;
-		height: 48px;
-		align-items: center;
-		justify-content: center;
-		border: 1px solid var(--docs-rule);
-		border-radius: 8px;
-		background: transparent;
-		color: var(--color-foreground);
-		cursor: pointer;
 	}
 	@supports (width: round(down, 100px, 24px)) {
 		header > div {
@@ -136,7 +130,7 @@
 		header p {
 			display: none;
 		}
-		button {
+		[data-menu] {
 			display: inline-flex;
 		}
 	}

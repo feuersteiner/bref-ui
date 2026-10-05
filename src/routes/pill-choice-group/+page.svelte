@@ -4,7 +4,7 @@
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import type { Color, Size, Variant } from '$lib/types.js';
-	import { Button, PillChoiceGroup } from '$lib/index.js';
+	import { Button, PillChoiceGroup, Select, Checkbox, Switch } from '$lib/index.js';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import MovingBackground from '../components/moving-background.svelte';
@@ -101,32 +101,41 @@
 	</Section>
 	<Section {...sections[1]}>
 		<div data-controls>
+			<div data-control>
+				<label for="pill-choice-group-size">Size</label>
+				<Select
+					id="pill-choice-group-size"
+					items={sizes.map((id) => ({ id, label: id }))}
+					bind:value={() => size, (next) => (size = next as typeof size)}
+				/>
+			</div>
+			<div data-control>
+				<label for="pill-choice-group-variant">Variant</label>
+				<Select
+					id="pill-choice-group-variant"
+					items={variants.map((id) => ({ id, label: id }))}
+					bind:value={() => variant, (next) => (variant = next as typeof variant)}
+				/>
+			</div>
+			<div data-control>
+				<label for="pill-choice-group-color">Color</label>
+				<Select
+					id="pill-choice-group-color"
+					items={colors.map((id) => ({ id, label: id }))}
+					bind:value={() => color, (next) => (color = next as typeof color)}
+				/>
+			</div>
 			<label>
-				Size <select bind:value={size}>
-					{#each sizes as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Variant <select bind:value={variant}>
-					{#each variants as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Color <select bind:value={color}>
-					{#each colors as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				<input type="checkbox" bind:checked={disabled} />
+				<Checkbox bind:checked={disabled} />
 				Disabled
 			</label>
 			<label>
-				<input type="checkbox" bind:checked={animateSelected} />
+				<Checkbox bind:checked={animateSelected} />
 				Animate selected
 			</label>
 		</div>
 		<label data-background-toggle>
-			<input type="checkbox" role="switch" bind:checked={movingBackground} />
+			<Switch bind:checked={movingBackground} />
 			Moving background
 		</label>
 		<form>
@@ -271,5 +280,11 @@
 	}
 	p {
 		margin: 0;
+	}
+	[data-control] {
+		display: grid;
+		gap: 0.5rem;
+		width: min(100%, 12rem);
+		min-width: 0;
 	}
 </style>

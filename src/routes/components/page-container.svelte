@@ -28,6 +28,7 @@
 <style>
 	article {
 		display: grid;
+		grid-template-columns: minmax(0, 1fr);
 		gap: 72px;
 		min-width: 0;
 		overflow-wrap: break-word;
@@ -36,6 +37,7 @@
 	header {
 		position: relative;
 		display: grid;
+		grid-template-columns: minmax(0, 1fr);
 		gap: 24px;
 		padding: 24px 24px 48px;
 	}
