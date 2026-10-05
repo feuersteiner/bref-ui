@@ -17,15 +17,16 @@ CLI Theme composes these same files; copied palette tokens remain editable local
 
 ## Typed helper
 
-Import [surface](../src/lib/theme/surface.ts) from `bref-ui/surface`; its
-SurfaceOptions type is exported from `bref-ui/types`. Optional options are variant
+Import [surface](../src/lib/theme/surface.ts) from `bref-ui`; its
+SurfaceBaseProps type is exported from `bref-ui/types`. Optional options are variant
 (default neutral), color (default foreground), shadow, and hover. Variant and Color
 reuse the existing unions; shadow and hover accept small, medium, or large.
+Shadow also accepts true for medium and false for none. SurfaceProps extends
+SurfaceBaseProps with layout, element, scrolling, and children props.
 
 ```svelte
 <script>
-	import { Theme } from 'bref-ui';
-	import { surface } from 'bref-ui/surface';
+	import { Theme, surface } from 'bref-ui';
 </script>
 
 <Theme />
@@ -54,8 +55,9 @@ states share the recipe. Composite controls can signal state with
 disabled surfaces receive no hover treatment. Reduced motion and forced colors are
 handled in the same recipe.
 
-Surface retains its layout API and maps tint to the helper color. Its boolean shadow
-maps to medium; Button uses small shadow and medium hover. Surface content color
+Surface retains its layout API and uses color for the shared paint selection.
+Its shadow accepts the shared sizes, with true mapping to medium; Button uses
+small shadow and medium hover. Surface content color
 now follows the recipe. Button neutral is transparent, and filled is fully opaque.
 
 ## Remaining migrations

@@ -10,7 +10,7 @@
 	<Surface
 		as="span"
 		variant="soft"
-		tint="foreground"
+		color="foreground"
 		orientation="horizontal"
 		radius="small"
 		width="fill"

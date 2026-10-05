@@ -70,7 +70,7 @@
 			required: false,
 			default: 'Surface defaults',
 			description:
-				'as, tint, variant, spacing, orientation, width, height, radius, shadow, hover and scroll style the panel.'
+				'as, color, variant, spacing, orientation, width, height, radius, shadow, hover and scroll style the panel.'
 		}
 	];
 </script>
@@ -147,7 +147,7 @@
 			<Popover
 				bind:open={anotherOpen}
 				variant="soft"
-				tint="primary"
+				color="primary"
 				spacing="medium"
 				radius="small"
 				shadow
@@ -191,7 +191,7 @@
 		<p>
 			Popover accepts <a href={resolve('/surface#props')}>Surface props</a>
 			directly and forwards them to its panel. These examples set padding, rounded corners, a filled background,
-			shadow and scrolling explicitly; Another instance uses a soft primary tint.
+			shadow and scrolling explicitly; Another instance uses a soft primary color.
 		</p>
 		<p>
 			Both snippets receive no arguments. The trigger owns its native attributes, events, accessible

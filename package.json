@@ -33,10 +33,6 @@
 		},
 		"./types": {
 			"types": "./dist/types.d.ts"
-		},
-		"./surface": {
-			"types": "./dist/theme/surface.d.ts",
-			"import": "./dist/theme/surface.js"
 		}
 	},
 	"peerDependencies": {

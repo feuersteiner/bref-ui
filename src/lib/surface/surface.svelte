@@ -5,7 +5,7 @@
 	let {
 		as = 'div',
 		children,
-		tint = 'background',
+		color = 'background',
 		variant = 'neutral',
 		spacing,
 		orientation = 'vertical',
@@ -32,7 +32,7 @@
 <svelte:element
 	this={as}
 	data-surface
-	class={surface({ variant, color: tint, shadow: shadow ? 'medium' : undefined, hover })}
+	class={surface({ variant, color, shadow, hover })}
 	data-variant={variant}
 	data-spacing={spacing}
 	data-orientation={orientation}
