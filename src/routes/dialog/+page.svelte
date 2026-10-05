@@ -1,6 +1,6 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the dialog's interactive gallery examples together. */
-	import { Dialog } from '$lib/index.js';
+	import { Button, Checkbox, Dialog, TextInput } from '$lib/index.js';
 	import type { DialogProps, StatusColor } from '$lib/types.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
@@ -20,13 +20,15 @@
 	let lastEvent = $state('No action yet');
 
 	const source = `<script lang="ts">
-  import { Dialog } from 'bref-ui';
+  import { Button, Dialog, TextInput } from 'bref-ui';
   let open = $state(false);
 <${'/'}script>
 
-<button onclick={() => open = true}>Open dialog</button>
+<Button label="Open dialog" onClick={() => open = true} />
 <Dialog bind:open header={{ title: 'Edit details', description: 'Changes are local until saved.' }}>
-  <p>Compose content here.</p>
+  <label>
+    Display name <TextInput value="Example name" />
+  </label>
 </Dialog>`;
 
 	const props = [
@@ -77,13 +79,13 @@
 </script>
 
 {#snippet customFooter()}
-	<button type="button" onclick={() => (snippetOpen = false)}>Done</button>
+	<Button label="Done" onClick={() => (snippetOpen = false)} />
 {/snippet}
 
 <Page title={chapter} description="Present modal content with native focus and accessible naming.">
 	<Section {...sections[0]}>
 		<p>Open a modal with a named header and a body snippet.</p>
-		<button type="button" onclick={() => (open = true)}>Open dialog</button>
+		<Button label="Open dialog" onClick={() => (open = true)} />
 		<Dialog
 			bind:open
 			header={{
@@ -94,7 +96,7 @@
 			onclose={() => (lastEvent = 'Closed')}
 		>
 			<label>
-				Display name <input value="Example name" />
+				Display name <TextInput value="Example name" />
 			</label>
 			<p>Backdrop clicks leave the dialog open.</p>
 		</Dialog>
@@ -109,11 +111,11 @@
 			<code>false</code>
 			. Focus returns to the opener after the exit animation.
 		</p>
-		<label>
-			<input type="checkbox" bind:checked={dismissible} />
+		<label data-checkbox-control>
+			<Checkbox bind:checked={dismissible} />
 			Allow Escape and close button
 		</label>
-		<button type="button" onclick={() => (dismissalOpen = true)}>Open dismissal demo</button>
+		<Button label="Open dismissal demo" onClick={() => (dismissalOpen = true)} />
 		<Dialog
 			bind:open={dismissalOpen}
 			header={{
@@ -122,7 +124,7 @@
 			}}
 			{dismissible}
 		>
-			<button type="button" onclick={() => (dismissalOpen = false)}>Close via binding</button>
+			<Button label="Close via binding" onClick={() => (dismissalOpen = false)} />
 		</Dialog>
 	</Section>
 	<Section {...sections[2]}>
@@ -142,7 +144,7 @@
 				{#each colors as color (color)}<option value={color}>{color}</option>{/each}
 			</select>
 		</label>
-		<button type="button" onclick={() => (actionOpen = true)}>Open action dialog</button>
+		<Button label="Open action dialog" onClick={() => (actionOpen = true)} />
 		<Dialog
 			bind:open={actionOpen}
 			header={{ title: 'Confirm changes', icon: { name: 'info' } }}
@@ -162,7 +164,7 @@
 		>
 			<p>Actions run their callbacks and leave closing to the caller.</p>
 		</Dialog>
-		<button type="button" onclick={() => (snippetOpen = true)}>Open custom footer</button>
+		<Button label="Open custom footer" onClick={() => (snippetOpen = true)} />
 		<Dialog bind:open={snippetOpen} header={{ title: 'Custom footer' }} footer={customFooter}>
 			<p>The caller controls this footer snippet.</p>
 		</Dialog>
@@ -178,23 +180,19 @@
 
 <style>
 	label {
-		display: block;
+		display: grid;
+		gap: 0.5rem;
 		margin-block: 0.75rem;
 	}
-	input:not([type='checkbox']),
+	label[data-checkbox-control] {
+		display: flex;
+		align-items: center;
+	}
 	select {
-		display: block;
 		width: 100%;
 		max-width: 24rem;
-		margin-top: 0.5rem;
-	}
-	button {
 		min-height: 2.5rem;
-		padding: 0.5rem 1rem;
-		margin-right: 0.5rem;
 	}
-	button:focus-visible,
-	input:focus-visible,
 	select:focus-visible {
 		outline: 2px solid var(--color-foreground);
 		outline-offset: 2px;
