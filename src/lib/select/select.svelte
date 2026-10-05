@@ -35,8 +35,8 @@
 
 <div data-size={size}>
 	<Popover bind:open>
-		{#snippet trigger(popover)}
-			<Trigger {id} {popover} {selected} {placeholder} {disabled} />
+		{#snippet trigger()}
+			<Trigger {id} {open} {selected} {placeholder} {disabled} onToggle={() => (open = !open)} />
 		{/snippet}
 		<List {items} {value} {emptyMessage} onSelect={select} />
 	</Popover>
