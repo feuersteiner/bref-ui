@@ -61,7 +61,7 @@
 			type: 'BaseSize / neutral | soft / boolean',
 			required: false,
 			default: 'medium / soft / false',
-			description: 'Control and popup spacing/radius size, appearance, width and availability.'
+			description: 'Input and option size, appearance, width and availability.'
 		}
 	];
 </script>
@@ -84,7 +84,7 @@
 				</div>
 			{/each}
 		</div>
-		<p>Size applies to the input, options, popup spacing and corner radius.</p>
+		<p>Size applies to the input and options. Popup spacing and corner radius stay small.</p>
 	</Section>
 	<Section {...sections[2]}>
 		<div data-demo="row">

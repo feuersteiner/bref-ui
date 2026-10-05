@@ -2,5 +2,5 @@
 	"id": "combobox",
 	"files": ["combobox.svelte", "input.svelte", "list.svelte", "option.svelte", "form.svelte"],
 	"exports": { "Combobox": "combobox.svelte" },
-	"dependencies": ["text-input", "popover", "icon", "select"]
+	"dependencies": ["text-input", "popover", "icon"]
 }
