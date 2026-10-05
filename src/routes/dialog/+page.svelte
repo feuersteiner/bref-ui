@@ -1,6 +1,6 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the dialog's interactive gallery examples together. */
-	import { Button, Checkbox, Dialog, TextInput } from '$lib/index.js';
+	import { Button, Checkbox, Dialog, TextInput, Select } from '$lib/index.js';
 	import type { DialogProps, StatusColor } from '$lib/types.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
@@ -132,18 +132,22 @@
 			Choose a size and status color, then test the two action callbacks. Small screens always use
 			full-screen.
 		</p>
-		<label>
-			Size
-			<select bind:value={selectedSize}>
-				{#each sizes as size (size)}<option value={size}>{size}</option>{/each}
-			</select>
-		</label>
-		<label>
-			Action color
-			<select bind:value={selectedColor}>
-				{#each colors as color (color)}<option value={color}>{color}</option>{/each}
-			</select>
-		</label>
+		<div data-control>
+			<label for="dialog-selectedSize">Size</label>
+			<Select
+				id="dialog-selectedSize"
+				items={sizes.map((id) => ({ id, label: id }))}
+				bind:value={() => selectedSize, (next) => (selectedSize = next as typeof selectedSize)}
+			/>
+		</div>
+		<div data-control>
+			<label for="dialog-selectedColor">Action color</label>
+			<Select
+				id="dialog-selectedColor"
+				items={colors.map((id) => ({ id, label: id }))}
+				bind:value={() => selectedColor, (next) => (selectedColor = next as typeof selectedColor)}
+			/>
+		</div>
 		<Button label="Open action dialog" onClick={() => (actionOpen = true)} />
 		<Dialog
 			bind:open={actionOpen}
@@ -188,13 +192,10 @@
 		display: flex;
 		align-items: center;
 	}
-	select {
-		width: 100%;
-		max-width: 24rem;
-		min-height: 2.5rem;
-	}
-	select:focus-visible {
-		outline: 2px solid var(--color-foreground);
-		outline-offset: 2px;
+	[data-control] {
+		display: grid;
+		gap: 0.5rem;
+		width: min(100%, 12rem);
+		min-width: 0;
 	}
 </style>
