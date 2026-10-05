@@ -7,7 +7,7 @@ export interface SurfaceProps {
 	/** Native root element; defaults to div. */
 	as?: 'div' | 'section' | 'span';
 	children?: Snippet;
-	/** Surface tint; defaults to background. Text color inherits. */
+	/** Surface tint; defaults to background. The recipe supplies its content color. */
 	tint?: Color;
 	/** Transparent wrapper, frosted glass, or opaque panel. */
 	variant?: Variant;

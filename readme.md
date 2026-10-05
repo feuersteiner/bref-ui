@@ -65,9 +65,31 @@ The button increments the count when clicked. The current Button uses `label` an
 `onClick`; the gallery documents each component's current API.
 
 Render `Theme` once in the application root to opt into its palette, reset and
-Material Symbols font setup. For palette CSS alone, import `bref-ui/theme.css`
-instead; it supplies no fonts or reset. The current package declares a Material
-Symbols font dependency, so zero runtime dependencies beyond Svelte remains a goal.
+Material Symbols font setup. The current package declares a Material Symbols font
+dependency, so zero runtime dependencies beyond Svelte remains a goal.
+
+### Shared surface styles
+
+Theme composes internal colors, surfaces, fonts and styles components. Surface and
+Button use the same paint recipe; apply it to native HTML with the typed helper:
+
+```svelte
+<script>
+	import { Theme } from 'bref-ui';
+	import { surface } from 'bref-ui/surface';
+</script>
+
+<Theme />
+<button class={surface({ variant: 'filled', color: 'primary', shadow: 'small', hover: 'medium' })}>
+	Save
+</button>
+```
+
+All options are optional: variant defaults to neutral and color to foreground;
+shadow and hover accept small, medium or large. Supply padding, radius and layout
+in element styles. The helper adds classes only; Theme loads their CSS. SurfaceOptions
+is available from `bref-ui/types`. Copied components include the helper in
+`theme/surface.ts`; the local UI barrel keeps component exports only.
 
 ## Why Bref-ui?
 

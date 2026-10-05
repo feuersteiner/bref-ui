@@ -1,92 +1,96 @@
-# Surface refactor proposal
+# Shared surface recipes
 
-Centralize surface appearance in Surface so one recipe controls backgrounds,
-borders, highlights, blur, shadows, glow, and visual states across components.
-Components retain native behavior, content, geometry, and specialized animations.
-This proposal records source findings and decisions required before implementation.
+Theme now owns one surface paint recipe. Surface and Button consume it through a
+typed helper; the remaining components are queued for separate review.
 
-## Current differences
+## Theme composition
 
-- [Surface](../src/lib/surface/surface.svelte) uses a transparent neutral variant,
-  6% tint for soft, and 11% tint for opaque filled panels. Text color inherits.
-- [Button](../src/lib/button/button.svelte) and
-  [Pill](../src/lib/pill/pill.svelte) use 3% neutral, 16% soft, and 88% filled tint,
-  with an additional 85% opacity mix. Filled also changes content color, border,
-  and highlight. Their small shadows differ from Surface's panel shadow.
-- [Checkbox](../src/lib/checkbox/checkbox.svelte) and
-  [Switch](../src/lib/switch/switch.svelte) use 4% light and 16% dark tint when
-  unchecked, switching to 88% primary tint when checked.
-- [TextInput](../src/lib/text-input/text-input.svelte) and
-  [TextArea](../src/lib/text-area/text-area.svelte) duplicate light/dark recipes,
-  focus rings, invalid borders, and disabled styling. Neither exposes filled.
-- [SurfaceProps](../src/lib/surface/types.ts) only supports div, section, and span.
-  Native attributes, events, and custom styling are intentionally excluded by the
-  current [gallery contract](../src/routes/surface/+page.svelte).
+[Theme](../src/lib/theme/theme.svelte) composes four internal components:
 
-## Proposed ownership
+- [Colors](../src/lib/theme/colors.svelte) owns palette inputs and light/dark tokens.
+- [Surfaces](../src/lib/theme/surfaces.svelte) owns global paint classes and states.
+- [Fonts](../src/lib/theme/fonts.svelte) owns Material Symbols declarations.
+- [Styles](../src/lib/theme/styles.svelte) owns resets, body defaults, and scrollbars.
 
-Surface owns paint recipes and their visual state changes. Consumers determine
-whether a control is checked, pressed, focused, invalid, or disabled and preserve
-the native element, bindings, events, form behavior, and keyboard interactions.
-Avoid disabled hover effects and duplicate focus rings.
+Theme retains its palette and children API and remains opt-in. The default-only
+CLI Theme composes these same files; copied palette tokens remain editable locally.
 
-Separate surface paint from optional layout so components can retain their own
-padding, dimensions, alignment, and radius without overriding paint recipes.
-Keep recipe values private; agree any necessary public controls before adding them.
+## Typed helper
 
-## Component migration
+Import [surface](../src/lib/theme/surface.ts) from `bref-ui/surface`; its
+SurfaceOptions type is exported from `bref-ui/types`. Optional options are variant
+(default neutral), color (default foreground), shadow, and hover. Variant and Color
+reuse the existing unions; shadow and hover accept small, medium, or large.
 
-| Components                    | Proposed reuse                                                      | Behavior retained                                                                            |
-| ----------------------------- | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| Button and Pill               | Surface roots for neutral, soft, and filled paint                   | Button/link semantics, sizing, content, deletion, and Pill swoosh                            |
-| TextInput and TextArea        | Surface shells with focus and invalid treatments                    | Native controls, bindings, attributes, icons, and resizing                                   |
-| Checkbox and Switch           | Soft unchecked and filled checked surfaces                          | Native checkbox semantics, check animation, and thumb movement                               |
-| Dialog                        | Surface panel replacing its handmade background, border, and shadow | Modal lifecycle, focus restoration, backdrop, transitions, and content scrolling             |
-| TreeView                      | Shared selected-row and action-hover paint                          | Selection, indentation, expansion, focus geometry, and row transitions                       |
-| Progress and Spinner          | Shared paint values for tracks, fills, and highlights               | Native progress pseudo-elements, seeking, indeterminate animation, and spinner gradient/mask |
-| Popover                       | Already composes Surface; verify revised appearance                 | Native popover lifecycle, anchoring, scrolling, and transitions                              |
-| PillGroup and PillChoiceGroup | Receive shared recipes through Pill                                 | Group layout, selection, form reset, and keyboard behavior                                   |
+```svelte
+<script>
+	import { Theme } from 'bref-ui';
+	import { surface } from 'bref-ui/surface';
+</script>
 
-Progress pseudo-elements and Spinner gradients cannot simply become child Surface
-components. Agree a way to consume paint values from the same authoritative recipe
-without copying formulas or replacing native progress semantics.
+<Theme />
+<button class={surface({ variant: 'filled', color: 'primary', shadow: 'small', hover: 'medium' })}>
+	Save
+</button>
+```
 
-## Decisions before implementation
+The helper returns composed classes such as `surface surface-filled surface-primary`.
+It adds no markup or CSS automatically. Native elements keep their attributes,
+events, bindings, and form behavior; element styles supply geometry and typography.
+TypeScript validates helper options, while handwritten class strings remain unchecked.
+CLI copies include `theme/surface.ts`; the copied UI barrel exports components only.
 
-1. Define neutral, soft, and filled consistently. A strong filled treatment near the
-   existing 88% tint is proposed; decide opacity and content color together.
-   Background-tinted Dialog and Popover panels must remain opaque and readable.
-   Validate contrast in both modes; the existing mixes do not prove accessibility.
-2. Decide whether Surface can render button and anchor roots with correctly typed
-   native attribute/event forwarding. Preserve disabled links and form submission.
-   This changes the current deliberately limited Surface contract.
-3. Agree how consumers supply geometry, attachments, and transition integration.
-   Svelte component boundaries prevent existing scoped root styles and native
-   action/transition directives from transferring unchanged to Surface components.
-4. Define shared hover, pressed, focus, invalid, and disabled paint, including focus
-   originating from child controls. Retain forced-color and reduced-motion behavior.
-5. Agree distinct control and panel shadow strengths in the same recipe. Surface's
-   current boolean shadow cannot preserve both existing levels by itself.
-6. Decide how specialized renderers consume the shared paint values. Preserve one
-   source for those formulas and include any required files in the CLI registry.
+## Shared appearance and states
 
-## Review sequence and verification
+Neutral is transparent. Soft uses a 16% tint with 85% opacity and backdrop blur.
+Filled uses solid tint and background-colored content, with foreground text for
+background-tinted panels. Hover shading moves filled colors toward foreground.
+Small, medium, and large shadows distinguish controls from elevated panels.
 
-The [component screenshots](surface-refactor-screenshots/) record the current light
-theme appearance. Each crop shows all available variants, or representative states
-when no variant prop exists. These are baselines for review, not a proposed redesign.
+Hover is opt-in. Native hover, pressed, focus-visible, disabled, and aria-disabled
+states share the recipe. Composite controls can signal state with
+`data-surface-pressed`, `data-surface-focused`, `data-surface-invalid`, and
+`data-surface-disabled`, each set to `true`. Invalid borders survive hover;
+disabled surfaces receive no hover treatment. Reduced motion and forced colors are
+handled in the same recipe.
 
-First agree the Surface contract and review its recipe matrix in light and dark
-themes. Migrate Pill as the first consumer, then proceed one component at a time
-with human approval between steps. Update registry dependencies when components
-begin importing Surface, keeping the dependency graph acyclic.
+Surface retains its layout API and maps tint to the helper color. Its boolean shadow
+maps to medium; Button uses small shadow and medium hover. Surface content color
+now follows the recipe. Button neutral is transparent, and filled is fully opaque.
 
-For implementation, run applicable checks, lint, and build/packaging verification.
-Review rendered variants and meaningful interaction states, native forms and
-bindings, keyboard/focus behavior, SSR/hydration, contrast, forced colors, and
-reduced motion. Distribution changes also require tarball inspection and clean
-npm/CLI Svelte and SvelteKit consumers.
+## Remaining migrations
 
-This documentation change has no runtime or visual changes. Independent code and
-rendered review remain required for implementation; static checks cannot grant
-visual approval.
+| Components              | Proposed reuse                                   | Behavior retained                                                          |
+| ----------------------- | ------------------------------------------------ | -------------------------------------------------------------------------- |
+| Pill                    | Shared neutral, soft, and filled paint           | Sizing, deletion, content, and swoosh                                      |
+| TextInput and TextArea  | Surface shells with focus and invalid treatments | Native controls, bindings, attributes, icons, and resizing                 |
+| Checkbox and Switch     | Soft unchecked and filled checked paint          | Native semantics, check animation, and thumb movement                      |
+| Dialog                  | Shared panel paint                               | Modal lifecycle, focus restoration, backdrop, transitions, and scrolling   |
+| TreeView                | Shared selected-row and action-hover paint       | Selection, indentation, expansion, and row transitions                     |
+| Progress and Spinner    | Shared paint values for specialized renderers    | Native progress pseudo-elements, seeking, gradients, masks, and animations |
+| Popover and pill groups | Inherit shared paint through Surface and Pill    | Existing lifecycle, layout, selection, and form behavior                   |
+
+Proceed one component at a time after human approval. Specialized renderers still
+need an agreed mechanism to consume track and fill paint without duplicating formulas.
+
+## Verification and review
+
+The [component crops](surface-refactor-screenshots/) show all available variants or
+representative states. Surface and Button also have dark-theme captures, and native
+helper HTML has its own crop. These images document the current implementation;
+independent review and human visual approval remain pending.
+
+- Check and lint pass; check reports zero errors and warnings. Build, registry
+  validation, package generation, and publint pass.
+- Chromium checks pass for matching helper/Button paint, keyboard activation,
+  disabled hover and links, external links, icon naming, native attribute/style
+  forwarding, form submission, Surface scrolling and nesting, palette updates,
+  invalid/hover/pressed states, reduced motion, and forced colors.
+- Production hydration, narrow gallery layout, and SSR without JavaScript pass.
+- All 108 default color/variant pairs across light/dark and base/pressed states
+  meet 4.5:1 text contrast. Custom palettes and arbitrary parent backgrounds still
+  require validation; palette inputs are preserved.
+- Tarball contents include helper declarations and every Theme child. Clean Svelte
+  and SvelteKit consumers check and build through npm and CLI copies; invalid
+  helper options are rejected by TypeScript. CLI preview, dependencies, type
+  rewriting, repeated installation, cancellation, and overwrite approval pass.

@@ -7,6 +7,7 @@
 	import PropTable from '../components/prop-table.svelte';
 	import { Surface, Button, Icon, TextInput, PillGroup, Progress, Spinner } from '$lib/index.js';
 	import type { Color, Size, SurfaceProps, SurfaceRadius, Variant } from '$lib/types.js';
+	import { surface } from '$lib/theme/surface.js';
 
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const variants = ['neutral', 'soft', 'filled'] as const;
@@ -51,10 +52,19 @@
     Content
   </Surface>
 </div>`;
+	const helperSource = `<script>
+  import { Theme } from 'bref-ui';
+  import { surface } from 'bref-ui/surface';
+<${'/'}script>
+
+<Theme />
+<button class={surface({ variant: 'filled', color: 'primary', shadow: 'small', hover: 'medium' })}>
+  Save
+</button>`;
 	const props = [
 		['as', "'div' | 'section' | 'span'", 'div', 'Native root element.'],
 		['children', 'Snippet', 'Omitted', 'Content rendered directly inside the root.'],
-		['tint', 'Color', 'background', 'Theme tint; text color inherits.'],
+		['tint', 'Color', 'background', 'Theme tint; the shared recipe supplies content color.'],
 		['variant', 'Variant', 'neutral', 'Transparent neutral, frosted soft, or opaque filled panel.'],
 		['spacing', 'Size', 'Omitted', 'Shared padding and gap; omitted means zero.'],
 		[
@@ -98,6 +108,24 @@
 			<p>Content inside the surface.</p>
 		</Surface>
 		<CodeSnippet {source} label="Surface usage code" />
+		<p>
+			Render Theme once to load the shared paint recipes. The typed surface helper applies the same
+			recipes to native HTML; component styles supply padding, radius and layout.
+		</p>
+		<div data-row>
+			{#each variants as variant (variant)}
+				<button
+					class={surface({ variant, color: 'primary', shadow: 'small', hover: 'medium' })}
+					onclick={() => clicks++}
+				>
+					{variant}
+				</button>
+			{/each}
+			<button class={surface({ variant: 'filled', color: 'primary', hover: 'medium' })} disabled>
+				Disabled
+			</button>
+		</div>
+		<CodeSnippet source={helperSource} label="Typed surface helper usage" />
 	</Section>
 	<Section {...sections[1]}>
 		<div data-controls>
@@ -187,8 +215,8 @@
 	</Section>
 	<Section {...sections[2]}>
 		<p>
-			Switch the shared theme control to compare light and dark. Text inherits independently from
-			the tint.
+			Switch the shared theme control to compare light and dark. Filled uses a strong opaque tint;
+			background-tinted panels retain the foreground text color.
 		</p>
 		<div data-matrix>
 			{#each colors as color (color)}
@@ -291,6 +319,11 @@
 	input,
 	select {
 		max-width: 100%;
+	}
+	button {
+		padding: 0.5rem 1rem;
+		border-radius: 0.5rem;
+		font: inherit;
 	}
 	[data-stage] {
 		height: 12rem;
