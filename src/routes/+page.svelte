@@ -18,12 +18,18 @@
 	title={chapter}
 	description="A Svelte-first, human-first, agent-first UI library for building beautiful sites and apps with components you can make your own."
 >
+	<p>Basically, open source IS the future: it gives you ultimate customizability.</p>
 	<Section {...sections[0]}>
 		<CodeSnippet source={usage} label="Bref usage code" />
 		<p>Render Theme once at the app root for its palette, reset and Material Symbols font setup.</p>
 		<p>Import bref-ui/theme.css for palette CSS without fonts or a reset.</p>
 	</Section>
 	<Section {...sections[1]}>
+		<p>
+			The need for quality code curation isn't going away. Bref brings that curation and quality
+			management together with the flexibility to adapt every component to your needs. That's the
+			deal.
+		</p>
 		<h3>Svelte-first</h3>
 		<p>
 			Build with small components, scoped CSS and familiar HTML. The goal is to keep runtime
