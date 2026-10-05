@@ -27,3 +27,11 @@ export type * from './tree-view/types.js';
 export type { PillDataProps, PillProps } from './pill/types.js';
 export type { PillGroupProps } from './pill-group/types.js';
 export type { PillChoiceGroupProps } from './pill-choice-group/types.js';
+export type {
+	OptionProps,
+	SelectEmptyProps,
+	SelectOptionDataProps,
+	SelectListProps,
+	SelectProps,
+	SelectTriggerProps
+} from './select/types.js';
