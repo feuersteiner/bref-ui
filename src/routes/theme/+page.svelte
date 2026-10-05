@@ -6,25 +6,27 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Button, Icon } from '$lib/index.js';
+	import { Button, Icon, Select } from '$lib/index.js';
 	import type { ThemeMode } from '$lib/types.js';
 	const theme = getContext<{ mode: ThemeMode }>('documentation-theme');
 	const variants = ['neutral', 'soft', 'filled'] as const;
 	const noop = () => undefined;
-	const source = `<script>
-  import { Theme, ThemeModeToggle } from 'bref-ui';
-  let mode = $state('auto');
+	const source = `<script lang="ts">
+  import { Select, Theme, ThemeModeToggle } from 'bref-ui';
+  import type { ThemeMode } from 'bref-ui/types';
+  let mode = $state<ThemeMode>('auto');
+  const modes = [
+    { id: 'auto', label: 'System' },
+    { id: 'light', label: 'Light' },
+    { id: 'dark', label: 'Dark' }
+  ];
 <${'/'}script>
 
 <Theme>
   <ThemeModeToggle {mode} />
-  <label>Theme
-    <select bind:value={mode}>
-      <option value="auto">System</option>
-      <option value="light">Light</option>
-      <option value="dark">Dark</option>
-    </select>
-  </label>
+  <label for="theme-mode">Theme</label>
+  <Select id="theme-mode" items={modes}
+    bind:value={() => mode, (next) => mode = next as ThemeMode} />
 </Theme>`;
 	const props = [
 		{
@@ -68,14 +70,18 @@
 	description="An opt-in theme setup with light, dark and system modes, semantic palette variables, a global reset and the Material Symbols font. ThemeModeToggle sets color-scheme metadata for your own mode control."
 >
 	<Section {...sections[0]}>
-		<label>
-			Demo theme
-			<select bind:value={theme.mode}>
-				<option value="auto">System</option>
-				<option value="light">Light</option>
-				<option value="dark">Dark</option>
-			</select>
-		</label>
+		<div data-control>
+			<label for="theme-theme-mode">Demo theme</label>
+			<Select
+				id="theme-theme-mode"
+				items={[
+					{ id: 'auto', label: 'System' },
+					{ id: 'light', label: 'Light' },
+					{ id: 'dark', label: 'Dark' }
+				]}
+				bind:value={() => theme.mode, (next) => (theme.mode = next as typeof theme.mode)}
+			/>
+		</div>
 		<p>Current mode: {theme.mode}. This control and the navbar control share the same mode.</p>
 		<div data-demo="row">
 			<Icon name="check_circle" color="success" label="Complete" size="large" />
@@ -100,7 +106,7 @@
 			>
 				mode
 			</code>
-			from an application select or button. Theme accepts a children snippet; neither theme component
+			from an application Select or Button. Theme accepts a children snippet; neither theme component
 			forwards native attributes or exposes an element binding.
 		</p>
 		<p>
@@ -200,5 +206,11 @@
 		width: 2rem;
 		height: 2rem;
 		border: 1px solid var(--color-foreground);
+	}
+	[data-control] {
+		display: grid;
+		gap: 0.5rem;
+		width: min(100%, 12rem);
+		min-width: 0;
 	}
 </style>

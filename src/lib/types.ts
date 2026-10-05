@@ -7,6 +7,14 @@ export type Orientation = 'horizontal' | 'vertical';
 export type Dimension = 'fit' | 'fill';
 
 export type { ButtonProps } from './button/types.js';
+export type {
+	ComboboxProps,
+	ComboboxNativeProps,
+	ComboboxInputProps,
+	ComboboxListProps,
+	ComboboxOptionProps,
+	ComboboxFormProps
+} from './combobox/types.js';
 export type * from './icon/types.js';
 export type { SurfaceProps, SurfaceRadius } from './surface/types.js';
 export type * from './theme/types.ts';
@@ -27,3 +35,11 @@ export type * from './tree-view/types.js';
 export type { PillDataProps, PillProps } from './pill/types.js';
 export type { PillGroupProps } from './pill-group/types.js';
 export type { PillChoiceGroupProps } from './pill-choice-group/types.js';
+export type {
+	OptionProps,
+	SelectEmptyProps,
+	SelectOptionDataProps,
+	SelectListProps,
+	SelectProps,
+	SelectTriggerProps
+} from './select/types.js';

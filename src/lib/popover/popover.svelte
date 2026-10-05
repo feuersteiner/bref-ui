@@ -1,32 +1,52 @@
 <script lang="ts">
+	import { fly } from 'svelte/transition';
+	import { prefersReducedMotion } from 'svelte/motion';
 	import Surface from '../surface/surface.svelte';
 	import type { PopoverProps } from './types.js';
 
-	let { trigger, children, open = $bindable(false) }: PopoverProps = $props();
+	let {
+		trigger,
+		children,
+		open = $bindable(false),
+		disabled = false,
+		...surfaceProps
+	}: PopoverProps = $props();
 	const id = $props.id();
 	let anchor: HTMLDivElement;
+	let returnFocus: HTMLElement | null = null;
 
-	const syncPopover = (node: HTMLDivElement, initialOpen: boolean) => {
-		const update = (force: boolean) =>
-			node.togglePopover({ force, source: anchor.firstElementChild as HTMLElement });
-		update(initialOpen);
-		return { update };
+	const showPopover = (node: HTMLDivElement) => {
+		if (node.matches(':popover-open')) return;
+		returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+		node.showPopover({ source: anchor.firstElementChild as HTMLElement });
 	};
 </script>
 
 <div data-trigger bind:this={anchor}>
 	{@render trigger()}
 </div>
-<div
-	use:syncPopover={open}
-	{id}
-	popover="auto"
-	ontoggle={(event) => (open = event.newState === 'open')}
->
-	<Surface variant="filled" spacing="medium" radius="0.75rem" shadow scroll>
-		<div data-content>{@render children()}</div>
-	</Surface>
-</div>
+{#if open && !disabled}
+	<div
+		use:showPopover
+		{id}
+		popover="auto"
+		transition:fly={{ y: 10, duration: prefersReducedMotion.current ? 0 : 250 }}
+		onintrostart={(event) => showPopover(event.currentTarget)}
+		onoutrostart={(event) => {
+			if (!event.currentTarget.matches(':popover-open')) return;
+			if (document.activeElement === document.body && returnFocus?.isConnected) returnFocus.focus();
+			event.currentTarget.hidePopover();
+		}}
+		ontoggle={(event) => {
+			if (event.newState === 'closed' && !event.currentTarget.matches(':popover-open'))
+				open = false;
+		}}
+	>
+		<Surface {...surfaceProps}>
+			<div data-content>{@render children()}</div>
+		</Surface>
+	</div>
+{/if}
 
 <style>
 	div[data-trigger] {
@@ -34,8 +54,6 @@
 	}
 	div[popover] {
 		--internal-duration: 250ms;
-		--internal-delay: 150ms;
-		--internal-easing: cubic-bezier(0.3333, 1, 0.6667, 1);
 		box-sizing: border-box;
 		position: fixed;
 		inset: auto;
@@ -51,24 +69,10 @@
 		border: 0;
 		background: transparent;
 		color: var(--color-foreground, black);
-		opacity: 0;
-		transform: translateY(10px);
-		transition:
-			opacity var(--internal-duration) var(--internal-easing) var(--internal-delay),
-			transform var(--internal-duration) var(--internal-easing) var(--internal-delay),
-			display calc(var(--internal-duration) + var(--internal-delay)) allow-discrete,
-			overlay calc(var(--internal-duration) + var(--internal-delay)) allow-discrete;
+		transition: all var(--internal-duration) allow-discrete;
 	}
 	div:popover-open {
 		display: flex;
-		opacity: 1;
-		transform: translateY(0);
-	}
-	@starting-style {
-		div:popover-open {
-			opacity: 0;
-			transform: translateY(10px);
-		}
 	}
 	div[data-content] {
 		flex: none;

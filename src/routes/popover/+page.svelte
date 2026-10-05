@@ -1,11 +1,12 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the trigger composition examples and their documentation together. */
+	import { resolve } from '$app/paths';
 	import { chapter, sections } from './sections.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Popover, TextInput } from '$lib/index.js';
+	import { Popover, TextInput, Checkbox, Button } from '$lib/index.js';
 
 	let inputOpen = $state(false);
 	let inputWide = $state(false);
@@ -14,8 +15,33 @@
 	let anotherOpen = $state(false);
 	let initiallyOpen = $state(true);
 	let formOpen = $state(false);
-	const source = `<script>\n  import { Popover, TextInput } from 'bref-ui';\n  let open = $state(false);\n  let wide = $state(false);\n<${'/'}script>\n\n<label><input type="checkbox" bind:checked={wide} /> Wide input</label>\n<Popover bind:open>\n  {#snippet trigger()}\n    <TextInput {wide} value="Sample text" aria-label="Search" aria-expanded={open}\n      oninput={() => open = true} onclick={() => open = true} />\n  {/snippet}\n  <p>Helpful details beside the input.</p>\n</Popover>`;
-	const boundSource = `<script>\n  import { Popover } from 'bref-ui';\n  let open = $state(false);\n<${'/'}script>\n\n<Popover bind:open>\n  {#snippet trigger()}\n    <button type="button" aria-expanded={open} onclick={() => open = !open}>\n      Edit settings\n    </button>\n  {/snippet}\n  <button type="button" onclick={() => open = false}>Done</button>\n</Popover>`;
+	const source = `<script>
+  import { Checkbox, Popover, TextInput } from 'bref-ui';
+  let open = $state(false);
+  let wide = $state(false);
+<${'/'}script>
+
+<label><Checkbox bind:checked={wide} /> Wide input</label>
+<Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>
+  {#snippet trigger()}
+    <TextInput {wide} value="Sample text" aria-label="Search" aria-expanded={open}
+      oninput={() => open = true} onclick={() => open = true} />
+  {/snippet}
+  <p>Helpful details beside the input.</p>
+</Popover>`;
+	const boundSource = `<script>
+  import { Button, Popover, TextInput } from 'bref-ui';
+  let open = $state(false);
+<${'/'}script>
+
+<Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>
+  {#snippet trigger()}
+    <Button label="Edit settings" onClick={() => open = !open}
+      stylesOverride={{ 'aria-expanded': open }} />
+  {/snippet}
+  <label>Display name <TextInput value="Example" /></label>
+  <Button label="Done" onClick={() => open = false} />
+</Popover>`;
 	const props = [
 		{
 			name: 'trigger',
@@ -37,6 +63,14 @@
 			required: false,
 			default: 'false',
 			description: 'Bindable visibility; native dismissals update it.'
+		},
+		{
+			name: 'Surface props',
+			type: 'SurfaceProps',
+			required: false,
+			default: 'Surface defaults',
+			description:
+				'as, tint, variant, spacing, orientation, width, height, radius, shadow, hover and scroll style the panel.'
 		}
 	];
 </script>
@@ -47,11 +81,11 @@
 >
 	<Section {...sections[0]}>
 		<label data-wide-control>
-			<input type="checkbox" bind:checked={inputWide} />
+			<Checkbox bind:checked={inputWide} />
 			<span>Wide input</span>
 		</label>
 		<div data-demo>
-			<Popover bind:open={inputOpen}>
+			<Popover bind:open={inputOpen} variant="filled" spacing="medium" radius="small" shadow scroll>
 				{#snippet trigger()}
 					<TextInput
 						wide={inputWide}
@@ -75,63 +109,76 @@
 	</Section>
 	<Section {...sections[1]}>
 		<div data-controls>
-			<Popover bind:open>
+			<Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>
 				{#snippet trigger()}
-					<button type="button" aria-expanded={open} onclick={() => (open = !open)}>
-						Edit settings
-					</button>
+					<Button
+						label="Edit settings"
+						onClick={() => (open = !open)}
+						stylesOverride={{ 'aria-expanded': open }}
+					/>
 				{/snippet}
 				<label>
-					Display name <input value="Example" />
+					Display name <TextInput value="Example" />
 				</label>
-				<button type="button" onclick={() => (open = false)}>Done</button>
+				<Button label="Done" onClick={() => (open = false)} />
 			</Popover>
-			<button type="button" onclick={() => (open = true)}>Open programmatically</button>
-			<button type="button" onclick={() => (open = false)}>Close programmatically</button>
+			<Button label="Open programmatically" onClick={() => (open = true)} />
+			<Button label="Close programmatically" onClick={() => (open = false)} />
 		</div>
 		<p role="status">Settings {open ? 'open' : 'closed'}.</p>
 		<CodeSnippet source={boundSource} label="Bound Popover usage code" />
 	</Section>
 	<Section {...sections[2]}>
 		<div data-controls>
-			<Popover bind:open={longOpen}>
+			<Popover bind:open={longOpen} variant="filled" spacing="medium" radius="small" shadow scroll>
 				{#snippet trigger()}
-					<button type="button" aria-expanded={longOpen} onclick={() => (longOpen = !longOpen)}>
-						Long content
-					</button>
+					<Button
+						label="Long content"
+						onClick={() => (longOpen = !longOpen)}
+						stylesOverride={{ 'aria-expanded': longOpen }}
+					/>
 				{/snippet}
 				<h3>Scrollable details</h3>
 				{#each Array.from({ length: 18 }, (_, index) => index + 1) as item (item)}
 					<p>Detail {item}: content stays within the viewport and scrolls inside the popover.</p>
 				{/each}
-				<button type="button">Last focusable item</button>
+				<Button label="Last focusable item" onClick={() => undefined} />
 			</Popover>
-			<Popover bind:open={anotherOpen}>
+			<Popover
+				bind:open={anotherOpen}
+				variant="soft"
+				tint="primary"
+				spacing="medium"
+				radius="small"
+				shadow
+				scroll
+			>
 				{#snippet trigger()}
-					<button
-						type="button"
-						aria-expanded={anotherOpen}
-						onclick={() => (anotherOpen = !anotherOpen)}
-					>
-						Another instance
-					</button>
+					<Button
+						label="Another instance"
+						onClick={() => (anotherOpen = !anotherOpen)}
+						stylesOverride={{ 'aria-expanded': anotherOpen }}
+					/>
 				{/snippet}
 				<p>Opening this dismisses the other independent popover.</p>
 			</Popover>
-			<Popover bind:open={initiallyOpen}>
+			<Popover
+				bind:open={initiallyOpen}
+				variant="filled"
+				spacing="medium"
+				radius="small"
+				shadow
+				scroll
+			>
 				{#snippet trigger()}
-					<button
-						type="button"
-						aria-expanded={initiallyOpen}
-						onclick={() => (initiallyOpen = !initiallyOpen)}
-					>
-						Initially open
-					</button>
+					<Button
+						label="Initially open"
+						onClick={() => (initiallyOpen = !initiallyOpen)}
+						stylesOverride={{ 'aria-expanded': initiallyOpen }}
+					/>
 				{/snippet}
 				<p>This bound example starts open when the page loads.</p>
-				<button type="button" onclick={() => (initiallyOpen = false)}>
-					Dismiss initial example
-				</button>
+				<Button label="Dismiss initial example" onClick={() => (initiallyOpen = false)} />
 			</Popover>
 		</div>
 		<p>
@@ -141,6 +188,11 @@
 	</Section>
 	<Section {...sections[3]}>
 		<PropTable {props} />
+		<p>
+			Popover accepts <a href={resolve('/surface#props')}>Surface props</a>
+			directly and forwards them to its panel. These examples set padding, rounded corners, a filled background,
+			shadow and scrolling explicitly; Another instance uses a soft primary tint.
+		</p>
 		<p>
 			Both snippets receive no arguments. The trigger owns its native attributes, events, accessible
 			name and expanded state. Its handlers control <code>bind:open</code>
@@ -155,18 +207,20 @@
 			owning control.
 		</p>
 		<form onsubmit={(event) => event.preventDefault()}>
-			<Popover bind:open={formOpen}>
+			<Popover bind:open={formOpen} variant="filled" spacing="medium" radius="small" shadow scroll>
 				{#snippet trigger()}
-					<button type="button" aria-expanded={formOpen} onclick={() => (formOpen = !formOpen)}>
-						Inside a form
-					</button>
+					<Button
+						label="Inside a form"
+						onClick={() => (formOpen = !formOpen)}
+						stylesOverride={{ 'aria-expanded': formOpen }}
+					/>
 				{/snippet}
 				<p>The trigger is a button and does not submit the form.</p>
 				<label>
-					Example field <input name="example" />
+					Example field <TextInput name="example" />
 				</label>
 			</Popover>
-			<button type="submit">Submit form</button>
+			<Button label="Submit form" onClick={() => undefined} stylesOverride={{ type: 'submit' }} />
 		</form>
 	</Section>
 </Page>
@@ -176,10 +230,6 @@
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-	}
-	input[type='checkbox'] {
-		width: auto;
-		min-height: auto;
 	}
 	div[data-demo] {
 		box-sizing: border-box;
@@ -204,23 +254,6 @@
 		display: grid;
 		gap: 0.5rem;
 	}
-	input {
-		box-sizing: border-box;
-		width: 100%;
-		min-width: 0;
-	}
-	button,
-	input {
-		min-height: 2.75rem;
-		padding: 0.5rem 0.75rem;
-		border: 1px solid var(--color-muted);
-		border-radius: 0.5rem;
-		background: var(--color-background);
-		color: var(--color-foreground);
-		font: inherit;
-	}
-	button:focus-visible,
-	input:focus-visible,
 	a:focus-visible {
 		outline: 2px solid var(--color-primary);
 		outline-offset: 3px;

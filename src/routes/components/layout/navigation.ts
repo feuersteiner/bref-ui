@@ -1,4 +1,9 @@
 import {
+	chapter as comboboxChapter,
+	sections as comboboxSections
+} from '../../combobox/sections.js';
+import { chapter as selectChapter, sections as selectSections } from '../../select/sections.js';
+import {
 	chapter as introductionChapter,
 	sections as introductionSections
 } from '../../sections.js';
@@ -56,6 +61,8 @@ export const navigation = [
 			{ title: surfaceChapter, href: '/surface' },
 			{ title: dialogChapter, href: '/dialog' },
 			{ title: popoverChapter, href: '/popover' },
+			{ title: selectChapter, href: '/select' },
+			{ title: comboboxChapter, href: '/combobox' },
 			{ title: checkboxChapter, href: '/checkbox' },
 			{ title: switchChapter, href: '/switch' },
 			{ title: progressChapter, href: '/progress' },
@@ -82,6 +89,8 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/surface': surfaceSections,
 	'/dialog': dialogSections,
 	'/popover': popoverSections,
+	'/select': selectSections,
+	'/combobox': comboboxSections,
 	'/checkbox': checkboxSections,
 	'/switch': switchSections,
 	'/progress': progressSections,
