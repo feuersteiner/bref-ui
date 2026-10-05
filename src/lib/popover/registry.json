@@ -2,5 +2,5 @@
 	"id": "popover",
 	"files": ["popover.svelte"],
 	"exports": { "Popover": "popover.svelte" },
-	"dependencies": ["surface"]
+	"dependencies": ["surface", "theme"]
 }

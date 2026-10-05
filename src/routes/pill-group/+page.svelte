@@ -4,7 +4,7 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Button, PillGroup } from '$lib/index.js';
+	import { Button, PillGroup, Select } from '$lib/index.js';
 	import type { Color, Size, Variant } from '$lib/types.js';
 
 	const items = [
@@ -71,21 +71,30 @@
 	</Section>
 	<Section {...sections[1]}>
 		<div data-controls>
-			<label>
-				Size <select bind:value={size}>
-					{#each sizes as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Variant <select bind:value={variant}>
-					{#each variants as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Color <select bind:value={color}>
-					{#each colors as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
+			<div data-control>
+				<label for="pill-group-size">Size</label>
+				<Select
+					id="pill-group-size"
+					items={sizes.map((id) => ({ id, label: id }))}
+					bind:value={() => size, (next) => (size = next as typeof size)}
+				/>
+			</div>
+			<div data-control>
+				<label for="pill-group-variant">Variant</label>
+				<Select
+					id="pill-group-variant"
+					items={variants.map((id) => ({ id, label: id }))}
+					bind:value={() => variant, (next) => (variant = next as typeof variant)}
+				/>
+			</div>
+			<div data-control>
+				<label for="pill-group-color">Color</label>
+				<Select
+					id="pill-group-color"
+					items={colors.map((id) => ({ id, label: id }))}
+					bind:value={() => color, (next) => (color = next as typeof color)}
+				/>
+			</div>
 		</div>
 		<PillGroup
 			items={previewItems}
@@ -123,5 +132,11 @@
 	label {
 		display: grid;
 		gap: 0.5rem;
+	}
+	[data-control] {
+		display: grid;
+		gap: 0.5rem;
+		width: min(100%, 12rem);
+		min-width: 0;
 	}
 </style>

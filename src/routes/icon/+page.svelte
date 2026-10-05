@@ -5,7 +5,7 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Button, Icon } from '$lib/index.js';
+	import { Button, Icon, Select, TextInput, Checkbox } from '$lib/index.js';
 	import type { Color, Size, IconName } from '$lib/types.js';
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const colors = [
@@ -38,7 +38,7 @@
 	let label = $state('Favorite');
 	let matrixOpen = $state(false);
 	const source = `<script>
-  import { Icon } from 'bref';
+  import { Icon } from 'bref-ui';
 <${'/'}script>
 
 <Icon name="check_circle" label="Complete" />
@@ -97,28 +97,35 @@
 	</Section>
 	<Section {...sections[1]}>
 		<div data-demo="controls">
+			<div data-control>
+				<label for="icon-name">Name</label>
+				<Select
+					id="icon-name"
+					items={names.map((id) => ({ id, label: id }))}
+					bind:value={() => name, (next) => (name = next as typeof name)}
+				/>
+			</div>
+			<div data-control>
+				<label for="icon-size">Size</label>
+				<Select
+					id="icon-size"
+					items={[{ id: '', label: 'Inherited' }, ...sizes.map((id) => ({ id, label: id }))]}
+					bind:value={() => size, (next) => (size = next as typeof size)}
+				/>
+			</div>
+			<div data-control>
+				<label for="icon-color">Color</label>
+				<Select
+					id="icon-color"
+					items={[{ id: '', label: 'Inherited' }, ...colors.map((id) => ({ id, label: id }))]}
+					bind:value={() => color, (next) => (color = next as typeof color)}
+				/>
+			</div>
 			<label>
-				Name <select bind:value={name}>
-					{#each names as value (value)}<option>{value}</option>{/each}
-				</select>
+				Accessible label <TextInput bind:value={label} />
 			</label>
-			<label>
-				Size <select bind:value={size}>
-					<option value="">Inherited</option>
-					{#each sizes as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Color <select bind:value={color}>
-					<option value="">Inherited</option>
-					{#each colors as value (value)}<option>{value}</option>{/each}
-				</select>
-			</label>
-			<label>
-				Accessible label <input bind:value={label} />
-			</label>
-			<label>
-				<input type="checkbox" bind:checked={filled} />
+			<label data-toggle>
+				<Checkbox bind:checked={filled} />
 				Filled
 			</label>
 		</div>
@@ -284,8 +291,8 @@
 		gap: 12px;
 		color: var(--color-muted);
 	}
-	[data-demo='controls'] > label:has(input[type='checkbox']) {
-		grid-template-columns: 20px 1fr;
+	[data-demo='controls'] > label[data-toggle] {
+		grid-template-columns: auto 1fr;
 		align-items: center;
 		color: var(--color-foreground);
 	}
@@ -304,8 +311,10 @@
 	figcaption {
 		font-size: 0.875rem;
 	}
-	input,
-	select {
-		max-width: 100%;
+	[data-control] {
+		display: grid;
+		gap: 0.5rem;
+		width: min(100%, 12rem);
+		min-width: 0;
 	}
 </style>

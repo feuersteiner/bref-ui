@@ -1,4 +1,5 @@
 export { default as Button } from './button/button.svelte';
+export { default as Combobox } from './combobox/combobox.svelte';
 export { default as Icon } from './icon/icon.svelte';
 export { default as Surface } from './surface/surface.svelte';
 export { default as Theme } from './theme/theme.svelte';
@@ -15,3 +16,4 @@ export { default as TreeView } from './tree-view/tree-view.svelte';
 export { default as Pill } from './pill/pill.svelte';
 export { default as PillGroup } from './pill-group/pill-group.svelte';
 export { default as PillChoiceGroup } from './pill-choice-group/pill-choice-group.svelte';
+export { default as Select } from './select/select.svelte';

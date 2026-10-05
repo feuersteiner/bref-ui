@@ -75,10 +75,7 @@ need an agreed mechanism to consume track and fill paint without duplicating for
 
 ## Verification and review
 
-The [component crops](surface-refactor-screenshots/) show all available variants or
-representative states. Surface and Button also have dark-theme captures, and native
-helper HTML has its own crop. These images document the current implementation;
-independent review and human visual approval remain pending.
+Independent review and human visual approval remain pending.
 
 - Check and lint pass; check reports zero errors and warnings. Build, registry
   validation, package generation, and publint pass.
