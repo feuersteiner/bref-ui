@@ -238,8 +238,8 @@
 			items disappear. Selection is bindable; native attributes are not forwarded. Supply a
 			<code>node</code>
 			snippet to render custom links or rows; the snippet owns the entire node, including descendants
-			and interaction behavior. The documentation sidebar uses this slot for native links and collapsible
-			page sections.
+			and interaction behavior. The documentation sidebar uses this slot for native links and the selected
+			page's sections.
 		</p>
 	</Section>
 </Page>

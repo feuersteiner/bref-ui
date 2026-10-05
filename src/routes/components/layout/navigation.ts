@@ -54,25 +54,40 @@ export const navigation = [
 		]
 	},
 	{
-		title: 'Components',
+		title: 'Base',
 		links: [
 			{ title: buttonChapter, href: '/button' },
 			{ title: iconChapter, href: '/icon' },
-			{ title: surfaceChapter, href: '/surface' },
-			{ title: dialogChapter, href: '/dialog' },
-			{ title: popoverChapter, href: '/popover' },
-			{ title: selectChapter, href: '/select' },
-			{ title: comboboxChapter, href: '/combobox' },
-			{ title: checkboxChapter, href: '/checkbox' },
-			{ title: switchChapter, href: '/switch' },
-			{ title: progressChapter, href: '/progress' },
-			{ title: spinnerChapter, href: '/spinner' },
-			{ title: textInputChapter, href: '/text-input' },
-			{ title: textAreaChapter, href: '/text-area' },
-			{ title: treeViewChapter, href: '/tree-view' },
 			{ title: pillChapter, href: '/pill' },
 			{ title: pillGroupChapter, href: '/pill-group' },
-			{ title: pillChoiceGroupChapter, href: '/pill-choice-group' }
+			{ title: treeViewChapter, href: '/tree-view' }
+		]
+	},
+	{
+		title: 'Feedback',
+		links: [
+			{ title: progressChapter, href: '/progress' },
+			{ title: spinnerChapter, href: '/spinner' }
+		]
+	},
+	{
+		title: 'Inputs',
+		links: [
+			{ title: checkboxChapter, href: '/checkbox' },
+			{ title: comboboxChapter, href: '/combobox' },
+			{ title: pillChoiceGroupChapter, href: '/pill-choice-group' },
+			{ title: selectChapter, href: '/select' },
+			{ title: switchChapter, href: '/switch' },
+			{ title: textAreaChapter, href: '/text-area' },
+			{ title: textInputChapter, href: '/text-input' }
+		]
+	},
+	{
+		title: 'Surfaces',
+		links: [
+			{ title: dialogChapter, href: '/dialog' },
+			{ title: popoverChapter, href: '/popover' },
+			{ title: surfaceChapter, href: '/surface' }
 		]
 	}
 ] as const;

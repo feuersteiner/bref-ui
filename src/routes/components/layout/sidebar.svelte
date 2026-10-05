@@ -1,18 +1,16 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import Toc from './toc.svelte';
-	import NavigationLink from './navigation-link.svelte';
+	import { TreeView } from '$lib/index.js';
+	import SidebarNode from './sidebar-node.svelte';
 	import { navigation, pageSections } from './navigation.js';
 
 	let groups = $derived(
 		navigation.map((group) => ({
 			...group,
-			links: group.links.map((link) => {
-				const path = resolve(link.href);
-
-				return { ...link, path, isCurrent: path === page.url.pathname };
-			})
+			items: [...group.links]
+				.sort((a, b) => a.title.localeCompare(b.title, 'en'))
+				.map((link) => ({ id: resolve(link.href), label: link.title }))
 		}))
 	);
 </script>
@@ -21,20 +19,17 @@
 	{#each groups as group (group.title)}
 		<section aria-label={group.title}>
 			<h2>{group.title}</h2>
-			<ul>
-				{#each group.links as link (link.href)}
-					<li>
-						<NavigationLink
-							href={link.path}
-							title={link.title}
-							current={link.isCurrent ? 'page' : undefined}
-						/>
-						{#if link.isCurrent}
-							<Toc sections={pageSections[page.route.id ?? ''] ?? []} />
-						{/if}
-					</li>
-				{/each}
-			</ul>
+			<TreeView items={group.items} label={group.title}>
+				{#snippet node(item)}
+					<SidebarNode
+						{item}
+						current={item.id === page.url.pathname}
+						sections={item.id === page.url.pathname
+							? (pageSections[page.route.id ?? ''] ?? [])
+							: []}
+					/>
+				{/snippet}
+			</TreeView>
 		</section>
 	{/each}
 </nav>
@@ -50,8 +45,5 @@
 		font: 700 12px / 24px var(--font-display);
 		text-transform: uppercase;
 		opacity: 0.75;
-	}
-	ul {
-		list-style: none;
 	}
 </style>
