@@ -22,7 +22,9 @@ export interface SelectProps extends Partial<Pick<SelectOptionDataProps, 'id' | 
 }
 
 export interface SelectTriggerProps
-	extends Pick<SelectProps, 'id' | 'disabled'>, Required<Pick<SelectProps, 'placeholder'>> {
+	extends
+		Pick<SelectProps, 'id' | 'disabled' | 'size'>,
+		Required<Pick<SelectProps, 'placeholder'>> {
 	open: boolean;
 	selected: readonly SelectOptionDataProps[];
 	onToggle: () => void;
