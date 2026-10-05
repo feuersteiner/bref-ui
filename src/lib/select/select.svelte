@@ -2,7 +2,7 @@
 	import Popover from '../popover/popover.svelte';
 	import Trigger from './trigger.svelte';
 	import List from './list.svelte';
-	import { type SelectProps } from './types.js';
+	import type { SelectProps } from './types.js';
 
 	let {
 		id,
@@ -34,7 +34,15 @@
 <div data-size={size}>
 	<Popover bind:open variant="filled" spacing="small" radius="small" shadow scroll {disabled}>
 		{#snippet trigger()}
-			<Trigger {id} {open} {selected} {placeholder} {disabled} onToggle={() => (open = !open)} />
+			<Trigger
+				{id}
+				{open}
+				{selected}
+				{placeholder}
+				{disabled}
+				{size}
+				onToggle={() => (open = !open)}
+			/>
 		{/snippet}
 		<List {items} {value} {emptyMessage} onSelect={select} />
 	</Popover>

@@ -65,7 +65,7 @@
 			type: 'string / BaseSize',
 			required: false,
 			default: 'Omitted / medium',
-			description: 'Trigger ID for labels; control, option and popup spacing/radius size.'
+			description: 'Trigger ID for labels; control height, spacing and corner radius.'
 		},
 		{
 			name: 'disabled',
