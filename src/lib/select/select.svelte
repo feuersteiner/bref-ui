@@ -34,7 +34,7 @@
 </script>
 
 <div data-size={size}>
-	<Popover bind:open>
+	<Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>
 		{#snippet trigger()}
 			<Trigger {id} {open} {selected} {placeholder} {disabled} onToggle={() => (open = !open)} />
 		{/snippet}

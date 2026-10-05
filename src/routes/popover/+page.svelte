@@ -1,5 +1,6 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the trigger composition examples and their documentation together. */
+	import { resolve } from '$app/paths';
 	import { chapter, sections } from './sections.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
@@ -14,8 +15,8 @@
 	let anotherOpen = $state(false);
 	let initiallyOpen = $state(true);
 	let formOpen = $state(false);
-	const source = `<script>\n  import { Popover, TextInput } from 'bref-ui';\n  let open = $state(false);\n  let wide = $state(false);\n<${'/'}script>\n\n<label><input type="checkbox" bind:checked={wide} /> Wide input</label>\n<Popover bind:open>\n  {#snippet trigger()}\n    <TextInput {wide} value="Sample text" aria-label="Search" aria-expanded={open}\n      oninput={() => open = true} onclick={() => open = true} />\n  {/snippet}\n  <p>Helpful details beside the input.</p>\n</Popover>`;
-	const boundSource = `<script>\n  import { Popover } from 'bref-ui';\n  let open = $state(false);\n<${'/'}script>\n\n<Popover bind:open>\n  {#snippet trigger()}\n    <button type="button" aria-expanded={open} onclick={() => open = !open}>\n      Edit settings\n    </button>\n  {/snippet}\n  <button type="button" onclick={() => open = false}>Done</button>\n</Popover>`;
+	const source = `<script>\n  import { Popover, TextInput } from 'bref-ui';\n  let open = $state(false);\n  let wide = $state(false);\n<${'/'}script>\n\n<label><input type="checkbox" bind:checked={wide} /> Wide input</label>\n<Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>\n  {#snippet trigger()}\n    <TextInput {wide} value="Sample text" aria-label="Search" aria-expanded={open}\n      oninput={() => open = true} onclick={() => open = true} />\n  {/snippet}\n  <p>Helpful details beside the input.</p>\n</Popover>`;
+	const boundSource = `<script>\n  import { Popover } from 'bref-ui';\n  let open = $state(false);\n<${'/'}script>\n\n<Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>\n  {#snippet trigger()}\n    <button type="button" aria-expanded={open} onclick={() => open = !open}>\n      Edit settings\n    </button>\n  {/snippet}\n  <button type="button" onclick={() => open = false}>Done</button>\n</Popover>`;
 	const props = [
 		{
 			name: 'trigger',
@@ -37,6 +38,14 @@
 			required: false,
 			default: 'false',
 			description: 'Bindable visibility; native dismissals update it.'
+		},
+		{
+			name: 'Surface props',
+			type: 'SurfaceProps',
+			required: false,
+			default: 'Surface defaults',
+			description:
+				'as, tint, variant, spacing, orientation, width, height, radius, shadow, hover and scroll style the panel.'
 		}
 	];
 </script>
@@ -51,7 +60,7 @@
 			<span>Wide input</span>
 		</label>
 		<div data-demo>
-			<Popover bind:open={inputOpen}>
+			<Popover bind:open={inputOpen} variant="filled" spacing="medium" radius="small" shadow scroll>
 				{#snippet trigger()}
 					<TextInput
 						wide={inputWide}
@@ -75,7 +84,7 @@
 	</Section>
 	<Section {...sections[1]}>
 		<div data-controls>
-			<Popover bind:open>
+			<Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>
 				{#snippet trigger()}
 					<button type="button" aria-expanded={open} onclick={() => (open = !open)}>
 						Edit settings
@@ -94,7 +103,7 @@
 	</Section>
 	<Section {...sections[2]}>
 		<div data-controls>
-			<Popover bind:open={longOpen}>
+			<Popover bind:open={longOpen} variant="filled" spacing="medium" radius="small" shadow scroll>
 				{#snippet trigger()}
 					<button type="button" aria-expanded={longOpen} onclick={() => (longOpen = !longOpen)}>
 						Long content
@@ -106,7 +115,15 @@
 				{/each}
 				<button type="button">Last focusable item</button>
 			</Popover>
-			<Popover bind:open={anotherOpen}>
+			<Popover
+				bind:open={anotherOpen}
+				variant="soft"
+				tint="primary"
+				spacing="medium"
+				radius="small"
+				shadow
+				scroll
+			>
 				{#snippet trigger()}
 					<button
 						type="button"
@@ -118,7 +135,14 @@
 				{/snippet}
 				<p>Opening this dismisses the other independent popover.</p>
 			</Popover>
-			<Popover bind:open={initiallyOpen}>
+			<Popover
+				bind:open={initiallyOpen}
+				variant="filled"
+				spacing="medium"
+				radius="small"
+				shadow
+				scroll
+			>
 				{#snippet trigger()}
 					<button
 						type="button"
@@ -142,6 +166,11 @@
 	<Section {...sections[3]}>
 		<PropTable {props} />
 		<p>
+			Popover accepts <a href={resolve('/surface#props')}>Surface props</a>
+			directly and forwards them to its panel. These examples set padding, rounded corners, a filled background,
+			shadow and scrolling explicitly; Another instance uses a soft primary tint.
+		</p>
+		<p>
 			Both snippets receive no arguments. The trigger owns its native attributes, events, accessible
 			name and expanded state. Its handlers control <code>bind:open</code>
 			; Popover handles native dismissal and positioning.
@@ -155,7 +184,7 @@
 			owning control.
 		</p>
 		<form onsubmit={(event) => event.preventDefault()}>
-			<Popover bind:open={formOpen}>
+			<Popover bind:open={formOpen} variant="filled" spacing="medium" radius="small" shadow scroll>
 				{#snippet trigger()}
 					<button type="button" aria-expanded={formOpen} onclick={() => (formOpen = !formOpen)}>
 						Inside a form
