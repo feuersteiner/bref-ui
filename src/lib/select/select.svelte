@@ -14,10 +14,8 @@
 		disabled = false,
 		emptyMessage = { message: 'No options found' }
 	}: SelectProps = $props();
+
 	let open = $state(false);
-	$effect(() => {
-		if (disabled && open) open = false;
-	});
 	const selected = $derived(
 		items.filter((item) => (Array.isArray(value) ? value.includes(item.id) : item.id === value))
 	);
@@ -34,9 +32,17 @@
 </script>
 
 <div data-size={size}>
-	<Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>
+	<Popover bind:open variant="filled" spacing="small" radius="small" shadow scroll {disabled}>
 		{#snippet trigger()}
-			<Trigger {id} {open} {selected} {placeholder} {disabled} onToggle={() => (open = !open)} />
+			<Trigger
+				{id}
+				{open}
+				{selected}
+				{placeholder}
+				{disabled}
+				{size}
+				onToggle={() => (open = !open)}
+			/>
 		{/snippet}
 		<List {items} {value} {emptyMessage} onSelect={select} />
 	</Popover>
