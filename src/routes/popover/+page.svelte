@@ -1,39 +1,86 @@
 <script lang="ts">
-	import { chapter, sections, props } from './sections.js';
+	/* eslint-disable max-lines -- Keep the trigger composition examples and their documentation together. */
+	import { chapter, sections } from './sections.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Popover } from '$lib/index.js';
+	import { Popover, TextInput } from '$lib/index.js';
 
+	let inputOpen = $state(false);
+	let inputWide = $state(false);
 	let open = $state(false);
+	let longOpen = $state(false);
+	let anotherOpen = $state(false);
 	let initiallyOpen = $state(true);
-	const source = `<script>\n  import { Popover } from 'bref-ui';\n<${'/'}script>\n\n<Popover>\n  {#snippet trigger(wiring)}<button {...wiring} type="button">More information</button>{/snippet}\n  <p>Helpful details beside the trigger.</p>\n</Popover>`;
-	const boundSource = `<script>\n  import { Popover } from 'bref-ui';\n  let open = $state(false);\n<${'/'}script>\n\n<Popover bind:open>\n  {#snippet trigger(wiring)}<button {...wiring} type="button">Edit settings</button>{/snippet}\n  <button onclick={() => open = false}>Done</button>\n</Popover>`;
+	let formOpen = $state(false);
+	const source = `<script>\n  import { Popover, TextInput } from 'bref-ui';\n  let open = $state(false);\n  let wide = $state(false);\n<${'/'}script>\n\n<label><input type="checkbox" bind:checked={wide} /> Wide input</label>\n<Popover bind:open>\n  {#snippet trigger()}\n    <TextInput {wide} value="Sample text" aria-label="Search" aria-expanded={open}\n      oninput={() => open = true} onclick={() => open = true} />\n  {/snippet}\n  <p>Helpful details beside the input.</p>\n</Popover>`;
+	const boundSource = `<script>\n  import { Popover } from 'bref-ui';\n  let open = $state(false);\n<${'/'}script>\n\n<Popover bind:open>\n  {#snippet trigger()}\n    <button type="button" aria-expanded={open} onclick={() => open = !open}>\n      Edit settings\n    </button>\n  {/snippet}\n  <button type="button" onclick={() => open = false}>Done</button>\n</Popover>`;
+	const props = [
+		{
+			name: 'trigger',
+			type: 'Snippet',
+			required: true,
+			default: '—',
+			description: 'The owning control or component; manages its own events and accessibility.'
+		},
+		{
+			name: 'children',
+			type: 'Snippet',
+			required: true,
+			default: '—',
+			description: 'Parameterless content inside the popover.'
+		},
+		{
+			name: 'open',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Bindable visibility; native dismissals update it.'
+		}
+	];
 </script>
 
 <Page
 	title={chapter}
-	description="An anchored native popover with a snippet-rendered trigger and optional bound state."
+	description="An anchored native popover whose trigger snippet renders the owning control or component."
 >
 	<Section {...sections[0]}>
-		<Popover>
-			{#snippet trigger(wiring)}<button {...wiring} type="button">
-					More information
-				</button>{/snippet}
-			<p>Helpful details beside the trigger.</p>
-			<a href="#keyboard">Keyboard guidance</a>
-		</Popover>
+		<label data-wide-control>
+			<input type="checkbox" bind:checked={inputWide} />
+			<span>Wide input</span>
+		</label>
+		<div data-demo>
+			<Popover bind:open={inputOpen}>
+				{#snippet trigger()}
+					<TextInput
+						wide={inputWide}
+						value="Sample text"
+						aria-label="Search"
+						aria-expanded={inputOpen}
+						oninput={() => (inputOpen = true)}
+						onclick={() => (inputOpen = true)}
+					/>
+				{/snippet}
+				<p>Helpful details beside the input.</p>
+				<a href="#keyboard">Keyboard guidance</a>
+			</Popover>
+		</div>
 		<p>
-			The Surface panel matches the trigger width. Click the trigger to toggle; click outside or
-			press Escape to dismiss.
+			The trigger snippet renders TextInput directly. Its input and click handlers open the panel;
+			click outside or press Escape to dismiss. The Surface panel matches the trigger width. Toggle
+			wide to check that the trigger follows its child's sizing.
 		</p>
 		<CodeSnippet {source} label="Popover usage code" />
 	</Section>
 	<Section {...sections[1]}>
 		<div data-controls>
 			<Popover bind:open>
-				{#snippet trigger(wiring)}<button {...wiring} type="button">Edit settings</button>{/snippet}
+				{#snippet trigger()}
+					<button type="button" aria-expanded={open} onclick={() => (open = !open)}>
+						Edit settings
+					</button>
+				{/snippet}
 				<label>
 					Display name <input value="Example" />
 				</label>
@@ -47,24 +94,40 @@
 	</Section>
 	<Section {...sections[2]}>
 		<div data-controls>
-			<Popover>
-				{#snippet trigger(wiring)}<button {...wiring} type="button">Long content</button>{/snippet}
+			<Popover bind:open={longOpen}>
+				{#snippet trigger()}
+					<button type="button" aria-expanded={longOpen} onclick={() => (longOpen = !longOpen)}>
+						Long content
+					</button>
+				{/snippet}
 				<h3>Scrollable details</h3>
 				{#each Array.from({ length: 18 }, (_, index) => index + 1) as item (item)}
 					<p>Detail {item}: content stays within the viewport and scrolls inside the popover.</p>
 				{/each}
 				<button type="button">Last focusable item</button>
 			</Popover>
-			<Popover>
-				{#snippet trigger(wiring)}<button {...wiring} type="button">
+			<Popover bind:open={anotherOpen}>
+				{#snippet trigger()}
+					<button
+						type="button"
+						aria-expanded={anotherOpen}
+						onclick={() => (anotherOpen = !anotherOpen)}
+					>
 						Another instance
-					</button>{/snippet}
+					</button>
+				{/snippet}
 				<p>Opening this dismisses the other independent popover.</p>
 			</Popover>
 			<Popover bind:open={initiallyOpen}>
-				{#snippet trigger(wiring)}<button {...wiring} type="button">
+				{#snippet trigger()}
+					<button
+						type="button"
+						aria-expanded={initiallyOpen}
+						onclick={() => (initiallyOpen = !initiallyOpen)}
+					>
 						Initially open
-					</button>{/snippet}
+					</button>
+				{/snippet}
 				<p>This bound example starts open when the page loads.</p>
 				<button type="button" onclick={() => (initiallyOpen = false)}>
 					Dismiss initial example
@@ -79,26 +142,25 @@
 	<Section {...sections[3]}>
 		<PropTable {props} />
 		<p>
-			The trigger snippet receives native wiring to spread onto its button or input. Give that
-			control an accessible name and its own native attributes. Children receive no arguments; <code
-			>
-				open
-			</code>
-			is the supported binding. Editable inputs open through
-			<code>bind:open</code>
-			; their native popover target does not toggle a text input.
+			Both snippets receive no arguments. The trigger owns its native attributes, events, accessible
+			name and expanded state. Its handlers control <code>bind:open</code>
+			; Popover handles native dismissal and positioning.
 		</p>
 	</Section>
 	<Section {...sections[4]}>
 		<p>
-			Tab to a trigger and use Enter or Space to toggle. Tab moves through the scrollable Surface
-			and interactive content without trapping focus. Escape dismisses and returns focus to the
-			trigger; closing from within the content also returns focus. Clicking another control keeps
-			that control usable.
+			The trigger controls its keyboard behavior: buttons toggle with Enter or Space; the TextInput
+			example opens on click or typing. Tab moves through the Surface and interactive content
+			without trapping focus. Escape dismisses; closing from within the content returns focus to the
+			owning control.
 		</p>
 		<form onsubmit={(event) => event.preventDefault()}>
-			<Popover>
-				{#snippet trigger(wiring)}<button {...wiring} type="button">Inside a form</button>{/snippet}
+			<Popover bind:open={formOpen}>
+				{#snippet trigger()}
+					<button type="button" aria-expanded={formOpen} onclick={() => (formOpen = !formOpen)}>
+						Inside a form
+					</button>
+				{/snippet}
 				<p>The trigger is a button and does not submit the form.</p>
 				<label>
 					Example field <input name="example" />
@@ -110,6 +172,22 @@
 </Page>
 
 <style>
+	label[data-wide-control] {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	input[type='checkbox'] {
+		width: auto;
+		min-height: auto;
+	}
+	div[data-demo] {
+		box-sizing: border-box;
+		min-height: 18rem;
+		padding: 1.5rem;
+		border-radius: 0.75rem;
+		background: color-mix(in srgb, var(--color-primary) 24%, var(--color-background));
+	}
 	div[data-controls],
 	form {
 		display: flex;
