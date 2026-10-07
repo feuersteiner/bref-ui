@@ -1,6 +1,16 @@
 {
 	"name": "bref-ui",
-	"version": "2.0.0",
+	"version": "2.0.1",
+	"description": "A Svelte-first, human-first, agent-first UI library for building beautiful sites and apps with components you can make your own.",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/feuersteiner/bref-ui.git"
+	},
+	"homepage": "https://github.com/feuersteiner/bref-ui#readme",
+	"bugs": {
+		"url": "https://github.com/feuersteiner/bref-ui/issues"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
@@ -67,12 +77,29 @@
 		"vite": "^8.0.16"
 	},
 	"keywords": [
-		"svelte"
+		"svelte",
+		"svelte5",
+		"sveltekit",
+		"svelte-components",
+		"ui",
+		"ui-library",
+		"component-library",
+		"components",
+		"design-system",
+		"copy-paste",
+		"cli",
+		"native-css",
+		"theming",
+		"dark-mode",
+		"accessible",
+		"a11y",
+		"ai-friendly",
+		"agent-friendly"
 	],
 	"dependencies": {
 		"@fontsource-variable/material-symbols-outlined": "^5.3.5"
 	},
 	"bin": {
-		"bref-ui": "./cli/index.ts"
+		"bref-ui": "cli/index.ts"
 	}
 }
