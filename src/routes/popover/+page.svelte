@@ -15,6 +15,9 @@
 	let anotherOpen = $state(false);
 	let initiallyOpen = $state(true);
 	let formOpen = $state(false);
+	let shortOpen = $state(false);
+	let fillOpen = $state(false);
+	let fitOpen = $state(false);
 	const source = `<script>
   import { Checkbox, Popover, TextInput } from 'bref-ui';
   let open = $state(false);
@@ -22,7 +25,7 @@
 <${'/'}script>
 
 <label><Checkbox bind:checked={wide} /> Wide input</label>
-<Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>
+<Popover bind:open scroll>
   {#snippet trigger()}
     <TextInput {wide} value="Sample text" aria-label="Search" aria-expanded={open}
       oninput={() => open = true} onclick={() => open = true} />
@@ -65,12 +68,19 @@
 			description: 'Bindable visibility; native dismissals update it.'
 		},
 		{
+			name: 'disabled',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Keep the panel closed; the trigger controls its own disabled state.'
+		},
+		{
 			name: 'Surface props',
 			type: 'SurfaceProps',
 			required: false,
-			default: 'Surface defaults',
+			default: 'medium spacing, small radius, medium shadow; otherwise Surface defaults',
 			description:
-				'as, color, variant, spacing, orientation, width, height, radius, shadow, hover and scroll style the panel.'
+				'Forwarded to the panel. Omitted variant, color and class use glass; explicit choices retain their paint. Width fill matches the trigger; omitted or fit grows with content.'
 		}
 	];
 </script>
@@ -85,7 +95,7 @@
 			<span>Wide input</span>
 		</label>
 		<div data-demo>
-			<Popover bind:open={inputOpen} variant="filled" spacing="medium" radius="small" shadow scroll>
+			<Popover bind:open={inputOpen} scroll>
 				{#snippet trigger()}
 					<TextInput
 						wide={inputWide}
@@ -102,8 +112,8 @@
 		</div>
 		<p>
 			The trigger snippet renders TextInput directly. Its input and click handlers open the panel;
-			click outside or press Escape to dismiss. The Surface panel matches the trigger width. Toggle
-			wide to check that the trigger follows its child's sizing.
+			click outside or press Escape to dismiss. The default glass panel fits its content and is at
+			least as wide as the trigger, within the viewport. Toggle wide to check the anchor minimum.
 		</p>
 		<CodeSnippet {source} label="Popover usage code" />
 	</Section>
@@ -126,7 +136,7 @@
 	</Section>
 	<Section {...sections[2]}>
 		<div data-controls>
-			<Popover bind:open={longOpen} variant="filled" spacing="medium" radius="small" shadow scroll>
+			<Popover bind:open={longOpen} scroll>
 				{#snippet trigger()}
 					<Button
 						label="Long content"
@@ -186,8 +196,9 @@
 		<PropTable {props} />
 		<p>
 			Popover accepts <a href={resolve('/surface#props')}>Surface props</a>
-			directly and forwards them to its panel. These examples set padding, rounded corners, a filled background,
-			shadow and scrolling explicitly; Another instance uses a soft primary color.
+			directly and forwards them to its panel. Explicit spacing, radius, shadow, paint and class choices
+			take precedence. Another instance uses a soft primary color, while the input and long content examples
+			use the default glass material.
 		</p>
 		<p>
 			Both snippets receive no arguments. The trigger owns its native attributes, events, accessible
@@ -218,6 +229,58 @@
 			</Popover>
 			<Button label="Submit form" onClick={() => undefined} type="submit" />
 		</form>
+	</Section>
+
+	<Section {...sections[5]}>
+		<div data-controls>
+			<Popover bind:open={shortOpen}>
+				{#snippet trigger()}
+					<Button
+						label="Short content"
+						onClick={() => (shortOpen = !shortOpen)}
+						aria-expanded={shortOpen}
+					/>
+				{/snippet}
+				<p>Saved.</p>
+			</Popover>
+			<Popover bind:open={fillOpen} width="fill" variant="filled" scroll>
+				{#snippet trigger()}
+					<Button
+						label="Anchor width"
+						onClick={() => (fillOpen = !fillOpen)}
+						aria-expanded={fillOpen}
+					/>
+				{/snippet}
+				<p>This explicit fill width follows the trigger, wrapping these details naturally.</p>
+			</Popover>
+			<Popover bind:open={fitOpen} width="fit" class="glass" scroll>
+				{#snippet trigger()}
+					<Button
+						label="Content width"
+						onClick={() => (fitOpen = !fitOpen)}
+						aria-expanded={fitOpen}
+					/>
+				{/snippet}
+				<p>
+					Longer prose fits its content until the viewport provides a comfortable wrapping boundary.
+				</p>
+				<p>
+					Unbroken tokens wrap only when needed: <code>
+						workspace_0123456789abcdefghijklmnopqrstuvwxyz_0123456789abcdefghijklmnopqrstuvwxyz_0123456789abcdefghijklmnopqrstuvwxyz
+					</code>
+				</p>
+			</Popover>
+			<Popover disabled>
+				{#snippet trigger()}
+					<Button label="Disabled popover" disabled />
+				{/snippet}
+				<p>This panel stays closed.</p>
+			</Popover>
+		</div>
+		<p>
+			Short content keeps the anchor minimum. Explicit fill follows the anchor; fit follows content.
+			Both stay within the viewport. The content-width example opts into glass through its class.
+		</p>
 	</Section>
 </Page>
 
