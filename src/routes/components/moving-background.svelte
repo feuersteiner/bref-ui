@@ -28,8 +28,8 @@
 		pointer-events: none;
 		background: linear-gradient(
 			120deg,
-			color-mix(in srgb, var(--color-primary) 40%, var(--color-background)),
-			color-mix(in srgb, var(--color-secondary) 40%, var(--color-background))
+			color-mix(in oklab, var(--color-primary) 12%, var(--color-background)),
+			color-mix(in oklab, var(--color-secondary) 12%, var(--color-background))
 		);
 	}
 	span {
@@ -39,16 +39,18 @@
 		width: var(--size);
 		height: var(--size);
 		border-radius: 50%;
-		background: var(--color-primary);
+		background: color-mix(in oklab, var(--color-primary) 55%, var(--color-background));
+		filter: blur(40px);
+		opacity: 0.7;
 		animation: drift calc(9s + var(--index) * 1s) ease-in-out infinite alternate;
 		animation-delay: calc(var(--index) * -3s);
 	}
 	span:nth-child(even) {
-		background: var(--color-secondary);
+		background: color-mix(in oklab, var(--color-secondary) 55%, var(--color-background));
 	}
 	span:nth-child(3),
 	span:nth-child(7) {
-		background: color-mix(in srgb, var(--color-primary) 40%, var(--color-secondary));
+		background: color-mix(in oklab, var(--color-primary) 40%, var(--color-secondary));
 	}
 	@keyframes drift {
 		from {

@@ -19,9 +19,9 @@
 		--grid: 24px;
 		--font-display: 'Syne Variable', 'Syne', sans-serif;
 		--font-text: 'Inter Variable', 'Inter', sans-serif;
-		--docs-rule-strong: color-mix(in srgb, var(--color-foreground) 20%, transparent);
-		--docs-rule: color-mix(in srgb, var(--color-foreground) 12%, transparent);
-		--docs-rule-subtle: color-mix(in srgb, var(--color-foreground) 7%, transparent);
+		--docs-rule-strong: color-mix(in srgb, var(--color-foreground) 10%, transparent);
+		--docs-rule: color-mix(in srgb, var(--color-foreground) 6%, transparent);
+		--docs-rule-subtle: color-mix(in srgb, var(--color-foreground) 4%, transparent);
 		--docs-surface: color-mix(in srgb, var(--color-foreground) 4%, transparent);
 		--docs-code-background: color-mix(in srgb, var(--color-foreground) 7%, transparent);
 	}
@@ -37,15 +37,15 @@
 	:global(h2),
 	:global(h3) {
 		font-family: var(--font-display);
-		font-weight: 700;
+		font-weight: 400;
 	}
 	:global(h1) {
-		font-size: clamp(48px, 7vw, 96px);
-		line-height: 1;
+		font-size: clamp(36px, 5vw, 64px);
+		line-height: 1.05;
 	}
 	:global(h2) {
-		font-size: 48px;
-		line-height: 48px;
+		font-size: clamp(28px, 3vw, 36px);
+		line-height: 1.2;
 	}
 	:global(h3) {
 		font-size: 24px;

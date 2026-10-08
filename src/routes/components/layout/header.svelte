@@ -68,8 +68,7 @@
 		top: 0;
 		z-index: 2;
 		height: 72px;
-		border-bottom: 1px solid var(--docs-rule-strong);
-		background: var(--color-background);
+		background: color-mix(in srgb, var(--color-background) 94%, transparent);
 	}
 	header > div {
 		width: min(1128px, calc(100vw - 48px));
@@ -97,7 +96,7 @@
 	}
 	strong {
 		font-family: var(--font-display);
-		font-weight: 700;
+		font-weight: 400;
 		font-size: 1.5rem;
 		white-space: nowrap;
 	}
