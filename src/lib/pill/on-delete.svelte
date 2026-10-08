@@ -9,6 +9,7 @@
 	<Button
 		icon={{ name: 'close', label: `Remove ${label}` }}
 		size="x-small"
+		style="--internal-height: var(--pill-delete-size, 1.5rem); --internal-icon-size: var(--pill-icon-size, 1.125rem); color: inherit; outline-offset: -2px;"
 		rounded
 		onClick={(event) => {
 			event.stopPropagation();
@@ -22,5 +23,6 @@
 		position: relative;
 		z-index: 1;
 		display: inline-flex;
+		flex-shrink: 0;
 	}
 </style>

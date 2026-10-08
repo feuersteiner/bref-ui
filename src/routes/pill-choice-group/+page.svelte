@@ -227,6 +227,19 @@
 				{/each}
 			</fieldset>
 		{/each}
+		{#each sizes as size (size)}
+			<div data-choice-demo>
+				<span>{size}</span>
+				<PillChoiceGroup {items} {size} selection="focus" aria-label={`${size} single choices`} />
+				<PillChoiceGroup
+					{items}
+					{size}
+					selection={['focus']}
+					variant="soft"
+					aria-label={`${size} multiple choices`}
+				/>
+			</div>
+		{/each}
 	</Section>
 	<Section {...sections[2]}>
 		<PropTable {props} label="PillChoiceGroup props" />

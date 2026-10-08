@@ -178,7 +178,16 @@
 		<fieldset>
 			<legend>Sizes and long content</legend>
 			<div data-demo="row">
-				{#each sizes as size (size)}<Pill {size} color="primary" label={size} />{/each}<Pill
+				{#each sizes as size (size)}
+					<Pill {size} color="primary" label={size} icon={{ name: 'check' }} />
+					<Pill
+						{size}
+						color="primary"
+						label={size}
+						icon={{ name: 'check' }}
+						onDelete={() => removed++}
+					/>
+				{/each}<Pill
 					color="primary"
 					label="A long category label that wraps on a narrow screen without losing its meaning"
 				/>

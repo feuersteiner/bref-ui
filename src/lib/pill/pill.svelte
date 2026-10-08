@@ -51,44 +51,43 @@
 	style:--pill-color={`var(--color-${color}, var(--color-foreground))`}
 	data-wide={wide}
 >
-	<Content {label} {icon} {size} />
+	<Content {label} {icon} />
 	{@render children?.()}
 	{#if onDelete}<OnDelete {label} {onDelete} />{/if}
 </div>
 
 <style>
 	div {
-		--pill-tint: 3%;
+		--pill-hover: var(--pill-choice-hover, 0%);
+		--pill-tint: calc(3% + var(--pill-hover));
 		--pill-background: color-mix(
 			in srgb,
-			color-mix(in srgb, var(--pill-color) var(--pill-tint), var(--color-background, white)) 85%,
-			transparent
+			var(--pill-color) var(--pill-tint),
+			var(--color-background, white)
 		);
-		--pill-border: color-mix(in srgb, var(--pill-color) 20%, transparent);
-		--pill-highlight: color-mix(in srgb, var(--color-foreground, black) 16%, transparent);
-		--pill-content: var(--pill-color);
-		--pill-padding: 1.125rem;
-		--pill-height: 3rem;
+		--pill-content: color-mix(in srgb, var(--pill-color) 90%, var(--color-foreground, black));
+		--pill-glint: var(--edge-highlight, rgb(255 255 255 / 45%));
+		--pill-padding: 0.75rem;
+		--pill-height: 2rem;
+		--pill-icon-size: 1.125rem;
+		--pill-delete-size: 1.5rem;
 		box-sizing: border-box;
 		display: inline-flex;
 		position: relative;
 		isolation: isolate;
 		align-items: center;
-		gap: 0.5rem;
+		gap: 0.375rem;
 		justify-content: center;
 		min-width: 0;
 		max-width: 100%;
 		min-height: var(--pill-height);
-		padding: 0.25rem var(--pill-padding);
-		border: 1px solid var(--pill-border);
+		padding: 0.125rem var(--pill-padding);
+		border: 1px solid transparent;
 		border-radius: 999px;
 		background: var(--pill-background);
-		box-shadow:
-			inset 0 1px 0 var(--pill-highlight),
-			0 2px 6px color-mix(in srgb, var(--color-foreground, black) 8%, transparent);
-		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
-		backdrop-filter: blur(0.5rem) saturate(120%);
-		transition: all 150ms;
+		transition:
+			background-color 150ms ease,
+			color 150ms ease;
 		color: var(--pill-content);
 		font: inherit;
 		line-height: 1.25;
@@ -99,34 +98,47 @@
 		user-select: none;
 	}
 	div[data-size='x-small'] {
-		--pill-height: 1.75rem;
+		--pill-height: 1.5rem;
 		--pill-padding: 0.5rem;
-		font-size: 0.8rem;
+		--pill-icon-size: 0.875rem;
+		font-size: 0.8125rem;
 	}
 	div[data-size='small'] {
-		--pill-height: 2.5rem;
-		--pill-padding: 0.875rem;
+		--pill-height: 1.75rem;
+		--pill-padding: 0.625rem;
+		--pill-icon-size: 1rem;
+		font-size: 0.875rem;
 	}
 	div[data-size='large'] {
-		--pill-height: 4rem;
-		--pill-padding: 1.5rem;
-		font-size: 1.25rem;
+		--pill-height: 2.25rem;
+		--pill-padding: 0.875rem;
+		--pill-icon-size: 1.25rem;
+		--pill-delete-size: 1.75rem;
 	}
 	div[data-size='x-large'] {
-		--pill-height: 5rem;
-		--pill-padding: 2rem;
-		font-size: 1.5rem;
+		--pill-height: 2.5rem;
+		--pill-padding: 1rem;
+		--pill-icon-size: 1.375rem;
+		--pill-delete-size: 2rem;
+		font-size: 1.125rem;
 	}
 	div[data-variant='soft'] {
-		--pill-tint: 16%;
-		--pill-border: color-mix(in srgb, var(--pill-color) 30%, transparent);
+		--pill-tint: calc(var(--pill-choice-emphasis, 12%) + var(--pill-hover));
 		--pill-content: color-mix(in srgb, var(--pill-color) 80%, var(--color-foreground, black));
 	}
 	div[data-variant='filled'] {
-		--pill-tint: 88%;
-		--pill-border: color-mix(in srgb, var(--pill-color) 68%, var(--color-foreground, black));
-		--pill-highlight: color-mix(in srgb, var(--color-foreground, black) 28%, transparent);
-		--pill-content: color-mix(in srgb, var(--color-background, white) 90%, var(--pill-color));
+		--pill-tint: calc(100% - var(--pill-hover) / 2);
+		--pill-content: var(--color-background, white);
+		--pill-glint: color-mix(in srgb, var(--pill-color) 28%, transparent);
+	}
+	div:is([data-clickable], [data-removable]):not([aria-disabled='true']):is(
+			:hover,
+			:focus-visible
+		) {
+		--pill-hover: 2%;
+	}
+	div:is([data-clickable], [data-removable]):not([aria-disabled='true']):active {
+		--pill-hover: 4%;
 	}
 	div[data-icon] {
 		padding-left: calc(var(--pill-padding) * 0.6);
@@ -148,12 +160,7 @@
 		inset-inline-start: -45%;
 		width: 40%;
 		content: '';
-		background: linear-gradient(
-			90deg,
-			transparent,
-			color-mix(in srgb, var(--pill-color) 28%, transparent),
-			transparent
-		);
+		background: linear-gradient(90deg, transparent, var(--pill-glint), transparent);
 		filter: blur(0.3rem);
 		opacity: 0;
 		pointer-events: none;
@@ -177,6 +184,12 @@
 		100% {
 			opacity: 0;
 			transform: translateX(400%) skewX(-18deg);
+		}
+	}
+	@media (pointer: coarse) {
+		div[data-clickable] {
+			min-width: 44px;
+			min-height: 44px;
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {

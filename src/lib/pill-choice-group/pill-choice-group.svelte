@@ -110,6 +110,15 @@
 		clip-path: inset(50%);
 		overflow: hidden;
 	}
+	div:has(input:checked) {
+		--pill-choice-emphasis: 18%;
+	}
+	div:not([data-disabled]):is(:hover, :has(input:focus-visible)) {
+		--pill-choice-hover: 2%;
+	}
+	div:not([data-disabled]):active {
+		--pill-choice-hover: 4%;
+	}
 	div:has(input:focus-visible) {
 		outline: 2px solid var(--color-primary, currentColor);
 		outline-offset: 3px;
@@ -121,6 +130,14 @@
 	div[data-disabled] {
 		opacity: 0.45;
 		cursor: not-allowed;
+	}
+	@media (pointer: coarse) {
+		div {
+			display: inline-grid;
+			min-width: 44px;
+			min-height: 44px;
+			align-items: stretch;
+		}
 	}
 	@media (forced-colors: active) {
 		div:has(input:checked) {
