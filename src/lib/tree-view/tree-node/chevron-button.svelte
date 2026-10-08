@@ -43,7 +43,8 @@
 		outline-offset: -2px;
 	}
 	@media (prefers-reduced-motion: reduce) {
-		* {
+		button,
+		span {
 			transition: none;
 		}
 	}
