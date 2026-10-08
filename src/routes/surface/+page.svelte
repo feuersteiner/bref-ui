@@ -44,6 +44,7 @@
 	let shadow = $state<SurfaceProps['shadow']>(false);
 	let hover = $state<SurfaceProps['hover']>();
 	let scroll = $state(false);
+	let glass = $state(false);
 	let clicks = $state(0);
 	let nativeFocuses = $state(0);
 	const items = [
@@ -75,7 +76,12 @@
 		['as', "'div' | 'section' | 'span'", 'div', 'Native root element.'],
 		['children', 'Snippet', 'Omitted', 'Content rendered directly inside the root.'],
 		['color', 'Color', 'background', 'Theme color; the shared recipe supplies content color.'],
-		['variant', 'Variant', 'neutral', 'Transparent neutral, frosted soft, or opaque filled panel.'],
+		[
+			'variant',
+			'Variant',
+			'neutral',
+			'Lightly tinted neutral, opaque tinted soft, or opaque filled panel.'
+		],
 		['spacing', 'Size', 'Omitted', 'Shared padding and gap; omitted means zero.'],
 		[
 			'orientation',
@@ -110,7 +116,7 @@
 
 <Page
 	title={chapter}
-	description="A semantic flex container with theme tints, glass or opaque treatments, shared spacing, corner rounding and optional scrolling."
+	description="A semantic flex container with theme tints, opt-in glass, shared spacing, corner rounding and optional scrolling."
 >
 	<Section {...sections[0]}>
 		<Surface as="section" variant="soft" spacing="medium" radius="small">
@@ -256,10 +262,15 @@
 				<Checkbox bind:checked={scroll} />
 				Scroll
 			</label>
+			<label>
+				<Checkbox bind:checked={glass} />
+				Glass
+			</label>
 		</div>
 		<div data-stage id="surface-playground">
 			<Surface
 				{as}
+				class={glass ? 'glass' : undefined}
 				{variant}
 				{color}
 				{spacing}
@@ -298,6 +309,94 @@
 		</div>
 	</Section>
 	<Section {...sections[3]}>
+		<p>
+			Soft surfaces use an opaque tint. Add class="glass" when a panel sits above visual content;
+			transparency and blur then belong to that panel alone. Keep controls inside it opaque to avoid
+			nested blur. Reduced transparency, increased contrast and unsupported backdrop filtering use a
+			solid fill.
+		</p>
+		<div data-glass-gallery>
+			{#each ['flat', 'mesh', 'shapes'] as backdrop (backdrop)}
+				<div data-backdrop={backdrop}>
+					<span data-backdrop-label>{backdrop}</span>
+					{#each [false, true] as material (material)}
+						<div data-material-row>
+							{#each variants as variant (variant)}
+								<Surface
+									class={material ? 'glass' : undefined}
+									{variant}
+									spacing="medium"
+									radius="small"
+									shadow="small"
+								>
+									<span>{material ? 'Glass' : 'Base'}</span>
+									<span>{variant}</span>
+								</Surface>
+							{/each}
+						</div>
+					{/each}
+					<div data-material-row>
+						{#each variants as variant (variant)}
+							<Surface
+								class="glass"
+								color="success"
+								{variant}
+								spacing="medium"
+								radius="small"
+								shadow="small"
+							>
+								<span>Success glass</span>
+								<span>{variant}</span>
+							</Surface>
+						{/each}
+					</div>
+					<div data-row>
+						{#each [false, true] as material (material)}
+							<button
+								class={[
+									surface({ variant: 'soft', color: 'primary', hover: 'medium' }),
+									material && 'glass'
+								]}
+								onclick={() => clicks++}
+							>
+								{material ? 'Glass' : 'Base'} action
+							</button>
+						{/each}
+						<button
+							class={[surface({ variant: 'soft', color: 'primary', hover: 'medium' }), 'glass']}
+							data-surface-pressed="true"
+							onclick={() => clicks++}
+						>
+							Pressed
+						</button>
+						<button
+							class={[surface({ variant: 'soft', color: 'primary', hover: 'medium' }), 'glass']}
+							disabled
+						>
+							Disabled
+						</button>
+					</div>
+				</div>
+			{/each}
+		</div>
+		<div data-backdrop="mesh">
+			<div class={['glass']} data-standalone-glass>
+				<span>Standalone panel</span>
+				<p>The same class also composes with native panel styling.</p>
+			</div>
+		</div>
+		<CodeSnippet
+			label="Opt-in glass usage"
+			source={`<Surface class="glass" variant="soft" spacing="medium" radius="small">
+  Panel content
+</Surface>
+
+<button class={[surface({ variant: 'soft', color: 'primary', hover: 'medium' }), 'glass']}>
+  Save
+</button>`}
+		/>
+	</Section>
+	<Section {...sections[4]}>
 		<div data-matrix>
 			{#each sizes as size (size)}
 				<Surface spacing={size} radius={size} variant="soft">
@@ -307,7 +406,7 @@
 			{/each}
 			<Surface>
 				<strong>Defaults</strong>
-				<span>Transparent, square, with no spacing.</span>
+				<span>Lightly tinted, square, with no spacing.</span>
 			</Surface>
 		</div>
 		<div data-row>
@@ -341,7 +440,7 @@
 		</Surface>
 		<p role="status">Saved {clicks} times.</p>
 	</Section>
-	<Section {...sections[4]}>
+	<Section {...sections[5]}>
 		<p>
 			Surface forwards native attributes and events to its root. Pass class, style, ARIA attributes
 			and event handlers directly; content uses a Svelte children snippet. Explicit tabindex
@@ -378,7 +477,7 @@
 		</div>
 		<CodeSnippet label="Surface scrolling code" source={scrollSource} />
 	</Section>
-	<Section {...sections[5]}>
+	<Section {...sections[6]}>
 		<PropTable {props} />
 		<p>
 			Migration: pass native attributes directly to Surface; hover replaces hoverEffect. Replace
@@ -415,6 +514,52 @@
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: 1rem;
 	}
+	[data-glass-gallery] {
+		display: grid;
+		gap: 1rem;
+	}
+	[data-backdrop] {
+		display: grid;
+		gap: 1rem;
+		padding: 1.5rem;
+		border-radius: 1rem;
+		background: var(--color-background);
+	}
+	[data-backdrop='mesh'] {
+		background:
+			radial-gradient(
+				ellipse at 15% 25%,
+				color-mix(in srgb, var(--color-primary) 35%, transparent),
+				transparent 65%
+			),
+			radial-gradient(
+				ellipse at 90% 80%,
+				color-mix(in srgb, var(--color-secondary) 30%, transparent),
+				transparent 65%
+			),
+			var(--color-background);
+	}
+	[data-backdrop='shapes'] {
+		background: repeating-linear-gradient(
+			125deg,
+			var(--color-background) 0 2rem,
+			color-mix(in srgb, var(--color-primary) 28%, var(--color-background)) 2rem 4rem
+		);
+	}
+	[data-backdrop-label] {
+		font-size: 0.875rem;
+	}
+	[data-material-row] {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+	}
+	[data-standalone-glass] {
+		padding: 1rem;
+		border-radius: 0.5rem;
+		background: var(--color-background);
+		box-shadow: none;
+	}
 	[data-matrix-cell] {
 		min-width: 0;
 	}
@@ -425,7 +570,8 @@
 		height: 8rem;
 	}
 	@media (max-width: 575px) {
-		[data-matrix] {
+		[data-matrix],
+		[data-material-row] {
 			grid-template-columns: minmax(0, 1fr);
 		}
 	}
