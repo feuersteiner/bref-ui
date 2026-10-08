@@ -109,7 +109,7 @@
 		display: flex;
 		align-items: center;
 		gap: 8px;
-		color: var(--color-muted);
+		color: color-mix(in srgb, var(--color-muted) 80%, var(--color-foreground));
 		font-size: 0.875rem;
 	}
 	h3 {
