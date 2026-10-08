@@ -27,7 +27,10 @@
 	];
 </script>
 
-<Page title={chapter} description="A glass checkbox for selecting a form value.">
+<Page
+	title={chapter}
+	description="A compact checkbox with clear checked states and native form behavior."
+>
 	<Section {...sections[0]}>
 		<label><Checkbox name="updates" value="yes" bind:checked /> Receive updates</label>
 		<p role="status">{checked ? 'Selected' : 'Not selected'}</p>
@@ -68,6 +71,17 @@
 			</div>
 		</form>
 		<p role="status">{submitted}</p>
+	</Section>
+	<Section {...sections[3]}>
+		<div data-demo="examples">
+			<label><Checkbox aria-invalid="true" /> Invalid unchecked</label>
+			<label><Checkbox checked aria-invalid="true" /> Invalid checked</label>
+			<label><Checkbox /> Keyboard focus</label>
+		</div>
+		<p>
+			Tab through these controls to check focus. Native validation after interaction and
+			aria-invalid retain a quiet error edge without hiding focus.
+		</p>
 	</Section>
 </Page>
 

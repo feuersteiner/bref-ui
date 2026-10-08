@@ -11,9 +11,9 @@
 
 <style>
 	[data-switch] {
-		--track-width: 3.25rem;
-		--track-height: 2rem;
-		--thumb-size: 1.5rem;
+		--track-width: 2.75rem;
+		--track-height: 1.625rem;
+		--thumb-size: 1.125rem;
 		--inset: 0.25rem;
 		position: relative;
 		display: inline-flex;
@@ -35,43 +35,24 @@
 
 	[data-switch] > span {
 		--internal-tint: var(--color-foreground, black);
-		--internal-strength-light: 4%;
-		--internal-strength-dark: 16%;
-		--internal-highlight: color-mix(in srgb, var(--color-foreground, black) 16%, transparent);
+		--internal-strength: 48%;
+		--internal-fill: color-mix(
+			in srgb,
+			var(--internal-tint) var(--internal-strength),
+			var(--color-background, white)
+		);
+		--internal-border: var(--internal-fill);
 		box-sizing: border-box;
 		position: relative;
 		width: 100%;
 		height: 100%;
-		border: 1px solid
-			light-dark(
-				color-mix(in srgb, var(--color-foreground, black) 12%, transparent),
-				color-mix(in srgb, var(--color-foreground, black) 30%, transparent)
-			);
+		border: 1px solid var(--internal-border);
 		border-radius: 999px;
-		background: color-mix(
-			in srgb,
-			light-dark(
-					color-mix(
-						in srgb,
-						var(--internal-tint) var(--internal-strength-light),
-						var(--color-background, white)
-					),
-					color-mix(
-						in srgb,
-						var(--internal-tint) var(--internal-strength-dark),
-						var(--color-background, white)
-					)
-				)
-				85%,
-			transparent
-		);
-		box-shadow:
-			inset 0 1px 0 var(--internal-highlight),
-			0 2px 6px color-mix(in srgb, black 8%, transparent);
-		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
-		backdrop-filter: blur(0.5rem) saturate(120%);
+		background: var(--internal-fill);
 		pointer-events: none;
-		transition: all 150ms ease;
+		transition:
+			background-color 150ms ease,
+			border-color 150ms ease;
 	}
 
 	[data-switch] > span > span {
@@ -84,27 +65,42 @@
 		width: var(--thumb-size);
 		height: var(--thumb-size);
 		border-radius: 50%;
-		background: var(--color-foreground);
-		color: var(--color-background);
+		background: var(--color-background, white);
+		color: var(--color-foreground, black);
+		box-shadow: 0 1px 2px color-mix(in srgb, var(--shadow-color, #000) 12%, transparent);
 		font-size: calc(var(--thumb-size) * 0.7);
 		transform: translateY(-50%);
-		transition:
-			left 150ms ease,
-			background 150ms ease;
+		transition: left 150ms ease;
+	}
+
+	input:hover:not(:disabled) + span {
+		--internal-strength: 52%;
+	}
+
+	input:active:not(:disabled) + span {
+		--internal-strength: 56%;
 	}
 
 	input:checked + span {
 		--internal-tint: var(--color-primary, blue);
-		--internal-strength-light: 88%;
-		--internal-strength-dark: 88%;
-		--internal-highlight: color-mix(in srgb, var(--color-foreground, black) 28%, transparent);
-		border-color: color-mix(in srgb, var(--internal-tint) 68%, var(--color-foreground, black));
+		--internal-strength: 88%;
+	}
+
+	input:checked:hover:not(:disabled) + span {
+		--internal-strength: 92%;
+	}
+
+	input:checked:active:not(:disabled) + span {
+		--internal-strength: 96%;
 	}
 
 	input:checked + span > span {
 		left: calc(100% - var(--thumb-size) - var(--inset));
-		background: var(--color-background);
-		color: var(--color-foreground);
+	}
+
+	input:user-invalid + span,
+	input[aria-invalid='true'] + span {
+		--internal-border: var(--color-error, #bc2436);
 	}
 
 	input:focus-visible + span {
@@ -121,15 +117,15 @@
 	}
 
 	[data-size='small'] {
-		--track-width: 2.75rem;
-		--track-height: 1.75rem;
-		--thumb-size: 1.25rem;
+		--track-width: 2.25rem;
+		--track-height: 1.375rem;
+		--thumb-size: 0.875rem;
 	}
 
 	[data-size='large'] {
-		--track-width: 3.75rem;
-		--track-height: 2.25rem;
-		--thumb-size: 1.625rem;
+		--track-width: 3.25rem;
+		--track-height: 1.875rem;
+		--thumb-size: 1.375rem;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -150,6 +146,7 @@
 		[data-switch] > span > span {
 			background: ButtonText;
 			color: Canvas;
+			box-shadow: none;
 		}
 		input:checked + span {
 			background: Highlight;
