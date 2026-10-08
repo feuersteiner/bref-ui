@@ -1,8 +1,8 @@
 <style>
 	:global(.glass) {
 		--glass-paint: var(--surface-fill, var(--color-background, white));
-		--glass-opacity: 72%;
-		--glass-blur: blur(1.125rem) saturate(110%);
+		--glass-opacity: 20%;
+		--glass-blur: blur(0.75rem) saturate(120%);
 	}
 	/* Three class selectors keep opt-in material above ordinary scoped component paint.
 	   Inline styles and explicit selectors can still override it. */
@@ -19,12 +19,15 @@
 	:global(.glass:where(.surface-neutral)) {
 		--glass-paint: color-mix(
 			in srgb,
-			var(--surface-tint) var(--surface-hover),
+			var(--surface-tint) var(--surface-strength),
 			var(--surface-base)
 		);
 	}
+	:global(.glass:where(.surface-soft)) {
+		--glass-opacity: 40%;
+	}
 	:global(.glass:where(.surface-filled)) {
-		--glass-opacity: 100%;
+		--glass-opacity: 65%;
 	}
 	@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
 		:global(.glass.glass.glass) {

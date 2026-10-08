@@ -105,11 +105,18 @@
 			description: 'Circular shape; icon-only buttons only.'
 		},
 		{
+			name: 'glass',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Adds translucent paint and backdrop blur to the selected variant.'
+		},
+		{
 			name: 'disabled',
 			type: 'boolean',
 			required: false,
 			default: 'false',
-			description: 'Disables actions and navigation.'
+			description: 'Disables actions and navigation; uses muted paint for the selected variant.'
 		},
 		{
 			name: 'onClick',
@@ -150,7 +157,7 @@
 		<p>
 			Labels retain their original case. Enable the moving background to try the opt-in
 			<code>glass</code>
-			class on these controls.
+			prop on these controls.
 		</p>
 		<div data-demo="controls">
 			<label>
@@ -214,7 +221,7 @@
 			<div data-demo="row">
 				<Button
 					label={previewLabel}
-					class={movingBackground ? 'glass' : undefined}
+					glass={movingBackground}
 					{size}
 					{variant}
 					{color}
@@ -226,7 +233,7 @@
 				/>
 				<Button
 					{size}
-					class={movingBackground ? 'glass' : undefined}
+					glass={movingBackground}
 					{variant}
 					{color}
 					{rounded}
@@ -240,8 +247,8 @@
 		<p role="status">Activated {clicks} times. Try Tab, Enter and Space.</p>
 		<CodeSnippet
 			label="Button playground code"
-			source={`<Button label={${JSON.stringify(previewLabel)}}${movingBackground ? ' class="glass"' : ''} size="${size}" variant="${variant}" color="${color}" wide={${wide}} icon={${leading ? `{ name: 'save', filled: ${filled} }` : 'undefined'}} trailingIcon={${trailing ? `{ name: 'arrow_forward', filled: ${filled} }` : 'undefined'}} disabled={${disabled}} onClick={() => clicks++} />
-<Button${movingBackground ? ' class="glass"' : ''} size="${size}" variant="${variant}" color="${color}" rounded={${rounded}} icon={{ name: 'favorite', filled: ${filled} }} disabled={${disabled}} onClick={() => clicks++} aria-label="Favorite" />`}
+			source={`<Button label={${JSON.stringify(previewLabel)}}${movingBackground ? ' glass' : ''} size="${size}" variant="${variant}" color="${color}" wide={${wide}} icon={${leading ? `{ name: 'save', filled: ${filled} }` : 'undefined'}} trailingIcon={${trailing ? `{ name: 'arrow_forward', filled: ${filled} }` : 'undefined'}} disabled={${disabled}} onClick={() => clicks++} />
+<Button${movingBackground ? ' glass' : ''} size="${size}" variant="${variant}" color="${color}" rounded={${rounded}} icon={{ name: 'favorite', filled: ${filled} }} disabled={${disabled}} onClick={() => clicks++} aria-label="Favorite" />`}
 		/>
 	</Section>
 	<Section {...sections[2]}>
@@ -290,6 +297,16 @@
 					/>
 				</div>
 			</fieldset>
+			{#each variants as variant (variant)}
+				<fieldset>
+					<legend>Disabled {variant}</legend>
+					<div data-demo="row">
+						{#each colors as color (color)}
+							<Button {variant} {color} label={color} disabled />
+						{/each}
+					</div>
+				</fieldset>
+			{/each}
 		</div>
 		<p>The exhaustive QA matrix is mounted only when requested.</p>
 		<div data-demo="row">
@@ -422,6 +439,8 @@
 			/>
 			<Button
 				label={pressed ? 'Selected' : 'Select'}
+				variant="filled"
+				color="primary"
 				onClick={() => (pressed = !pressed)}
 				aria-pressed={pressed}
 			/>

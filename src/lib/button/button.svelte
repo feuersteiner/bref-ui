@@ -9,6 +9,7 @@
 		color = 'foreground',
 		size = 'medium',
 		variant = 'neutral',
+		glass = false,
 		label,
 		icon,
 		trailingIcon,
@@ -24,7 +25,7 @@
 	const isIcon = $derived(label === undefined);
 	const isLink = $derived(href !== undefined);
 	const common = $derived({
-		class: ['button', surface({ variant, color, hover: 'medium' }), className],
+		class: ['button', surface({ variant, color, hover: 'medium' }), glass && 'glass', className],
 		'aria-label': attributes['aria-label'] ?? (isIcon ? (icon?.label ?? icon?.name) : undefined),
 		'data-color': color,
 		'data-size': size,
@@ -134,6 +135,19 @@
 	}
 	.button[data-rounded] {
 		border-radius: 50%;
+	}
+	.button:is(:disabled, [aria-disabled='true']) {
+		--surface-color: var(--color-muted, gray);
+	}
+	.button[data-variant='filled']:not(:disabled, [aria-disabled='true']):is(:hover, :focus-visible) {
+		filter: brightness(1.1);
+	}
+	.button[data-variant='filled']:not(:disabled, [aria-disabled='true']):is(
+			:active,
+			[aria-pressed='true'],
+			[data-surface-pressed='true']
+		) {
+		filter: brightness(0.85);
 	}
 	@media (pointer: coarse) {
 		.button {
