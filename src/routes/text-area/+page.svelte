@@ -88,6 +88,7 @@
 	</Section>
 
 	<Section {...sections[1]}>
+		<p>Neutral and soft variants use quiet tonal fills, with a clear indicator when focused.</p>
 		<div data-demo="grid">
 			{#each variants as currentVariant (currentVariant)}
 				{#each sizes as currentSize (currentSize)}
@@ -209,7 +210,13 @@
 				Server error<TextArea aria-invalid="true" aria-describedby="error-help" value="Incorrect" />
 			</label>
 		</div>
-		<p id="required-help">Required fields use native validation on submission.</p>
+		<p id="required-help">
+			Required fields use native validation on submission. Error styling follows native
+			<code>:user-invalid</code>
+			after interaction or submission; untouched required fields stay quiet. Use
+			<code>aria-invalid="true"</code>
+			for application errors.
+		</p>
 		<p id="error-help">This entry was not accepted. Check the value and try again.</p>
 	</Section>
 	<Section {...sections[4]}><PropTable {props} /></Section>

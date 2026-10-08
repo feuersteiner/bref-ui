@@ -37,70 +37,62 @@
 <style>
 	div {
 		--internal-height: 2.5rem;
-		--internal-padding: 0.85rem;
+		--internal-padding: 1rem;
 		--internal-icon-size: 1.25rem;
 		--internal-tint: var(--color-foreground, black);
-		--internal-strength-light: 3%;
-		--internal-strength-dark: 3%;
-		--internal-opacity: 15%;
+		--internal-strength-light: 4%;
+		--internal-strength-dark: 6%;
 		--internal-border: transparent;
-		--internal-highlight: color-mix(in srgb, var(--color-foreground, black) 12%, transparent);
+		--internal-placeholder: color-mix(
+			in srgb,
+			var(--color-muted, #666) 90%,
+			var(--color-foreground, black)
+		);
 		box-sizing: border-box;
 		display: inline-flex;
 		align-items: center;
 		align-self: start;
-		gap: 0.6rem;
+		gap: 0.625rem;
 		width: min(100%, 18rem);
 		min-width: 0;
 		max-width: 100%;
 		min-height: var(--internal-height);
 		padding-inline: var(--internal-padding);
 		border: 1px solid var(--internal-border);
-		border-radius: 0.5rem;
-		background: color-mix(
-			in srgb,
-			light-dark(
-					color-mix(
-						in srgb,
-						var(--internal-tint) var(--internal-strength-light),
-						var(--color-background, white)
-					),
-					color-mix(
-						in srgb,
-						var(--internal-tint) var(--internal-strength-dark),
-						var(--color-background, white)
-					)
-				)
-				var(--internal-opacity),
-			transparent
+		border-radius: 0.625rem;
+		background: light-dark(
+			color-mix(
+				in srgb,
+				var(--internal-tint) var(--internal-strength-light),
+				var(--color-background, white)
+			),
+			color-mix(
+				in srgb,
+				var(--internal-tint) var(--internal-strength-dark),
+				var(--color-background, white)
+			)
 		);
 		color: var(--color-foreground, black);
-		transition: all 150ms ease;
-		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
-		backdrop-filter: blur(0.5rem) saturate(120%);
+		transition:
+			background-color 150ms ease,
+			border-color 150ms ease;
 	}
 	div[data-wide] {
 		width: 100%;
 	}
 	div[data-size='small'] {
 		--internal-height: 2rem;
-		--internal-padding: 0.65rem;
+		--internal-padding: 0.75rem;
 		--internal-icon-size: 1rem;
 	}
 	div[data-size='large'] {
 		--internal-height: 3rem;
-		--internal-padding: 1rem;
+		--internal-padding: 1.125rem;
 		--internal-icon-size: 1.5rem;
 	}
 	div[data-variant='soft'] {
-		--internal-strength-light: 4%;
-		--internal-strength-dark: 16%;
-		--internal-opacity: 85%;
-		--internal-border: light-dark(
-			color-mix(in srgb, var(--color-foreground, black) 12%, transparent),
-			color-mix(in srgb, var(--color-foreground, black) 30%, transparent)
-		);
-		box-shadow: inset 0 1px 0 var(--internal-highlight);
+		--internal-strength-light: 6%;
+		--internal-strength-dark: 10%;
 	}
 	span {
 		display: inline-flex;
@@ -121,7 +113,7 @@
 		font: inherit;
 		font-size: 1rem;
 		font-weight: 200;
-		line-height: 1.4;
+		line-height: 1.5;
 	}
 	input {
 		height: calc(var(--internal-height) - 2px);
@@ -136,28 +128,20 @@
 		margin: 0;
 	}
 	input::placeholder {
-		color: var(--color-muted, #666);
+		color: var(--internal-placeholder);
+		opacity: 1;
 	}
 	div[data-variant='soft']:hover:not(:has(:disabled)) {
-		--internal-border: light-dark(
-			color-mix(in srgb, var(--color-foreground, black) 18%, transparent),
-			color-mix(in srgb, var(--color-foreground, black) 38%, transparent)
-		);
-		--internal-strength-light: 6%;
-		--internal-strength-dark: 20%;
+		--internal-strength-light: 8%;
+		--internal-strength-dark: 12%;
 	}
 	div:has(input:focus) {
-		--internal-tint: var(--color-primary, blue);
-		--internal-strength-light: 6%;
-		--internal-strength-dark: 12%;
-		--internal-border: color-mix(in srgb, var(--internal-tint) 55%, transparent);
-		box-shadow:
-			inset 0 1px 0 var(--internal-highlight),
-			0 0 0 3px color-mix(in srgb, var(--internal-tint) 16%, transparent);
+		outline: 2px solid var(--color-primary, blue);
+		outline-offset: 2px;
 	}
-	div:has(input:invalid, [aria-invalid='true']) {
-		--internal-tint: var(--color-error, #bc2436);
-		--internal-border: color-mix(in srgb, var(--internal-tint) 65%, transparent);
+	div:has(input:user-invalid, input[aria-invalid='true']) {
+		--internal-border: var(--color-error, #bc2436);
+		outline-color: var(--color-error, #bc2436);
 	}
 	div:has(:disabled) {
 		opacity: 0.5;
