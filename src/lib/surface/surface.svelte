@@ -7,6 +7,7 @@
 		children,
 		color = 'background',
 		variant = 'neutral',
+		glass = false,
 		spacing,
 		orientation = 'vertical',
 		width = 'fill',
@@ -35,7 +36,7 @@
 	this={as}
 	{...attributes}
 	data-surface
-	class={[surface({ variant, color, shadow, hover }), className]}
+	class={[surface({ variant, color, glass, shadow, hover }), className]}
 	data-variant={variant}
 	data-spacing={spacing}
 	data-orientation={orientation}
@@ -63,6 +64,10 @@
 		gap: var(--surface-spacing);
 		border-radius: var(--surface-radius, 0);
 		overflow: visible;
+	}
+	[data-surface][data-surface-motion] {
+		opacity: var(--surface-motion-opacity, 1);
+		translate: 0 var(--surface-motion-offset, 0px);
 	}
 	[data-orientation='horizontal'] {
 		flex-direction: row;

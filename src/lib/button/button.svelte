@@ -3,7 +3,7 @@
 	import Icon from '../icon/icon.svelte';
 	import { surface } from '../theme/surface.js';
 	import type { ButtonProps } from './types.js';
-	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
+	import type { HTMLButtonAttributes } from 'svelte/elements';
 
 	let {
 		color = 'foreground',
@@ -23,9 +23,8 @@
 	}: ButtonProps = $props();
 
 	const isIcon = $derived(label === undefined);
-	const isLink = $derived(href !== undefined);
 	const common = $derived({
-		class: ['button', surface({ variant, color, hover: 'medium' }), glass && 'glass', className],
+		class: ['button', surface({ variant, color, glass, hover: 'medium' }), className],
 		'aria-label': attributes['aria-label'] ?? (isIcon ? (icon?.label ?? icon?.name) : undefined),
 		'data-color': color,
 		'data-size': size,
@@ -34,9 +33,24 @@
 		'data-wide': wide && !isIcon ? '' : undefined,
 		'data-rounded': rounded && isIcon ? '' : undefined
 	});
+	const native = $derived(
+		href !== undefined
+			? {
+					href: disabled ? undefined : href,
+					'aria-disabled': disabled ? true : attributes['aria-disabled'],
+					tabindex: disabled ? -1 : attributes.tabindex
+				}
+			: { type: (attributes as HTMLButtonAttributes).type ?? 'button', disabled }
+	);
 </script>
 
-{#snippet content()}
+<svelte:element
+	this={href !== undefined ? 'a' : 'button'}
+	{...attributes}
+	{...common}
+	{...native}
+	onclick={disabled && href !== undefined ? (event: MouseEvent) => event.preventDefault() : onClick}
+>
 	{#if icon}
 		<span><Icon {...icon} color={undefined} label={undefined} /></span>
 	{/if}
@@ -46,32 +60,7 @@
 			<span><Icon {...trailingIcon} color={undefined} label={undefined} /></span>
 		{/if}
 	{/if}
-{/snippet}
-
-{#if isLink}
-	<!-- eslint-disable svelte/no-navigation-without-resolve -- Native library links also support consumers outside SvelteKit. -->
-	<a
-		{...attributes as HTMLAnchorAttributes}
-		{...common}
-		href={disabled ? undefined : href}
-		aria-disabled={disabled ? true : attributes['aria-disabled']}
-		tabindex={disabled ? -1 : attributes.tabindex}
-		onclick={disabled ? (event) => event.preventDefault() : onClick}
-	>
-		{@render content()}
-	</a>
-	<!-- eslint-enable svelte/no-navigation-without-resolve -->
-{:else}
-	<button
-		{...attributes as HTMLButtonAttributes}
-		{...common}
-		type={(attributes as HTMLButtonAttributes).type ?? 'button'}
-		{disabled}
-		onclick={onClick}
-	>
-		{@render content()}
-	</button>
-{/if}
+</svelte:element>
 
 <style>
 	.button {
