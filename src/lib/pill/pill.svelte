@@ -66,7 +66,7 @@
 			var(--color-background, white)
 		);
 		--pill-content: color-mix(in srgb, var(--pill-color) 90%, var(--color-foreground, black));
-		--pill-glint: var(--edge-highlight, rgb(255 255 255 / 45%));
+		--pill-glint: color-mix(in srgb, var(--color-foreground, black) 8%, transparent);
 		--pill-padding: 0.75rem;
 		--pill-height: 2rem;
 		--pill-icon-size: 1.125rem;
