@@ -71,6 +71,7 @@
 	{#if open}
 		<div
 			data-surface
+			class={['glass']}
 			use:showModal
 			transition:fly|global={{
 				y: prefersReducedMotion.current ? 0 : 16,
@@ -101,14 +102,11 @@
 		overflow: visible;
 	}
 	[data-surface] {
+		--surface-shadow: 0 1.5rem 4rem color-mix(in srgb, var(--shadow-color, #000) 20%, transparent);
 		display: flex;
 		flex-direction: column;
 		max-height: calc(100dvh - 2rem);
-		border: 1px solid color-mix(in srgb, var(--color-foreground, black) 18%, transparent);
-		border-radius: 0.75rem;
-		background: var(--color-background, white);
-		color: var(--color-foreground, black);
-		box-shadow: 0 1.5rem 4rem color-mix(in srgb, var(--color-foreground, black) 20%, transparent);
+		border-radius: 1rem;
 	}
 	dialog[open] {
 		display: flex;
@@ -127,26 +125,21 @@
 		--internal-width: 72rem;
 	}
 	dialog::backdrop {
-		background: color-mix(in srgb, var(--color-foreground, black) 48%, transparent);
+		background: var(--scrim, rgb(0 0 0 / 48%));
 		opacity: 0;
-		backdrop-filter: blur(0);
-		transition:
-			opacity 300ms ease,
-			backdrop-filter 300ms ease;
+		transition: opacity 300ms ease;
 	}
 	dialog[data-visible='true']::backdrop {
 		opacity: 1;
-		backdrop-filter: blur(0.25rem);
 	}
 	@starting-style {
 		dialog[data-visible='true']::backdrop {
 			opacity: 0;
-			backdrop-filter: blur(0);
 		}
 	}
 	[data-content] {
 		min-height: 0;
-		padding: 1.5rem;
+		padding: 1.25rem 1.75rem 1.5rem;
 		overflow: auto;
 	}
 	dialog[data-size='full-screen'] {
@@ -172,8 +165,7 @@
 	}
 	@media (forced-colors: active) {
 		[data-surface] {
-			border-color: CanvasText;
-			box-shadow: none;
+			border: 1px solid CanvasText;
 		}
 		dialog::backdrop {
 			background: Canvas;

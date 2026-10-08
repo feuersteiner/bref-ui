@@ -14,6 +14,7 @@
 	let dismissalOpen = $state(false);
 	let actionOpen = $state(false);
 	let snippetOpen = $state(false);
+	let longOpen = $state(false);
 	let dismissible = $state(true);
 	let selectedSize = $state<NonNullable<DialogProps['size']>>('medium');
 	let selectedColor = $state<StatusColor>('info');
@@ -174,6 +175,22 @@
 		</Dialog>
 	</Section>
 	<Section {...sections[3]}>
+		<p>Long content scrolls inside the panel while the header stays available.</p>
+		<Button label="Open long content" onClick={() => (longOpen = true)} />
+		<Dialog
+			bind:open={longOpen}
+			header={{ title: 'Review the details', description: 'Scroll through the complete notes.' }}
+			size="small"
+		>
+			{#each Array.from({ length: 12 }, (_, index) => index + 1) as note (note)}
+				<p>
+					Note {note}. Keep the information you need together. This longer example lets you review
+					the content at your own pace, with the dialog title and close action still in reach.
+				</p>
+			{/each}
+		</Dialog>
+	</Section>
+	<Section {...sections[4]}>
 		<PropTable {props} />
 		<p>
 			The header title and optional description supply accessible names. Native dialog attributes,
