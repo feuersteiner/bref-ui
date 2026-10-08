@@ -24,7 +24,7 @@
 		);
 	}
 	:global(.glass:where(.surface-filled)) {
-		--glass-opacity: 92%;
+		--glass-opacity: 100%;
 	}
 	@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
 		:global(.glass.glass.glass) {

@@ -80,7 +80,7 @@
 		--surface-fill: color-mix(
 			in srgb,
 			var(--surface-color) var(--surface-strength),
-			var(--surface-base)
+			var(--surface-foreground)
 		);
 		--surface-content: var(--surface-base);
 	}
