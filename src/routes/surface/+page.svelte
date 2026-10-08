@@ -80,7 +80,7 @@
 			'variant',
 			'Variant',
 			'neutral',
-			'Transparent neutral, opaque tinted soft, or opaque filled panel.'
+			'Lightly tinted neutral, opaque tinted soft, or opaque filled panel.'
 		],
 		['spacing', 'Size', 'Omitted', 'Shared padding and gap; omitted means zero.'],
 		[
@@ -335,6 +335,21 @@
 							{/each}
 						</div>
 					{/each}
+					<div data-material-row>
+						{#each variants as variant (variant)}
+							<Surface
+								class="glass"
+								color="success"
+								{variant}
+								spacing="medium"
+								radius="small"
+								shadow="small"
+							>
+								<span>Success glass</span>
+								<span>{variant}</span>
+							</Surface>
+						{/each}
+					</div>
 					<div data-row>
 						{#each [false, true] as material (material)}
 							<button
@@ -391,7 +406,7 @@
 			{/each}
 			<Surface>
 				<strong>Defaults</strong>
-				<span>Transparent, square, with no spacing.</span>
+				<span>Lightly tinted, square, with no spacing.</span>
 			</Surface>
 		</div>
 		<div data-row>
