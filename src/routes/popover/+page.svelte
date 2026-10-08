@@ -75,12 +75,12 @@
 			description: 'Keep the panel closed; the trigger controls its own disabled state.'
 		},
 		{
-			name: 'Surface props',
-			type: 'SurfaceProps',
+			name: 'Surface styling props',
+			type: 'Selected SurfaceProps',
 			required: false,
-			default: 'medium spacing, small radius, medium shadow; otherwise Surface defaults',
+			default: 'soft glass, medium spacing, small radius, medium shadow',
 			description:
-				'Forwarded to the panel. Omitted variant, color and class use glass; explicit choices retain their paint. Width fill matches the trigger; omitted or fit grows with content.'
+				'Forwarded to the glass panel. Variant defaults to soft; explicit variants, colors and classes customize it. Width fill matches the trigger; omitted or fit grows with content.'
 		}
 	];
 </script>
@@ -112,8 +112,8 @@
 		</div>
 		<p>
 			The trigger snippet renders TextInput directly. Its input and click handlers open the panel;
-			click outside or press Escape to dismiss. The default glass panel fits its content and is at
-			least as wide as the trigger, within the viewport. Toggle wide to check the anchor minimum.
+			click outside or press Escape to dismiss. The default soft glass panel fits its content and is
+			at least as wide as the trigger, within the viewport. Toggle wide to check the anchor minimum.
 		</p>
 		<CodeSnippet {source} label="Popover usage code" />
 	</Section>
@@ -196,9 +196,9 @@
 		<PropTable {props} />
 		<p>
 			Popover accepts <a href={resolve('/surface#props')}>Surface props</a>
-			directly and forwards them to its panel. Explicit spacing, radius, shadow, paint and class choices
-			take precedence. Another instance uses a soft primary color, while the input and long content examples
-			use the default glass material.
+			for styling and layout, including class and style, without inheriting generic HTML attributes. Every
+			panel uses glass, with soft as the default variant. Explicit spacing, radius, shadow, variant, color
+			and class choices customize that material. Another instance uses a soft primary color.
 		</p>
 		<p>
 			Both snippets receive no arguments. The trigger owns its native attributes, events, accessible
@@ -253,7 +253,7 @@
 				{/snippet}
 				<p>This explicit fill width follows the trigger, wrapping these details naturally.</p>
 			</Popover>
-			<Popover bind:open={fitOpen} width="fit" class="glass" scroll>
+			<Popover bind:open={fitOpen} width="fit" scroll>
 				{#snippet trigger()}
 					<Button
 						label="Content width"
@@ -279,7 +279,7 @@
 		</div>
 		<p>
 			Short content keeps the anchor minimum. Explicit fill follows the anchor; fit follows content.
-			Both stay within the viewport. The content-width example opts into glass through its class.
+			Both stay within the viewport and use glass automatically.
 		</p>
 	</Section>
 </Page>

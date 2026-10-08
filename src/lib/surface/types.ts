@@ -11,6 +11,8 @@ export interface SurfaceBaseProps {
 	shadow?: BaseSize | boolean;
 	/** Optional hover treatment strength. */
 	hover?: BaseSize;
+	/** Enable translucent paint and backdrop blur. */
+	glass?: boolean;
 }
 
 export interface SurfaceProps extends SurfaceBaseProps, Omit<HTMLAttributes<HTMLElement>, 'color'> {

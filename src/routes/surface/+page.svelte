@@ -104,7 +104,8 @@
 			'Omitted',
 			'Optional hover/focus treatment; does not make the root interactive.'
 		],
-		['scroll', 'boolean', 'false', 'true sets overflow to auto; otherwise overflow stays visible.']
+		['scroll', 'boolean', 'false', 'true sets overflow to auto; otherwise overflow stays visible.'],
+		['glass', 'boolean', 'false', 'Enable translucent paint and backdrop blur.']
 	].map(([name, type, defaultValue, description]) => ({
 		name,
 		type,
@@ -126,7 +127,8 @@
 		<CodeSnippet {source} label="Surface usage code" />
 		<p>
 			Render Theme once to load the shared paint recipes. The typed surface helper applies the same
-			recipes to native HTML; component styles supply padding, radius and layout.
+			recipes to native HTML; pass <code>glass: true</code>
+			for translucent material. Component styles supply padding, radius and layout.
 		</p>
 		<div data-row>
 			{#each variants as variant (variant)}
@@ -270,7 +272,7 @@
 		<div data-stage id="surface-playground">
 			<Surface
 				{as}
-				class={glass ? 'glass' : undefined}
+				{glass}
 				{variant}
 				{color}
 				{spacing}
@@ -310,7 +312,7 @@
 	</Section>
 	<Section {...sections[3]}>
 		<p>
-			Soft surfaces use an opaque tint. Add class="glass" when a panel sits above visual content;
+			Soft surfaces use an opaque tint. Add the glass prop when a panel sits above visual content;
 			transparency and blur then belong to that panel alone. Keep controls inside it opaque to avoid
 			nested blur. Reduced transparency, increased contrast and unsupported backdrop filtering use a
 			solid fill.
@@ -322,13 +324,7 @@
 					{#each [false, true] as material (material)}
 						<div data-material-row>
 							{#each variants as variant (variant)}
-								<Surface
-									class={material ? 'glass' : undefined}
-									{variant}
-									spacing="medium"
-									radius="small"
-									shadow="small"
-								>
+								<Surface glass={material} {variant} spacing="medium" radius="small" shadow="small">
 									<span>{material ? 'Glass' : 'Base'}</span>
 									<span>{variant}</span>
 								</Surface>
@@ -338,7 +334,7 @@
 					<div data-material-row>
 						{#each variants as variant (variant)}
 							<Surface
-								class="glass"
+								glass
 								color="success"
 								{variant}
 								spacing="medium"
@@ -353,24 +349,26 @@
 					<div data-row>
 						{#each [false, true] as material (material)}
 							<button
-								class={[
-									surface({ variant: 'soft', color: 'primary', hover: 'medium' }),
-									material && 'glass'
-								]}
+								class={surface({
+									variant: 'soft',
+									color: 'primary',
+									hover: 'medium',
+									glass: material
+								})}
 								onclick={() => clicks++}
 							>
 								{material ? 'Glass' : 'Base'} action
 							</button>
 						{/each}
 						<button
-							class={[surface({ variant: 'soft', color: 'primary', hover: 'medium' }), 'glass']}
+							class={surface({ variant: 'soft', color: 'primary', hover: 'medium', glass: true })}
 							data-surface-pressed="true"
 							onclick={() => clicks++}
 						>
 							Pressed
 						</button>
 						<button
-							class={[surface({ variant: 'soft', color: 'primary', hover: 'medium' }), 'glass']}
+							class={surface({ variant: 'soft', color: 'primary', hover: 'medium', glass: true })}
 							disabled
 						>
 							Disabled
@@ -380,18 +378,21 @@
 			{/each}
 		</div>
 		<div data-backdrop="mesh">
-			<div class={['glass']} data-standalone-glass>
+			<div
+				class={surface({ color: 'background', glass: true, shadow: 'medium' })}
+				data-standalone-glass
+			>
 				<span>Standalone panel</span>
-				<p>The same class also composes with native panel styling.</p>
+				<p>The same helper also composes with native panel styling.</p>
 			</div>
 		</div>
 		<CodeSnippet
 			label="Opt-in glass usage"
-			source={`<Surface class="glass" variant="soft" spacing="medium" radius="small">
+			source={`<Surface glass variant="soft" spacing="medium" radius="small">
   Panel content
 </Surface>
 
-<button class={[surface({ variant: 'soft', color: 'primary', hover: 'medium' }), 'glass']}>
+<button class={surface({ variant: 'soft', color: 'primary', hover: 'medium', glass: true })}>
   Save
 </button>`}
 		/>
@@ -557,8 +558,6 @@
 	[data-standalone-glass] {
 		padding: 1rem;
 		border-radius: 0.5rem;
-		background: var(--color-background);
-		box-shadow: none;
 	}
 	[data-matrix-cell] {
 		min-width: 0;

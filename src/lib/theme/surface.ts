@@ -5,14 +5,16 @@ export const surface = ({
 	variant = 'neutral',
 	color = 'foreground',
 	shadow,
-	hover
+	hover,
+	glass = false
 }: SurfaceBaseProps = {}): string =>
 	[
 		'surface',
 		`surface-${variant}`,
 		`surface-${color}`,
 		shadow && `surface-shadow-${shadow === true ? 'medium' : shadow}`,
-		hover && `surface-hover-${hover}`
+		hover && `surface-hover-${hover}`,
+		glass && 'glass'
 	]
 		.filter(Boolean)
 		.join(' ');
