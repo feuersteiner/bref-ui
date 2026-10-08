@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
 	import { prefersReducedMotion } from 'svelte/motion';
+	import type { TransitionConfig } from 'svelte/transition';
 	import Surface from '../surface/surface.svelte';
 	import type { PopoverProps } from './types.js';
+	import type { SurfaceProps } from '../surface/types.ts';
 
 	let {
 		trigger,
@@ -14,17 +16,28 @@
 	const id = $props.id();
 	let anchor: HTMLDivElement;
 	let returnFocus: HTMLElement | null = null;
-	const defaultMaterial = $derived(
-		surfaceProps.variant === undefined &&
-			surfaceProps.color === undefined &&
-			surfaceProps.class === undefined
-	);
+
+	const flyGlass: (node: Element) => TransitionConfig = () => ({
+		duration: prefersReducedMotion.current ? 0 : 250,
+		easing: cubicOut,
+		css: (t: number, u: number) =>
+			`--surface-motion-offset: ${u * 10}px; --surface-motion-opacity: ${t}`
+	});
 
 	const showPopover = (node: HTMLDivElement) => {
 		if (node.matches(':popover-open')) return;
 		returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 		node.showPopover({ source: anchor.firstElementChild as HTMLElement });
 	};
+
+	const surfacePropsWithDefaults: SurfaceProps = $derived({
+		variant: 'soft',
+		spacing: 'medium',
+		radius: 'small',
+		...surfaceProps,
+		shadow: 'medium',
+		glass: true
+	});
 </script>
 
 <div data-trigger bind:this={anchor}>
@@ -36,7 +49,7 @@
 		{id}
 		popover="auto"
 		data-width={surfaceProps.width}
-		transition:fly={{ y: 10, duration: prefersReducedMotion.current ? 0 : 250 }}
+		transition:flyGlass
 		onintrostart={(event) => showPopover(event.currentTarget)}
 		onoutrostart={(event) => {
 			if (!event.currentTarget.matches(':popover-open')) return;
@@ -48,13 +61,7 @@
 				open = false;
 		}}
 	>
-		<Surface
-			{...surfaceProps}
-			spacing={surfaceProps.spacing ?? 'medium'}
-			radius={surfaceProps.radius ?? 'small'}
-			shadow={surfaceProps.shadow ?? 'medium'}
-			class={[defaultMaterial && 'glass', surfaceProps.class]}
-		>
+		<Surface {...surfacePropsWithDefaults} data-surface-motion>
 			<div data-content>{@render children()}</div>
 		</Surface>
 	</div>
@@ -83,8 +90,6 @@
 		background: transparent;
 		color: var(--color-foreground, black);
 		transition:
-			opacity var(--internal-duration),
-			transform var(--internal-duration),
 			display var(--internal-duration) allow-discrete,
 			overlay var(--internal-duration) allow-discrete;
 	}

@@ -96,15 +96,13 @@
 		--surface-content: var(--surface-foreground);
 	}
 	:global(.surface-shadow-small) {
-		--surface-shadow: 0 2px 6px color-mix(in srgb, var(--color-background, white) 8%, transparent);
+		--surface-shadow: 0 2px 6px color-mix(in srgb, black 8%, transparent);
 	}
 	:global(.surface-shadow-medium) {
-		--surface-shadow: 0 0.5rem 1.5rem
-			color-mix(in srgb, var(--color-background, white) 12%, transparent);
+		--surface-shadow: 0 0.5rem 1.5rem color-mix(in srgb, black 12%, transparent);
 	}
 	:global(.surface-shadow-large) {
-		--surface-shadow: 0 1.5rem 4rem
-			color-mix(in srgb, var(--color-background, white) 20%, transparent);
+		--surface-shadow: 0 1.5rem 4rem color-mix(in srgb, black 20%, transparent);
 	}
 	:global(.surface-hover-small) {
 		--surface-hover: 2%;
