@@ -32,7 +32,16 @@
 </script>
 
 <div data-size={size}>
-	<Popover bind:open variant="filled" spacing="small" radius="small" shadow scroll {disabled}>
+	<Popover
+		bind:open
+		variant="neutral"
+		class="glass"
+		spacing="x-small"
+		radius="0.75rem"
+		shadow
+		scroll
+		{disabled}
+	>
 		{#snippet trigger()}
 			<Trigger
 				{id}
@@ -51,7 +60,8 @@
 <style>
 	div {
 		--internal-height: 2.5rem;
-		--internal-padding: 0.85rem;
+		--internal-row-height: 2.125rem;
+		--internal-padding: 1rem;
 		--internal-icon-size: 1.25rem;
 		position: relative;
 		width: 100%;
@@ -59,12 +69,14 @@
 	}
 	div[data-size='small'] {
 		--internal-height: 2rem;
-		--internal-padding: 0.65rem;
+		--internal-row-height: 1.875rem;
+		--internal-padding: 0.75rem;
 		--internal-icon-size: 1rem;
 	}
 	div[data-size='large'] {
 		--internal-height: 3rem;
-		--internal-padding: 1rem;
+		--internal-row-height: 2.375rem;
+		--internal-padding: 1.125rem;
 		--internal-icon-size: 1.5rem;
 	}
 </style>

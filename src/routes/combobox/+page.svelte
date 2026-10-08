@@ -15,6 +15,10 @@
 		{ id: 'pear', label: 'Pear', disabled: true }
 	];
 	const sizes = ['small', 'medium', 'large'] as const;
+	const overflowItems: SelectOptionDataProps[] = Array.from({ length: 24 }, (_, index) => ({
+		id: `option-${index + 1}`,
+		label: `Option ${index + 1}: a long label that stays readable within a narrow viewport`
+	}));
 	let value = $state<string | undefined>('banana');
 	let many = $state<string[]>([]);
 	let formValue = $state<string | undefined>();
@@ -84,27 +88,57 @@
 				</div>
 			{/each}
 		</div>
-		<p>Size applies to the input and options. Popup spacing and corner radius stay small.</p>
+		<p>
+			Size applies to the input and options. Compact option rows sit in a contextual glass panel;
+			the input keeps its opaque field fill.
+		</p>
 	</Section>
 	<Section {...sections[2]}>
 		<div data-demo="row">
-			<Combobox aria-label="Medium neutral fruit" {items} variant="neutral" />
+			<div data-demo-size>
+				<label for="neutral-fruit">Neutral fruit</label>
+				<Combobox id="neutral-fruit" aria-label="Medium neutral fruit" {items} variant="neutral" />
+			</div>
 		</div>
-		<Combobox aria-label="Wide fruit" {items} wide />
+		<label for="wide-fruit">Wide fruit</label>
+		<Combobox id="wide-fruit" aria-label="Wide fruit" {items} wide />
 		<div data-demo="row">
-			<Combobox aria-label="Multiple fruit" {items} bind:value={many} />
+			<div data-demo-size>
+				<label for="multiple-fruit">Multiple fruit</label>
+				<Combobox id="multiple-fruit" aria-label="Multiple fruit" {items} bind:value={many} />
+			</div>
 			<label>
 				<Checkbox bind:checked={disabled} />
 				Disabled
 			</label>
-			<Combobox aria-label="Disabled fruit" {items} {disabled} />
-			<Combobox aria-label="Read-only fruit" {items} value="apple" readonly />
-			<Combobox
-				aria-label="Empty fruit"
-				items={[]}
-				emptyMessage={{ message: 'No fruit', icon: { name: 'search' } }}
-			/>
+			<div data-demo-size>
+				<label for="disabled-fruit">Disabled fruit</label>
+				<Combobox id="disabled-fruit" aria-label="Disabled fruit" {items} {disabled} />
+			</div>
+			<div data-demo-size>
+				<label for="readonly-fruit">Read-only fruit</label>
+				<Combobox id="readonly-fruit" aria-label="Read-only fruit" {items} value="apple" readonly />
+			</div>
+			<div data-demo-size>
+				<label for="empty-fruit">Empty fruit</label>
+				<Combobox
+					id="empty-fruit"
+					aria-label="Empty fruit"
+					items={[]}
+					emptyMessage={{ message: 'No fruit', icon: { name: 'search' } }}
+				/>
+			</div>
 		</div>
+		<label for="invalid-fruit">Invalid fruit</label>
+		<Combobox
+			id="invalid-fruit"
+			{items}
+			aria-invalid="true"
+			aria-describedby="invalid-fruit-help"
+		/>
+		<p id="invalid-fruit-help">
+			An explicit aria-invalid attribute gives the visible input an error edge.
+		</p>
 		<p role="status">Multiple: {many.join(', ') || 'none'}</p>
 		<p>Pear is disabled. The shared theme control switches light and dark modes.</p>
 	</Section>
@@ -128,6 +162,8 @@
 		<p>
 			Typing filters labels. Arrows move the active option, Enter selects, and Escape or blur
 			restores the selection. A composition Enter does not select. Form reset restores initial IDs.
+			Required validation uses the hidden native form control; it does not automatically set
+			aria-invalid on the visible input.
 		</p>
 	</Section>
 	<Section {...sections[4]}>
@@ -147,6 +183,14 @@
 			.
 			<code>bind:value</code>
 			tracks selected IDs; typed text remains private. No snippets are exposed.
+		</p>
+	</Section>
+	<Section {...sections[5]}>
+		<label for="overflow-fruit">Long choices</label>
+		<Combobox id="overflow-fruit" items={overflowItems} placeholder="Search 24 long choices" wide />
+		<p>
+			Long labels truncate within the panel. Arrow keys and Home or End move the active row into
+			view. Selected rows keep a primary tick; hover and keyboard activity use separate tonal fills.
 		</p>
 	</Section>
 </Page>

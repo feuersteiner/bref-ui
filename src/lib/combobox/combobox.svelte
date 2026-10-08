@@ -91,9 +91,10 @@
 >
 	<Popover
 		bind:open={() => open, setOpen}
-		variant="filled"
-		spacing="small"
-		radius="small"
+		variant="neutral"
+		class="glass"
+		spacing="x-small"
+		radius="0.75rem"
 		shadow
 		scroll
 		disabled={disabled || !!attributes.readonly}
