@@ -24,7 +24,7 @@
 	const isIcon = $derived(label === undefined);
 	const isLink = $derived(href !== undefined);
 	const common = $derived({
-		class: ['button', surface({ variant, color, shadow: 'small', hover: 'medium' }), className],
+		class: ['button', surface({ variant, color, hover: 'medium' }), className],
 		'aria-label': attributes['aria-label'] ?? (isIcon ? (icon?.label ?? icon?.name) : undefined),
 		'data-color': color,
 		'data-size': size,
@@ -74,53 +74,70 @@
 
 <style>
 	.button {
-		--internal-height: max(48px, 3rem);
-		--internal-padding: 1.125rem;
-		--internal-icon-size: calc(var(--internal-height) / 2 + 0.25rem);
+		--internal-height: max(40px, 2.5rem);
+		--internal-target: 24px;
+		--internal-padding: 1rem;
+		--internal-icon-size: 1.25rem;
+		--internal-font-size: 1rem;
 		box-sizing: border-box;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		text-transform: capitalize;
 		gap: 0.5rem;
-		min-height: var(--internal-height);
-		min-width: 24px;
+		min-height: max(var(--internal-height), var(--internal-target));
+		min-width: var(--internal-target);
 		padding: 0.25rem var(--internal-padding);
-		border-radius: 0.45rem;
+		border-radius: 0.625rem;
 		font: inherit;
-		font-size: 1rem;
+		font-size: var(--internal-font-size);
+		line-height: 1.25;
 		text-decoration: none;
 	}
 	.button[data-size='x-small'] {
 		--internal-height: max(28px, 1.75rem);
-		--internal-padding: 0.5rem;
+		--internal-padding: 0.625rem;
+		--internal-icon-size: 1rem;
+		--internal-font-size: 0.8125rem;
 	}
 	.button[data-size='small'] {
-		--internal-height: max(40px, 2.5rem);
-		--internal-padding: 0.875rem;
+		--internal-height: max(32px, 2rem);
+		--internal-padding: 0.75rem;
+		--internal-icon-size: 1.125rem;
+		--internal-font-size: 0.875rem;
 	}
 	.button[data-size='large'] {
-		--internal-height: max(64px, 4rem);
-		--internal-padding: 1.5rem;
+		--internal-height: max(48px, 3rem);
+		--internal-padding: 1.25rem;
+		--internal-icon-size: 1.5rem;
 	}
 	.button[data-size='x-large'] {
-		--internal-height: max(80px, 5rem);
-		--internal-padding: 2rem;
+		--internal-height: max(56px, 3.5rem);
+		--internal-padding: 1.5rem;
+		--internal-icon-size: 1.75rem;
+		--internal-font-size: 1.125rem;
 	}
 	.button[data-kind='icon'] {
-		width: var(--internal-height);
-		height: var(--internal-height);
+		width: max(var(--internal-height), var(--internal-target));
+		height: max(var(--internal-height), var(--internal-target));
 		padding: 0;
 		font-size: var(--internal-icon-size);
 	}
 	span {
 		display: inline-flex;
+		align-items: center;
+		flex-shrink: 0;
 		font-size: var(--internal-icon-size);
+		line-height: 1;
 	}
 	.button[data-wide] {
 		width: 100%;
 	}
 	.button[data-rounded] {
 		border-radius: 50%;
+	}
+	@media (pointer: coarse) {
+		.button {
+			--internal-target: 44px;
+		}
 	}
 </style>

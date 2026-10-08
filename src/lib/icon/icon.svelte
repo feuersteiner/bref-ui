@@ -29,6 +29,8 @@
 		height: 1em;
 		align-items: center;
 		justify-content: center;
+		flex-shrink: 0;
+		vertical-align: middle;
 		font-family: 'Material Symbols Outlined';
 		font-style: normal;
 		font-weight: 100;
@@ -51,11 +53,11 @@
 	}
 
 	.x-small {
-		font-size: 0.875rem;
+		font-size: 1rem;
 	}
 
 	.small {
-		font-size: 1rem;
+		font-size: 1.25rem;
 	}
 
 	.medium {
@@ -63,11 +65,11 @@
 	}
 
 	.large {
-		font-size: 2.5rem;
+		font-size: 2rem;
 	}
 
 	.x-large {
-		font-size: 5rem;
+		font-size: 2.5rem;
 	}
 
 	.primary {
