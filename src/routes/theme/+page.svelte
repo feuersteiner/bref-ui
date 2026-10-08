@@ -131,15 +131,6 @@
 				</div>
 			{/each}
 		</div>
-		<p>
-			Theme also supplies <code>--edge-highlight</code>
-			, a white highlight at 45% opacity in light mode and 14% in dark mode;
-			<code>--shadow-color</code>
-			, a black base to mix with transparency for shadows; and
-			<code>--scrim</code>
-			, black at 32% in light mode and 56% in dark mode. These follow the selected mode, including system
-			preference, independently of the palette.
-		</p>
 	</Section>
 	<Section {...sections[4]}>
 		<p>
