@@ -156,6 +156,14 @@
 			automatically.
 		</p>
 		<p>
+			Body text uses the <code>--font-sans</code>
+			system sans fallback without loading a text font. Set
+			<code>--font-text</code>
+			to use your own font, as this gallery does, or customize
+			<code>--font-sans</code>
+			. Theme does not set font weight or smoothing.
+		</p>
+		<p>
 			Theme composes internal colors, surfaces, fonts and styles components. Surface and Button
 			share the surface paint recipe. Use the typed helper from <code>bref-ui</code>
 			on native HTML; copied sources include it at
