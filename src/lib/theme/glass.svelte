@@ -10,10 +10,10 @@
 		background: var(--glass-paint);
 		color: var(--surface-content, var(--color-foreground, black));
 		box-shadow:
-			inset 0 1px 0 var(--edge-highlight, rgb(255 255 255 / 45%)),
+			inset 0 1px 0 color-mix(in srgb, var(--color-foreground, black) 8%, transparent),
 			var(
 				--surface-shadow,
-				0 0.5rem 1.5rem color-mix(in srgb, var(--shadow-color, #000) 12%, transparent)
+				0 0.5rem 1.5rem color-mix(in srgb, var(--color-background, white) 12%, transparent)
 			);
 	}
 	:global(.glass:where(.surface-neutral)) {
