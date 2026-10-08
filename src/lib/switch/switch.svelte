@@ -67,7 +67,7 @@
 		border-radius: 50%;
 		background: var(--color-background, white);
 		color: var(--color-foreground, black);
-		box-shadow: 0 1px 2px color-mix(in srgb, var(--shadow-color, #000) 12%, transparent);
+		box-shadow: 0 1px 2px color-mix(in srgb, var(--color-background, white) 12%, transparent);
 		font-size: calc(var(--thumb-size) * 0.7);
 		transform: translateY(-50%);
 		transition: left 150ms ease;
