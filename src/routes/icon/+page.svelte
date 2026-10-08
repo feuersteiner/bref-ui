@@ -148,6 +148,10 @@
 		/>
 	</Section>
 	<Section {...sections[2]}>
+		<p>
+			The five sizes use 16, 20, 24, 32 and 40 pixels at the default root font size. Outline and
+			filled icons keep the same light stroke weight and align with surrounding text.
+		</p>
 		<div data-demo="matrix">
 			<p>
 				Representative size, color and fill axes stay visible without mounting every combination.
