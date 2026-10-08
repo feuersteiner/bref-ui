@@ -57,10 +57,10 @@
 	button[aria-selected='true'] {
 		background: color-mix(in srgb, var(--color-primary) 8%, transparent);
 	}
-	button:hover:not(:disabled) {
+	button:hover:not(:disabled, [data-active]) {
 		background: color-mix(in srgb, var(--color-foreground) 6%, transparent);
 	}
-	button[aria-selected='true']:hover:not(:disabled) {
+	button[aria-selected='true']:hover:not(:disabled, [data-active]) {
 		background: color-mix(in srgb, var(--color-primary) 14%, transparent);
 	}
 	button[data-active] {

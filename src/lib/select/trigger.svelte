@@ -64,7 +64,9 @@
 		font-weight: 200;
 		line-height: 1.4;
 	}
-	[data-placeholder],
+	[data-placeholder] {
+		color: color-mix(in srgb, var(--color-muted) 90%, var(--color-foreground));
+	}
 	[data-icon] {
 		color: var(--color-muted);
 	}
