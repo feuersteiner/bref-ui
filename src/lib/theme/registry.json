@@ -4,6 +4,7 @@
 		"cli-theme.svelte",
 		"colors.svelte",
 		"surfaces.svelte",
+		"glass.svelte",
 		"fonts.svelte",
 		"styles.svelte",
 		"surface.ts"
