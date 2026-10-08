@@ -82,17 +82,10 @@
 <style>
 	div {
 		--progress-height: 0.375rem;
-		--progress-track: color-mix(
-			in srgb,
-			color-mix(in srgb, var(--color-foreground) 16%, var(--color-background)) 85%,
-			transparent
-		);
-		--progress-fill: color-mix(
-			in srgb,
-			color-mix(in srgb, var(--color-primary) 88%, var(--color-background)) 85%,
-			transparent
-		);
-		--progress-highlight: color-mix(in srgb, var(--color-foreground) 28%, transparent);
+		--progress-track: color-mix(in srgb, var(--color-foreground) 22%, var(--color-background));
+		--progress-fill: var(--color-primary);
+		--progress-highlight: color-mix(in srgb, white 35%, transparent);
+		--progress-travel: 233.333%;
 		position: relative;
 		display: block;
 		width: 100%;
@@ -112,11 +105,6 @@
 		border-radius: 999px;
 		appearance: none;
 		background: var(--progress-track);
-		box-shadow:
-			inset 0 1px 0 color-mix(in srgb, var(--color-foreground) 16%, transparent),
-			0 2px 6px color-mix(in srgb, var(--color-foreground) 8%, transparent);
-		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
-		backdrop-filter: blur(0.5rem) saturate(120%);
 		overflow: hidden;
 	}
 	progress::-webkit-progress-bar {
@@ -125,12 +113,10 @@
 	progress::-webkit-progress-value {
 		background: var(--progress-fill);
 		border-radius: 999px;
-		box-shadow: inset 0 1px 0 var(--progress-highlight);
 	}
 	progress::-moz-progress-bar {
 		background: var(--progress-fill);
 		border-radius: 999px;
-		box-shadow: inset 0 1px 0 var(--progress-highlight);
 	}
 	div[data-unknown='true'] progress::-webkit-progress-value {
 		background: transparent;
@@ -143,14 +129,19 @@
 		position: absolute;
 		top: calc(50% - var(--progress-height) / 2);
 		left: 0;
-		width: 100%;
+		width: 30%;
 		height: var(--progress-height);
 		border-radius: 999px;
 		background: var(--progress-fill);
-		box-shadow: inset 0 1px 0 var(--progress-highlight);
-		transform-origin: left center;
 		animation: sweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 		pointer-events: none;
+	}
+	div:dir(rtl) {
+		--progress-travel: -233.333%;
+	}
+	div[data-unknown='true']:dir(rtl)::after {
+		left: auto;
+		right: 0;
 	}
 	div[data-seekable='true'] {
 		min-height: 2.75rem;
@@ -180,13 +171,10 @@
 		width: 1.25rem;
 		height: 1.25rem;
 		border-radius: 50%;
-		background: color-mix(in srgb, var(--color-background) 25%, transparent);
-		border: 1px solid color-mix(in srgb, var(--color-foreground) 30%, transparent);
+		background: var(--progress-fill);
 		box-shadow:
 			inset 0 1px 0 var(--progress-highlight),
-			0 2px 6px color-mix(in srgb, var(--color-foreground) 12%, transparent);
-		-webkit-backdrop-filter: blur(0.125rem) saturate(120%);
-		backdrop-filter: blur(0.125rem) saturate(120%);
+			0 2px 6px color-mix(in srgb, black 18%, transparent);
 		transform: translate(var(--internal-thumb-offset, -50%), -50%);
 		transition:
 			transform 150ms ease,
@@ -198,21 +186,21 @@
 			transform: translate(var(--internal-thumb-offset, -50%), -50%) scale(1.3);
 			box-shadow:
 				inset 0 1px 0 var(--progress-highlight),
-				0 3px 10px color-mix(in srgb, var(--color-foreground) 20%, transparent);
+				0 3px 10px color-mix(in srgb, black 22%, transparent);
 		}
 	}
 	input:not(:disabled):active + span {
 		transform: translate(var(--internal-thumb-offset, -50%), -50%) scale(1.5);
 		box-shadow:
 			inset 0 1px 0 var(--progress-highlight),
-			0 4px 14px color-mix(in srgb, var(--color-foreground) 24%, transparent),
-			0 0 0 4px color-mix(in srgb, var(--color-foreground) 12%, transparent);
+			0 4px 14px color-mix(in srgb, black 24%, transparent),
+			0 0 0 4px color-mix(in srgb, var(--color-primary) 18%, transparent);
 	}
 	span:dir(rtl) {
 		--internal-thumb-offset: 50%;
 	}
 	input:focus-visible + span {
-		outline: 2px solid var(--color-foreground);
+		outline: 2px solid var(--color-primary);
 		outline-offset: 3px;
 	}
 	input:disabled + span {
@@ -220,13 +208,10 @@
 	}
 	@keyframes sweep {
 		0% {
-			transform: translateX(0) scaleX(0);
-		}
-		50% {
-			transform: translateX(25%) scaleX(0.5);
+			transform: translateX(0);
 		}
 		100% {
-			transform: translateX(100%) scaleX(0);
+			transform: translateX(var(--progress-travel));
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
@@ -235,22 +220,29 @@
 		}
 		div[data-unknown='true']::after {
 			animation: none;
-			transform: translateX(32.5%) scaleX(0.35);
+			transform: translateX(calc(var(--progress-travel) / 2));
 		}
 	}
 	@media (forced-colors: active) {
+		div {
+			--progress-track: Canvas;
+			--progress-fill: Highlight;
+		}
+		div[data-unknown='true']::after {
+			forced-color-adjust: none;
+		}
+		input:focus-visible + span {
+			outline-color: Highlight;
+		}
 		progress {
+			forced-color-adjust: none;
 			border: 1px solid CanvasText;
 			box-shadow: none;
-			-webkit-backdrop-filter: none;
-			backdrop-filter: none;
 		}
 		span {
 			background: Highlight;
-			border-color: HighlightText;
+			border: 1px solid HighlightText;
 			box-shadow: none;
-			-webkit-backdrop-filter: none;
-			backdrop-filter: none;
 		}
 	}
 </style>
