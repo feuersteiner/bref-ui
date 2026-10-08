@@ -22,7 +22,7 @@
 		padding: 0.75rem 0.5rem 0.25rem;
 		color: var(--color-muted);
 		font-size: 0.8em;
-		font-weight: 600;
+		font-weight: inherit;
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
 		overflow-wrap: anywhere;
@@ -35,7 +35,6 @@
 	}
 	p {
 		margin: 0;
-		font-weight: 400;
 		letter-spacing: normal;
 		text-transform: none;
 	}

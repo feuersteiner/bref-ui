@@ -10,9 +10,6 @@
 </button>
 
 <style>
-	* {
-		transition: all 150ms;
-	}
 	button {
 		position: relative;
 		z-index: 1;
@@ -21,23 +18,25 @@
 		justify-content: center;
 		min-width: var(--tree-action-size);
 		min-height: var(--tree-action-size);
-		padding: 0.25rem 0.5rem;
+		padding: 0;
 		border: 0;
-		border-radius: 999px;
+		border-radius: 0.375rem;
 		background: transparent;
 		color: inherit;
 		font: inherit;
 		cursor: pointer;
+		transition: background-color 150ms ease;
 	}
 	span {
 		display: inline-flex;
-		font-size: 1.25em;
+		font-size: 1.125em;
+		transition: transform 150ms ease;
 	}
 	button[aria-expanded='true'] span {
 		transform: rotate(90deg);
 	}
 	button:not(:disabled):hover {
-		background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+		background: color-mix(in srgb, var(--color-foreground) 8%, transparent);
 	}
 	button:focus-visible {
 		outline: 2px solid var(--color-primary);

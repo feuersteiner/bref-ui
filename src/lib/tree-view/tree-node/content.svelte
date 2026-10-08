@@ -11,26 +11,28 @@
 </button>
 
 <style>
-	* {
-		transition: all 150ms;
-	}
 	button {
-		display: inline-flex;
+		display: grid;
+		grid-template-columns: 1em minmax(0, 1fr);
 		align-items: center;
 		justify-content: start;
 		flex: 1;
 		gap: 0.5rem;
 		min-width: 0;
 		min-height: var(--tree-action-size);
-		padding: 0.25rem 0.5rem;
+		padding: 0.125rem 0.375rem;
 		border: 0;
-		border-radius: 999px;
+		border-radius: 0.375rem;
 		outline: none;
 		background: transparent;
 		color: inherit;
 		font: inherit;
 		text-align: start;
 		cursor: pointer;
+	}
+	span {
+		grid-column: 2;
+		min-width: 0;
 	}
 	button::before {
 		position: absolute;
@@ -45,11 +47,6 @@
 	button:disabled {
 		color: var(--color-muted);
 		cursor: default;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			transition: none;
-		}
 	}
 	@media (forced-colors: active) {
 		button:disabled {

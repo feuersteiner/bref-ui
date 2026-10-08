@@ -35,7 +35,7 @@
 	in:fly|global={{ y: -4, duration: prefersReducedMotion.current ? 0 : 150 }}
 	data-selected={selected}
 	data-disabled={item.disabled}
-	style:padding-left={`calc(0.25rem + ${indent * 1.25}rem)`}
+	style:padding-left={`calc(0.25rem + ${indent} * var(--tree-action-size))`}
 >
 	{#if item.children?.length}
 		<ChevronButton
@@ -65,9 +65,6 @@
 {/if}
 
 <style>
-	* {
-		transition: all 150ms;
-	}
 	div[data-selected] {
 		box-sizing: border-box;
 		position: relative;
@@ -76,9 +73,9 @@
 		gap: 0.25rem;
 		min-height: var(--tree-height);
 		padding: 0.125rem 0.25rem;
-		border: 1px solid transparent;
-		border-radius: 999px;
+		border-radius: 0.375rem;
 		overflow-wrap: anywhere;
+		transition: background-color 150ms ease;
 	}
 	[data-spacer] {
 		flex: 0 0 var(--tree-action-size);
@@ -90,22 +87,21 @@
 		display: none;
 	}
 	div[data-selected='true'] {
-		border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
-		background: color-mix(in srgb, var(--color-primary) 16%, transparent);
-		color: var(--color-primary);
+		background: color-mix(in srgb, var(--color-primary) 10%, var(--color-background));
+		color: var(--color-foreground);
 	}
 	div[data-selected='false']:not([data-disabled='true']):hover {
-		background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+		background: color-mix(in srgb, var(--color-foreground) 5%, transparent);
 	}
 	@media (prefers-reduced-motion: reduce) {
-		* {
+		div[data-selected] {
 			transition: none;
 		}
 	}
 	@media (forced-colors: active) {
 		div[data-selected='true'] {
-			border-color: Highlight;
-			color: Highlight;
+			outline: 1px solid Highlight;
+			outline-offset: -1px;
 		}
 	}
 </style>

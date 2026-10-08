@@ -144,6 +144,10 @@
 		<CodeSnippet {source} label="Tree view usage code" />
 	</Section>
 	<Section {...sections[1]}>
+		<p>
+			Labels share an icon column, and each nesting level advances by the disclosure column.
+			Selected rows use a quiet fill; touch controls receive larger targets.
+		</p>
 		<div data-controls>
 			<div data-control>
 				<label for="tree-view-size">Size</label>
@@ -215,6 +219,7 @@
 			defaultExpanded
 		/>
 		<TreeView items={[]} label="Empty files" />
+		<p>An empty tree renders no rows. Custom node snippets own their styling and behavior.</p>
 		<TreeView items={[{ id: 'props-link', label: 'Tree view props' }]} label="Custom links">
 			{#snippet node(item)}
 				<a href="#props">{item.label}</a>

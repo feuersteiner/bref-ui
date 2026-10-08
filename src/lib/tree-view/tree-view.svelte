@@ -38,28 +38,35 @@
 </div>
 
 <style>
-	div {
-		--tree-height: 2.75rem;
-		--tree-action-size: 2.25rem;
+	div[role='group'] {
+		--tree-height: 2rem;
+		--tree-action-size: 1.5rem;
 		display: grid;
 		gap: 0.375rem;
 		min-width: 0;
 		color: var(--color-foreground);
 		font: inherit;
+		line-height: 1.25;
 	}
 	div[data-size='small'] {
-		--tree-height: 2.5rem;
-		--tree-action-size: 2rem;
+		--tree-height: 1.75rem;
 		font-size: 0.875rem;
 	}
 	div[data-size='large'] {
-		--tree-height: 3.25rem;
-		--tree-action-size: 2.5rem;
+		--tree-height: 2.5rem;
+		--tree-action-size: 2rem;
 		font-size: 1.125rem;
 	}
 	div[data-nodes] {
 		display: flex;
 		flex-direction: column;
-		gap: 0.25rem;
+		gap: 0.125rem;
+		min-width: 0;
+	}
+	@media (pointer: coarse) {
+		div[role='group'] {
+			--tree-height: 2.75rem;
+			--tree-action-size: 2.75rem;
+		}
 	}
 </style>
