@@ -131,6 +131,15 @@
 				</div>
 			{/each}
 		</div>
+		<p>
+			Theme also supplies <code>--edge-highlight</code>
+			, a white highlight at 45% opacity in light mode and 14% in dark mode;
+			<code>--shadow-color</code>
+			, a black base to mix with transparency for shadows; and
+			<code>--scrim</code>
+			, black at 32% in light mode and 56% in dark mode. These follow the selected mode, including system
+			preference, independently of the palette.
+		</p>
 	</Section>
 	<Section {...sections[4]}>
 		<p>
@@ -154,6 +163,14 @@
 		<p>
 			Theme applies a global reset and loads Material Symbols. Components do not import it
 			automatically.
+		</p>
+		<p>
+			Body text uses the <code>--font-sans</code>
+			system sans fallback without loading a text font. Set
+			<code>--font-text</code>
+			to use your own font, as this gallery does, or customize
+			<code>--font-sans</code>
+			. Theme does not set font weight or smoothing.
 		</p>
 		<p>
 			Theme composes internal colors, surfaces, fonts and styles components. Surface and Button

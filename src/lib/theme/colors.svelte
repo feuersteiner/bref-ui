@@ -68,6 +68,9 @@
 		--color-success: var(--color-success-light);
 		--color-warning: var(--color-warning-light);
 		--color-error: var(--color-error-light);
+		--edge-highlight: rgb(255 255 255 / 45%);
+		--shadow-color: #000;
+		--scrim: rgb(0 0 0 / 32%);
 	}
 
 	:global([data-theme='dark']),
@@ -82,6 +85,9 @@
 		--color-success: var(--color-success-dark);
 		--color-warning: var(--color-warning-dark);
 		--color-error: var(--color-error-dark);
+		--edge-highlight: rgb(255 255 255 / 14%);
+		--shadow-color: #000;
+		--scrim: rgb(0 0 0 / 56%);
 	}
 
 	@media (prefers-color-scheme: dark) {
@@ -97,6 +103,9 @@
 			--color-success: var(--color-success-dark);
 			--color-warning: var(--color-warning-dark);
 			--color-error: var(--color-error-dark);
+			--edge-highlight: rgb(255 255 255 / 14%);
+			--shadow-color: #000;
+			--scrim: rgb(0 0 0 / 56%);
 		}
 	}
 </style>

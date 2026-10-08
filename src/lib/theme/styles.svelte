@@ -1,7 +1,13 @@
 <style>
+	:global(:root) {
+		--font-sans:
+			ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	}
+
 	:global(body) {
 		background: var(--color-background);
 		color: var(--color-foreground);
+		font-family: var(--font-text, var(--font-sans));
 	}
 
 	:global(*) {
