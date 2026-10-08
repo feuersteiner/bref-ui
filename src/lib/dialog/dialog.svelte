@@ -102,7 +102,8 @@
 		overflow: visible;
 	}
 	[data-surface] {
-		--surface-shadow: 0 1.5rem 4rem color-mix(in srgb, var(--shadow-color, #000) 20%, transparent);
+		--surface-shadow: 0 1.5rem 4rem
+			color-mix(in srgb, var(--color-background, white) 20%, transparent);
 		display: flex;
 		flex-direction: column;
 		max-height: calc(100dvh - 2rem);
@@ -125,7 +126,7 @@
 		--internal-width: 72rem;
 	}
 	dialog::backdrop {
-		background: var(--scrim, rgb(0 0 0 / 48%));
+		background: color-mix(in srgb, var(--color-background, white) 48%, transparent);
 		opacity: 0;
 		transition: opacity 300ms ease;
 	}
