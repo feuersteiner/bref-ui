@@ -8,10 +8,11 @@
 		--surface-base: var(--color-background, white);
 		--surface-foreground: var(--color-foreground, black);
 		--surface-tint: var(--surface-color);
-		--surface-soft-strength: 12%;
-		--surface-strength: 0%;
+		--surface-soft-strength: 24%;
+		--surface-neutral-strength: 2%;
+		--surface-strength: var(--surface-neutral-strength);
 		--surface-hover: 0%;
-		--surface-fill: transparent;
+		--surface-fill: color-mix(in srgb, var(--surface-tint) var(--surface-strength), transparent);
 		--surface-border: transparent;
 		--surface-content: var(--surface-color);
 		--surface-neutral-content: color-mix(
@@ -139,7 +140,7 @@
 				[data-surface-disabled='true']
 			):is(:hover, :focus-visible, [data-surface-pressed='true'])
 	) {
-		--surface-fill: color-mix(in srgb, var(--surface-tint) var(--surface-hover), transparent);
+		--surface-strength: calc(var(--surface-neutral-strength) + var(--surface-hover));
 		--surface-content: var(--surface-neutral-content);
 	}
 	:global(
