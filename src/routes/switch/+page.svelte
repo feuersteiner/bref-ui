@@ -86,6 +86,17 @@
 		</form>
 		<p role="status">Submitted: {submitted}</p>
 	</Section>
+	<Section {...sections[4]}>
+		<div>
+			<label><Switch aria-invalid="true" /> Invalid off</label>
+			<label><Switch checked aria-invalid="true" /> Invalid on</label>
+			<label><Switch /> Keyboard focus</label>
+		</div>
+		<p>
+			Tab through these controls to check focus. Native validation after interaction and
+			aria-invalid retain a quiet error edge without hiding focus.
+		</p>
+	</Section>
 </Page>
 
 <style>
@@ -98,6 +109,7 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
+		min-block-size: 2.75rem;
 	}
 	form {
 		display: flex;

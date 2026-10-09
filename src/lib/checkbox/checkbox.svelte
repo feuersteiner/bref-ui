@@ -21,12 +21,24 @@
 		--internal-size: 1.25rem;
 		--internal-tint: var(--color-foreground, black);
 		--internal-strength-light: 4%;
-		--internal-strength-dark: 16%;
-		--internal-border: light-dark(
-			color-mix(in srgb, var(--color-foreground, black) 12%, transparent),
-			color-mix(in srgb, var(--color-foreground, black) 30%, transparent)
+		--internal-strength-dark: 8%;
+		--internal-fill: light-dark(
+			color-mix(
+				in srgb,
+				var(--internal-tint) var(--internal-strength-light),
+				var(--color-background, white)
+			),
+			color-mix(
+				in srgb,
+				var(--internal-tint) var(--internal-strength-dark),
+				var(--color-background, white)
+			)
 		);
-		--internal-highlight: color-mix(in srgb, var(--color-foreground, black) 12%, transparent);
+		--internal-border: color-mix(
+			in srgb,
+			var(--color-foreground, black) 48%,
+			var(--color-background, white)
+		);
 		box-sizing: border-box;
 		position: relative;
 		display: inline-flex;
@@ -37,30 +49,14 @@
 		block-size: var(--internal-size);
 		border: 1px solid var(--internal-border);
 		border-radius: calc(var(--internal-size) * 0.2);
-		background: color-mix(
-			in srgb,
-			light-dark(
-					color-mix(
-						in srgb,
-						var(--internal-tint) var(--internal-strength-light),
-						var(--color-background, white)
-					),
-					color-mix(
-						in srgb,
-						var(--internal-tint) var(--internal-strength-dark),
-						var(--color-background, white)
-					)
-				)
-				85%,
-			transparent
-		);
-		box-shadow: inset 0 1px 0 var(--internal-highlight);
+		background: var(--internal-fill);
 		color: var(--color-foreground, black);
 		font-size: calc(var(--internal-size) * 0.8);
 		vertical-align: middle;
-		transition: all 150ms ease;
-		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
-		backdrop-filter: blur(0.5rem) saturate(120%);
+		transition:
+			background-color 150ms ease,
+			border-color 150ms ease,
+			color 150ms ease;
 	}
 	input {
 		position: absolute;
@@ -89,26 +85,35 @@
 		--internal-size: 1.75rem;
 	}
 	div:has(input:hover:not(:disabled):not(:checked)) {
-		--internal-strength-light: 6%;
-		--internal-strength-dark: 20%;
+		--internal-strength-light: 8%;
+		--internal-strength-dark: 12%;
 	}
 	div:has(input:checked) {
 		--internal-tint: var(--color-primary, blue);
 		--internal-strength-light: 88%;
 		--internal-strength-dark: 88%;
-		--internal-border: color-mix(in srgb, var(--internal-tint) 68%, var(--color-foreground, black));
-		--internal-highlight: color-mix(in srgb, var(--color-foreground, black) 28%, transparent);
-		color: color-mix(in srgb, var(--color-background, white) 90%, var(--internal-tint));
+		--internal-border: var(--internal-fill);
+		color: var(--color-background, white);
 	}
 	div:has(input:checked:hover:not(:disabled)) {
 		--internal-strength-light: 92%;
 		--internal-strength-dark: 92%;
 	}
+	div:has(input:active:not(:disabled)) {
+		--internal-strength-light: 12%;
+		--internal-strength-dark: 16%;
+	}
+	div:has(input:checked:active:not(:disabled)) {
+		--internal-strength-light: 96%;
+		--internal-strength-dark: 96%;
+	}
+	div:has(input:user-invalid),
+	div:has(input[aria-invalid='true']) {
+		--internal-border: var(--color-error, #bc2436);
+	}
 	div:has(input:focus-visible) {
-		--internal-border: color-mix(in srgb, var(--color-primary, blue) 55%, transparent);
-		box-shadow:
-			inset 0 1px 0 var(--internal-highlight),
-			0 0 0 3px color-mix(in srgb, var(--color-primary, blue) 16%, transparent);
+		outline: 2px solid var(--color-primary, blue);
+		outline-offset: 3px;
 	}
 	div:has(input:disabled) {
 		opacity: 0.5;
