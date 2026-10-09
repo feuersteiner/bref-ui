@@ -8,18 +8,23 @@
 
 {#if icon}
 	{#key icon.name}
-		<span data-icon in:fly>
+		<i data-icon in:fly>
 			<Icon {...icon} label={undefined} size={undefined} color={undefined} />
-		</span>
+		</i>
 	{/key}
 {/if}
 <span>{label}</span>
 
 <style>
 	[data-icon] {
+		all: unset;
 		display: inline-flex;
 		align-items: center;
 		flex-shrink: 0;
 		font-size: var(--pill-icon-size, 1.125rem);
+	}
+	span {
+		flex: 1;
+		text-justify: left;
 	}
 </style>

@@ -19,4 +19,5 @@ export type PillProps = Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'color
 		onDelete?: () => void;
 		swoosh?: boolean;
 		wide?: boolean;
+		glass?: boolean;
 	};

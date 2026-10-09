@@ -9,6 +9,7 @@
 		color = 'foreground',
 		size = 'medium',
 		variant = 'neutral',
+		glass,
 		...attributes
 	}: PillGroupProps = $props();
 </script>
@@ -21,6 +22,7 @@
 			{color}
 			{size}
 			{variant}
+			{glass}
 			onDelete={onDelete ? () => onDelete?.(item.id) : undefined}
 		/>
 	{/snippet}

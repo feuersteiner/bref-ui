@@ -8,6 +8,7 @@ export type PillGroupProps = Omit<HTMLAttributes<HTMLUListElement>, 'children' |
 	color?: PillProps['color'];
 	size?: PillProps['size'];
 	variant?: PillProps['variant'];
+	glass?: PillProps['glass'];
 };
 export type PillGroupContainerProps = Omit<HTMLAttributes<HTMLUListElement>, 'children'> &
 	Pick<PillGroupProps, 'items' | 'size'> & {
