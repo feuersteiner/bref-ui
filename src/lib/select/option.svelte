@@ -18,6 +18,7 @@
 		align-items: center;
 		gap: 0.6rem;
 		width: 100%;
+		min-width: 0;
 		min-height: var(--internal-row-height);
 		padding: 0.375rem 0.65rem;
 		border: 0;

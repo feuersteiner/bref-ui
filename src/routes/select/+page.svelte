@@ -1,4 +1,5 @@
 <script lang="ts">
+	/* eslint-disable max-lines -- Keep the selection and overflow regression demos together. */
 	import { Checkbox, Select } from '$lib/index.js';
 	import type { SelectOptionDataProps } from '$lib/select/types.js';
 	import Page from '../components/page-container.svelte';
@@ -21,6 +22,7 @@
 	}));
 	let value = $state<string | undefined>();
 	let many = $state<string[]>([]);
+	let overflowMany = $state<string[]>(['option-1', 'option-2', 'option-3']);
 	let disabled = $state(false);
 	let changeCount = $state(0);
 	const source = `<script>
@@ -119,6 +121,10 @@
 		<label for="overflow-choices">Overflow choices</label>
 		<Select id="overflow-choices" items={overflowItems} placeholder="Open 24 long options" />
 		<p>Long labels truncate. Selected rows keep a tick; hover uses a neutral fill.</p>
+		<div data-demo="narrow">
+			<label for="multiple-overflow">Multiple long labels with icons</label>
+			<Select id="multiple-overflow" items={overflowItems} bind:value={overflowMany} />
+		</div>
 	</Section>
 	<Section {...sections[2]}>
 		<label for="labeled-status">Status</label>
@@ -141,6 +147,12 @@
 </Page>
 
 <style>
+	[data-demo='narrow'] {
+		display: grid;
+		gap: 0.5rem;
+		width: min(100%, 16rem);
+		min-width: 0;
+	}
 	[data-demo='row'] {
 		display: flex;
 		flex-wrap: wrap;
