@@ -21,7 +21,8 @@
 <style>
 	div {
 		display: grid;
-		gap: 0.375rem;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.125rem;
 		min-width: 0;
 	}
 </style>

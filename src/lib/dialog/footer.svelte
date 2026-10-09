@@ -20,7 +20,7 @@
 		align-items: center;
 		justify-content: flex-end;
 		flex-wrap: wrap;
-		gap: 0.5rem;
-		padding: 0.75rem 1.5rem 1.5rem;
+		gap: 0.75rem;
+		padding: 0 1.75rem 1.5rem;
 	}
 </style>

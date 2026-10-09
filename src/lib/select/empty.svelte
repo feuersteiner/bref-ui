@@ -14,9 +14,8 @@
 	p {
 		display: flex;
 		align-items: center;
-		flex-direction: column;
-		justify-content: center;
-		gap: 0.5rem;
+		justify-content: flex-start;
+		gap: 0.6rem;
 		min-height: fit-content;
 		margin: 0;
 		padding: 0.5rem;

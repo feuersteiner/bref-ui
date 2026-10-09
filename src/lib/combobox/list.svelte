@@ -54,17 +54,17 @@
 
 <style>
 	div {
-		--internal-height: 2.5rem;
+		--internal-row-height: 2.125rem;
 		--internal-icon-size: 1.25rem;
 		display: grid;
-		gap: 0.375rem;
+		gap: 0.125rem;
 	}
 	div[data-size='small'] {
-		--internal-height: 2rem;
+		--internal-row-height: 1.875rem;
 		--internal-icon-size: 1rem;
 	}
 	div[data-size='large'] {
-		--internal-height: 3rem;
+		--internal-row-height: 2.375rem;
 		--internal-icon-size: 1.5rem;
 	}
 	p {
@@ -72,7 +72,7 @@
 		align-items: center;
 		gap: 0.6rem;
 		margin: 0;
-		padding-block: 0.5rem;
+		padding: 0.5rem;
 		color: var(--color-muted);
 	}
 </style>

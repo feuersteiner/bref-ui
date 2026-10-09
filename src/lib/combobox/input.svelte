@@ -88,7 +88,7 @@
 		? undefined
 		: selected.length === 1 && selected[0].icon
 			? { ...selected[0].icon }
-			: undefined}
+			: { name: 'unfold_more' }}
 	value={display}
 	role="combobox"
 	aria-autocomplete="list"
