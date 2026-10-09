@@ -40,6 +40,7 @@
 		font-weight: 400;
 	}
 	:global(h1) {
+		font-weight: 700;
 		font-size: clamp(36px, 5vw, 64px);
 		line-height: 1.05;
 	}

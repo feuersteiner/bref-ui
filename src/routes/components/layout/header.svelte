@@ -96,7 +96,7 @@
 	}
 	strong {
 		font-family: var(--font-display);
-		font-weight: 400;
+		font-weight: 700;
 		font-size: 1.5rem;
 		white-space: nowrap;
 	}
