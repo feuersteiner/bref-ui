@@ -1,6 +1,6 @@
 <script lang="ts">
-	/* eslint-disable max-lines -- Keep the native control and its scoped style recipe together. */
 	import Icon from '../icon/icon.svelte';
+	import { surface } from '../theme/surface.js';
 	import type { TextAreaProps } from './types.js';
 
 	let {
@@ -9,7 +9,8 @@
 		icon,
 		size = 'medium',
 		wide = false,
-		variant = 'neutral',
+		variant = 'soft',
+		glass = false,
 		resizable = true,
 		oninput,
 		defaultValue,
@@ -23,7 +24,17 @@
 	};
 </script>
 
-<div data-size={size} data-variant={variant} data-wide={wide || undefined}>
+<div
+	class={surface({
+		color: 'background',
+		variant,
+		glass,
+		hover: variant === 'soft' && !attributes.disabled ? 'small' : undefined
+	})}
+	data-size={size}
+	data-variant={variant}
+	data-wide={wide || undefined}
+>
 	{#if icon}
 		<span><Icon {...icon} label={undefined} /></span>
 	{/if}
@@ -40,15 +51,7 @@
 		--internal-height: 2.5rem;
 		--internal-padding: 1rem;
 		--internal-icon-size: 1.25rem;
-		--internal-tint: var(--color-foreground, black);
-		--internal-strength-light: 4%;
-		--internal-strength-dark: 6%;
-		--internal-border: transparent;
-		--internal-placeholder: color-mix(
-			in srgb,
-			var(--color-muted, #666) 90%,
-			var(--color-foreground, black)
-		);
+		--internal-placeholder: color-mix(in srgb, var(--color-muted,) 35%, var(--color-foreground));
 		box-sizing: border-box;
 		display: inline-flex;
 		align-items: flex-start;
@@ -60,24 +63,7 @@
 		min-height: var(--internal-height);
 		padding-inline: var(--internal-padding);
 		padding-block: 0.75rem;
-		border: 1px solid var(--internal-border);
 		border-radius: 0.625rem;
-		background: light-dark(
-			color-mix(
-				in srgb,
-				var(--internal-tint) var(--internal-strength-light),
-				var(--color-background, white)
-			),
-			color-mix(
-				in srgb,
-				var(--internal-tint) var(--internal-strength-dark),
-				var(--color-background, white)
-			)
-		);
-		color: var(--color-foreground, black);
-		transition:
-			background-color 150ms ease,
-			border-color 150ms ease;
 	}
 	div[data-wide] {
 		width: 100%;
@@ -92,14 +78,10 @@
 		--internal-padding: 1.125rem;
 		--internal-icon-size: 1.5rem;
 	}
-	div[data-variant='soft'] {
-		--internal-strength-light: 6%;
-		--internal-strength-dark: 10%;
-	}
 	span {
 		display: inline-flex;
 		flex: 0 0 auto;
-		color: var(--color-muted, #666);
+		color: var(--color-muted);
 		font-size: var(--internal-icon-size);
 		padding-top: 0.1rem;
 		pointer-events: none;
@@ -128,29 +110,23 @@
 		color: var(--internal-placeholder);
 		opacity: 1;
 	}
-	div[data-variant='soft']:hover:not(:has(:disabled)) {
-		--internal-strength-light: 8%;
-		--internal-strength-dark: 12%;
-	}
 	div:has(textarea:focus) {
-		outline: 2px solid var(--color-primary, blue);
+		outline: 2px solid var(--color-primary);
 		outline-offset: 2px;
 	}
 	div:has(textarea:user-invalid, textarea[aria-invalid='true']) {
-		--internal-border: var(--color-error, #bc2436);
-		outline-color: var(--color-error, #bc2436);
+		--surface-border: var(--color-error);
+		outline-color: var(--color-error);
 	}
 	div:has(:disabled) {
 		opacity: 0.5;
 		cursor: not-allowed;
 	}
+	div[data-variant='soft']:has(textarea:disabled):hover {
+		--surface-strength: var(--surface-soft-strength);
+	}
 	textarea:disabled {
 		cursor: inherit;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		div {
-			transition: none;
-		}
 	}
 	@media (forced-colors: active) {
 		div {

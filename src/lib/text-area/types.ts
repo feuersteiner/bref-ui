@@ -9,5 +9,6 @@ export type TextAreaProps = Omit<HTMLTextareaAttributes, 'value'> & {
 	size?: BaseSize;
 	wide?: boolean;
 	variant?: Exclude<Variant, 'filled'>;
+	glass?: boolean;
 	resizable?: boolean;
 };

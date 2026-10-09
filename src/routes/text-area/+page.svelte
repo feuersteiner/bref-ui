@@ -11,10 +11,12 @@
 
 	const sizes: BaseSize[] = ['small', 'medium', 'large'];
 	const variants = ['neutral', 'soft'] as const;
+	const glassUsage = '<TextArea glass placeholder="Write a message" rows={3} />';
 	let value = $state('A longer message can be resized vertically.');
 	let size = $state<BaseSize>('medium');
-	let variant = $state<Exclude<Variant, 'filled'>>('neutral');
+	let variant = $state<Exclude<Variant, 'filled'>>('soft');
 	let wide = $state(false);
+	let glass = $state(false);
 	let withIcon = $state(true);
 	let movingBackground = $state(false);
 	let lastChange = $state('Edit the field to inspect onChange.');
@@ -55,8 +57,15 @@
 			name: 'variant',
 			type: "Exclude<Variant, 'filled'>",
 			required: false,
-			default: 'neutral',
+			default: 'soft',
 			description: 'Neutral or soft surface treatment.'
+		},
+		{
+			name: 'glass',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Translucent surface with backdrop blur.'
 		},
 		{
 			name: 'wide',
@@ -127,6 +136,10 @@
 				Icon
 			</label>
 			<label data-toggle>
+				<Checkbox bind:checked={glass} />
+				Glass
+			</label>
+			<label data-toggle>
 				<Checkbox bind:checked={wide} />
 				Wide
 			</label>
@@ -159,6 +172,7 @@
 					id="playground-text-area"
 					{size}
 					{variant}
+					{glass}
 					{wide}
 					icon={withIcon ? { name: 'edit' } : undefined}
 					bind:value
@@ -171,6 +185,7 @@
 				<p>Bound value: {value}; native input events: {nativeEvents}</p>
 			</div>
 		</div>
+		<CodeSnippet label="Glass TextArea usage" source={glassUsage} />
 	</Section>
 	<Section {...sections[3]}>
 		<p>
