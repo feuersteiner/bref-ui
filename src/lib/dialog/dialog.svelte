@@ -4,6 +4,7 @@
 	import { fly } from 'svelte/transition';
 	import { prefersReducedMotion } from 'svelte/motion';
 	import { MediaQuery } from 'svelte/reactivity';
+	import { surface } from '../theme/surface.js';
 	import Header from './header.svelte';
 	import Footer from './footer.svelte';
 	import type { DialogProps } from './types.js';
@@ -71,7 +72,7 @@
 	{#if open}
 		<div
 			data-surface
-			class={['glass']}
+			class={surface({ color: 'background', glass: true, shadow: 'large' })}
 			use:showModal
 			transition:fly|global={{
 				y: prefersReducedMotion.current ? 0 : 16,
@@ -102,8 +103,6 @@
 		overflow: visible;
 	}
 	[data-surface] {
-		--surface-shadow: 0 1.5rem 4rem
-			color-mix(in srgb, var(--color-background, white) 20%, transparent);
 		display: flex;
 		flex-direction: column;
 		max-height: calc(100dvh - 2rem);
@@ -127,14 +126,23 @@
 	}
 	dialog::backdrop {
 		background: color-mix(in srgb, var(--color-background, white) 48%, transparent);
+		-webkit-backdrop-filter: blur(0);
+		backdrop-filter: blur(0);
 		opacity: 0;
-		transition: opacity 300ms ease;
+		transition:
+			opacity 300ms ease,
+			-webkit-backdrop-filter 300ms ease,
+			backdrop-filter 300ms ease;
 	}
 	dialog[data-visible='true']::backdrop {
+		-webkit-backdrop-filter: blur(0.25rem);
+		backdrop-filter: blur(0.25rem);
 		opacity: 1;
 	}
 	@starting-style {
 		dialog[data-visible='true']::backdrop {
+			-webkit-backdrop-filter: blur(0);
+			backdrop-filter: blur(0);
 			opacity: 0;
 		}
 	}
@@ -170,6 +178,8 @@
 		}
 		dialog::backdrop {
 			background: Canvas;
+			-webkit-backdrop-filter: none;
+			backdrop-filter: none;
 		}
 	}
 </style>
