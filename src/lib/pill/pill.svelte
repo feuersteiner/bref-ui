@@ -15,6 +15,7 @@
 		size = 'medium',
 		variant = 'neutral',
 		wide = false,
+		class: className,
 		...attributes
 	}: PillProps = $props();
 </script>
@@ -22,6 +23,7 @@
 <!-- svelte-ignore a11y_no_noninteractive_tabindex (The button role and tab stop are enabled together.) -->
 <div
 	{...attributes}
+	class={['glass', className]}
 	onclick={onClick}
 	role={onClick ? 'button' : attributes.role}
 	tabindex={onClick ? (attributes.tabindex ?? 0) : attributes.tabindex}
@@ -66,6 +68,8 @@
 			var(--color-background, white)
 		);
 		--pill-content: color-mix(in srgb, var(--pill-color) 90%, var(--color-foreground, black));
+		--glass-paint: var(--pill-background);
+		--surface-content: var(--pill-content);
 		--pill-glint: color-mix(in srgb, var(--color-foreground, black) 8%, transparent);
 		--pill-padding: 0.75rem;
 		--pill-height: 2rem;
@@ -77,7 +81,7 @@
 		isolation: isolate;
 		align-items: center;
 		gap: 0.375rem;
-		justify-content: center;
+		justify-content: flex-start;
 		min-width: 0;
 		max-width: 100%;
 		min-height: var(--pill-height);
@@ -91,7 +95,7 @@
 		color: var(--pill-content);
 		font: inherit;
 		line-height: 1.25;
-		text-align: center;
+		text-align: left;
 		white-space: normal;
 		overflow-wrap: anywhere;
 		overflow: hidden;
@@ -127,6 +131,7 @@
 		--pill-content: color-mix(in srgb, var(--pill-color) 80%, var(--color-foreground, black));
 	}
 	div[data-variant='filled'] {
+		--glass-opacity: 100%;
 		--pill-tint: calc(100% - var(--pill-hover) / 2);
 		--pill-content: var(--color-background, white);
 		--pill-glint: color-mix(in srgb, var(--pill-color) 28%, transparent);

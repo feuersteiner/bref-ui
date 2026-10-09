@@ -101,7 +101,10 @@
 	];
 </script>
 
-<Page title={chapter} description="A compact label for status, categories and optional actions.">
+<Page
+	title={chapter}
+	description="A compact glass label for status, categories and optional actions."
+>
 	<Section {...sections[0]}>
 		<div data-demo="row">
 			<Pill label="Draft" /><Pill label="Ready" color="success" variant="soft" /><Pill
