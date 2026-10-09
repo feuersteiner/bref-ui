@@ -1,6 +1,6 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the progress controls and interactive examples together. */
-	import { Progress, TextInput, Select, Checkbox } from '$lib/index.js';
+	import { Progress, TextInput, Select, Checkbox, Button } from '$lib/index.js';
 	import type { BaseSize } from '$lib/types.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
@@ -12,6 +12,8 @@
 	let value = $state(0.35);
 	let disabled = $state(false);
 	let size = $state<BaseSize>('medium');
+	let nativeEvent = $state('No native input or change event yet.');
+	let formResult = $state('Submit to read the native range value.');
 	const props = [
 		{
 			name: 'label',
@@ -65,7 +67,10 @@
 	<Section {...sections[1]}>
 		<div class="example">
 			<span>0 / 0.5 / 1</span>
-			<Progress value={0} /><Progress value={0.5} /><Progress value={1} />
+			<Progress label="Not started" value={0} /><Progress
+				label="Half complete"
+				value={0.5}
+			/><Progress label="Complete" value={1} />
 		</div>
 		{#each sizes as size (size)}
 			<div class="example">
@@ -105,13 +110,36 @@
 				Disabled
 			</label>
 		</div>
-		<Progress
-			label="Playback position"
-			{value}
-			{size}
-			{disabled}
-			onSeek={(next) => (value = next)}
-		/>
+		<form
+			onsubmit={(event) => {
+				event.preventDefault();
+				formResult = `Submitted position: ${event.currentTarget.querySelector('input')?.value}`;
+			}}
+			onreset={(event) => {
+				event.preventDefault();
+				value = 0.35;
+				formResult = 'Reset position to 0.35.';
+			}}
+		>
+			<Progress
+				label="Playback position"
+				id="playback-position"
+				title="Seek through playback"
+				aria-describedby="progress-native-event"
+				{value}
+				{size}
+				{disabled}
+				onSeek={(next) => (value = next)}
+				oninput={(event) => (nativeEvent = `Input: ${event.currentTarget.value}`)}
+				onchange={(event) => (nativeEvent = `Change: ${event.currentTarget.value}`)}
+			/>
+			<div class="controls">
+				<Button type="submit" label="Submit position" />
+				<Button type="reset" label="Reset position" />
+			</div>
+		</form>
+		<p id="progress-native-event">{nativeEvent} {formResult}</p>
+		<p>The form's reset handler prevents the native reset and restores the controlled value.</p>
 		<p>
 			Current: {value.toFixed(2)} ({Math.round(value * 100)}%). Drag, tap, or use Arrow, Home, and
 			End keys.
@@ -122,6 +150,17 @@
 		/>
 	</Section>
 	<Section {...sections[3]}>
+		<div dir="rtl">
+			<p>Right-to-left playback: {value.toFixed(2)}</p>
+			<Progress label="RTL seek position" {value} onSeek={(next) => (value = next)} />
+			<Progress label="Right-to-left loading" />
+		</div>
+		<div>
+			<p>Disabled seek control</p>
+			<Progress label="Disabled seek position" value={0.65} disabled onSeek={() => {}} />
+		</div>
+	</Section>
+	<Section {...sections[4]}>
 		<PropTable {props} />
 		<p>
 			The indicator uses a native progress element with a fixed maximum of 1. Seekable progress
@@ -131,7 +170,7 @@
 			and
 			<code>aria-controls</code>
 			. Indeterminate progress omits its value. No live region repeats value changes. The fill uses the
-			primary theme color. Motion stops when reduced motion is requested.
+			primary theme color. Reduced motion leaves a visible, stationary segment for indeterminate progress.
 		</p>
 	</Section>
 </Page>

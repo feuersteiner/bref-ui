@@ -35,6 +35,7 @@ export type ButtonProps = {
 	color?: Exclude<Color, 'background'>;
 	size?: Size;
 	variant?: Variant;
+	glass?: boolean;
 	disabled?: boolean;
 	onClick?: DOMAttributes<HTMLButtonElement | HTMLAnchorElement>['onclick'];
 } & Omit<DOMAttributes<HTMLButtonElement | HTMLAnchorElement>, 'children' | 'onclick'> &

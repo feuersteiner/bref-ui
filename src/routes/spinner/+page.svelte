@@ -7,7 +7,19 @@
 	import PropTable from '../components/prop-table.svelte';
 	import { chapter, sections } from './sections.js';
 	const usageCode = '<Spinner label="Loading results" />';
+	const colorCode =
+		'<span style="color: var(--color-primary)"><Spinner label="Loading results" /></span>';
 	const sizes: Size[] = ['x-small', 'small', 'medium', 'large', 'x-large'];
+	const colors = [
+		'foreground',
+		'primary',
+		'secondary',
+		'muted',
+		'info',
+		'success',
+		'warning',
+		'error'
+	] as const;
 	const props = [
 		{
 			name: 'label',
@@ -44,10 +56,22 @@
 		</div>
 	</Section>
 	<Section {...sections[2]}>
+		<div>
+			{#each colors as color (color)}
+				<figure style:color={`var(--color-${color})`}>
+					<Spinner size="medium" label={`Loading ${color} results`} />
+					<figcaption>{color}</figcaption>
+				</figure>
+			{/each}
+		</div>
+		<CodeSnippet label="Inherited spinner color code" source={colorCode} />
+	</Section>
+	<Section {...sections[3]}>
 		<PropTable {props} />
 		<p>
-			The ring uses the primary theme color. A supplied label creates status text for assistive
-			technology; an unlabeled ring is decorative. Animation stops under reduced motion.
+			The ring inherits the surrounding text color. A supplied label creates status text for
+			assistive technology; an unlabeled ring is decorative. Reduced motion leaves a visible,
+			stationary quarter-ring.
 		</p>
 	</Section>
 </Page>
@@ -57,6 +81,9 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 1.5rem;
+	}
+	figcaption {
+		color: var(--color-foreground);
 	}
 	figure {
 		display: grid;

@@ -2,5 +2,5 @@
 	"id": "pill",
 	"files": ["pill.svelte", "content.svelte", "on-delete.svelte"],
 	"exports": { "Pill": "pill.svelte" },
-	"dependencies": ["theme", "icon", "button"]
+	"dependencies": ["theme", "icon"]
 }

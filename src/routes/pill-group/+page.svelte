@@ -112,6 +112,20 @@
 				previewItems = [...items];
 			}}
 		/>
+		{#each sizes as size (size)}
+			<div data-size-demo>
+				<span>{size}</span>
+				<PillGroup
+					items={previewItems}
+					{size}
+					variant="soft"
+					aria-label={`${size} categories`}
+					onDelete={(id) => {
+						previewItems = previewItems.filter((item) => item.id !== id);
+					}}
+				/>
+			</div>
+		{/each}
 	</Section>
 	<Section {...sections[2]}>
 		<PropTable {props} label="PillGroup props" />
@@ -123,6 +137,10 @@
 </Page>
 
 <style>
+	[data-size-demo] {
+		display: grid;
+		gap: 0.5rem;
+	}
 	[data-controls] {
 		display: flex;
 		flex-wrap: wrap;

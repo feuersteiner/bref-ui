@@ -8,10 +8,11 @@
 		--surface-base: var(--color-background, white);
 		--surface-foreground: var(--color-foreground, black);
 		--surface-tint: var(--surface-color);
-		--surface-soft-strength: 12%;
-		--surface-strength: 0%;
+		--surface-soft-strength: 24%;
+		--surface-neutral-strength: 2%;
+		--surface-strength: var(--surface-neutral-strength);
 		--surface-hover: 0%;
-		--surface-fill: transparent;
+		--surface-fill: color-mix(in srgb, var(--surface-tint) var(--surface-strength), transparent);
 		--surface-border: transparent;
 		--surface-content: var(--surface-color);
 		--surface-neutral-content: color-mix(
@@ -95,15 +96,13 @@
 		--surface-content: var(--surface-foreground);
 	}
 	:global(.surface-shadow-small) {
-		--surface-shadow: 0 2px 6px color-mix(in srgb, var(--color-background, white) 8%, transparent);
+		--surface-shadow: 0 2px 6px color-mix(in srgb, black 8%, transparent);
 	}
 	:global(.surface-shadow-medium) {
-		--surface-shadow: 0 0.5rem 1.5rem
-			color-mix(in srgb, var(--color-background, white) 12%, transparent);
+		--surface-shadow: 0 0.5rem 1.5rem color-mix(in srgb, black 12%, transparent);
 	}
 	:global(.surface-shadow-large) {
-		--surface-shadow: 0 1.5rem 4rem
-			color-mix(in srgb, var(--color-background, white) 20%, transparent);
+		--surface-shadow: 0 1.5rem 4rem color-mix(in srgb, black 20%, transparent);
 	}
 	:global(.surface-hover-small) {
 		--surface-hover: 2%;
@@ -139,7 +138,7 @@
 				[data-surface-disabled='true']
 			):is(:hover, :focus-visible, [data-surface-pressed='true'])
 	) {
-		--surface-fill: color-mix(in srgb, var(--surface-tint) var(--surface-hover), transparent);
+		--surface-strength: calc(var(--surface-neutral-strength) + var(--surface-hover));
 		--surface-content: var(--surface-neutral-content);
 	}
 	:global(

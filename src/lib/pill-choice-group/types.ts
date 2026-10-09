@@ -10,5 +10,6 @@ export type PillChoiceGroupProps = Omit<HTMLAttributes<HTMLUListElement>, 'child
 	size?: Size;
 	variant?: Exclude<Variant, 'filled'>;
 	color?: PillProps['color'];
+	glass?: PillProps['glass'];
 	animateSelected?: boolean;
 };

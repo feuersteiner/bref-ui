@@ -10,6 +10,7 @@
 
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const variants = ['neutral', 'soft', 'filled'] as const;
+	const glassUsage = '<Pill label="Glass" color="primary" glass />';
 	const colors = [
 		'primary',
 		'secondary',
@@ -101,7 +102,10 @@
 	];
 </script>
 
-<Page title={chapter} description="A compact label for status, categories and optional actions.">
+<Page
+	title={chapter}
+	description="A compact glass label for status, categories and optional actions."
+>
 	<Section {...sections[0]}>
 		<div data-demo="row">
 			<Pill label="Draft" /><Pill label="Ready" color="success" variant="soft" /><Pill
@@ -178,7 +182,16 @@
 		<fieldset>
 			<legend>Sizes and long content</legend>
 			<div data-demo="row">
-				{#each sizes as size (size)}<Pill {size} color="primary" label={size} />{/each}<Pill
+				{#each sizes as size (size)}
+					<Pill {size} color="primary" label={size} icon={{ name: 'check' }} />
+					<Pill
+						{size}
+						color="primary"
+						label={size}
+						icon={{ name: 'check' }}
+						onDelete={() => removed++}
+					/>
+				{/each}<Pill
 					color="primary"
 					label="A long category label that wraps on a narrow screen without losing its meaning"
 				/>
@@ -186,6 +199,27 @@
 		</fieldset>
 	</Section>
 	<Section {...sections[2]}>
+		<p>Compare glass and regular Pills over a swirling, striped background.</p>
+		<div data-background-demo>
+			{#each variants as variant (variant)}
+				<div data-variant-demo>
+					<strong>{variant}</strong>
+					<Pill label="Without glass" color="primary" {variant} wide />
+					<Pill label="Glass" color="primary" {variant} glass wide />
+					<Pill
+						label="Removable"
+						icon={{ name: 'star' }}
+						{variant}
+						glass
+						wide
+						onDelete={() => removed++}
+					/>
+				</div>
+			{/each}
+		</div>
+		<CodeSnippet label="Glass Pill usage code" source={glassUsage} />
+	</Section>
+	<Section {...sections[3]}>
 		<PropTable {props} label="Pill props" />
 		<p>
 			Pill accepts native div attributes and a children snippet. A clickable Pill supports Enter and
@@ -220,5 +254,31 @@
 		gap: 0.5rem;
 		width: min(100%, 12rem);
 		min-width: 0;
+	}
+	[data-background-demo] {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.5rem;
+		padding: 1.5rem;
+		border-radius: 1rem;
+		background:
+			radial-gradient(ellipse at 15% 20%, var(--color-primary), transparent 55%),
+			radial-gradient(ellipse at 85% 80%, var(--color-secondary), transparent 55%),
+			repeating-conic-gradient(
+				from 30deg at 50% 50%,
+				var(--color-background) 0deg 12deg,
+				color-mix(in srgb, var(--color-info) 35%, var(--color-background)) 12deg 24deg
+			);
+	}
+	[data-variant-demo] {
+		display: grid;
+		gap: 1rem;
+		min-width: 0;
+		align-content: start;
+	}
+	@media (max-width: 575px) {
+		[data-background-demo] {
+			grid-template-columns: minmax(0, 1fr);
+		}
 	}
 </style>
