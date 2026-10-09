@@ -91,8 +91,6 @@
 >
 	<Popover
 		bind:open={() => open, setOpen}
-		variant="neutral"
-		class="glass"
 		spacing="x-small"
 		radius="0.75rem"
 		shadow

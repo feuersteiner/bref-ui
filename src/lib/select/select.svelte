@@ -32,16 +32,7 @@
 </script>
 
 <div data-size={size}>
-	<Popover
-		bind:open
-		variant="neutral"
-		class="glass"
-		spacing="x-small"
-		radius="0.75rem"
-		shadow
-		scroll
-		{disabled}
-	>
+	<Popover bind:open spacing="x-small" radius="0.75rem" shadow scroll {disabled}>
 		{#snippet trigger()}
 			<Trigger
 				{id}
