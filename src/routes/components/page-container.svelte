@@ -29,7 +29,7 @@
 	article {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
-		gap: 72px;
+		gap: 48px;
 		min-width: 0;
 		overflow-wrap: break-word;
 	}
@@ -38,8 +38,8 @@
 		position: relative;
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
-		gap: 24px;
-		padding: 24px 24px 48px;
+		gap: 20px;
+		padding: 24px 24px;
 	}
 	h1 {
 		max-width: 12ch;
@@ -48,12 +48,12 @@
 	header p {
 		max-width: 60ch;
 		color: var(--color-muted);
-		font-size: 1.25rem;
+		font-size: 1.125rem;
 		line-height: 1.5;
 	}
 	@media (max-width: 575px) {
 		article {
-			gap: 48px;
+			gap: 32px;
 		}
 		header {
 			padding: 24px 0;

@@ -45,9 +45,9 @@
 
 <style>
 	div {
+		min-width: 0;
 		max-width: 100%;
 		overflow: auto;
-		border-block: 1px solid var(--docs-rule);
 	}
 	div:focus-visible {
 		outline: 2px solid var(--color-primary, currentColor);
@@ -63,27 +63,26 @@
 		padding: 24px 0;
 		color: var(--color-muted);
 		font-size: 0.75rem;
-		font-weight: 700;
+		font-weight: 400;
 		letter-spacing: 0.12em;
 		text-align: left;
 		text-transform: uppercase;
 	}
 	th,
 	td {
-		padding: 18px 24px;
-		border-top: 1px solid var(--docs-rule-subtle);
+		padding: 16px 24px;
 		vertical-align: top;
 	}
 	thead th {
 		background: var(--docs-surface);
 		color: var(--color-muted);
 		font-size: 0.75rem;
-		font-weight: 700;
+		font-weight: 400;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
 	}
 	tbody th {
-		font-weight: 600;
+		font-weight: 400;
 	}
 	tbody tr:hover {
 		background: var(--docs-surface);
