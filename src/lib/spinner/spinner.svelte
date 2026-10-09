@@ -16,23 +16,15 @@
 		initial-value: 90deg;
 	}
 	div {
-		--spinner-track: color-mix(
-			in srgb,
-			color-mix(in srgb, var(--color-foreground) 16%, var(--color-background)) 85%,
-			transparent
-		);
-		--spinner-fill: color-mix(
-			in srgb,
-			color-mix(in srgb, var(--color-primary) 88%, var(--color-background)) 85%,
-			transparent
-		);
+		--spinner-track: color-mix(in srgb, currentColor 18%, transparent);
+		--spinner-fill: currentColor;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		width: 1em;
 		height: 1em;
 		font-size: inherit;
-		color: var(--color-primary);
+		color: inherit;
 	}
 	div[data-size='x-small'] {
 		font-size: 0.875rem;
@@ -53,14 +45,11 @@
 		box-sizing: border-box;
 		width: 80%;
 		height: 80%;
-		padding: max(2px, 0.12em);
+		padding: max(1px, 0.055em);
 		background: conic-gradient(
 			var(--spinner-fill) 0deg var(--spinner-sweep),
 			var(--spinner-track) var(--spinner-sweep) 360deg
 		);
-		box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-foreground) 28%, transparent);
-		-webkit-backdrop-filter: blur(0.5rem) saturate(120%);
-		backdrop-filter: blur(0.5rem) saturate(120%);
 		mask:
 			linear-gradient(black, black) content-box,
 			linear-gradient(black, black);
@@ -85,8 +74,8 @@
 			transform: rotate(0deg);
 		}
 		50% {
-			--spinner-sweep: 270deg;
-			transform: rotate(180deg);
+			--spinner-sweep: 210deg;
+			transform: rotate(90deg);
 		}
 		100% {
 			--spinner-sweep: 30deg;
@@ -95,6 +84,7 @@
 	}
 	@media (prefers-reduced-motion: reduce) {
 		span {
+			--spinner-sweep: 90deg;
 			animation: none;
 		}
 	}
@@ -102,13 +92,10 @@
 		span {
 			padding: 0;
 			mask: none;
-			border: max(2px, 0.12em) solid CanvasText;
+			border: max(1px, 0.055em) solid CanvasText;
 			border-color: CanvasText;
 			border-top-color: Highlight;
 			background: none;
-			box-shadow: none;
-			-webkit-backdrop-filter: none;
-			backdrop-filter: none;
 		}
 	}
 </style>
