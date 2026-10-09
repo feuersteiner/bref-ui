@@ -4,5 +4,5 @@
 	"exports": {
 		"TextArea": "text-area.svelte"
 	},
-	"dependencies": ["icon"]
+	"dependencies": ["icon", "theme"]
 }

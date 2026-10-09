@@ -9,4 +9,5 @@ export type TextInputProps = Omit<HTMLInputAttributes, 'value' | 'size'> & {
 	size?: BaseSize;
 	wide?: boolean;
 	variant?: Exclude<Variant, 'filled'>;
+	glass?: boolean;
 };

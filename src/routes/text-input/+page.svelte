@@ -11,10 +11,12 @@
 
 	const sizes: BaseSize[] = ['small', 'medium', 'large'];
 	const variants = ['neutral', 'soft'] as const;
+	const glassUsage = '<TextInput glass placeholder="Your name" />';
 	let value = $state('Hello');
 	let size = $state<BaseSize>('medium');
-	let variant = $state<Exclude<Variant, 'filled'>>('neutral');
+	let variant = $state<Exclude<Variant, 'filled'>>('soft');
 	let wide = $state(false);
+	let glass = $state(false);
 	let withIcon = $state(true);
 	let movingBackground = $state(false);
 	let lastChange = $state('Edit the field to inspect onChange.');
@@ -55,8 +57,15 @@
 			name: 'variant',
 			type: "Exclude<Variant, 'filled'>",
 			required: false,
-			default: 'neutral',
+			default: 'soft',
 			description: 'Neutral or soft surface treatment.'
+		},
+		{
+			name: 'glass',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Translucent surface with backdrop blur.'
 		},
 		{
 			name: 'wide',
@@ -100,6 +109,7 @@
 		<p>Number input value: {number}</p>
 	</Section>
 	<Section {...sections[2]}>
+		<p>Neutral and soft variants use quiet tonal fills, with a clear indicator when focused.</p>
 		<div data-demo="grid">
 			{#each variants as currentVariant (currentVariant)}
 				{#each sizes as currentSize (currentSize)}
@@ -137,6 +147,10 @@
 				Icon
 			</label>
 			<label data-toggle>
+				<Checkbox bind:checked={glass} />
+				Glass
+			</label>
+			<label data-toggle>
 				<Checkbox bind:checked={wide} />
 				Wide
 			</label>
@@ -153,6 +167,7 @@
 					id="playground-text-input"
 					{size}
 					{variant}
+					{glass}
 					{wide}
 					icon={withIcon ? { name: 'search' } : undefined}
 					bind:value
@@ -163,6 +178,7 @@
 				<p>Bound value: {value}; native input events: {nativeEvents}</p>
 			</div>
 		</div>
+		<CodeSnippet label="Glass TextInput usage" source={glassUsage} />
 	</Section>
 	<Section {...sections[4]}>
 		<p>
@@ -199,7 +215,13 @@
 				/>
 			</label>
 		</div>
-		<p id="required-help">Required fields use native validation on submission.</p>
+		<p id="required-help">
+			Required fields use native validation on submission. Error styling follows native
+			<code>:user-invalid</code>
+			after interaction or submission; untouched required fields stay quiet. Use
+			<code>aria-invalid="true"</code>
+			for application errors.
+		</p>
 		<p id="error-help">This entry was not accepted. Check the value and try again.</p>
 	</Section>
 	<Section {...sections[5]}><PropTable {props} /></Section>
