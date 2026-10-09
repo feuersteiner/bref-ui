@@ -101,7 +101,10 @@
 	];
 </script>
 
-<Page title={chapter} description="A compact label for status, categories and optional actions.">
+<Page
+	title={chapter}
+	description="A compact glass label for status, categories and optional actions."
+>
 	<Section {...sections[0]}>
 		<div data-demo="row">
 			<Pill label="Draft" /><Pill label="Ready" color="success" variant="soft" /><Pill
@@ -178,7 +181,16 @@
 		<fieldset>
 			<legend>Sizes and long content</legend>
 			<div data-demo="row">
-				{#each sizes as size (size)}<Pill {size} color="primary" label={size} />{/each}<Pill
+				{#each sizes as size (size)}
+					<Pill {size} color="primary" label={size} icon={{ name: 'check' }} />
+					<Pill
+						{size}
+						color="primary"
+						label={size}
+						icon={{ name: 'check' }}
+						onDelete={() => removed++}
+					/>
+				{/each}<Pill
 					color="primary"
 					label="A long category label that wraps on a narrow screen without losing its meaning"
 				/>
