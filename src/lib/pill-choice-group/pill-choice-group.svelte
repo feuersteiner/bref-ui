@@ -12,6 +12,7 @@
 		size = 'medium',
 		variant = 'neutral',
 		color = 'foreground',
+		glass,
 		animateSelected = false,
 		...attributes
 	}: PillChoiceGroupProps = $props();
@@ -80,6 +81,7 @@
 				label={item.label}
 				icon={item.icon}
 				{color}
+				{glass}
 				swoosh={selected && animateSelected}
 				variant={selected ? selectedVariant : variant}
 				{size}
