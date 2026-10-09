@@ -18,16 +18,16 @@
 		min-height: var(--tree-action-size);
 		padding: 0;
 		border: 0;
-		border-radius: 0.375rem;
+		border-radius: 50%;
 		background: transparent;
-		color: inherit;
+		color: var(--tree-action-color, inherit);
 		font: inherit;
 		font-size: 1.125em;
 		cursor: pointer;
 		transition: background-color 150ms ease;
 	}
 	button:not(:disabled):hover {
-		background: color-mix(in srgb, var(--color-foreground) 8%, transparent);
+		background: color-mix(in srgb, currentColor 8%, transparent);
 	}
 	button:focus-visible {
 		outline: 2px solid var(--color-primary);

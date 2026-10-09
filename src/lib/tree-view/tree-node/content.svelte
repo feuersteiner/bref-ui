@@ -6,7 +6,13 @@
 </script>
 
 <button {...attributes} type="button" disabled={item.disabled}>
-	{#if item.icon}<Icon {...item.icon} label={undefined} />{/if}
+	{#if item.icon}
+		<Icon
+			{...item.icon}
+			color={attributes['aria-pressed'] === true && !item.disabled ? 'primary' : undefined}
+			label={undefined}
+		/>
+	{/if}
 	<span>{item.label}</span>
 </button>
 

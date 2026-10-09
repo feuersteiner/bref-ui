@@ -8,6 +8,7 @@
 		sections = [],
 		label = 'Tree view',
 		size = 'medium',
+		glass = false,
 		selection = $bindable(),
 		defaultExpanded = false,
 		onDelete,
@@ -21,7 +22,7 @@
 			{#if node}
 				{@render node(item)}
 			{:else}
-				<TreeNode {item} bind:selection {defaultExpanded} {onDelete} />
+				<TreeNode {item} bind:selection {defaultExpanded} {onDelete} {glass} />
 			{/if}
 		{/each}
 	</div>

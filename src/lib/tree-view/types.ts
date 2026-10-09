@@ -20,6 +20,7 @@ export interface TreeViewProps {
 	sections?: TreeSectionProps[];
 	label?: string;
 	size?: BaseSize;
+	glass?: boolean;
 	selection?: string | string[];
 	defaultExpanded?: boolean;
 	onDelete?: (id: string) => void;
@@ -28,7 +29,7 @@ export interface TreeViewProps {
 
 export interface TreeNodeProps extends Pick<
 	TreeViewProps,
-	'selection' | 'defaultExpanded' | 'onDelete'
+	'selection' | 'defaultExpanded' | 'onDelete' | 'glass'
 > {
 	item: TreeItemProps;
 	indent?: number;

@@ -52,6 +52,7 @@
 	let selection = $state<string | string[]>('tokens');
 	let size = $state<BaseSize>('medium');
 	let allowDelete = $state(false);
+	let glass = $state(false);
 	let exampleSelection = $state<string>();
 	const removeItem = (items: TreeItemProps[], id: string): TreeItemProps[] =>
 		items
@@ -103,6 +104,13 @@
 			required: false,
 			default: 'medium',
 			description: 'small, medium or large.'
+		},
+		{
+			name: 'glass',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Use glass on selected soft surfaces, including nested items.'
 		},
 		{
 			name: 'selection',
@@ -169,6 +177,10 @@
 				/>
 			</label>
 			<label>
+				Glass selection
+				<Checkbox bind:checked={glass} />
+			</label>
+			<label>
 				Enable delete action
 				<Checkbox bind:checked={allowDelete} />
 			</label>
@@ -184,6 +196,7 @@
 			sections={treeSections}
 			label="Interactive files"
 			{size}
+			{glass}
 			defaultExpanded
 			bind:selection
 			onDelete={allowDelete ? deleteItem : undefined}
