@@ -4,5 +4,5 @@
 	"exports": {
 		"TextInput": "text-input.svelte"
 	},
-	"dependencies": ["icon"]
+	"dependencies": ["icon", "theme"]
 }
