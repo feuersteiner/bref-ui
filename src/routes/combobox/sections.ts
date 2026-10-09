@@ -5,5 +5,6 @@ export const sections = [
 	{ id: 'sizes', title: 'Sizes' },
 	{ id: 'states', title: 'States' },
 	{ id: 'forms', title: 'Forms and keyboard' },
-	{ id: 'props', title: 'Props' }
+	{ id: 'props', title: 'Props' },
+	{ id: 'viewport', title: 'Long choices and scrolling' }
 ] as const;

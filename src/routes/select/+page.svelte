@@ -1,4 +1,5 @@
 <script lang="ts">
+	/* eslint-disable max-lines -- Keep the selection and overflow regression demos together. */
 	import { Checkbox, Select } from '$lib/index.js';
 	import type { SelectOptionDataProps } from '$lib/select/types.js';
 	import Page from '../components/page-container.svelte';
@@ -21,6 +22,7 @@
 	}));
 	let value = $state<string | undefined>();
 	let many = $state<string[]>([]);
+	let overflowMany = $state<string[]>(['option-1', 'option-2', 'option-3']);
 	let disabled = $state(false);
 	let changeCount = $state(0);
 	const source = `<script>
@@ -118,9 +120,11 @@
 		<h3>Long labels and scrolling</h3>
 		<label for="overflow-choices">Overflow choices</label>
 		<Select id="overflow-choices" items={overflowItems} placeholder="Open 24 long options" />
-		<p>
-			Long labels truncate with an ellipsis. Open the list and scroll, or Tab through the options.
-		</p>
+		<p>Long labels truncate. Selected rows keep a tick; hover uses a neutral fill.</p>
+		<div data-demo="narrow">
+			<label for="multiple-overflow">Multiple long labels with icons</label>
+			<Select id="multiple-overflow" items={overflowItems} bind:value={overflowMany} />
+		</div>
 	</Section>
 	<Section {...sections[2]}>
 		<label for="labeled-status">Status</label>
@@ -128,7 +132,8 @@
 		<p>
 			Enter or Space opens the popup. Tab and Shift+Tab move between option buttons; Enter or Space
 			selects. Single selection closes the popup; multiple selection keeps it open. Escape or a
-			click outside closes it.
+			click outside closes it. Arrow navigation is not implemented; the scroll container is also a
+			Tab stop.
 		</p>
 	</Section>
 	<Section {...sections[3]}>
@@ -142,15 +147,23 @@
 </Page>
 
 <style>
+	[data-demo='narrow'] {
+		display: grid;
+		gap: 0.5rem;
+		width: min(100%, 16rem);
+		min-width: 0;
+	}
 	[data-demo='row'] {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: center;
+		align-items: flex-start;
 		gap: 1rem;
 		margin-block: 1rem;
 		max-width: 100%;
 	}
 	[data-demo='row'] > div {
+		display: grid;
+		gap: 0.5rem;
 		flex: 1;
 		min-width: min(100%, 12rem);
 	}

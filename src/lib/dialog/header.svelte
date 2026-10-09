@@ -29,7 +29,7 @@
 		display: flex;
 		align-items: flex-start;
 		gap: 1rem;
-		padding: 1.5rem 1.5rem 0;
+		padding: 1.75rem 1.75rem 0;
 	}
 	header > div {
 		flex: 1;
@@ -44,9 +44,9 @@
 	h2 {
 		margin: 0;
 		font: inherit;
-		font-size: 1.375rem;
-		font-weight: 600;
-		line-height: 1.4;
+		font-size: 1.5rem;
+		font-weight: 400;
+		line-height: 1.3;
 	}
 	p {
 		margin: 0.5rem 0 0;
