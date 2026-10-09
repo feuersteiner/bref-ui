@@ -9,13 +9,12 @@
 <button {id} type="button" data-size={size} {disabled} aria-expanded={open} onclick={onToggle}>
 	<Surface
 		as="span"
-		variant="soft"
+		variant="neutral"
 		color="foreground"
 		orientation="horizontal"
-		radius="small"
+		radius="0.625rem"
 		width="fill"
 		height="fill"
-		hover={disabled ? undefined : 'small'}
 	>
 		{#if selected.length === 1 && selected[0].icon}
 			<span data-icon><Icon {...selected[0].icon} /></span>
@@ -23,7 +22,7 @@
 		<span data-value data-placeholder={selected.length === 0 || undefined}>
 			{selected.length ? selected.map((item) => item.label).join(', ') : placeholder}
 		</span>
-		<span data-icon><Icon name="arrow_drop_down" /></span>
+		<span data-icon data-chevron><Icon name="keyboard_arrow_down" /></span>
 	</Surface>
 </button>
 
@@ -35,12 +34,16 @@
 		height: var(--internal-height);
 		padding: 0;
 		border: 0;
-		border-radius: 0.5rem;
-		background: transparent;
+		border-radius: 0.625rem;
+		background: light-dark(
+			color-mix(in srgb, var(--color-foreground) 6%, var(--color-background)),
+			color-mix(in srgb, var(--color-foreground) 10%, var(--color-background))
+		);
 		color: var(--color-foreground);
 		font: inherit;
 		text-align: left;
 		cursor: pointer;
+		transition: background-color 150ms ease;
 	}
 	span:first-child {
 		margin-inline-start: var(--internal-padding);
@@ -61,7 +64,9 @@
 		font-weight: 200;
 		line-height: 1.4;
 	}
-	[data-placeholder],
+	[data-placeholder] {
+		color: color-mix(in srgb, var(--color-muted) 90%, var(--color-foreground));
+	}
 	[data-icon] {
 		color: var(--color-muted);
 	}
@@ -70,6 +75,18 @@
 		flex: 0 0 auto;
 		font-size: var(--internal-icon-size);
 	}
+	button:hover:not(:disabled) {
+		background: light-dark(
+			color-mix(in srgb, var(--color-foreground) 8%, var(--color-background)),
+			color-mix(in srgb, var(--color-foreground) 12%, var(--color-background))
+		);
+	}
+	[data-chevron] {
+		transition: transform 150ms ease;
+	}
+	button[aria-expanded='true'] [data-chevron] {
+		transform: rotate(180deg);
+	}
 	button:focus-visible {
 		outline: 2px solid var(--color-primary);
 		outline-offset: 2px;
@@ -77,6 +94,12 @@
 	button:disabled {
 		opacity: 0.5;
 		cursor: not-allowed;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		button,
+		[data-chevron] {
+			transition: none;
+		}
 	}
 	@media (forced-colors: active) {
 		button:focus-visible {
