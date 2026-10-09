@@ -23,7 +23,6 @@
 	title={chapter}
 	description="A Svelte-first, human-first, agent-first UI library for building beautiful sites and apps with components you can make your own."
 >
-	<p>Basically, open source IS the future: it gives you ultimate customizability.</p>
 	<Section {...sections[0]}>
 		<div data-demo="hero">
 			<MovingBackground />
@@ -60,6 +59,7 @@
 			management together with the flexibility to adapt every component to your needs. That's the
 			deal.
 		</p>
+		<p>Basically, open source IS the future: it gives you ultimate customizability.</p>
 		<h3>Svelte-first</h3>
 		<p>
 			Build with small components, scoped CSS and familiar HTML. The goal is to keep runtime
