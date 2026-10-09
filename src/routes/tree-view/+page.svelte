@@ -52,6 +52,7 @@
 	let selection = $state<string | string[]>('tokens');
 	let size = $state<BaseSize>('medium');
 	let allowDelete = $state(false);
+	let glass = $state(false);
 	let exampleSelection = $state<string>();
 	const removeItem = (items: TreeItemProps[], id: string): TreeItemProps[] =>
 		items
@@ -105,6 +106,13 @@
 			description: 'small, medium or large.'
 		},
 		{
+			name: 'glass',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Use glass on selected soft surfaces, including nested items.'
+		},
+		{
 			name: 'selection',
 			type: 'string | string[]',
 			required: false,
@@ -144,6 +152,10 @@
 		<CodeSnippet {source} label="Tree view usage code" />
 	</Section>
 	<Section {...sections[1]}>
+		<p>
+			Labels share an icon column, and each nesting level advances by the disclosure column.
+			Selected rows use a quiet fill; touch controls receive larger targets.
+		</p>
 		<div data-controls>
 			<div data-control>
 				<label for="tree-view-size">Size</label>
@@ -165,6 +177,10 @@
 				/>
 			</label>
 			<label>
+				Glass selection
+				<Checkbox bind:checked={glass} />
+			</label>
+			<label>
 				Enable delete action
 				<Checkbox bind:checked={allowDelete} />
 			</label>
@@ -180,6 +196,7 @@
 			sections={treeSections}
 			label="Interactive files"
 			{size}
+			{glass}
 			defaultExpanded
 			bind:selection
 			onDelete={allowDelete ? deleteItem : undefined}
@@ -215,6 +232,7 @@
 			defaultExpanded
 		/>
 		<TreeView items={[]} label="Empty files" />
+		<p>An empty tree renders no rows. Custom node snippets own their styling and behavior.</p>
 		<TreeView items={[{ id: 'props-link', label: 'Tree view props' }]} label="Custom links">
 			{#snippet node(item)}
 				<a href="#props">{item.label}</a>

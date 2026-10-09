@@ -18,13 +18,10 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 0.25rem;
-		padding: 0.75rem 0.5rem 0.25rem;
+		gap: 0.375rem;
+		padding: 1rem 0.75rem 0.75rem;
 		color: var(--color-muted);
-		font-size: 0.8em;
-		font-weight: 600;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
+		line-height: 1.4;
 		overflow-wrap: anywhere;
 	}
 	div {
@@ -32,11 +29,14 @@
 		align-items: center;
 		gap: 0.5rem;
 		min-width: 0;
+		color: var(--color-foreground);
+		font-size: 0.875em;
+		font-weight: 500;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
 	}
 	p {
 		margin: 0;
-		font-weight: 400;
-		letter-spacing: normal;
-		text-transform: none;
+		font-size: 0.75em;
 	}
 </style>
