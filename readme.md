@@ -30,22 +30,19 @@ props and theme customization on `/button`, `/icon` and `/theme`.
 
 ### Use the local package
 
-The CLI/registry changes are currently local and uncommitted, so they are absent
-from the clone above. This section and the copy workflow below require the
-development checkout containing those changes.
-
-In that checkout, build a local package:
+The package includes the component CLI and canonical sources. Build a local package
+from the development checkout:
 
 ```sh
 bun run build
 npm pack --ignore-scripts
 ```
 
-This produces `bref-ui-2.0.0.tgz`. In an existing Svelte 5.56.1+ project with its
+This produces `bref-ui-2.1.1.tgz`. In an existing Svelte 5.56.1+ project with its
 dependencies installed, install that tarball, replacing the example path:
 
 ```sh
-npm install /path/to/bref-ui-2.0.0.tgz
+npm install /path/to/bref-ui-2.1.1.tgz
 ```
 
 Then use the components in a `.svelte` file:
@@ -111,13 +108,55 @@ is available from `bref-ui/types`. Copied components include the helper in
    complete site generation, generative UI and interactive interfaces for agent
    workflows.
 
-## Copy components into a project (WIP)
+## Copy components into a project
 
-The local package includes the `bref` executable. After installing the tarball,
-preview and accept the setup and Button copies:
+The package includes the `bref-ui` executable, which requires Bun. After installing
+the tarball, run commands from the consumer project's root:
 
-Run `bun run bref-ui add theme` to copy the default-only Theme source into the configured UI directory. The copied `Theme` has no `palette` prop; edit its CSS tokens directly. The package `Theme` retains the `palette` prop. Button copies include Icon and required types. SvelteKit can use
-`--alias '$lib/bref'` during init after its existing sync command.
+```sh
+bun run bref-ui init
+bun run bref-ui add button
+bun run bref-ui --help
+```
+
+`init` creates `bref.config.json` and leaves an existing file untouched:
+
+```json
+{
+	"ui": "$lib/ui"
+}
+```
+
+The default destination is `src/lib/ui`. Edit `ui` to another `$lib` path, such as
+`$lib/bref`, to change the destination. The CLI maps `$lib` to `src/lib`; it does not
+discover project aliases or accept an `--alias` option. Configure the same alias
+in a plain Svelte project if using `$lib/ui` imports.
+
+`add <component>` copies the component and its registry dependencies, then merges
+component exports into the destination's `index.ts`. Button includes Icon and Theme.
+The preview lists `add`, `unchanged` and `conflict` files. Each conflicting file
+requires overwrite approval, followed by a final installation confirmation. Declining
+a prompt cancels without writes; identical files are skipped.
+
+Use the copied components in a `.svelte` file:
+
+```svelte
+<script lang="ts">
+	import { Button, Theme } from '$lib/ui';
+</script>
+
+<Theme />
+<Button label="Save" />
+```
+
+Keep `bref-ui` installed for shared types imported from `bref-ui/types`. To copy
+Theme separately, run `bun run bref-ui add theme`. The copied Theme uses the default
+palette and has no `palette` prop; customize its copied CSS tokens. The package
+Theme retains its `palette` prop.
+
+Available component IDs: `button`, `checkbox`, `combobox`, `dialog`, `icon`, `pill`,
+`pill-choice-group`, `pill-group`, `popover`, `progress`, `select`, `spinner`,
+`surface`, `switch`, `text-area`, `text-input`, `theme` and `tree-view`.
 
 ## Documentation and demos
 
