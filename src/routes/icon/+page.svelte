@@ -5,6 +5,9 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
+	import Playground from '../components/playground.svelte';
+	import PlaygroundField from '../components/playground-field.svelte';
+	import PlaygroundGroup from '../components/playground-group.svelte';
 	import { Button, Icon, Select, TextInput, Checkbox } from '$lib/index.js';
 	import type { Color, Size, IconName } from '$lib/types.js';
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
@@ -37,6 +40,13 @@
 	let filled = $state(false);
 	let label = $state('Favorite');
 	let matrixOpen = $state(false);
+	const resetPlayground = () => {
+		name = 'favorite';
+		size = '';
+		color = '';
+		filled = false;
+		label = 'Favorite';
+	};
 	const source = `<script>
   import { Icon } from 'bref-ui';
 <${'/'}script>
@@ -96,56 +106,48 @@
 		<CodeSnippet {source} label="Icon usage code" />
 	</Section>
 	<Section {...sections[1]}>
-		<div data-demo="controls">
-			<div data-control>
-				<label for="icon-name">Name</label>
-				<Select
-					id="icon-name"
-					items={names.map((id) => ({ id, label: id }))}
-					bind:value={() => name, (next) => (name = next as typeof name)}
-				/>
-			</div>
-			<div data-control>
-				<label for="icon-size">Size</label>
-				<Select
-					id="icon-size"
-					items={[{ id: '', label: 'Inherited' }, ...sizes.map((id) => ({ id, label: id }))]}
-					bind:value={() => size, (next) => (size = next as typeof size)}
-				/>
-			</div>
-			<div data-control>
-				<label for="icon-color">Color</label>
-				<Select
-					id="icon-color"
-					items={[{ id: '', label: 'Inherited' }, ...colors.map((id) => ({ id, label: id }))]}
-					bind:value={() => color, (next) => (color = next as typeof color)}
-				/>
-			</div>
-			<label>
-				Accessible label <TextInput bind:value={label} />
-			</label>
-			<label data-toggle>
-				<Checkbox bind:checked={filled} />
-				Filled
-			</label>
-		</div>
-		<div data-demo="inherited">
-			<Icon
-				{name}
-				size={size || undefined}
-				color={color || undefined}
-				{filled}
-				label={label || undefined}
-			/>
-		</div>
-		<p>
-			Clear the label to make the icon decorative. Omitted size and color inherit from the
-			container.
-		</p>
-		<CodeSnippet
-			label="Icon playground code"
+		<p>Clear the label for a decorative icon. Omitted size and color inherit from the preview.</p>
+		<Playground
+			onReset={resetPlayground}
 			source={`<Icon name="${name}" filled={${filled}}${size ? ` size="${size}"` : ''}${color ? ` color="${color}"` : ''}${label ? ` label={${JSON.stringify(label)}}` : ''} />`}
-		/>
+		>
+			{#snippet preview()}<div data-demo="inherited">
+					<Icon
+						{name}
+						size={size || undefined}
+						color={color || undefined}
+						{filled}
+						label={label || undefined}
+					/>
+				</div>{/snippet}
+			<PlaygroundGroup title="Appearance">
+				<PlaygroundField id="icon-name" label="Name">
+					<Select
+						id="icon-name"
+						items={names.map((id) => ({ id, label: id }))}
+						bind:value={() => name, (next) => (name = next as typeof name)}
+					/>
+				</PlaygroundField><PlaygroundField id="icon-size" label="Size">
+					<Select
+						id="icon-size"
+						items={[{ id: '', label: 'Inherited' }, ...sizes.map((id) => ({ id, label: id }))]}
+						bind:value={() => size, (next) => (size = next as typeof size)}
+					/>
+				</PlaygroundField><PlaygroundField id="icon-color" label="Color">
+					<Select
+						id="icon-color"
+						items={[{ id: '', label: 'Inherited' }, ...colors.map((id) => ({ id, label: id }))]}
+						bind:value={() => color, (next) => (color = next as typeof color)}
+					/>
+				</PlaygroundField><PlaygroundField id="icon-filled" label="Filled" toggle>
+					<Checkbox id="icon-filled" bind:checked={filled} />
+				</PlaygroundField>
+			</PlaygroundGroup><PlaygroundGroup title="Accessibility">
+				<PlaygroundField id="icon-label" label="Accessible label">
+					<TextInput id="icon-label" bind:value={label} wide />
+				</PlaygroundField>
+			</PlaygroundGroup>
+		</Playground>
 	</Section>
 	<Section {...sections[2]}>
 		<p>
@@ -281,28 +283,20 @@
 </Page>
 
 <style>
-	[data-demo='row'],
-	[data-demo='controls'] {
+	[data-demo='row'] {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 24px;
-	}
-	[data-demo='controls'] > label {
-		display: grid;
-		gap: 12px;
-		color: var(--color-muted);
-	}
-	[data-demo='controls'] > label[data-toggle] {
-		grid-template-columns: auto 1fr;
-		align-items: center;
-		color: var(--color-foreground);
 	}
 	[data-demo='matrix'] {
 		display: grid;
 		gap: 24px;
 	}
 	[data-demo='inherited'] {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		font-size: 2rem;
 		color: var(--color-primary);
 	}
@@ -312,11 +306,5 @@
 	}
 	figcaption {
 		font-size: 0.875rem;
-	}
-	[data-control] {
-		display: grid;
-		gap: 0.5rem;
-		width: min(100%, 12rem);
-		min-width: 0;
 	}
 </style>

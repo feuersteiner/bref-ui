@@ -1,7 +1,11 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the size, state and native form examples together on the documentation page. */
-	import { Button, Checkbox, Combobox } from '$lib/index.js';
-	import type { SelectOptionDataProps } from '$lib/select/types.js';
+	import { Button, Checkbox, Combobox, Select, TextInput } from '$lib/index.js';
+	import type { SelectOptionDataProps, BaseSize, IconProps } from '$lib/types.js';
+
+	import Playground from '../components/playground.svelte';
+	import PlaygroundField from '../components/playground-field.svelte';
+	import PlaygroundGroup from '../components/playground-group.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
@@ -31,12 +35,73 @@
 <${'/'}script>
 
 <Combobox aria-label="Fruit" {items} bind:value={fruit} name="fruit" />`;
+
+	let previewValue = $state<string | string[] | undefined>();
+	let previewSize = $state<BaseSize>('medium');
+	let previewDisabled = $state(false);
+	let multiple = $state(false);
+	let empty = $state(false);
+	let previewPlaceholder = $state('Select…');
+	let emptyText = $state('No options found');
+	let emptyIcon = $state(true);
+	let iconFilled = $state(false);
+	let iconName = $state<IconProps['name']>('search');
+	const iconNames: IconProps['name'][] = ['search', 'favorite', 'description', 'check_circle'];
+	let optionIcons = $state(true);
+	let optionDisabled = $state(true);
+	let previewChanges = $state(0);
+	const previewItems = $derived(
+		empty
+			? []
+			: items.map((item) => ({
+					...item,
+					icon: optionIcons && item.icon ? { ...item.icon, filled: iconFilled } : undefined,
+					disabled: optionDisabled && item.disabled
+				}))
+	);
+	const previewEmpty = $derived({
+		message: emptyText,
+		icon: emptyIcon ? { name: iconName, filled: iconFilled } : undefined
+	});
+	let previewWide = $state(false);
+	let previewVariant = $state<'neutral' | 'soft'>('soft');
+	let previewReadonly = $state(false);
+	const variants = ['neutral', 'soft'] as const;
+	const playgroundSource = $derived(`<script lang="ts">
+  import { Combobox } from 'bref-ui';
+  import type { SelectOptionDataProps } from 'bref-ui/types';
+  const items: SelectOptionDataProps[] = ${JSON.stringify(previewItems, null, 2)};
+  let value = $state<string | string[] | undefined>(${JSON.stringify(previewValue) ?? 'undefined'});
+  let changes = $state(0);
+<${'/'}script>
+
+<label for="playground-combobox">Choose fruit</label>
+<Combobox id="playground-combobox" {items} bind:value size=${JSON.stringify(previewSize)} disabled={${previewDisabled}} placeholder={${JSON.stringify(previewPlaceholder)}} emptyMessage={${JSON.stringify(previewEmpty)}} wide={${previewWide}} variant=${JSON.stringify(previewVariant)} readonly={${previewReadonly}} onChange={() => changes++} />
+<p role="status">Selected: {JSON.stringify(value) ?? 'none'}; changes: {changes}</p>`);
+	const resetPlayground = () => {
+		previewValue = undefined;
+		previewSize = 'medium';
+		previewDisabled = false;
+		multiple = false;
+		empty = false;
+		previewPlaceholder = 'Select…';
+		emptyText = 'No options found';
+		emptyIcon = true;
+		iconFilled = false;
+		iconName = 'search';
+		optionIcons = true;
+		optionDisabled = true;
+		previewChanges = 0;
+		previewWide = false;
+		previewVariant = 'soft';
+		previewReadonly = false;
+	};
 	const props = [
 		{
 			name: 'items',
 			type: 'readonly SelectOptionDataProps[]',
 			required: true,
-			default: '—',
+			default: '\u2014',
 			description: 'Unique IDs, labels, optional icons and disabled state.'
 		},
 		{
@@ -51,21 +116,56 @@
 			type: '(value: string | string[]) => void',
 			required: false,
 			default: 'Omitted',
-			description: 'Called when a user changes selection, not when search text changes.'
+			description: 'Called when a user changes selection.'
 		},
 		{
-			name: 'placeholder / emptyMessage',
-			type: 'string / SelectEmptyProps',
+			name: 'id',
+			type: 'string',
 			required: false,
-			default: 'Select… / No options found',
-			description: 'Empty selection and empty results text.'
+			default: 'Generated',
+			description: 'Input ID for label association.'
 		},
 		{
-			name: 'size / variant / wide / disabled',
-			type: 'BaseSize / neutral | soft / boolean',
+			name: 'placeholder',
+			type: 'string',
 			required: false,
-			default: 'medium / soft / false',
-			description: 'Input and option size, appearance, width and availability.'
+			default: 'Select\u2026',
+			description: 'Text shown for an empty selection.'
+		},
+		{
+			name: 'emptyMessage',
+			type: 'SelectEmptyProps',
+			required: false,
+			default: "{ message: 'No options found' }",
+			description: 'Empty results text and optional decorative icon.'
+		},
+		{
+			name: 'size',
+			type: 'BaseSize',
+			required: false,
+			default: 'medium',
+			description: 'Control and option size.'
+		},
+		{
+			name: 'disabled',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Disable the control and close the popup.'
+		},
+		{
+			name: 'variant',
+			type: "Exclude<Variant, 'filled'>",
+			required: false,
+			default: 'soft',
+			description: 'Neutral or soft input appearance.'
+		},
+		{
+			name: 'wide',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Fill the available input width.'
 		}
 	];
 </script>
@@ -74,12 +174,106 @@
 	title={chapter}
 	description="Search local option labels while selected IDs stay separate from the query."
 >
-	<Section {...sections[0]}>
+	<Section {...sections.find((section) => section.id === 'usage')!}>
 		<Combobox aria-label="Fruit" {items} bind:value onChange={() => changes++} />
 		<p role="status">Selected: {value ?? 'none'}; changes: {changes}</p>
 		<CodeSnippet {source} label="Combobox usage code" />
 	</Section>
-	<Section {...sections[1]}>
+	<Section {...sections.find((section) => section.id === 'playground')!}>
+		<Playground source={playgroundSource} onReset={resetPlayground}>
+			{#snippet preview()}
+				<div data-demo="preview">
+					<label for="playground-combobox">Choose fruit</label>
+					<Combobox
+						id="playground-combobox"
+						items={previewItems}
+						bind:value={previewValue}
+						size={previewSize}
+						disabled={previewDisabled}
+						placeholder={previewPlaceholder}
+						emptyMessage={previewEmpty}
+						wide={previewWide}
+						variant={previewVariant}
+						readonly={previewReadonly}
+						onChange={() => previewChanges++}
+					/>
+				</div>
+			{/snippet}
+			{#snippet status()}<p role="status">
+					Selected: {JSON.stringify(previewValue) ?? 'none'}; changes: {previewChanges}
+				</p>{/snippet}
+			<PlaygroundGroup title="Appearance">
+				<PlaygroundField id="combobox-previewSize" label="Size">
+					<Select
+						id="combobox-previewSize"
+						items={sizes.map((id) => ({ id, label: id }))}
+						bind:value={() => previewSize, (next) => (previewSize = next as typeof previewSize)}
+					/>
+				</PlaygroundField><PlaygroundField id="combobox-previewPlaceholder" label="Placeholder">
+					<TextInput id="combobox-previewPlaceholder" bind:value={previewPlaceholder} />
+				</PlaygroundField><PlaygroundField id="combobox-previewVariant" label="Variant">
+					<Select
+						id="combobox-previewVariant"
+						items={variants.map((id) => ({ id, label: id }))}
+						bind:value={
+							() => previewVariant, (next) => (previewVariant = next as typeof previewVariant)
+						}
+					/>
+				</PlaygroundField><PlaygroundField id="combobox-previewWide" label="Wide" toggle>
+					<Checkbox id="combobox-previewWide" bind:checked={previewWide} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+			<PlaygroundGroup title="Selection">
+				<PlaygroundField id="combobox-multiple" label="Multiple selection" toggle>
+					<Checkbox
+						id="combobox-multiple"
+						checked={multiple}
+						onchange={(event) => {
+							multiple = event.currentTarget.checked;
+							previewValue = multiple ? [] : undefined;
+						}}
+					/>
+				</PlaygroundField><PlaygroundField id="combobox-previewDisabled" label="Disabled" toggle>
+					<Checkbox id="combobox-previewDisabled" bind:checked={previewDisabled} />
+				</PlaygroundField><PlaygroundField id="combobox-previewReadonly" label="Read only" toggle>
+					<Checkbox id="combobox-previewReadonly" bind:checked={previewReadonly} />
+				</PlaygroundField><Button
+					label="Clear selection"
+					size="small"
+					variant="neutral"
+					onClick={() => (previewValue = multiple ? [] : undefined)}
+				/>
+			</PlaygroundGroup>
+			<PlaygroundGroup title="Options">
+				<PlaygroundField id="combobox-empty" label="Empty options" toggle>
+					<Checkbox id="combobox-empty" bind:checked={empty} />
+				</PlaygroundField>
+				<PlaygroundField id="combobox-optionIcons" label="Option icons" toggle>
+					<Checkbox id="combobox-optionIcons" bind:checked={optionIcons} />
+				</PlaygroundField>
+				<PlaygroundField id="combobox-optionDisabled" label="Disabled option" toggle>
+					<Checkbox id="combobox-optionDisabled" bind:checked={optionDisabled} />
+				</PlaygroundField>
+				<PlaygroundField id="combobox-emptyText" label="Empty message">
+					<TextInput id="combobox-emptyText" bind:value={emptyText} />
+				</PlaygroundField>
+				<PlaygroundField id="combobox-emptyIcon" label="Empty message icon" toggle>
+					<Checkbox id="combobox-emptyIcon" bind:checked={emptyIcon} />
+				</PlaygroundField>
+				<PlaygroundField id="combobox-iconName" label="Empty icon name">
+					<Select
+						id="combobox-iconName"
+						items={iconNames.map((id) => ({ id, label: id }))}
+						bind:value={() => iconName, (next) => (iconName = next as typeof iconName)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="combobox-iconFilled" label="Filled icons" toggle>
+					<Checkbox id="combobox-iconFilled" bind:checked={iconFilled} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+		</Playground>
+	</Section>
+	<Section {...sections.find((section) => section.id === 'sizes')!}>
 		<div data-demo="row">
 			{#each sizes as size (size)}
 				<div data-demo-size>
@@ -93,7 +287,7 @@
 			the input keeps its opaque field fill.
 		</p>
 	</Section>
-	<Section {...sections[2]}>
+	<Section {...sections.find((section) => section.id === 'states')!}>
 		<div data-demo="row">
 			<div data-demo-size>
 				<label for="neutral-fruit">Neutral fruit</label>
@@ -142,7 +336,7 @@
 		<p role="status">Multiple: {many.join(', ') || 'none'}</p>
 		<p>Pear is disabled. The shared theme control switches light and dark modes.</p>
 	</Section>
-	<Section {...sections[3]}>
+	<Section {...sections.find((section) => section.id === 'forms')!}>
 		<form
 			onsubmit={(event) => {
 				event.preventDefault();
@@ -166,7 +360,7 @@
 			aria-invalid on the visible input.
 		</p>
 	</Section>
-	<Section {...sections[4]}>
+	<Section {...sections.find((section) => section.id === 'props')!}>
 		<PropTable {props} />
 		<p>
 			Supported native attributes: <code>
@@ -185,7 +379,7 @@
 			tracks selected IDs; typed text remains private. No snippets are exposed.
 		</p>
 	</Section>
-	<Section {...sections[5]}>
+	<Section {...sections.find((section) => section.id === 'viewport')!}>
 		<label for="overflow-fruit">Long choices</label>
 		<Combobox id="overflow-fruit" items={overflowItems} placeholder="Search 24 long choices" wide />
 		<p>
@@ -196,6 +390,13 @@
 </Page>
 
 <style>
+	[data-demo='preview'] {
+		display: grid;
+		gap: 12px;
+		width: 100%;
+		max-width: 24rem;
+		margin-inline: auto;
+	}
 	[data-demo='row'] {
 		display: flex;
 		flex-wrap: wrap;

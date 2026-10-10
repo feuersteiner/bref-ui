@@ -1,11 +1,17 @@
 <script lang="ts">
+	/* eslint-disable max-lines -- Keep interactive group states and gallery examples together. */
 	import { chapter, sections } from './sections.js';
+	import Playground from '../components/playground.svelte';
+	import PlaygroundField from '../components/playground-field.svelte';
+	import PlaygroundGroup from '../components/playground-group.svelte';
+	import DemoGroup from '../components/demo-group.svelte';
+	import MovingBackground from '../components/moving-background.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Button, PillGroup, Select } from '$lib/index.js';
-	import type { Color, Size, Variant } from '$lib/types.js';
+	import { PillGroup, Select, Checkbox } from '$lib/index.js';
+	import type { Color, Size, Variant, PillDataProps } from '$lib/types.js';
 
 	const items = [
 		{ id: 'draft', label: 'Draft', icon: { name: 'draft' } },
@@ -24,10 +30,41 @@
 		'warning',
 		'error'
 	] as const;
-	let previewItems = $state([...items]);
+	let previewItems = $state<PillDataProps[]>([...items]);
 	let size = $state<Size>('medium');
 	let variant = $state<Variant>('neutral');
 	let color = $state<Exclude<Color, 'background'>>('foreground');
+	let glass = $state(false);
+	let movingBackground = $state(false);
+	let deleteEnabled = $state(true);
+	let showIcons = $state(true);
+	let longLabels = $state(true);
+	const renderedItems = $derived(
+		previewItems.map((item) => ({
+			...item,
+			icon: showIcons ? item.icon : undefined,
+			label: item.id === 'long' && !longLabels ? 'Category' : item.label
+		}))
+	);
+	const reset = () => {
+		previewItems = [...items];
+		size = 'medium';
+		variant = 'neutral';
+		color = 'foreground';
+		glass = false;
+		movingBackground = false;
+		deleteEnabled = true;
+		showIcons = true;
+		longLabels = true;
+	};
+	const playgroundSource = $derived(`<script lang="ts">
+  import { PillGroup } from 'bref-ui';
+  import type { PillDataProps } from 'bref-ui/types';
+  let items = $state<PillDataProps[]>(${JSON.stringify(renderedItems, null, 2)});
+<${'/'}script>
+
+<PillGroup {items} size="${size}" variant="${variant}" color="${color}"
+  glass={${glass}} aria-label="Document categories preview"${deleteEnabled ? '\n  onDelete={(id) => items = items.filter((item) => item.id !== id)}' : ''} />`);
 	const props = [
 		{
 			name: 'items',
@@ -57,6 +94,13 @@
 			required: false,
 			default: 'foreground',
 			description: 'Theme color shared by the Pills.'
+		},
+		{
+			name: 'glass',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Translucent paint and backdrop blur for every Pill.'
 		}
 	];
 </script>
@@ -66,55 +110,75 @@
 		<PillGroup {items} aria-label="Document categories" />
 		<CodeSnippet
 			label="PillGroup usage code"
-			source={`<script>\n  import { PillGroup } from 'bref-ui';\n  const items = [{ id: 'draft', label: 'Draft', icon: { name: 'draft' } }, { id: 'review', label: 'In review' }];\n<${'/'}script>\n\n<PillGroup {items} aria-label="Document categories" />`}
+			source={`<script lang="ts">\n  import { PillGroup } from 'bref-ui';\n  import type { PillDataProps } from 'bref-ui/types';\n  const items: PillDataProps[] = [{ id: 'draft', label: 'Draft', icon: { name: 'draft' } }, { id: 'review', label: 'In review' }];\n<${'/'}script>\n\n<PillGroup {items} aria-label="Document categories" />`}
 		/>
 	</Section>
 	<Section {...sections[1]}>
-		<div data-controls>
-			<div data-control>
-				<label for="pill-group-size">Size</label>
-				<Select
-					id="pill-group-size"
-					items={sizes.map((id) => ({ id, label: id }))}
-					bind:value={() => size, (next) => (size = next as typeof size)}
-				/>
-			</div>
-			<div data-control>
-				<label for="pill-group-variant">Variant</label>
-				<Select
-					id="pill-group-variant"
-					items={variants.map((id) => ({ id, label: id }))}
-					bind:value={() => variant, (next) => (variant = next as typeof variant)}
-				/>
-			</div>
-			<div data-control>
-				<label for="pill-group-color">Color</label>
-				<Select
-					id="pill-group-color"
-					items={colors.map((id) => ({ id, label: id }))}
-					bind:value={() => color, (next) => (color = next as typeof color)}
-				/>
-			</div>
-		</div>
-		<PillGroup
-			items={previewItems}
-			{size}
-			{variant}
-			{color}
-			aria-label="Document categories preview"
-			onDelete={(id) => {
-				previewItems = previewItems.filter((item) => item.id !== id);
-			}}
-		/>
-		<Button
-			label="Reset items"
-			onClick={() => {
-				previewItems = [...items];
-			}}
-		/>
+		<Playground source={playgroundSource} onReset={reset}>
+			{#snippet preview()}<div data-playground-stage>
+					{#if movingBackground}<MovingBackground />{/if}
+					<div data-playground-content>
+						<PillGroup
+							items={renderedItems}
+							{size}
+							{variant}
+							{color}
+							{glass}
+							aria-label="Document categories preview"
+							onDelete={deleteEnabled
+								? (id) => (previewItems = previewItems.filter((item) => item.id !== id))
+								: undefined}
+						/>
+					</div>
+				</div>{/snippet}
+			{#snippet status()}<span role="status">
+					{previewItems.length} categories remaining
+				</span>{/snippet}
+			<PlaygroundGroup title="Appearance">
+				<PlaygroundField id="pill-group-size" label="Size">
+					<Select
+						id="pill-group-size"
+						items={sizes.map((id) => ({ id, label: id }))}
+						bind:value={() => size, (next) => (size = next as typeof size)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="pill-group-variant" label="Variant">
+					<Select
+						id="pill-group-variant"
+						items={variants.map((id) => ({ id, label: id }))}
+						bind:value={() => variant, (next) => (variant = next as typeof variant)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="pill-group-color" label="Color">
+					<Select
+						id="pill-group-color"
+						items={colors.map((id) => ({ id, label: id }))}
+						bind:value={() => color, (next) => (color = next as typeof color)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="pill-group-glass" label="Glass" toggle>
+					<Checkbox id="pill-group-glass" bind:checked={glass} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+			<PlaygroundGroup title="Content">
+				<PlaygroundField id="pill-group-showIcons" label="Item icons" toggle>
+					<Checkbox id="pill-group-showIcons" bind:checked={showIcons} />
+				</PlaygroundField>
+				<PlaygroundField id="pill-group-longLabels" label="Long labels" toggle>
+					<Checkbox id="pill-group-longLabels" bind:checked={longLabels} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+			<PlaygroundGroup title="Interaction">
+				<PlaygroundField id="pill-group-deleteEnabled" label="Enable delete" toggle>
+					<Checkbox id="pill-group-deleteEnabled" bind:checked={deleteEnabled} />
+				</PlaygroundField>
+				<PlaygroundField id="pill-group-movingBackground" label="Moving background" toggle>
+					<Checkbox id="pill-group-movingBackground" bind:checked={movingBackground} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+		</Playground>
 		{#each sizes as size (size)}
-			<div data-size-demo>
-				<span>{size}</span>
+			<DemoGroup title={size}>
 				<PillGroup
 					items={previewItems}
 					{size}
@@ -124,7 +188,7 @@
 						previewItems = previewItems.filter((item) => item.id !== id);
 					}}
 				/>
-			</div>
+			</DemoGroup>
 		{/each}
 	</Section>
 	<Section {...sections[2]}>
@@ -137,24 +201,18 @@
 </Page>
 
 <style>
-	[data-size-demo] {
+	[data-playground-stage] {
+		position: relative;
+		isolation: isolate;
 		display: grid;
-		gap: 0.5rem;
+		align-content: center;
+		gap: 20px;
+		min-width: 0;
+		min-height: 240px;
+		padding: 24px;
 	}
-	[data-controls] {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 1rem;
-	}
-	label {
-		display: grid;
-		gap: 0.5rem;
-	}
-	[data-control] {
-		display: grid;
-		gap: 0.5rem;
-		width: min(100%, 12rem);
+	[data-playground-content] {
+		position: relative;
 		min-width: 0;
 	}
 </style>

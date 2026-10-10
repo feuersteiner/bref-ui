@@ -1,12 +1,17 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the Pill gallery matrix and usage together. */
 	import { chapter, sections } from './sections.js';
+	import Playground from '../components/playground.svelte';
+	import PlaygroundField from '../components/playground-field.svelte';
+	import PlaygroundGroup from '../components/playground-group.svelte';
+	import DemoGroup from '../components/demo-group.svelte';
+	import MovingBackground from '../components/moving-background.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { Pill, TextInput, Select, Checkbox } from '$lib/index.js';
-	import type { Color, Size, Variant } from '$lib/types.js';
+	import type { Color, Size, Variant, IconName } from '$lib/types.js';
 
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const variants = ['neutral', 'soft', 'filled'] as const;
@@ -28,6 +33,41 @@
 	let wide = $state(false);
 	let clicked = $state(0);
 	let removed = $state(0);
+	let glass = $state(false);
+	let movingBackground = $state(false);
+	let swoosh = $state(false);
+	let showIcon = $state(true);
+	let iconName = $state<IconName>('star');
+	const iconNames = ['star', 'check', 'favorite', 'info', 'folder'] as const;
+	let iconFilled = $state(false);
+	let clickEnabled = $state(false);
+	let deleteEnabled = $state(false);
+	let showChildren = $state(false);
+	const reset = () => {
+		size = 'medium';
+		variant = 'neutral';
+		color = 'foreground';
+		label = 'Status';
+		wide = false;
+		glass = false;
+		movingBackground = false;
+		swoosh = false;
+		showIcon = true;
+		iconName = 'star';
+		iconFilled = false;
+		clickEnabled = false;
+		deleteEnabled = false;
+		showChildren = false;
+		clicked = 0;
+		removed = 0;
+	};
+	const playgroundSource = $derived(`<script>
+  import { Pill } from 'bref-ui';${clickEnabled ? '\n  let clicks = $state(0);' : ''}${deleteEnabled ? '\n  let removals = $state(0);' : ''}
+<${'/'}script>
+
+<Pill label={${JSON.stringify(label)}} size="${size}" variant="${variant}" color="${color}"
+  wide={${wide}} glass={${glass}} swoosh={${swoosh}}${showIcon ? `\n  icon={{ name: ${JSON.stringify(iconName)}, filled: ${iconFilled} }}` : ''}${clickEnabled ? '\n  onClick={() => clicks++}' : ''}${deleteEnabled ? '\n  onDelete={() => removals++}' : ''}
+  title="Native title attribute"${showChildren ? '>\n  <strong>snippet</strong>\n</Pill>' : ' />'}${clickEnabled || deleteEnabled ? '\n<p role="status">' + (clickEnabled ? 'Clicks: {clicks} ' : '') + (deleteEnabled ? 'Removals: {removals}' : '') + '</p>' : ''}`);
 	const props = [
 		{
 			name: 'label',
@@ -98,6 +138,13 @@
 			required: false,
 			default: 'false',
 			description: 'Animate the highlight.'
+		},
+		{
+			name: 'glass',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Translucent paint and backdrop blur.'
 		}
 	];
 </script>
@@ -119,68 +166,117 @@
 			source={`<script>\n  import { Pill } from 'bref-ui';\n<${'/'}script>\n\n<Pill label="Ready" color="success" variant="soft" />`}
 		/>
 	</Section>
-	<Section {...sections[1]}>
-		<div data-demo="controls">
-			<label>
-				Text <TextInput bind:value={label} />
-			</label>
-			<div data-control>
-				<label for="pill-size">Size</label>
-				<Select
-					id="pill-size"
-					items={sizes.map((id) => ({ id, label: id }))}
-					bind:value={() => size, (next) => (size = next as typeof size)}
-				/>
+	<Section {...sections.find((section) => section.id === 'playground')!}>
+		<Playground source={playgroundSource} onReset={reset}>
+			{#snippet preview()}
+				<div data-playground-stage>
+					{#if movingBackground}<MovingBackground />{/if}
+					<div data-playground-content>
+						<Pill
+							{label}
+							{size}
+							{variant}
+							{color}
+							{wide}
+							{glass}
+							{swoosh}
+							icon={showIcon ? { name: iconName, filled: iconFilled } : undefined}
+							onClick={clickEnabled ? () => clicked++ : undefined}
+							onDelete={deleteEnabled ? () => removed++ : undefined}
+							title="Native title attribute"
+						>
+							{#if showChildren}<strong>snippet</strong>{/if}
+						</Pill>
+					</div>
+				</div>
+			{/snippet}
+			{#snippet status()}<span role="status">Clicks: {clicked}; removals: {removed}</span>{/snippet}
+			<PlaygroundGroup title="Appearance">
+				<PlaygroundField id="pill-size" label="Size">
+					<Select
+						id="pill-size"
+						items={sizes.map((id) => ({ id, label: id }))}
+						bind:value={() => size, (next) => (size = next as typeof size)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="pill-variant" label="Variant">
+					<Select
+						id="pill-variant"
+						items={variants.map((id) => ({ id, label: id }))}
+						bind:value={() => variant, (next) => (variant = next as typeof variant)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="pill-color" label="Color">
+					<Select
+						id="pill-color"
+						items={colors.map((id) => ({ id, label: id }))}
+						bind:value={() => color, (next) => (color = next as typeof color)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="pill-glass" label="Glass" toggle>
+					<Checkbox id="pill-glass" bind:checked={glass} />
+				</PlaygroundField>
+				<PlaygroundField id="pill-wide" label="Wide" toggle>
+					<Checkbox id="pill-wide" bind:checked={wide} />
+				</PlaygroundField>
+				<PlaygroundField id="pill-swoosh" label="Animate highlight" toggle>
+					<Checkbox id="pill-swoosh" bind:checked={swoosh} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+			<PlaygroundGroup title="Content">
+				<PlaygroundField id="pill-label" label="Label">
+					<TextInput id="pill-label" bind:value={label} />
+				</PlaygroundField>
+				<PlaygroundField id="pill-showIcon" label="Leading icon" toggle>
+					<Checkbox id="pill-showIcon" bind:checked={showIcon} />
+				</PlaygroundField>
+				<PlaygroundField id="pill-iconName" label="Icon name">
+					<Select
+						id="pill-iconName"
+						items={iconNames.map((id) => ({ id, label: id }))}
+						bind:value={() => iconName, (next) => (iconName = next as IconName)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="pill-iconFilled" label="Filled icon" toggle>
+					<Checkbox id="pill-iconFilled" bind:checked={iconFilled} />
+				</PlaygroundField>
+				<PlaygroundField id="pill-showChildren" label="Children snippet" toggle>
+					<Checkbox id="pill-showChildren" bind:checked={showChildren} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+			<PlaygroundGroup title="Interaction">
+				<PlaygroundField id="pill-clickEnabled" label="Enable click" toggle>
+					<Checkbox id="pill-clickEnabled" bind:checked={clickEnabled} />
+				</PlaygroundField>
+				<PlaygroundField id="pill-deleteEnabled" label="Enable delete" toggle>
+					<Checkbox id="pill-deleteEnabled" bind:checked={deleteEnabled} />
+				</PlaygroundField>
+				<PlaygroundField id="pill-movingBackground" label="Moving background" toggle>
+					<Checkbox id="pill-movingBackground" bind:checked={movingBackground} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+		</Playground>
+	</Section>
+	<Section {...sections[2]}>
+		<DemoGroup title="Interactions and snippets">
+			<div data-demo="row">
+				<Pill label="Clickable" onClick={() => clicked++} />
+				<Pill label="Removable" onDelete={() => removed++} />
+				<Pill label="Combined" onClick={() => clicked++} onDelete={() => removed++} />
+				<Pill label="Animated" swoosh />
+				<Pill label="Content" icon={{ name: 'star' }}><strong>snippet</strong></Pill>
 			</div>
-			<div data-control>
-				<label for="pill-variant">Variant</label>
-				<Select
-					id="pill-variant"
-					items={variants.map((id) => ({ id, label: id }))}
-					bind:value={() => variant, (next) => (variant = next as typeof variant)}
-				/>
-			</div>
-			<div data-control>
-				<label for="pill-color">Color</label>
-				<Select
-					id="pill-color"
-					items={colors.map((id) => ({ id, label: id }))}
-					bind:value={() => color, (next) => (color = next as typeof color)}
-				/>
-			</div>
-			<label>
-				Wide <Checkbox bind:checked={wide} />
-			</label>
-		</div>
-		<div data-demo="row">
-			<Pill
-				{label}
-				{size}
-				{variant}
-				{color}
-				{wide}
-				icon={{ name: 'star' }}
-				title="Native title attribute"
-			>
-				<strong>snippet</strong>
-			</Pill>
-			<Pill label="Clickable" onClick={() => clicked++} />
-			<Pill label="Removable" {size} onDelete={() => removed++} />
-			<Pill label="Combined" {size} onClick={() => clicked++} onDelete={() => removed++} />
-			<Pill label="Animated" swoosh />
-		</div>
-		<p>Clicks: {clicked}; removals: {removed}</p>
+			<p role="status">Clicks: {clicked}; removals: {removed}</p>
+		</DemoGroup>
 		<Pill label="Full-width Pill" {size} {variant} {color} wide />
 		{#each variants as variant (variant)}
-			<fieldset>
-				<legend>{variant}</legend>
+			<DemoGroup title={variant}>
 				<div data-demo="row">
 					{#each colors as color (color)}<Pill {variant} {color} label={color} />{/each}
 				</div>
-			</fieldset>
+			</DemoGroup>
 		{/each}
-		<fieldset>
-			<legend>Sizes and long content</legend>
+		<DemoGroup title="Sizes and long content">
 			<div data-demo="row">
 				{#each sizes as size (size)}
 					<Pill {size} color="primary" label={size} icon={{ name: 'check' }} />
@@ -196,9 +292,9 @@
 					label="A long category label that wraps on a narrow screen without losing its meaning"
 				/>
 			</div>
-		</fieldset>
+		</DemoGroup>
 	</Section>
-	<Section {...sections[2]}>
+	<Section {...sections[3]}>
 		<p>Compare glass and regular Pills over a swirling, striped background.</p>
 		<div data-background-demo>
 			{#each variants as variant (variant)}
@@ -219,7 +315,7 @@
 		</div>
 		<CodeSnippet label="Glass Pill usage code" source={glassUsage} />
 	</Section>
-	<Section {...sections[3]}>
+	<Section {...sections[4]}>
 		<PropTable {props} label="Pill props" />
 		<p>
 			Pill accepts native div attributes and a children snippet. A clickable Pill supports Enter and
@@ -229,31 +325,26 @@
 </Page>
 
 <style>
-	[data-demo='row'],
-	[data-demo='controls'] {
+	[data-playground-stage] {
+		position: relative;
+		isolation: isolate;
+		display: grid;
+		align-content: center;
+		gap: 20px;
+		min-width: 0;
+		min-height: 240px;
+		padding: 24px;
+	}
+	[data-playground-content] {
+		position: relative;
+		min-width: 0;
+	}
+
+	[data-demo='row'] {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 16px;
-	}
-	[data-demo='controls'] > label {
-		display: grid;
-		gap: 8px;
-	}
-	fieldset {
-		min-width: 0;
-		margin-block: 24px;
-		padding: 24px;
-		border: 1px solid var(--docs-rule);
-	}
-	legend {
-		padding-inline: 8px;
-	}
-	[data-control] {
-		display: grid;
-		gap: 0.5rem;
-		width: min(100%, 12rem);
-		min-width: 0;
 	}
 	[data-background-demo] {
 		display: grid;

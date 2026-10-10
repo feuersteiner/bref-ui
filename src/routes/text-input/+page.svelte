@@ -1,7 +1,11 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the native form examples and component matrix together on the documentation page. */
-	import { TextInput, Select, Checkbox, Switch, Button } from '$lib/index.js';
-	import type { BaseSize, Variant } from '$lib/types.js';
+	import { TextInput, Select, Checkbox, Button } from '$lib/index.js';
+	import type { BaseSize, Variant, IconProps } from '$lib/types.js';
+
+	import Playground from '../components/playground.svelte';
+	import PlaygroundField from '../components/playground-field.svelte';
+	import PlaygroundGroup from '../components/playground-group.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
@@ -11,7 +15,6 @@
 
 	const sizes: BaseSize[] = ['small', 'medium', 'large'];
 	const variants = ['neutral', 'soft'] as const;
-	const glassUsage = '<TextInput glass placeholder="Your name" />';
 	let value = $state('Hello');
 	let size = $state<BaseSize>('medium');
 	let variant = $state<Exclude<Variant, 'filled'>>('soft');
@@ -24,6 +27,73 @@
 	let submitted = $state('Submit the form to inspect its value.');
 	const types = ['text', 'email', 'password', 'search', 'tel', 'url', 'number'] as const;
 	let number = $state('12');
+	const iconNames: IconProps['name'][] = ['search', 'favorite', 'person', 'check_circle'];
+	const iconSizes = ['inherit', 'x-small', 'small', 'medium', 'large', 'x-large'] as const;
+	const iconColors = [
+		'inherit',
+		'primary',
+		'secondary',
+		'foreground',
+		'background',
+		'muted',
+		'info',
+		'success',
+		'warning',
+		'error'
+	] as const;
+	let iconName = $state<IconProps['name']>('search');
+	let iconFilled = $state(false);
+	let iconSize = $state<(typeof iconSizes)[number]>('inherit');
+	let iconColor = $state<(typeof iconColors)[number]>('inherit');
+	let disabled = $state(false);
+	let readonly = $state(false);
+	const previewIcon = $derived(
+		withIcon
+			? {
+					name: iconName,
+					filled: iconFilled,
+					size: iconSize === 'inherit' ? undefined : iconSize,
+					color: iconColor === 'inherit' ? undefined : iconColor
+				}
+			: undefined
+	);
+	const playgroundSource = $derived(`<script lang="ts">
+  import { TextInput } from 'bref-ui';
+  let value = $state(${JSON.stringify(value)});
+  let lastChange = $state('Edit the field to inspect onChange.');
+  let nativeEvents = $state(0);
+<${'/'}script>
+
+<label for="playground-text-input">Editable input</label>
+<TextInput id="playground-text-input" size=${JSON.stringify(size)} variant=${JSON.stringify(variant)} glass={${glass}} wide={${wide}} disabled={${disabled}} readonly={${readonly}}${
+		previewIcon
+			? ' icon={{' +
+				Object.entries(previewIcon)
+					.filter(([, value]) => value !== undefined)
+					.map(([key, value]) => key + ': ' + JSON.stringify(value))
+					.join(', ') +
+				'}}'
+			: ''
+	} bind:value onChange={(next) => lastChange = 'TextInput: ' + next} oninput={() => nativeEvents++} />
+<p role="status">{lastChange}</p>
+<p>Bound value: {value}; native input events: {nativeEvents}</p>`);
+	const resetPlayground = () => {
+		value = 'Hello';
+		size = 'medium';
+		variant = 'soft';
+		wide = false;
+		glass = false;
+		withIcon = true;
+		movingBackground = false;
+		iconName = 'search';
+		iconFilled = false;
+		iconSize = 'inherit';
+		iconColor = 'inherit';
+		disabled = false;
+		readonly = false;
+		lastChange = 'Edit the field to inspect onChange.';
+		nativeEvents = 0;
+	};
 	const props = [
 		{
 			name: 'value',
@@ -81,17 +151,17 @@
 	title={chapter}
 	description="A native single-line text control with an optional leading icon."
 >
-	<Section {...sections[0]}>
+	<Section {...sections.find((section) => section.id === 'usage')!}>
 		<div data-demo="fields">
 			<label for="usage-text-input">Name</label>
 			<TextInput id="usage-text-input" name="entry" placeholder="Your name" />
 		</div>
 		<CodeSnippet
 			label="TextInput usage"
-			source={`<script>\n  import { TextInput } from 'bref-ui';\n<${'/'}script>\n\n<label for="entry">Name</label>\n<TextInput id="entry" name="entry"  />`}
+			source={`<script>\n  import { TextInput } from 'bref-ui';\n<${'/'}script>\n\n<label for="entry">Name</label>\n<TextInput id="entry" name="entry" placeholder="Your name" />`}
 		/>
 	</Section>
-	<Section {...sections[1]}>
+	<Section {...sections.find((section) => section.id === 'types')!}>
 		<div data-demo="grid">
 			{#each types as type (type)}<label>
 					{type}<TextInput {type} placeholder={type} />
@@ -108,7 +178,7 @@
 		</div>
 		<p>Number input value: {number}</p>
 	</Section>
-	<Section {...sections[2]}>
+	<Section {...sections.find((section) => section.id === 'appearance')!}>
 		<p>Neutral and soft variants use quiet tonal fills, with a clear indicator when focused.</p>
 		<div data-demo="grid">
 			{#each variants as currentVariant (currentVariant)}
@@ -124,63 +194,96 @@
 			{/each}
 		</div>
 	</Section>
-	<Section {...sections[3]}>
-		<div data-demo="controls">
-			<div data-control>
-				<label for="text-input-size">Size</label>
-				<Select
-					id="text-input-size"
-					items={sizes.map((id) => ({ id, label: id }))}
-					bind:value={() => size, (next) => (size = next as typeof size)}
-				/>
-			</div>
-			<div data-control>
-				<label for="text-input-variant">Variant</label>
-				<Select
-					id="text-input-variant"
-					items={variants.map((id) => ({ id, label: id }))}
-					bind:value={() => variant, (next) => (variant = next as typeof variant)}
-				/>
-			</div>
-			<label data-toggle>
-				<Checkbox bind:checked={withIcon} />
-				Icon
-			</label>
-			<label data-toggle>
-				<Checkbox bind:checked={glass} />
-				Glass
-			</label>
-			<label data-toggle>
-				<Checkbox bind:checked={wide} />
-				Wide
-			</label>
-		</div>
-		<label data-toggle data-background-toggle>
-			<Switch bind:checked={movingBackground} />
-			Moving background
-		</label>
-		<div data-demo="playground">
-			{#if movingBackground}<MovingBackground />{/if}
-			<div data-demo="fields">
-				<label for="playground-text-input">Editable input with icon</label>
-				<TextInput
-					id="playground-text-input"
-					{size}
-					{variant}
-					{glass}
-					{wide}
-					icon={withIcon ? { name: 'search' } : undefined}
-					bind:value
-					onChange={(next) => (lastChange = `TextInput: ${next}`)}
-					oninput={() => nativeEvents++}
-				/>
-				<p role="status">{lastChange}</p>
-				<p>Bound value: {value}; native input events: {nativeEvents}</p>
-			</div>
-		</div>
-		<CodeSnippet label="Glass TextInput usage" source={glassUsage} />
+	<Section {...sections.find((section) => section.id === 'playground')!}>
+		<Playground source={playgroundSource} onReset={resetPlayground}>
+			{#snippet preview()}
+				<div data-demo="playground">
+					{#if movingBackground}<MovingBackground />{/if}
+					<div data-demo="fields">
+						<label for="playground-text-input">Editable input</label>
+						<TextInput
+							id="playground-text-input"
+							{size}
+							{variant}
+							{glass}
+							{wide}
+							{disabled}
+							{readonly}
+							icon={previewIcon}
+							bind:value
+							onChange={(next) => (lastChange = `TextInput: ${next}`)}
+							oninput={() => nativeEvents++}
+						/>
+					</div>
+				</div>
+			{/snippet}
+			{#snippet status()}<p role="status">{lastChange}</p>
+				<p>Bound value: {value}; native input events: {nativeEvents}</p>{/snippet}
+			<PlaygroundGroup title="Appearance">
+				<PlaygroundField id="text-input-size" label="Size">
+					<Select
+						id="text-input-size"
+						items={sizes.map((id) => ({ id, label: id }))}
+						bind:value={() => size, (next) => (size = next as typeof size)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="text-input-variant" label="Variant">
+					<Select
+						id="text-input-variant"
+						items={variants.map((id) => ({ id, label: id }))}
+						bind:value={() => variant, (next) => (variant = next as typeof variant)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="text-input-glass" label="Glass" toggle>
+					<Checkbox id="text-input-glass" bind:checked={glass} />
+				</PlaygroundField>
+				<PlaygroundField id="text-input-wide" label="Wide" toggle>
+					<Checkbox id="text-input-wide" bind:checked={wide} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+			<PlaygroundGroup title="Icon">
+				<PlaygroundField id="text-input-withIcon" label="Leading icon" toggle>
+					<Checkbox id="text-input-withIcon" bind:checked={withIcon} />
+				</PlaygroundField>
+				<PlaygroundField id="text-input-iconName" label="Icon name">
+					<Select
+						id="text-input-iconName"
+						items={iconNames.map((id) => ({ id, label: id }))}
+						bind:value={() => iconName, (next) => (iconName = next as typeof iconName)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="text-input-iconFilled" label="Filled icon" toggle>
+					<Checkbox id="text-input-iconFilled" bind:checked={iconFilled} />
+				</PlaygroundField>
+				<PlaygroundField id="text-input-iconSize" label="Icon size">
+					<Select
+						id="text-input-iconSize"
+						items={iconSizes.map((id) => ({ id, label: id }))}
+						bind:value={() => iconSize, (next) => (iconSize = next as typeof iconSize)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="text-input-iconColor" label="Icon color">
+					<Select
+						id="text-input-iconColor"
+						items={iconColors.map((id) => ({ id, label: id }))}
+						bind:value={() => iconColor, (next) => (iconColor = next as typeof iconColor)}
+					/>
+				</PlaygroundField>
+			</PlaygroundGroup>
+			<PlaygroundGroup title="State and preview">
+				<PlaygroundField id="text-input-disabled" label="Disabled" toggle>
+					<Checkbox id="text-input-disabled" bind:checked={disabled} />
+				</PlaygroundField>
+				<PlaygroundField id="text-input-readonly" label="Read only" toggle>
+					<Checkbox id="text-input-readonly" bind:checked={readonly} />
+				</PlaygroundField>
+				<PlaygroundField id="text-input-movingBackground" label="Moving background" toggle>
+					<Checkbox id="text-input-movingBackground" bind:checked={movingBackground} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+		</Playground>
 	</Section>
-	<Section {...sections[4]}>
+	<Section {...sections.find((section) => section.id === 'native-behavior')!}>
 		<p>
 			Native labels, IDs, names, constraints, events, form association and ARIA attributes pass
 			through to the input. Use <code>bind:value</code>
@@ -224,24 +327,21 @@
 		</p>
 		<p id="error-help">This entry was not accepted. Check the value and try again.</p>
 	</Section>
-	<Section {...sections[5]}><PropTable {props} /></Section>
+	<Section {...sections.find((section) => section.id === 'props')!}><PropTable {props} /></Section>
 </Page>
 
 <style>
 	[data-demo='playground'] {
 		position: relative;
 		isolation: isolate;
-		padding: 1rem;
+		display: grid;
+		align-items: center;
+		min-block-size: 240px;
+		padding: 24px;
 	}
 	[data-demo='playground'] > [data-demo='fields'] {
 		position: relative;
 		z-index: 1;
-	}
-	[data-background-toggle] {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		margin-block: 1rem;
 	}
 	[data-demo='fields'],
 	form {
@@ -255,26 +355,14 @@
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
 		gap: 20px;
 	}
-	[data-demo='grid'] label,
-	[data-demo='controls'] label {
+	[data-demo='grid'] label {
 		display: grid;
 		gap: 8px;
 	}
-	[data-demo='controls'],
 	[data-demo='actions'] {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 16px;
 		margin-block: 24px;
-	}
-	[data-demo='controls'] label[data-toggle] {
-		display: flex;
-		align-items: center;
-	}
-	[data-control] {
-		display: grid;
-		gap: 0.5rem;
-		width: min(100%, 12rem);
-		min-width: 0;
 	}
 </style>

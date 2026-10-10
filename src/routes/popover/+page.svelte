@@ -2,11 +2,17 @@
 	/* eslint-disable max-lines -- Keep the trigger composition examples and their documentation together. */
 	import { resolve } from '$app/paths';
 	import { chapter, sections } from './sections.js';
+	import Playground from '../components/playground.svelte';
+	import PlaygroundField from '../components/playground-field.svelte';
+	import PlaygroundGroup from '../components/playground-group.svelte';
+	import MovingBackground from '../components/moving-background.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Popover, TextInput, Checkbox, Button } from '$lib/index.js';
+	import { Popover, TextInput, Checkbox, Button, Select } from '$lib/index.js';
+
+	import type { PopoverProps } from '$lib/types.js';
 
 	let inputOpen = $state(false);
 	let inputWide = $state(false);
@@ -18,6 +24,92 @@
 	let shortOpen = $state(false);
 	let fillOpen = $state(false);
 	let fitOpen = $state(false);
+	let previewOpen = $state(false);
+	let previewDisabled = $state(false);
+	let element = $state<NonNullable<PopoverProps['as']>>('div');
+	let previewVariant = $state<NonNullable<PopoverProps['variant']>>('soft');
+	let previewColor = $state<NonNullable<PopoverProps['color']>>('background');
+	let shadow = $state('medium');
+	let hover = $state('none');
+	let spacing = $state<NonNullable<PopoverProps['spacing']>>('medium');
+	let orientation = $state<NonNullable<PopoverProps['orientation']>>('vertical');
+	let width = $state('default');
+	let height = $state('default');
+	let radius = $state<NonNullable<PopoverProps['radius']>>('small');
+	let scroll = $state(false);
+	let className = $state('');
+	let inlineStyle = $state('');
+	let content = $state('short');
+	let triggerWide = $state(false);
+	let movingBackground = $state(false);
+	const elements = ['div', 'section', 'span'] as const;
+	const variants = ['neutral', 'soft', 'filled'] as const;
+	const colors = [
+		'primary',
+		'secondary',
+		'foreground',
+		'background',
+		'muted',
+		'info',
+		'success',
+		'warning',
+		'error'
+	] as const;
+	const shadows = ['false', 'true', 'small', 'medium', 'large'] as const;
+	const hovers = ['none', 'small', 'medium', 'large'] as const;
+	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
+	const orientations = ['horizontal', 'vertical'] as const;
+	const dimensions = ['default', 'fit', 'fill'] as const;
+	const radii = [...sizes, '0rem', '1.5rem', '50%'] as const;
+	const contents = ['short', 'form', 'long'] as const;
+	const previewShadow = $derived(
+		shadow === 'false'
+			? false
+			: shadow === 'true'
+				? true
+				: (shadow as NonNullable<PopoverProps['shadow']>)
+	);
+	const previewHover = $derived(hover === 'none' ? undefined : (hover as PopoverProps['hover']));
+	const previewWidth = $derived(width === 'default' ? undefined : (width as PopoverProps['width']));
+	const previewHeight = $derived(
+		height === 'default' ? undefined : (height as PopoverProps['height'])
+	);
+	const reset = () => {
+		previewOpen = false;
+		previewDisabled = false;
+		element = 'div';
+		previewVariant = 'soft';
+		previewColor = 'background';
+		shadow = 'medium';
+		hover = 'none';
+		spacing = 'medium';
+		orientation = 'vertical';
+		width = 'default';
+		height = 'default';
+		radius = 'small';
+		scroll = false;
+		className = '';
+		inlineStyle = '';
+		content = 'short';
+		triggerWide = false;
+		movingBackground = false;
+	};
+	const playgroundSource = $derived(`<script>
+  import { Button, Popover, TextInput } from 'bref-ui';
+  let open = $state(false);
+<${'/'}script>
+
+<Popover bind:open disabled={${previewDisabled}} as="${element}" variant="${previewVariant}" color="${previewColor}"
+  shadow={${JSON.stringify(previewShadow)}}${previewHover ? ` hover="${previewHover}"` : ''} spacing="${spacing}" orientation="${orientation}"${previewWidth ? ` width="${previewWidth}"` : ''}${previewHeight ? ` height="${previewHeight}"` : ''}
+  radius="${radius}" scroll={${scroll}}${className ? ` class={${JSON.stringify(className)}}` : ''}${inlineStyle ? ` style={${JSON.stringify(inlineStyle)}}` : ''}>
+  {#snippet trigger()}
+    <Button label="Toggle preview popover" wide={${triggerWide}} disabled={${previewDisabled}}
+      aria-expanded={open} onClick={() => open = !open} />
+  {/snippet}
+${content === 'form' ? '  <label for="popover-preview-name">Display name</label>\n  <TextInput id="popover-preview-name" value="Example" />' : content === 'long' ? '  {#each Array.from({ length: 18 }, (_, index) => index + 1) as detail (detail)}\n    <p>Detail {detail}. Longer content helps test height and scrolling.</p>\n  {/each}' : '  <p>Helpful details beside the trigger.</p>'}
+  <Button label="Done" onClick={() => open = false} />
+</Popover>
+<p role="status">{open ? 'Open' : 'Closed'}</p>`);
 	const source = `<script>
   import { Checkbox, Popover, TextInput } from 'bref-ui';
   let open = $state(false);
@@ -75,12 +167,97 @@
 			description: 'Keep the panel closed; the trigger controls its own disabled state.'
 		},
 		{
-			name: 'Surface styling props',
-			type: 'Selected SurfaceProps',
+			name: 'as',
+			type: "'div' | 'section' | 'span'",
 			required: false,
-			default: 'soft glass, medium spacing, small radius, medium shadow',
+			default: 'div',
+			description: 'Native root element of the Surface inside the panel.'
+		},
+		{
+			name: 'variant',
+			type: 'Variant',
+			required: false,
+			default: 'soft',
+			description: 'neutral, soft or filled; every variant uses glass.'
+		},
+		{
+			name: 'color',
+			type: 'Color',
+			required: false,
+			default: 'background',
+			description: 'Theme role for panel paint.'
+		},
+		{
+			name: 'shadow',
+			type: 'BaseSize | boolean',
+			required: false,
+			default: 'medium',
+			description: 'Shadow strength; true means medium and false disables it.'
+		},
+		{
+			name: 'hover',
+			type: 'BaseSize',
+			required: false,
+			default: 'Omitted',
+			description: 'Optional hover treatment strength.'
+		},
+		{
+			name: 'spacing',
+			type: 'Size',
+			required: false,
+			default: 'medium',
+			description: 'Padding and gap from x-small to x-large.'
+		},
+		{
+			name: 'orientation',
+			type: 'Orientation',
+			required: false,
+			default: 'vertical',
+			description: 'Horizontal or vertical Surface layout.'
+		},
+		{
+			name: 'width',
+			type: 'Dimension',
+			required: false,
+			default: 'Omitted',
 			description:
-				'Forwarded to the glass panel. Variant defaults to soft; explicit variants, colors and classes customize it. Width fill matches the trigger; omitted or fit grows with content.'
+				'fill follows trigger width; fit or omitted grows with content, at least as wide as the trigger.'
+		},
+		{
+			name: 'height',
+			type: 'Dimension',
+			required: false,
+			default: 'Omitted',
+			description:
+				'fit follows content; fill fills available Surface height within the viewport cap.'
+		},
+		{
+			name: 'radius',
+			type: 'SurfaceRadius',
+			required: false,
+			default: 'small',
+			description: 'Size token, rem value or percentage.'
+		},
+		{
+			name: 'scroll',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description: 'Enable scrolling within the Surface.'
+		},
+		{
+			name: 'class',
+			type: 'string',
+			required: false,
+			default: 'Omitted',
+			description: 'Additional Surface classes.'
+		},
+		{
+			name: 'style',
+			type: 'string',
+			required: false,
+			default: 'Omitted',
+			description: 'Inline styles on the Surface.'
 		}
 	];
 </script>
@@ -89,7 +266,7 @@
 	title={chapter}
 	description="An anchored native popover whose trigger snippet renders the owning control or component."
 >
-	<Section {...sections[0]}>
+	<Section {...sections.find((section) => section.id === 'usage')!}>
 		<label data-wide-control>
 			<Checkbox bind:checked={inputWide} />
 			<span>Wide input</span>
@@ -117,7 +294,161 @@
 		</p>
 		<CodeSnippet {source} label="Popover usage code" />
 	</Section>
-	<Section {...sections[1]}>
+	<Section {...sections.find((section) => section.id === 'playground')!}>
+		<Playground source={playgroundSource} onReset={reset}>
+			{#snippet preview()}<div data-playground-stage>
+					{#if movingBackground}<MovingBackground />{/if}
+					<div data-playground-content>
+						<Popover
+							bind:open={previewOpen}
+							disabled={previewDisabled}
+							as={element}
+							variant={previewVariant}
+							color={previewColor}
+							shadow={previewShadow}
+							hover={previewHover}
+							{spacing}
+							{orientation}
+							width={previewWidth}
+							height={previewHeight}
+							{radius}
+							{scroll}
+							class={className}
+							style={inlineStyle}
+						>
+							{#snippet trigger()}<Button
+									label="Toggle preview popover"
+									wide={triggerWide}
+									disabled={previewDisabled}
+									aria-expanded={previewOpen}
+									onClick={() => (previewOpen = !previewOpen)}
+								/>{/snippet}
+							{#if content === 'form'}<label for="popover-preview-name">Display name</label>
+								<TextInput id="popover-preview-name" value="Example" />
+							{:else if content === 'long'}{#each Array.from({ length: 18 }, (_, index) => index + 1) as detail (detail)}<p
+									>
+										Detail {detail}. Longer content helps test height and scrolling.
+									</p>{/each}
+							{:else}<p>Helpful details beside the trigger.</p>{/if}
+							<Button label="Done" onClick={() => (previewOpen = false)} />
+						</Popover>
+					</div>
+				</div>{/snippet}
+			{#snippet status()}<span role="status">
+					{previewOpen && !previewDisabled ? 'Open' : 'Closed'} · Glass is always enabled
+				</span>{/snippet}
+			<PlaygroundGroup title="Appearance">
+				<PlaygroundField id="popover-previewVariant" label="Variant">
+					<Select
+						id="popover-previewVariant"
+						items={variants.map((id) => ({ id, label: id }))}
+						bind:value={
+							() => previewVariant, (next) => (previewVariant = next as typeof previewVariant)
+						}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="popover-previewColor" label="Color">
+					<Select
+						id="popover-previewColor"
+						items={colors.map((id) => ({ id, label: id }))}
+						bind:value={() => previewColor, (next) => (previewColor = next as typeof previewColor)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="popover-shadow" label="Shadow">
+					<Select
+						id="popover-shadow"
+						items={shadows.map((id) => ({ id, label: id }))}
+						bind:value={() => shadow, (next) => (shadow = next as typeof shadow)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="popover-hover" label="Hover treatment">
+					<Select
+						id="popover-hover"
+						items={hovers.map((id) => ({ id, label: id }))}
+						bind:value={() => hover, (next) => (hover = next as typeof hover)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="popover-radius" label="Radius">
+					<Select
+						id="popover-radius"
+						items={radii.map((id) => ({ id, label: id }))}
+						bind:value={() => radius, (next) => (radius = next as typeof radius)}
+					/>
+				</PlaygroundField>
+			</PlaygroundGroup>
+			<PlaygroundGroup title="Layout">
+				<PlaygroundField id="popover-element" label="Root element">
+					<Select
+						id="popover-element"
+						items={elements.map((id) => ({ id, label: id }))}
+						bind:value={() => element, (next) => (element = next as typeof element)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="popover-spacing" label="Spacing">
+					<Select
+						id="popover-spacing"
+						items={sizes.map((id) => ({ id, label: id }))}
+						bind:value={() => spacing, (next) => (spacing = next as typeof spacing)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="popover-orientation" label="Orientation">
+					<Select
+						id="popover-orientation"
+						items={orientations.map((id) => ({ id, label: id }))}
+						bind:value={() => orientation, (next) => (orientation = next as typeof orientation)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="popover-width" label="Width">
+					<Select
+						id="popover-width"
+						items={dimensions.map((id) => ({ id, label: id }))}
+						bind:value={() => width, (next) => (width = next as typeof width)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="popover-height" label="Height">
+					<Select
+						id="popover-height"
+						items={dimensions.map((id) => ({ id, label: id }))}
+						bind:value={() => height, (next) => (height = next as typeof height)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="popover-scroll" label="Scroll" toggle>
+					<Checkbox id="popover-scroll" bind:checked={scroll} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+			<PlaygroundGroup title="Customization">
+				<PlaygroundField id="popover-className" label="Surface class">
+					<TextInput id="popover-className" bind:value={className} />
+				</PlaygroundField>
+				<PlaygroundField id="popover-inlineStyle" label="Surface inline style">
+					<TextInput id="popover-inlineStyle" bind:value={inlineStyle} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+			<PlaygroundGroup title="Preview">
+				<PlaygroundField id="popover-content" label="Content">
+					<Select
+						id="popover-content"
+						items={contents.map((id) => ({ id, label: id }))}
+						bind:value={() => content, (next) => (content = next as typeof content)}
+					/>
+				</PlaygroundField>
+				<PlaygroundField id="popover-previewDisabled" label="Disabled" toggle>
+					<Checkbox id="popover-previewDisabled" bind:checked={previewDisabled} />
+				</PlaygroundField>
+				<PlaygroundField id="popover-triggerWide" label="Wide trigger" toggle>
+					<Checkbox id="popover-triggerWide" bind:checked={triggerWide} />
+				</PlaygroundField>
+				<PlaygroundField id="popover-movingBackground" label="Moving background" toggle>
+					<Checkbox id="popover-movingBackground" bind:checked={movingBackground} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+		</Playground>
+		<p>
+			Open the preview after changing settings. Width fill follows the trigger; fit and default
+			follow content. Every panel uses glass.
+		</p>
+	</Section>
+	<Section {...sections.find((section) => section.id === 'bound-state')!}>
 		<div data-controls>
 			<Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>
 				{#snippet trigger()}
@@ -134,7 +465,7 @@
 		<p role="status">Settings {open ? 'open' : 'closed'}.</p>
 		<CodeSnippet source={boundSource} label="Bound Popover usage code" />
 	</Section>
-	<Section {...sections[2]}>
+	<Section {...sections.find((section) => section.id === 'viewport')!}>
 		<div data-controls>
 			<Popover bind:open={longOpen} scroll>
 				{#snippet trigger()}
@@ -192,7 +523,7 @@
 			anchoring and light/dark modes.
 		</p>
 	</Section>
-	<Section {...sections[3]}>
+	<Section {...sections.find((section) => section.id === 'props')!}>
 		<PropTable {props} />
 		<p>
 			Popover accepts <a href={resolve('/surface#props')}>Surface props</a>
@@ -206,7 +537,7 @@
 			; Popover handles native dismissal and positioning.
 		</p>
 	</Section>
-	<Section {...sections[4]}>
+	<Section {...sections.find((section) => section.id === 'keyboard')!}>
 		<p>
 			The trigger controls its keyboard behavior: buttons toggle with Enter or Space; the TextInput
 			example opens on click or typing. Tab moves through the Surface and interactive content
@@ -231,7 +562,7 @@
 		</form>
 	</Section>
 
-	<Section {...sections[5]}>
+	<Section {...sections.find((section) => section.id === 'content-fit')!}>
 		<div data-controls>
 			<Popover bind:open={shortOpen}>
 				{#snippet trigger()}
@@ -285,6 +616,21 @@
 </Page>
 
 <style>
+	[data-playground-stage] {
+		position: relative;
+		isolation: isolate;
+		display: grid;
+		align-content: center;
+		gap: 20px;
+		min-width: 0;
+		min-height: 240px;
+		padding: 24px;
+	}
+	[data-playground-content] {
+		position: relative;
+		min-width: 0;
+	}
+
 	label[data-wide-control] {
 		display: flex;
 		align-items: center;

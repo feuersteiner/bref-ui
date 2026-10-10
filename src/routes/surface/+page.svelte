@@ -5,6 +5,9 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
+	import Playground from '../components/playground.svelte';
+	import PlaygroundField from '../components/playground-field.svelte';
+	import PlaygroundGroup from '../components/playground-group.svelte';
 	import {
 		Surface,
 		surface,
@@ -47,6 +50,20 @@
 	let glass = $state(false);
 	let clicks = $state(0);
 	let nativeFocuses = $state(0);
+	const resetPlayground = () => {
+		as = 'div';
+		variant = 'soft';
+		color = 'background';
+		spacing = 'medium';
+		orientation = 'vertical';
+		width = 'fill';
+		height = 'fit';
+		radius = 'small';
+		shadow = false;
+		hover = undefined;
+		scroll = false;
+		glass = false;
+	};
 	const items = [
 		{ id: 'one', label: 'Design' },
 		{ id: 'two', label: 'Development' }
@@ -146,151 +163,140 @@
 		<CodeSnippet source={helperSource} label="Typed surface helper usage" />
 	</Section>
 	<Section {...sections[1]}>
-		<div data-controls>
-			<div data-control>
-				<label for="surface-as">Element</label>
-				<Select
-					id="surface-as"
-					items={['div', 'section', 'span'].map((id) => ({ id, label: id }))}
-					bind:value={() => as, (next) => (as = next as typeof as)}
-				/>
-			</div>
-			<div data-control>
-				<label for="surface-variant">Variant</label>
-				<Select
-					id="surface-variant"
-					items={variants.map((id) => ({ id, label: id }))}
-					bind:value={() => variant, (next) => (variant = next as typeof variant)}
-				/>
-			</div>
-			<div data-control>
-				<label for="surface-color">Color</label>
-				<Select
-					id="surface-color"
-					items={colors.map((id) => ({ id, label: id }))}
-					bind:value={() => color, (next) => (color = next as typeof color)}
-				/>
-			</div>
-			<div data-control>
-				<label for="surface-spacing">Spacing</label>
-				<Select
-					id="surface-spacing"
-					items={[{ id: 'none', label: 'None' }, ...sizes.map((id) => ({ id, label: id }))]}
-					bind:value={
-						() => spacing ?? 'none',
-						(next) => (spacing = next === 'none' ? undefined : (next as typeof spacing))
-					}
-				/>
-			</div>
-			<div data-control>
-				<label for="surface-orientation">Orientation</label>
-				<Select
-					id="surface-orientation"
-					items={[
-						{ id: 'vertical', label: 'vertical' },
-						{ id: 'horizontal', label: 'horizontal' }
-					]}
-					bind:value={() => orientation, (next) => (orientation = next as typeof orientation)}
-				/>
-			</div>
-			<div data-control>
-				<label for="surface-width">Width</label>
-				<Select
-					id="surface-width"
-					items={[
-						{ id: 'fill', label: 'fill' },
-						{ id: 'fit', label: 'fit' }
-					]}
-					bind:value={() => width, (next) => (width = next as typeof width)}
-				/>
-			</div>
-			<div data-control>
-				<label for="surface-height">Height</label>
-				<Select
-					id="surface-height"
-					items={[
-						{ id: 'fit', label: 'fit' },
-						{ id: 'fill', label: 'fill' }
-					]}
-					bind:value={() => height, (next) => (height = next as typeof height)}
-				/>
-			</div>
-			<div data-control>
-				<label for="surface-radius">Radius</label>
-				<Select
-					id="surface-radius"
-					items={[{ id: 'none', label: 'None' }, ...radii.map((id) => ({ id, label: id }))]}
-					bind:value={
-						() => radius ?? 'none',
-						(next) => (radius = next === 'none' ? undefined : (next as typeof radius))
-					}
-				/>
-			</div>
-			<div data-control>
-				<label for="surface-hover">Hover</label>
-				<Select
-					id="surface-hover"
-					items={[
-						{ id: 'none', label: 'None' },
-						{ id: 'small', label: 'small' },
-						{ id: 'medium', label: 'medium' },
-						{ id: 'large', label: 'large' }
-					]}
-					bind:value={
-						() => hover ?? 'none',
-						(next) => (hover = next === 'none' ? undefined : (next as typeof hover))
-					}
-				/>
-			</div>
-			<div data-control>
-				<label for="surface-shadow">Shadow</label>
-				<Select
-					id="surface-shadow"
-					items={[
-						{ id: 'none', label: 'None' },
-						{ id: 'true', label: 'Medium (true)' },
-						{ id: 'small', label: 'small' },
-						{ id: 'medium', label: 'medium' },
-						{ id: 'large', label: 'large' }
-					]}
-					bind:value={
-						() => (shadow === true ? 'true' : shadow || 'none'),
-						(next) =>
-							(shadow = next === 'none' ? false : next === 'true' ? true : (next as typeof shadow))
-					}
-				/>
-			</div>
-			<label>
-				<Checkbox bind:checked={scroll} />
-				Scroll
-			</label>
-			<label>
-				<Checkbox bind:checked={glass} />
-				Glass
-			</label>
-		</div>
-		<div data-stage id="surface-playground">
-			<Surface
-				{as}
-				{glass}
-				{variant}
-				{color}
-				{spacing}
-				{orientation}
-				{width}
-				{height}
-				{radius}
-				{shadow}
-				{hover}
-				{scroll}
-			>
-				<strong>Surface</strong>
-				<span>
-					Long content stays readable and wraps within narrow layouts. Change the controls to
-					explore the container.
-				</span>
-			</Surface>
-		</div>
+		<p>Explore paint and layout together. The preview has a fixed height for fill and scrolling.</p>
+		<Playground
+			onReset={resetPlayground}
+			source={`<Surface as="${as}" variant="${variant}" color="${color}" glass={${glass}} spacing={${spacing ? JSON.stringify(spacing) : 'undefined'}} orientation="${orientation}" width="${width}" height="${height}" radius={${radius ? JSON.stringify(radius) : 'undefined'}} shadow={${JSON.stringify(shadow)}} hover={${hover ? JSON.stringify(hover) : 'undefined'}} scroll={${scroll}}>
+  <strong>Surface</strong>
+  <span>Long content stays readable and wraps within narrow layouts. Change the controls to explore the container.</span>
+</Surface>`}
+		>
+			{#snippet preview()}<div data-stage id="surface-playground">
+					<Surface
+						{as}
+						{glass}
+						{variant}
+						{color}
+						{spacing}
+						{orientation}
+						{width}
+						{height}
+						{radius}
+						{shadow}
+						{hover}
+						{scroll}
+					>
+						<strong>Surface</strong>
+						<span>
+							Long content stays readable and wraps within narrow layouts. Change the controls to
+							explore the container.
+						</span>
+					</Surface>
+				</div>{/snippet}
+			<PlaygroundGroup title="Paint">
+				<PlaygroundField id="surface-variant" label="Variant">
+					<Select
+						id="surface-variant"
+						items={variants.map((id) => ({ id, label: id }))}
+						bind:value={() => variant, (next) => (variant = next as typeof variant)}
+					/>
+				</PlaygroundField><PlaygroundField id="surface-color" label="Color">
+					<Select
+						id="surface-color"
+						items={colors.map((id) => ({ id, label: id }))}
+						bind:value={() => color, (next) => (color = next as typeof color)}
+					/>
+				</PlaygroundField><PlaygroundField id="surface-hover" label="Hover">
+					<Select
+						id="surface-hover"
+						items={[
+							{ id: 'none', label: 'None' },
+							{ id: 'small', label: 'small' },
+							{ id: 'medium', label: 'medium' },
+							{ id: 'large', label: 'large' }
+						]}
+						bind:value={
+							() => hover ?? 'none',
+							(next) => (hover = next === 'none' ? undefined : (next as typeof hover))
+						}
+					/>
+				</PlaygroundField><PlaygroundField id="surface-shadow" label="Shadow">
+					<Select
+						id="surface-shadow"
+						items={[
+							{ id: 'none', label: 'None' },
+							{ id: 'true', label: 'Medium (true)' },
+							{ id: 'small', label: 'small' },
+							{ id: 'medium', label: 'medium' },
+							{ id: 'large', label: 'large' }
+						]}
+						bind:value={
+							() => (shadow === true ? 'true' : shadow || 'none'),
+							(next) =>
+								(shadow =
+									next === 'none' ? false : next === 'true' ? true : (next as typeof shadow))
+						}
+					/>
+				</PlaygroundField><PlaygroundField id="surface-glass" label="Glass" toggle>
+					<Checkbox id="surface-glass" bind:checked={glass} />
+				</PlaygroundField>
+			</PlaygroundGroup><PlaygroundGroup title="Layout">
+				<PlaygroundField id="surface-as" label="Element">
+					<Select
+						id="surface-as"
+						items={['div', 'section', 'span'].map((id) => ({ id, label: id }))}
+						bind:value={() => as, (next) => (as = next as typeof as)}
+					/>
+				</PlaygroundField><PlaygroundField id="surface-spacing" label="Spacing">
+					<Select
+						id="surface-spacing"
+						items={[{ id: 'none', label: 'None' }, ...sizes.map((id) => ({ id, label: id }))]}
+						bind:value={
+							() => spacing ?? 'none',
+							(next) => (spacing = next === 'none' ? undefined : (next as typeof spacing))
+						}
+					/>
+				</PlaygroundField><PlaygroundField id="surface-orientation" label="Orientation">
+					<Select
+						id="surface-orientation"
+						items={[
+							{ id: 'vertical', label: 'vertical' },
+							{ id: 'horizontal', label: 'horizontal' }
+						]}
+						bind:value={() => orientation, (next) => (orientation = next as typeof orientation)}
+					/>
+				</PlaygroundField><PlaygroundField id="surface-width" label="Width">
+					<Select
+						id="surface-width"
+						items={[
+							{ id: 'fill', label: 'fill' },
+							{ id: 'fit', label: 'fit' }
+						]}
+						bind:value={() => width, (next) => (width = next as typeof width)}
+					/>
+				</PlaygroundField><PlaygroundField id="surface-height" label="Height">
+					<Select
+						id="surface-height"
+						items={[
+							{ id: 'fit', label: 'fit' },
+							{ id: 'fill', label: 'fill' }
+						]}
+						bind:value={() => height, (next) => (height = next as typeof height)}
+					/>
+				</PlaygroundField><PlaygroundField id="surface-radius" label="Radius">
+					<Select
+						id="surface-radius"
+						items={[{ id: 'none', label: 'None' }, ...radii.map((id) => ({ id, label: id }))]}
+						bind:value={
+							() => radius ?? 'none',
+							(next) => (radius = next === 'none' ? undefined : (next as typeof radius))
+						}
+					/>
+				</PlaygroundField><PlaygroundField id="surface-scroll" label="Scroll" toggle>
+					<Checkbox id="surface-scroll" bind:checked={scroll} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+		</Playground>
 	</Section>
 	<Section {...sections[2]}>
 		<p>
@@ -489,16 +495,10 @@
 </Page>
 
 <style>
-	[data-controls],
 	[data-row] {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 1rem;
-		align-items: center;
-	}
-	label {
-		display: flex;
-		gap: 0.5rem;
 		align-items: center;
 	}
 	button {
@@ -573,11 +573,5 @@
 		[data-material-row] {
 			grid-template-columns: minmax(0, 1fr);
 		}
-	}
-	[data-control] {
-		display: grid;
-		gap: 0.5rem;
-		width: min(100%, 12rem);
-		min-width: 0;
 	}
 </style>

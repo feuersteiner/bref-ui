@@ -29,9 +29,6 @@
 		letter-spacing: -0.025em;
 		scroll-margin-top: 120px;
 	}
-	section > :global(p) {
-		max-width: 672px;
-	}
 	@media (max-width: 575px) {
 		section {
 			padding-inline: 0;

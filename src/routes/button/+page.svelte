@@ -5,9 +5,13 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
+	import Playground from '../components/playground.svelte';
+	import PlaygroundField from '../components/playground-field.svelte';
+	import PlaygroundGroup from '../components/playground-group.svelte';
+	import DemoGroup from '../components/demo-group.svelte';
 	import MovingBackground from '../components/moving-background.svelte';
 	import { Button, TextInput, Select, Checkbox, Switch } from '$lib/index.js';
-	import type { Color, Size, Variant } from '$lib/types.js';
+	import type { Color, Size, Variant, IconName } from '$lib/types.js';
 
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const variants = ['neutral', 'soft', 'filled'] as const;
@@ -36,18 +40,49 @@
 	let submitted = $state('No submission yet.');
 	let matrixOpen = $state(false);
 	let movingBackground = $state(false);
-	const previewLabel = $derived(label.trim() || 'Save');
+	let glass = $state(false);
+	let link = $state(false);
+	let href = $state('#playground');
+	let iconName = $state<IconName>('save');
+	let trailingName = $state<IconName>('arrow_forward');
+	let iconLabel = $state('Save');
+	let ariaLabel = $state('');
+	let trackClicks = $state(true);
+	const names = ['save', 'favorite', 'star', 'search', 'add', 'arrow_forward', 'check'] as const;
+	const previewLabel = $derived(label);
+	const resetPlayground = () => {
+		size = 'medium';
+		variant = 'neutral';
+		color = 'foreground';
+		disabled = wide = rounded = filled = movingBackground = glass = link = false;
+		trackClicks = true;
+		href = '#playground';
+		iconName = 'save';
+		trailingName = 'arrow_forward';
+		iconLabel = 'Save';
+		ariaLabel = '';
+		label = 'Save';
+		leading = trailing = true;
+		clicks = 0;
+	};
 	const noop = () => undefined;
 	const source = `<script>
   import { Button } from 'bref-ui';
 <${'/'}script>
 
-<Button label="Save" onClick={save} />
+<Button label="Save" onClick={() => undefined} />
 <Button label="Next" href="/next" color="primary" variant="filled" trailingIcon={{ name: 'arrow_forward' }} />
-<Button icon={{ name: 'favorite', filled: true }} rounded onClick={favorite} aria-label="Favorite" />
-<Button label="Unavailable" onClick={save} disabled />`;
+<Button icon={{ name: 'favorite', filled: true }} rounded onClick={() => undefined} aria-label="Favorite" />
+<Button label="Unavailable" disabled />`;
 
 	const props = [
+		{
+			name: 'href',
+			type: 'string',
+			required: 'For links',
+			default: 'Omitted',
+			description: 'Render an anchor for navigation; omit for a native button.'
+		},
 		{
 			name: 'label',
 			type: 'string',
@@ -57,7 +92,7 @@
 		},
 		{
 			name: 'icon',
-			type: 'IconProps',
+			type: "Omit<IconProps, 'size' | 'color'>",
 			required: 'For icon-only buttons',
 			default: 'Omitted',
 			description: 'Leading icon; required when label is omitted.'
@@ -85,7 +120,7 @@
 		},
 		{
 			name: 'trailingIcon',
-			type: 'IconProps',
+			type: "Omit<IconProps, 'size' | 'color'>",
 			required: false,
 			default: 'Omitted',
 			description: 'Icon after the label; text buttons only.'
@@ -153,103 +188,148 @@
 		<CodeSnippet {source} label="Button usage code" />
 	</Section>
 	<Section {...sections[1]}>
-		<p>Change every custom prop together; text and icon-only buttons share the controls.</p>
 		<p>
-			Labels retain their original case. Enable the moving background to try the opt-in
-			<code>glass</code>
-			prop on these controls.
+			Combine appearance, content and behavior. Glass and the preview background are independent.
 		</p>
-		<div data-demo="controls">
-			<label>
-				Label <TextInput bind:value={label} placeholder="Save" />
-			</label>
-			<div data-control>
-				<label for="button-size">Size</label>
-				<Select
-					id="button-size"
-					items={sizes.map((id) => ({ id, label: id }))}
-					bind:value={() => size, (next) => (size = next as typeof size)}
-				/>
-			</div>
-			<div data-control>
-				<label for="button-variant">Variant</label>
-				<Select
-					id="button-variant"
-					items={variants.map((id) => ({ id, label: id }))}
-					bind:value={() => variant, (next) => (variant = next as typeof variant)}
-				/>
-			</div>
-			<div data-control>
-				<label for="button-color">Color</label>
-				<Select
-					id="button-color"
-					items={colors.map((id) => ({ id, label: id }))}
-					bind:value={() => color, (next) => (color = next as typeof color)}
-				/>
-			</div>
-			<label data-toggle>
-				<Checkbox bind:checked={leading} />
-				Leading icon
-			</label>
-			<label data-toggle>
-				<Checkbox bind:checked={trailing} />
-				Trailing icon
-			</label>
-			<label data-toggle>
-				<Checkbox bind:checked={filled} />
-				Filled icons
-			</label>
-			<label data-toggle>
-				<Checkbox bind:checked={disabled} />
-				Disabled
-			</label>
-			<label data-toggle>
-				<Checkbox bind:checked={wide} />
-				Wide text button
-			</label>
-			<label data-toggle>
-				<Checkbox bind:checked={rounded} />
-				Rounded icon button
-			</label>
-			<label data-toggle>
-				<Switch bind:checked={movingBackground} />
-				Moving background
-			</label>
-		</div>
-		<div data-demo="stage" data-transparency={movingBackground}>
-			{#if movingBackground}<MovingBackground />{/if}
-			<div data-demo="row">
-				<Button
-					label={previewLabel}
-					glass={movingBackground}
-					{size}
-					{variant}
-					{color}
-					{wide}
-					icon={leading ? { name: 'save', filled } : undefined}
-					trailingIcon={trailing ? { name: 'arrow_forward', filled } : undefined}
-					{disabled}
-					onClick={() => clicks++}
-				/>
-				<Button
-					{size}
-					glass={movingBackground}
-					{variant}
-					{color}
-					{rounded}
-					icon={{ name: 'favorite', filled }}
-					{disabled}
-					onClick={() => clicks++}
-					aria-label="Favorite"
-				/>
-			</div>
-		</div>
-		<p role="status">Activated {clicks} times. Try Tab, Enter and Space.</p>
-		<CodeSnippet
-			label="Button playground code"
-			source={`<Button label={${JSON.stringify(previewLabel)}}${movingBackground ? ' glass' : ''} size="${size}" variant="${variant}" color="${color}" wide={${wide}} icon={${leading ? `{ name: 'save', filled: ${filled} }` : 'undefined'}} trailingIcon={${trailing ? `{ name: 'arrow_forward', filled: ${filled} }` : 'undefined'}} disabled={${disabled}} onClick={() => clicks++} />
-<Button${movingBackground ? ' glass' : ''} size="${size}" variant="${variant}" color="${color}" rounded={${rounded}} icon={{ name: 'favorite', filled: ${filled} }} disabled={${disabled}} onClick={() => clicks++} aria-label="Favorite" />`}
-		/>
+		<Playground
+			onReset={resetPlayground}
+			source={`<script>
+  import { Button } from 'bref-ui';${trackClicks ? '\n  let clicks = $state(0);\n  const activate = () => clicks++;' : ''}
+<${'/'}script>
+
+<Button label={${JSON.stringify(previewLabel)}}${link ? ` href={${JSON.stringify(href)}}` : ''} glass={${glass}} size="${size}" variant="${variant}" color="${color}" wide={${wide}} icon={${leading ? `{ name: '${iconName}', filled: ${filled} }` : 'undefined'}} trailingIcon={${trailing ? `{ name: '${trailingName}', filled: ${filled} }` : 'undefined'}} disabled={${disabled}}${trackClicks ? ' onClick={activate}' : ''} />
+<Button${link ? ` href={${JSON.stringify(href)}}` : ''} glass={${glass}} size="${size}" variant="${variant}" color="${color}" rounded={${rounded}} icon={{ name: '${iconName}', label: ${JSON.stringify(iconLabel)}, filled: ${filled} }} disabled={${disabled}}${ariaLabel ? ` aria-label={${JSON.stringify(ariaLabel)}}` : ''}${trackClicks ? ' onClick={activate}' : ''} />`}
+		>
+			{#snippet preview()}
+				{#if movingBackground}<MovingBackground />{/if}
+				<div data-preview-buttons data-wide={wide}>
+					{#if link}
+						<Button
+							label={previewLabel}
+							{href}
+							{glass}
+							{size}
+							{variant}
+							{color}
+							{wide}
+							icon={leading ? { name: iconName, filled } : undefined}
+							trailingIcon={trailing ? { name: trailingName, filled } : undefined}
+							{disabled}
+							onClick={trackClicks ? () => clicks++ : undefined}
+						/>
+					{:else}
+						<Button
+							label={previewLabel}
+							{glass}
+							{size}
+							{variant}
+							{color}
+							{wide}
+							icon={leading ? { name: iconName, filled } : undefined}
+							trailingIcon={trailing ? { name: trailingName, filled } : undefined}
+							{disabled}
+							onClick={trackClicks ? () => clicks++ : undefined}
+						/>
+					{/if}
+					<div>
+						{#if link}
+							<Button
+								{href}
+								{glass}
+								{size}
+								{variant}
+								{color}
+								{rounded}
+								icon={{ name: iconName, label: iconLabel || undefined, filled }}
+								{disabled}
+								aria-label={ariaLabel || undefined}
+								onClick={trackClicks ? () => clicks++ : undefined}
+							/>
+						{:else}
+							<Button
+								{glass}
+								{size}
+								{variant}
+								{color}
+								{rounded}
+								icon={{ name: iconName, label: iconLabel || undefined, filled }}
+								{disabled}
+								aria-label={ariaLabel || undefined}
+								onClick={trackClicks ? () => clicks++ : undefined}
+							/>
+						{/if}
+					</div>
+				</div>
+			{/snippet}
+			{#snippet status()}<p role="status">
+					Activated {clicks} times. Try Tab, Enter and Space.
+				</p>{/snippet}
+			<PlaygroundGroup title="Appearance">
+				<PlaygroundField id="button-size" label="Size">
+					<Select
+						id="button-size"
+						items={sizes.map((id) => ({ id, label: id }))}
+						bind:value={() => size, (next) => (size = next as typeof size)}
+					/>
+				</PlaygroundField><PlaygroundField id="button-variant" label="Variant">
+					<Select
+						id="button-variant"
+						items={variants.map((id) => ({ id, label: id }))}
+						bind:value={() => variant, (next) => (variant = next as typeof variant)}
+					/>
+				</PlaygroundField><PlaygroundField id="button-color" label="Color">
+					<Select
+						id="button-color"
+						items={colors.map((id) => ({ id, label: id }))}
+						bind:value={() => color, (next) => (color = next as typeof color)}
+					/>
+				</PlaygroundField><PlaygroundField id="button-glass" label="Glass" toggle>
+					<Checkbox id="button-glass" bind:checked={glass} />
+				</PlaygroundField><PlaygroundField id="button-wide" label="Wide text button" toggle>
+					<Checkbox id="button-wide" bind:checked={wide} />
+				</PlaygroundField><PlaygroundField id="button-rounded" label="Rounded icon button" toggle>
+					<Checkbox id="button-rounded" bind:checked={rounded} />
+				</PlaygroundField>
+			</PlaygroundGroup><PlaygroundGroup title="Content">
+				<PlaygroundField id="button-label" label="Label">
+					<TextInput id="button-label" bind:value={label} wide />
+				</PlaygroundField><PlaygroundField id="button-icon-name" label="Leading / icon-only glyph">
+					<Select
+						id="button-icon-name"
+						items={names.map((id) => ({ id, label: id }))}
+						bind:value={() => iconName, (next) => (iconName = next as typeof iconName)}
+					/>
+				</PlaygroundField><PlaygroundField id="button-trailing-name" label="Trailing glyph">
+					<Select
+						id="button-trailing-name"
+						items={names.map((id) => ({ id, label: id }))}
+						bind:value={() => trailingName, (next) => (trailingName = next as typeof trailingName)}
+					/>
+				</PlaygroundField><PlaygroundField id="button-leading" label="Leading icon" toggle>
+					<Checkbox id="button-leading" bind:checked={leading} />
+				</PlaygroundField><PlaygroundField id="button-trailing" label="Trailing icon" toggle>
+					<Checkbox id="button-trailing" bind:checked={trailing} />
+				</PlaygroundField><PlaygroundField id="button-filled" label="Filled icons" toggle>
+					<Checkbox id="button-filled" bind:checked={filled} />
+				</PlaygroundField><PlaygroundField id="button-icon-label" label="Icon label (fallback)">
+					<TextInput id="button-icon-label" bind:value={iconLabel} wide />
+				</PlaygroundField><PlaygroundField id="button-aria-label" label="Accessible name override">
+					<TextInput id="button-aria-label" bind:value={ariaLabel} wide />
+				</PlaygroundField>
+			</PlaygroundGroup><PlaygroundGroup title="Behavior">
+				<PlaygroundField id="button-disabled" label="Disabled" toggle>
+					<Checkbox id="button-disabled" bind:checked={disabled} />
+				</PlaygroundField><PlaygroundField id="button-link" label="Render links" toggle>
+					<Checkbox id="button-link" bind:checked={link} />
+				</PlaygroundField><PlaygroundField id="button-href" label="Link destination">
+					<TextInput id="button-href" bind:value={href} wide />
+				</PlaygroundField><PlaygroundField id="button-track" label="Track activations" toggle>
+					<Checkbox id="button-track" bind:checked={trackClicks} />
+				</PlaygroundField><PlaygroundField id="button-background" label="Moving background" toggle>
+					<Switch id="button-background" bind:checked={movingBackground} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+		</Playground>
 	</Section>
 	<Section {...sections[2]}>
 		<p>
@@ -259,35 +339,31 @@
 		</p>
 		<div data-demo="matrix" data-transparency={movingBackground}>
 			{#if movingBackground}<MovingBackground />{/if}
-			<fieldset>
-				<legend>Sizes</legend>
+			<DemoGroup title="Sizes">
 				<div data-demo="row">
 					{#each sizes as size (size)}
-						<Button {size} color="primary" label={size} onClick={noop} />
+						<Button {glass} {size} color="primary" label={size} onClick={noop} />
 					{/each}
 				</div>
-			</fieldset>
-			<fieldset>
-				<legend>Variants</legend>
+			</DemoGroup>
+			<DemoGroup title="Variants">
 				<div data-demo="row">
 					{#each variants as variant (variant)}
-						<Button {variant} color="primary" label={variant} onClick={noop} />
+						<Button {glass} {variant} color="primary" label={variant} onClick={noop} />
 					{/each}
 				</div>
-			</fieldset>
-			<fieldset>
-				<legend>Colors</legend>
+			</DemoGroup>
+			<DemoGroup title="Colors">
 				<div data-demo="row">
 					{#each colors as color (color)}
-						<Button {color} label={color} onClick={noop} />
+						<Button {glass} {color} label={color} onClick={noop} />
 					{/each}
 				</div>
-			</fieldset>
-			<fieldset>
-				<legend>Text and icon shapes</legend>
+			</DemoGroup>
+			<DemoGroup title="Text and icon shapes">
 				<div data-demo="row">
-					<Button color="primary" label="Save" icon={{ name: 'save' }} onClick={noop} />
-					<Button color="primary" icon={{ name: 'add' }} onClick={noop} aria-label="Add" />
+					<Button {glass} color="primary" label="Save" icon={{ name: 'save' }} onClick={noop} />
+					<Button {glass} color="primary" icon={{ name: 'add' }} onClick={noop} aria-label="Add" />
 					<Button
 						color="primary"
 						rounded
@@ -296,16 +372,15 @@
 						aria-label="Favorite"
 					/>
 				</div>
-			</fieldset>
+			</DemoGroup>
 			{#each variants as variant (variant)}
-				<fieldset>
-					<legend>Disabled {variant}</legend>
+				<DemoGroup title={`Disabled ${variant}`}>
 					<div data-demo="row">
 						{#each colors as color (color)}
-							<Button {variant} {color} label={color} disabled />
+							<Button {glass} {variant} {color} label={color} disabled />
 						{/each}
 					</div>
-				</fieldset>
+				</DemoGroup>
 			{/each}
 		</div>
 		<p>The exhaustive QA matrix is mounted only when requested.</p>
@@ -323,8 +398,7 @@
 			{#if matrixOpen}
 				<div data-demo="matrix">
 					{#each variants as value (value)}
-						<fieldset>
-							<legend>{value}: sizes and shapes</legend>
+						<DemoGroup title={`${value}: sizes and shapes`}>
 							<div data-demo="row">
 								{#each sizes as size (size)}
 									<div data-demo="group">
@@ -360,13 +434,19 @@
 									</div>
 								{/each}
 							</div>
-						</fieldset>
-						<fieldset>
-							<legend>{value}: colors and shapes</legend>
+						</DemoGroup>
+						<DemoGroup title={`${value}: colors and shapes`}>
 							<div data-demo="row">
 								{#each colors as color (color)}
 									<div data-demo="group">
-										<Button {color} variant={value} label={color} {disabled} onClick={noop} />
+										<Button
+											{glass}
+											{color}
+											variant={value}
+											label={color}
+											{disabled}
+											onClick={noop}
+										/>
 										<Button
 											{color}
 											variant={value}
@@ -387,7 +467,7 @@
 									</div>
 								{/each}
 							</div>
-						</fieldset>
+						</DemoGroup>
 					{/each}
 				</div>
 			{/if}
@@ -523,26 +603,16 @@
 </Page>
 
 <style>
-	[data-demo='row'],
-	[data-demo='controls'] {
+	[data-demo='row'] {
+		position: relative;
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 24px;
 	}
-	[data-demo='controls'] > label {
-		display: grid;
-		gap: 12px;
-		color: var(--color-muted);
-	}
-	[data-demo='controls'] > label[data-toggle] {
-		grid-template-columns: auto 1fr;
-		align-items: center;
-		color: var(--color-foreground);
-	}
 	[data-demo='matrix'] {
 		display: grid;
-		gap: 24px;
+		gap: 32px;
 	}
 	[data-transparency] {
 		position: relative;
@@ -551,24 +621,24 @@
 	[data-transparency='true'] {
 		padding: 2rem;
 	}
-	[data-demo='stage'][data-transparency='true'] {
-		display: grid;
-		align-items: center;
-		min-height: 16rem;
-	}
-	[data-transparency] > [data-demo='row'],
-	[data-transparency] > fieldset {
+	[data-preview-buttons] {
 		position: relative;
-		z-index: 1;
-	}
-	fieldset {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		gap: 24px;
 		min-width: 0;
-		padding: 24px;
-		border: 1px solid var(--docs-rule);
 	}
-	legend {
-		padding-inline: 12px;
-		font-weight: 600;
+	[data-preview-buttons][data-wide='true'] {
+		flex-direction: column;
+		align-items: stretch;
+	}
+	[data-preview-buttons][data-wide='true'] > div {
+		align-self: center;
+	}
+	p[role='status'] {
+		margin: 0;
 	}
 	[data-demo='group'] {
 		display: flex;
@@ -582,11 +652,5 @@
 	form {
 		display: grid;
 		gap: 24px;
-	}
-	[data-control] {
-		display: grid;
-		gap: 0.5rem;
-		width: min(100%, 12rem);
-		min-width: 0;
 	}
 </style>

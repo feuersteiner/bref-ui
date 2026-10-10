@@ -1,6 +1,7 @@
 export const chapter = 'Progress';
 export const sections = [
 	{ id: 'usage', title: 'Usage' },
+	{ id: 'playground', title: 'Playground' },
 	{ id: 'states', title: 'States and sizes' },
 	{ id: 'seek', title: 'Seekable progress' },
 	{ id: 'direction-disabled', title: 'Direction and disabled state' },

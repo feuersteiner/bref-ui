@@ -2,6 +2,10 @@
 	/* eslint-disable max-lines -- Keep the progress controls and interactive examples together. */
 	import { Progress, TextInput, Select, Checkbox, Button } from '$lib/index.js';
 	import type { BaseSize } from '$lib/types.js';
+
+	import Playground from '../components/playground.svelte';
+	import PlaygroundField from '../components/playground-field.svelte';
+	import PlaygroundGroup from '../components/playground-group.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
@@ -14,6 +18,30 @@
 	let size = $state<BaseSize>('medium');
 	let nativeEvent = $state('No native input or change event yet.');
 	let formResult = $state('Submit to read the native range value.');
+	let previewValue = $state(0.4);
+	let previewLabel = $state('Upload progress');
+	let previewSize = $state<BaseSize>('medium');
+	let previewDisabled = $state(false);
+	let indeterminate = $state(false);
+	let seekable = $state(false);
+	let rtl = $state(false);
+	const playgroundSource = $derived(`<script>
+  import { Progress } from 'bref-ui';
+  let value = $state(${previewValue});
+<${'/'}script>
+
+<div dir="${rtl ? 'rtl' : 'ltr'}">
+  <Progress label={${JSON.stringify(previewLabel)}} size=${JSON.stringify(previewSize)} ${indeterminate ? '' : '{value} '}disabled={${previewDisabled}}${seekable ? ' onSeek={(next) => value = next}' : ''} />
+</div>`);
+	const resetPlayground = () => {
+		previewValue = 0.4;
+		previewLabel = 'Upload progress';
+		previewSize = 'medium';
+		previewDisabled = false;
+		indeterminate = false;
+		seekable = false;
+		rtl = false;
+	};
 	const props = [
 		{
 			name: 'label',
@@ -57,15 +85,66 @@
 	title={chapter}
 	description="Show determinate or indeterminate progress, with an optional controlled seek control."
 >
-	<Section {...sections[0]}>
+	<Section {...sections.find((section) => section.id === 'usage')!}>
 		<Progress label="Upload progress" value={0.4} />
 		<CodeSnippet
 			label="Progress usage code"
 			source={'<Progress label="Upload progress" value={0.4} />'}
 		/>
 	</Section>
-	<Section {...sections[1]}>
-		<div class="example">
+	<Section {...sections.find((section) => section.id === 'playground')!}>
+		<Playground source={playgroundSource} onReset={resetPlayground}>
+			{#snippet preview()}<div data-demo="preview" dir={rtl ? 'rtl' : 'ltr'}>
+					<Progress
+						label={previewLabel}
+						size={previewSize}
+						value={indeterminate ? undefined : previewValue}
+						disabled={previewDisabled}
+						onSeek={seekable ? (next) => (previewValue = next) : undefined}
+					/>
+				</div>{/snippet}
+			{#snippet status()}<p>
+					{indeterminate ? 'Unknown progress' : `${Math.round(previewValue * 100)}% complete`}
+				</p>{/snippet}
+			<PlaygroundGroup title="Appearance">
+				<PlaygroundField id="progress-previewSize" label="Size">
+					<Select
+						id="progress-previewSize"
+						items={sizes.map((id) => ({ id, label: id }))}
+						bind:value={() => previewSize, (next) => (previewSize = next as typeof previewSize)}
+					/>
+				</PlaygroundField><PlaygroundField id="progress-previewLabel" label="Accessible label">
+					<TextInput id="progress-previewLabel" bind:value={previewLabel} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+			<PlaygroundGroup title="State">
+				<PlaygroundField id="progress-previewValue" label="Value (0–1)">
+					<TextInput
+						id="progress-previewValue"
+						type="number"
+						min={0}
+						max={1}
+						step={0.01}
+						value={String(previewValue)}
+						oninput={(event) => {
+							const next = event.currentTarget.valueAsNumber;
+							if (Number.isFinite(next)) previewValue = Math.max(0, Math.min(1, next));
+						}}
+					/>
+				</PlaygroundField><PlaygroundField id="progress-indeterminate" label="Indeterminate" toggle>
+					<Checkbox id="progress-indeterminate" bind:checked={indeterminate} />
+				</PlaygroundField><PlaygroundField id="progress-seekable" label="Seekable" toggle>
+					<Checkbox id="progress-seekable" bind:checked={seekable} />
+				</PlaygroundField><PlaygroundField id="progress-previewDisabled" label="Disabled" toggle>
+					<Checkbox id="progress-previewDisabled" bind:checked={previewDisabled} />
+				</PlaygroundField><PlaygroundField id="progress-rtl" label="Right to left" toggle>
+					<Checkbox id="progress-rtl" bind:checked={rtl} />
+				</PlaygroundField>
+			</PlaygroundGroup>
+		</Playground>
+	</Section>
+	<Section {...sections.find((section) => section.id === 'states')!}>
+		<div data-demo="matrix">
 			<span>0 / 0.5 / 1</span>
 			<Progress label="Not started" value={0} /><Progress
 				label="Half complete"
@@ -73,7 +152,7 @@
 			/><Progress label="Complete" value={1} />
 		</div>
 		{#each sizes as size (size)}
-			<div class="example">
+			<div data-demo="matrix">
 				<span>{size}</span>
 				<Progress label={`${size} upload`} {size} value={0.65} /><Progress
 					label={`${size} loading`}
@@ -82,8 +161,8 @@
 			</div>
 		{/each}
 	</Section>
-	<Section {...sections[2]}>
-		<div class="controls">
+	<Section {...sections.find((section) => section.id === 'seek')!}>
+		<div data-demo="controls">
 			<label>
 				Value <TextInput
 					type="number"
@@ -133,7 +212,7 @@
 				oninput={(event) => (nativeEvent = `Input: ${event.currentTarget.value}`)}
 				onchange={(event) => (nativeEvent = `Change: ${event.currentTarget.value}`)}
 			/>
-			<div class="controls">
+			<div data-demo="controls">
 				<Button type="submit" label="Submit position" />
 				<Button type="reset" label="Reset position" />
 			</div>
@@ -149,7 +228,7 @@
 			source={'<Progress label="Playback position" {value} onSeek={(next) => value = next} />'}
 		/>
 	</Section>
-	<Section {...sections[3]}>
+	<Section {...sections.find((section) => section.id === 'direction-disabled')!}>
 		<div dir="rtl">
 			<p>Right-to-left playback: {value.toFixed(2)}</p>
 			<Progress label="RTL seek position" {value} onSeek={(next) => (value = next)} />
@@ -160,7 +239,7 @@
 			<Progress label="Disabled seek position" value={0.65} disabled onSeek={() => {}} />
 		</div>
 	</Section>
-	<Section {...sections[4]}>
+	<Section {...sections.find((section) => section.id === 'props')!}>
 		<PropTable {props} />
 		<p>
 			The indicator uses a native progress element with a fixed maximum of 1. Seekable progress
@@ -176,24 +255,27 @@
 </Page>
 
 <style>
-	.example {
+	[data-demo='preview'] {
+		width: 100%;
+	}
+	[data-demo='matrix'] {
 		display: grid;
 		grid-template-columns: minmax(5rem, 8rem) repeat(3, minmax(0, 1fr));
 		align-items: center;
 		gap: 1rem;
 	}
-	.controls {
+	[data-demo='controls'] {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 1rem;
 	}
-	.controls label {
+	[data-demo='controls'] label {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
 	}
 	@media (max-width: 575px) {
-		.example {
+		[data-demo='matrix'] {
 			grid-template-columns: minmax(0, 1fr);
 		}
 	}

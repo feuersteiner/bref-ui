@@ -34,8 +34,8 @@
 		variant: 'soft',
 		spacing: 'medium',
 		radius: 'small',
-		...surfaceProps,
 		shadow: 'medium',
+		...surfaceProps,
 		glass: true
 	});
 </script>
