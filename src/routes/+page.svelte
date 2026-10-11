@@ -67,36 +67,6 @@
 			<source src="./bref-ui-demo.mp4" type="video/mp4" />
 			Your browser does not support embedded video.
 		</video>
-		<details>
-			<summary>Read the demo transcript</summary>
-			<ol>
-				<li>
-					Bref-ui is Svelte-first, human-first and agent-first: components you can make your own.
-				</li>
-				<li>
-					Change <code>--color-primary-light</code>
-					and
-					<code>--color-background-light</code>
-					, then toggle dark mode. Buttons, switches, pills and progress indicators follow the theme.
-				</li>
-				<li>Switch uses native Svelte bindings, scoped CSS and a type-only import.</li>
-				<li>
-					Run <code>npm install bref-ui</code>
-					, import Theme and Switch from
-					<code>bref-ui</code>
-					, and bind the switch's checked state to local Svelte state.
-				</li>
-				<li>
-					With Bref-ui installed and Bun available, run <code>bun run bref-ui init</code>
-					and
-					<code>bun run bref-ui add switch</code>
-					. Review and confirm the planned files, then customize
-					<code>src/lib/ui/switch/switch.svelte</code>
-					in your project.
-				</li>
-				<li>The closing logo reads “bref / ui,” followed by the repository address.</li>
-			</ol>
-		</details>
 		<p>
 			The need for quality code curation isn't going away. Bref brings that curation and quality
 			management together with the flexibility to adapt every component to your needs. That's the
