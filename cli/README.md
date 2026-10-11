@@ -15,7 +15,7 @@ bun run bref-ui add button
 bun run bref-ui add theme
 ```
 
-Install the local tarball with `bun add /path/to/bref-ui-2.0.0.tgz`. The executable loads
+Install the local tarball with `bun add /path/to/bref-ui-<version>.tgz`. The executable loads
 the canonical registry shipped in the package; copied components use its `bref-ui/types`
 entry. `add theme` copies a separate default-only Theme; edit its CSS tokens directly. The package Theme accepts a palette prop. Use `bun run bref-ui --help` for usage. Direct source invocation remains available
 with `bun /path/to/bref-ui/cli/index.ts <command>`.
