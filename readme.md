@@ -7,10 +7,10 @@ and apps with components you can make your own.
 [![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.gg/JpgQRTUsVS)
 [![MIT license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-> <small>V2 is in development and has not been published to npm. The npm badge tracks the
-> published release; the examples below use the v2 development checkout. Button,
-> Icon, Surface, Theme and ThemeModeToggle exist today. Agent skills, site generation
-> and live generative UI are planned.</small>
+> <small>V2 is published to npm and still in active development. The npm badge tracks
+> the latest release; the examples below use the development checkout. Button, Icon,
+> Surface, Theme and ThemeModeToggle exist today. Agent skills, site generation and
+> live generative UI are planned.</small>
 
 ## Get started
 
