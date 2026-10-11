@@ -133,36 +133,22 @@ explain native attributes/bindings/snippets, and show minimal usage:
 ### Agent documentation (`/llms.txt`)
 
 Whenever a public component is added, changed or removed, update its documentation
-page, navigation and `src/routes/components/component-usage.ts` as applicable, then
-verify `/llms.txt`. Keep short purposes and examples in `component-usage.ts`; the
-route reuses each page's prop table.
-Keep `Theme` and `ThemeModeToggle` as separate entries. Cover every public component.
-
-Each entry uses this exact order: component name, one short sentence explaining
-where to use it, one minimal working example, then props. Keep each prop to one
-short table row; list required props first. Include types, requirements and defaults.
-Omit navigation indexes, playgrounds, variant matrices and additional prose.
+page's `props` array, navigation and `src/routes/components/component-usage.ts` entry
+(`purpose`, optional `setup`, `example`, `props: string`), then verify `/llms.txt`.
+Cover every public component separately, including ThemeModeToggle. Keep entries
+brief: name, purpose, one working example and all props on one line, required first,
+with types and defaults. No tables, subsections, indexes or playgrounds. Format:
 
 ````markdown
 ## ComponentName
 
 Use for <purpose>.
 
-### Usage
-
 ```svelte
-<script lang="ts">
-	import { ComponentName } from 'bref-ui';
-</script>
-
 <ComponentName requiredProp="value" />
 ```
 
-### Props
-
-| Prop           | Type     | Required | Default | Description        |
-| -------------- | -------- | -------- | ------- | ------------------ |
-| `requiredProp` | `string` | Yes      | —       | Short explanation. |
+Props: requiredProp: string; optionalProp?: boolean = false
 ````
 
 ## 4. Verification
