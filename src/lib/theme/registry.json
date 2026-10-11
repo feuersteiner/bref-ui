@@ -6,6 +6,7 @@
 		"surfaces.svelte",
 		"glass.svelte",
 		"fonts.svelte",
+		"fonts.css",
 		"styles.svelte",
 		"surface.ts"
 	],
