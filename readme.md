@@ -38,11 +38,11 @@ bun run build
 npm pack --ignore-scripts
 ```
 
-This produces `bref-ui-2.1.1.tgz`. In an existing Svelte 5.56.1+ project with its
+This produces `bref-ui-2.1.2.tgz`. In an existing Svelte 5.56.1+ project with its
 dependencies installed, install that tarball, replacing the example path:
 
 ```sh
-npm install /path/to/bref-ui-2.1.1.tgz
+npm install /path/to/bref-ui-2.1.2.tgz
 ```
 
 Then use the components in a `.svelte` file:
