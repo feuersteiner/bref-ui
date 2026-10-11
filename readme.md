@@ -89,6 +89,10 @@ is available from `bref-ui/types`. Copied components include the helper in
 
 ## Why Bref-ui?
 
+[Watch Bref-ui in 60 seconds](https://feuersteiner.github.io/bref-ui/#why-bref-ui): themes,
+scoped Svelte CSS, npm installation and CLI source ownership.
+The [demo video](static/bref-ui-demo.mp4) is also available in this repository.
+
 1. **Svelte-first.** The goal is modern components with zero runtime dependencies
    beyond Svelte, built from scoped CSS, familiar HTML, native events, bindings and
    snippets. Readable styles, with no class-name vocabulary to memorize. The
