@@ -24,6 +24,7 @@
 - [ ] Scoped styles use agreed tokens and variants
 - [ ] Gallery covers variants, interactions and meaningful states
 - [ ] Usage documentation and applicable checks updated
+- [ ] `/llms.txt` component summary added or updated
 
 ## 1. Component structure
 
@@ -128,6 +129,28 @@ explain native attributes/bindings/snippets, and show minimal usage:
 ```svelte
 <Button disabled={saving} onclick={save}>Save</Button>
 ```
+
+### Agent documentation (`/llms.txt`)
+
+Whenever a public component is added, changed or removed, update its documentation
+page's `props` array, navigation and its `src/routes/llms.txt/<component>.ts` reference
+(`purpose`, optional `setup`, `example`, `props: string`), then verify `/llms.txt`.
+Register added or removed references in `src/routes/llms.txt/+server.ts`.
+Cover every public component separately, including ThemeModeToggle. Keep entries
+brief: name, purpose, one working example and all props on one line, required first,
+with types and defaults. No tables, subsections, indexes or playgrounds. Format:
+
+````markdown
+## ComponentName
+
+Use for <purpose>.
+
+```svelte
+<ComponentName requiredProp="value" />
+```
+
+Props: requiredProp: string; optionalProp?: boolean = false
+````
 
 ## 4. Verification
 
