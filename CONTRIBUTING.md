@@ -24,6 +24,7 @@
 - [ ] Scoped styles use agreed tokens and variants
 - [ ] Gallery covers variants, interactions and meaningful states
 - [ ] Usage documentation and applicable checks updated
+- [ ] `/llms.txt` component summary added or updated
 
 ## 1. Component structure
 
@@ -128,6 +129,41 @@ explain native attributes/bindings/snippets, and show minimal usage:
 ```svelte
 <Button disabled={saving} onclick={save}>Save</Button>
 ```
+
+### Agent documentation (`/llms.txt`)
+
+Whenever a public component is added, changed or removed, update its documentation
+page, navigation and `src/routes/components/component-usage.ts` as applicable, then
+verify `/llms.txt`. Keep short purposes and examples in `component-usage.ts`; the
+route reuses each page's prop table.
+Keep `Theme` and `ThemeModeToggle` as separate entries. Cover every public component.
+
+Each entry uses this exact order: component name, one short sentence explaining
+where to use it, one minimal working example, then props. Keep each prop to one
+short table row; list required props first. Include types, requirements and defaults.
+Omit navigation indexes, playgrounds, variant matrices and additional prose.
+
+````markdown
+## ComponentName
+
+Use for <purpose>.
+
+### Usage
+
+```svelte
+<script lang="ts">
+	import { ComponentName } from 'bref-ui';
+</script>
+
+<ComponentName requiredProp="value" />
+```
+
+### Props
+
+| Prop           | Type     | Required | Default | Description        |
+| -------------- | -------- | -------- | ------- | ------------------ |
+| `requiredProp` | `string` | Yes      | —       | Short explanation. |
+````
 
 ## 4. Verification
 
