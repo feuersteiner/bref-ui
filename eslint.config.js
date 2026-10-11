@@ -41,5 +41,16 @@ export default defineConfig(
 		ignores: ['**/+*.{js,ts,svelte}'],
 		plugins: { 'check-file': checkFile },
 		rules: filenameRules
+	},
+	{
+		files: ['src/routes/llms.txt/*.ts'],
+		ignores: ['**/+*.ts'],
+		rules: {
+			'check-file/folder-naming-convention': [
+				'error',
+				{ 'src/**/': 'KEBAB_CASE' },
+				{ ignoreWords: ['llms.txt'] }
+			]
+		}
 	}
 );

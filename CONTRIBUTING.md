@@ -133,8 +133,9 @@ explain native attributes/bindings/snippets, and show minimal usage:
 ### Agent documentation (`/llms.txt`)
 
 Whenever a public component is added, changed or removed, update its documentation
-page's `props` array, navigation and `src/routes/components/component-usage.ts` entry
+page's `props` array, navigation and its `src/routes/llms.txt/<component>.ts` reference
 (`purpose`, optional `setup`, `example`, `props: string`), then verify `/llms.txt`.
+Register added or removed references in `src/routes/llms.txt/+server.ts`.
 Cover every public component separately, including ThemeModeToggle. Keep entries
 brief: name, purpose, one working example and all props on one line, required first,
 with types and defaults. No tables, subsections, indexes or playgrounds. Format:
