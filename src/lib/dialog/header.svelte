@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Button from '../button/button.svelte';
 	import Icon from '../icon/icon.svelte';
+	import { fly } from 'svelte/transition';
+	import { prefersReducedMotion } from 'svelte/motion';
 	import type { DialogHeaderProps } from './types.js';
 
 	let { title, description, icon, dismissible, id, onDismiss }: DialogHeaderProps = $props();
@@ -8,10 +10,18 @@
 
 <header>
 	<div>
-		<div data-title>
-			{#if icon}<Icon {...icon} size="medium" color="foreground" label={undefined} />{/if}
-			<h2 id={`${id}-title`}>{title}</h2>
-		</div>
+		{#key `${icon?.name ?? ''}:${title}`}
+			<div
+				data-title
+				in:fly={{
+					y: prefersReducedMotion.current ? 0 : 8,
+					duration: prefersReducedMotion.current ? 0 : 180
+				}}
+			>
+				{#if icon}<Icon {...icon} size="medium" color="foreground" label={undefined} />{/if}
+				<h2 id={`${id}-title`}>{title}</h2>
+			</div>
+		{/key}
 		{#if description}<p id={`${id}-description`}>{description}</p>{/if}
 	</div>
 	{#if dismissible}

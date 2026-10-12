@@ -24,6 +24,8 @@
 	let actionOpen = $state(false);
 	let snippetOpen = $state(false);
 	let longOpen = $state(false);
+	let headerMotionOpen = $state(false);
+	let headerSaved = $state(false);
 	let dismissible = $state(true);
 	let selectedSize = $state<NonNullable<DialogProps['size']>>('medium');
 	let selectedColor = $state<StatusColor>('info');
@@ -134,7 +136,8 @@ ${bodyMode === 'form' ? '  <label for="dialog-preview-name">Display name</label>
 			type: 'DialogHeaderDataProps',
 			required: true,
 			default: '—',
-			description: 'Title, optional description, and optional decorative icon.'
+			description:
+				'Title, optional description, and optional decorative icon. Title/icon changes animate unless reduced motion is requested.'
 		},
 		{
 			name: 'children',
@@ -201,6 +204,24 @@ ${bodyMode === 'form' ? '  <label for="dialog-preview-name">Display name</label>
 		</Dialog>
 		<p aria-live="polite">{lastEvent}</p>
 		<CodeSnippet {source} label="Dialog usage code" />
+	</Section>
+	<Section {...sections.find((section) => section.id === 'header-motion')!}>
+		<p>Title and icon changes enter together. Reduced motion skips the entrance.</p>
+		<Button label="Open header animation" onClick={() => (headerMotionOpen = true)} />
+		<Dialog
+			bind:open={headerMotionOpen}
+			header={{
+				title: headerSaved ? 'Details saved' : 'Review details',
+				icon: { name: headerSaved ? 'check_circle' : 'edit' }
+			}}
+		>
+			<p>Change the header without closing the dialog.</p>
+			<Button
+				label={headerSaved ? 'Reset header' : 'Save demo changes'}
+				icon={{ name: headerSaved ? 'refresh' : 'save' }}
+				onClick={() => (headerSaved = !headerSaved)}
+			/>
+		</Dialog>
 	</Section>
 	<Section {...sections.find((section) => section.id === 'playground')!}>
 		<Playground source={playgroundSource} onReset={reset}>
