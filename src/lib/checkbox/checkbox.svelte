@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import { elasticOut } from 'svelte/easing';
+	import { prefersReducedMotion } from 'svelte/motion';
 	import Icon from '../icon/icon.svelte';
 	import type { CheckboxProps } from './types.js';
 
@@ -10,7 +11,14 @@
 <div data-checkbox data-size={size}>
 	<input {...attributes} type="checkbox" bind:checked />
 	{#if checked}
-		<span aria-hidden="true" transition:fly|global={{ duration: 350, y: -6, easing: elasticOut }}>
+		<span
+			aria-hidden="true"
+			transition:fly={{
+				duration: prefersReducedMotion.current ? 0 : 350,
+				y: prefersReducedMotion.current ? 0 : -6,
+				easing: elasticOut
+			}}
+		>
 			<Icon name="check" style="font-variation-settings: 'wght' 500" />
 		</span>
 	{/if}
