@@ -13,6 +13,8 @@
 	import { chapter, sections } from './sections.js';
 
 	let checked = $state(false);
+	let choiceVisible = $state(true);
+	let motionChecked = $state(true);
 	let submitted = $state('No submission yet.');
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	let previewChecked = $state(false);
@@ -51,7 +53,8 @@
 			type: 'boolean',
 			required: false,
 			default: 'false',
-			description: 'Bind to the checked state.'
+			description:
+				'Bind to the checked state. Checkmark motion respects reduced motion and does not delay removing a parent.'
 		}
 	];
 </script>
@@ -66,6 +69,16 @@
 		<CodeSnippet
 			label="Checkbox usage code"
 			source="&lt;label&gt;&lt;Checkbox name=&quot;updates&quot; value=&quot;yes&quot; bind:checked /&gt; Receive updates&lt;/label&gt;"
+		/>
+	</Section>
+	<Section {...sections.find((section) => section.id === 'motion')!}>
+		<p>
+			Checkmark motion respects reduced motion. Hiding a checked control does not delay its parent.
+		</p>
+		{#if choiceVisible}<label><Checkbox bind:checked={motionChecked} /> Animated choice</label>{/if}
+		<Button
+			label={choiceVisible ? 'Hide choice' : 'Show choice'}
+			onClick={() => (choiceVisible = !choiceVisible)}
 		/>
 	</Section>
 	<Section {...sections.find((section) => section.id === 'playground')!}>
