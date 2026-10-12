@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
-	import { page } from '$app/state';
 	import type { Snippet } from 'svelte';
 	import type { ThemeMode, ThemeProps } from '$lib/types.js';
 	import Layout from './components/layout/docs-layout.svelte';
@@ -16,11 +15,7 @@
 	setContext('documentation-theme', theme);
 </script>
 
-{#if page.route.id?.startsWith('/(demo)/')}
-	{@render children()}
-{:else}
-	<div data-docs><Theme palette={theme.palette}><Layout>{@render children()}</Layout></Theme></div>
-{/if}
+<div data-docs><Theme palette={theme.palette}><Layout>{@render children()}</Layout></Theme></div>
 
 <style>
 	:global(:root:has([data-docs])) {

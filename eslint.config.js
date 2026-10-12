@@ -43,13 +43,13 @@ export default defineConfig(
 		rules: filenameRules
 	},
 	{
-		files: ['src/routes/(demo)/**/*.{ts,svelte}'],
+		files: ['src/routes/{(docs),(demo)}/**/*.{ts,svelte}'],
 		ignores: ['**/+*.{ts,svelte}'],
 		rules: {
 			'check-file/folder-naming-convention': [
 				'error',
 				{ 'src/**/': 'KEBAB_CASE' },
-				{ ignoreWords: ['(demo)', '(relay)', '(forma)', '(elsewhere)'] }
+				{ ignoreWords: ['(docs)', '(demo)', '(relay)', '(forma)', '(elsewhere)'] }
 			]
 		}
 	},
