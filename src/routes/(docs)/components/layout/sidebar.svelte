@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { TreeView } from '$lib/index.js';
 	import SidebarNode from './sidebar-node.svelte';
 	import { navigation, pageSections } from './navigation.js';
+
+	const pathname = $derived(page.url.pathname.slice(base.length) || '/');
 
 	let groups = $derived(
 		navigation.map((group) => ({
@@ -24,9 +26,7 @@
 					<SidebarNode
 						{item}
 						current={item.id === page.url.pathname}
-						sections={item.id === page.url.pathname
-							? (pageSections[page.route.id ?? ''] ?? [])
-							: []}
+						sections={item.id === page.url.pathname ? (pageSections[pathname] ?? []) : []}
 					/>
 				{/snippet}
 			</TreeView>
