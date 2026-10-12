@@ -15,10 +15,10 @@
 	setContext('documentation-theme', theme);
 </script>
 
-<div data-docs><Theme palette={theme.palette}><Layout>{@render children()}</Layout></Theme></div>
+<Theme palette={theme.palette}><Layout>{@render children()}</Layout></Theme>
 
 <style>
-	:global(:root:has([data-docs])) {
+	:global(:root) {
 		--grid: 24px;
 		--font-display: 'Syne Variable', 'Syne', sans-serif;
 		--font-text: 'Inter Variable', 'Inter', sans-serif;
@@ -28,40 +28,40 @@
 		--docs-surface: color-mix(in srgb, var(--color-foreground) 4%, transparent);
 		--docs-code-background: color-mix(in srgb, var(--color-foreground) 7%, transparent);
 	}
-	:global(html:has([data-docs])) {
+	:global(html) {
 		scroll-behavior: smooth;
 		scroll-padding-top: calc(var(--grid) * 4);
 	}
-	:global(body:has([data-docs])) {
+	:global(body) {
 		font: 400 16px / 24px var(--font-text);
 		font-synthesis: none;
 	}
-	:global(:where([data-docs]) h1),
-	:global(:where([data-docs]) h2),
-	:global(:where([data-docs]) h3) {
+	:global(h1),
+	:global(h2),
+	:global(h3) {
 		font-family: var(--font-display);
 		font-weight: 400;
 	}
-	:global(:where([data-docs]) h1) {
+	:global(h1) {
 		font-weight: 700;
 		font-size: clamp(36px, 5vw, 64px);
 		line-height: 1.05;
 	}
-	:global(:where([data-docs]) h2) {
+	:global(h2) {
 		font-size: clamp(28px, 3vw, 36px);
 		line-height: 1.2;
 	}
-	:global(:where([data-docs]) h3) {
+	:global(h3) {
 		font-size: 24px;
 		line-height: 24px;
 	}
 	@media (prefers-reduced-motion: reduce) {
-		:global(html:has([data-docs])) {
+		:global(html) {
 			scroll-behavior: auto;
 		}
 	}
 	@media (max-width: 575px) {
-		:global(:where([data-docs]) h2) {
+		:global(h2) {
 			font-size: 24px;
 			line-height: 24px;
 		}
