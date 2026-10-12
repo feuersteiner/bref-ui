@@ -1,5 +1,4 @@
 <script lang="ts">
-	/* eslint-disable max-lines -- Keep the homepage video, transcript and rationale together. */
 	import { chapter, sections } from './sections.js';
 	import { resolve } from '$app/paths';
 	import Page from './components/page-container.svelte';
@@ -7,6 +6,7 @@
 	import CodeSnippet from './components/code-snippet.svelte';
 	import { Button, Icon, Progress, Surface, Switch } from '$lib/index.js';
 	import MovingBackground from './components/moving-background.svelte';
+	import LiveDemos from './components/live-demos.svelte';
 
 	let count = $state(0);
 	let notifications = $state(true);
@@ -55,6 +55,10 @@
 		<p>Render Theme once at the app root for its palette, reset and Material Symbols font setup.</p>
 	</Section>
 	<Section {...sections[1]}>
+		<p>Three complete experiences, each with its own theme, typography and working interactions.</p>
+		<LiveDemos />
+	</Section>
+	<Section {...sections[2]}>
 		<video
 			controls
 			muted
@@ -90,7 +94,7 @@
 			validation. Site generation and live generative UI remain future work.
 		</p>
 	</Section>
-	<Section {...sections[2]}>
+	<Section {...sections[3]}>
 		<p>These pages document the current Button, Icon and Theme APIs.</p>
 		<ul>
 			<li><a href={resolve('/button')}>Button: actions, sizes, variants and icons</a></li>

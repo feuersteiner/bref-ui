@@ -5,7 +5,11 @@
 	import type { Snippet } from 'svelte';
 	import './base.css';
 	let { children }: { children: Snippet } = $props();
-	const demos = [{ name: 'Relay', href: '/relay' }] as const;
+	const demos = [
+		{ name: 'Relay', href: '/relay' },
+		{ name: 'Forma', href: '/forma' },
+		{ name: 'Elsewhere', href: '/elsewhere' }
+	] as const;
 </script>
 
 <div data-demo-root data-active-demo={page.route.id?.split('/').at(-1)}>
