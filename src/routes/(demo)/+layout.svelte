@@ -1,85 +1,120 @@
 <script lang="ts">
-	import { Icon } from '$lib/index.js';
-	import { page } from '$app/state';
-	import { resolve } from '$app/paths';
 	import type { Snippet } from 'svelte';
-	import './base.css';
+	import { Theme, ThemeModeToggle } from '$lib/index.js';
+	import { page } from '$app/state';
+	import DemoNav from './demo-nav.svelte';
+	import '@fontsource-variable/inter';
 	let { children }: { children: Snippet } = $props();
-	const demos = [{ name: 'Relay', href: '/relay' }] as const;
 </script>
 
-<div data-demo-root data-active-demo={page.route.id?.split('/').at(-1)}>
-	<a data-skip href="#demo-content">Skip to content</a>
-	<nav aria-label="Bref live demos">
-		<a href={resolve('/')} aria-label="Back to documentation">
-			<Icon name="arrow_back" />
-			<span>Docs</span>
-		</a>
-		<div>
-			{#each demos as demo (demo.href)}
-				<a
-					href={resolve(demo.href)}
-					aria-current={page.url.pathname.endsWith(demo.href) ? 'page' : undefined}
-				>
-					{demo.name}
-				</a>
-			{/each}
-		</div>
-	</nav>
-	{@render children()}
-</div>
+<Theme
+	palette={{
+		primary: '#375b86',
+		secondary: '#695985',
+		background: '#f3f6fa',
+		foreground: '#263346',
+		muted: '#59677b',
+		success: '#326b58'
+	}}
+>
+	<ThemeModeToggle mode="light" />
+	<div data-demo-root data-active-demo={page.route.id?.split('/').at(-1)}>
+		<DemoNav />
+		{@render children()}
+	</div>
+</Theme>
 
 <style>
-	nav {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 16px;
-		padding: 12px 4%;
-		border-bottom: 1px solid color-mix(in srgb, var(--color-foreground) 12%, transparent);
-		font:
-			500 12px / 1.5 'Inter Variable',
-			sans-serif;
-	}
-	nav > a,
-	nav div {
-		display: flex;
-		align-items: center;
-		gap: 20px;
-	}
-	a {
-		color: var(--color-muted);
-		text-decoration: none;
-	}
-	a[aria-current] {
-		color: var(--color-foreground);
-	}
-	a[aria-current] {
-		text-decoration: underline;
-		text-underline-offset: 5px;
-	}
-	a:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 4px;
-	}
-	[data-skip] {
-		position: fixed;
-		top: 8px;
-		left: 8px;
-		z-index: 10;
-		padding: 12px;
-		background: var(--color-background);
-		transform: translateY(-150%);
-	}
-	[data-skip]:focus {
-		transform: none;
-	}
-	@media (max-width: 600px) {
-		nav > a span {
-			display: none;
+	:global {
+		html:has([data-demo-root]),
+		[data-demo-root] :where(main, dialog, [data-scroll], [data-content]) {
+			scroll-behavior: smooth;
+			scroll-padding-block: 24px;
 		}
-		nav div {
-			gap: 14px;
+		@media (prefers-reduced-motion: reduce) {
+			html:has([data-demo-root]),
+			[data-demo-root] :where(main, dialog, [data-scroll], [data-content]) {
+				scroll-behavior: auto;
+			}
+		}
+		body:has([data-demo-root]) {
+			font:
+				400 14px/1.6 'Inter Variable',
+				sans-serif;
+			font-synthesis: none;
+		}
+		[data-demo-root] h1,
+		[data-demo-root] h2,
+		[data-demo-root] h3 {
+			font-weight: 500;
+			line-height: 1.15;
+		}
+		[data-demo-root] a:not(.surface) {
+			color: inherit;
+		}
+		[data-demo-root] button,
+		[data-demo-root] input,
+		[data-demo-root] select {
+			font: inherit;
+		}
+		[data-demo-root] button:not(:disabled),
+		[data-demo-root] summary {
+			cursor: pointer;
+		}
+		[data-demo-root] :focus-visible:not(input):not(textarea) {
+			outline: 2px solid var(--color-primary);
+			outline-offset: 4px;
+		}
+		[data-demo-root] img {
+			display: block;
+			max-width: 100%;
+		}
+		[data-demo-root] main {
+			min-width: 0;
+		}
+		[data-demo-root] label {
+			display: grid;
+			gap: 8px;
+		}
+		[data-demo-root] p {
+			line-height: 1.7;
+		}
+		[data-demo-root] [data-eyebrow] {
+			font-size: 11px;
+			letter-spacing: 0.13em;
+			text-transform: uppercase;
+			font-weight: 600;
+		}
+		[data-demo-root] [data-muted] {
+			color: var(--color-muted);
+		}
+		[data-demo-root] [data-actions] {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			flex-wrap: wrap;
+		}
+		[data-demo-root] [data-form] {
+			display: grid;
+			gap: 20px;
+		}
+
+		[data-demo-root] [data-visually-hidden] {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip-path: inset(50%);
+			white-space: nowrap;
+			border: 0;
+		}
+
+		[data-demo-root]:not([data-active-demo='relay']) > [data-relay],
+		[data-demo-root]:not([data-active-demo='forma']) > [data-forma],
+		[data-demo-root]:not([data-active-demo='elsewhere']) > [data-elsewhere] {
+			display: none;
 		}
 	}
 </style>

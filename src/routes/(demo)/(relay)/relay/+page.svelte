@@ -71,7 +71,7 @@
 </script>
 
 <svelte:head>
-	<title>Relay — a Bref workspace demo</title>
+	<title>Relay | a Bref workspace demo</title>
 	<meta
 		name="description"
 		content="A creative project workspace built with Bref. Filter, finish and edit the work in front of you."
