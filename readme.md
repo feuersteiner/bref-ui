@@ -166,6 +166,19 @@ Run `bun run dev` in the repository for the gallery and current API documentatio
 Explore the [component exports](src/lib/index.ts) and [component source](src/lib)
 to inspect and customize the implementation.
 
+## Themes and examples
+
+Explore [bref-ui-themes](https://github.com/feuersteiner/bref-ui-themes) for reusable
+Svelte themes and interactive example sites built with Bref-ui. Browse the
+[live showcase](https://feuersteiner.github.io/bref-ui-themes/) or try the demos:
+
+- [Relay](https://feuersteiner.github.io/bref-ui-themes/relay): a project and task
+  management app with search, filtering and task editing.
+- [Forma](https://feuersteiner.github.io/bref-ui-themes/forma): a furniture store
+  with product filtering, a shopping cart and simulated checkout.
+- [Elsewhere](https://feuersteiner.github.io/bref-ui-themes/elsewhere): a website
+  audit app with simulated runs, history and finding review.
+
 ## Roadmap
 
 - **Component foundation:** inputs/textarea, pills, tree views, loading/progress,
