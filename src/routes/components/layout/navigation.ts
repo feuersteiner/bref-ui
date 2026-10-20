@@ -3,6 +3,7 @@ import {
 	sections as comboboxSections
 } from '../../combobox/sections.js';
 import { chapter as selectChapter, sections as selectSections } from '../../select/sections.js';
+import { chapter as tabsChapter, sections as tabsSections } from '../../tabs/sections.js';
 import {
 	chapter as introductionChapter,
 	sections as introductionSections
@@ -60,6 +61,7 @@ export const navigation = [
 			{ title: iconChapter, href: '/icon' },
 			{ title: pillChapter, href: '/pill' },
 			{ title: pillGroupChapter, href: '/pill-group' },
+			{ title: tabsChapter, href: '/tabs' },
 			{ title: treeViewChapter, href: '/tree-view' }
 		]
 	},
@@ -105,6 +107,7 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/dialog': dialogSections,
 	'/popover': popoverSections,
 	'/select': selectSections,
+	'/tabs': tabsSections,
 	'/combobox': comboboxSections,
 	'/checkbox': checkboxSections,
 	'/switch': switchSections,

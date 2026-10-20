@@ -1,4 +1,8 @@
 import type { Dimension, IconName } from '../types.ts';
+import type { TransitionConfig } from 'svelte/transition';
+
+/** An indicator transition, including deferred Svelte transition configurations. */
+export type TabTransition = (node: HTMLElement) => TransitionConfig | (() => TransitionConfig);
 
 /** Data for a tab in the strip. */
 export interface TabItemDataProps {
@@ -18,6 +22,12 @@ export type TabItemProps = TabItemDataProps & {
 	selected?: boolean;
 	/** Use filled glyphs for all tab icons. */
 	filled?: boolean;
+	/** Select this item when activated. */
+	onSelect: () => void;
+	/** Animate the selected indicator into this item. */
+	transitionIn?: TabTransition;
+	/** Animate the selected indicator out of this item. */
+	transitionOut?: TabTransition;
 } & OrientationProps;
 
 type OrientationProps =
@@ -42,4 +52,4 @@ export type TabsProps = {
 	/** Accessible name for the tab list. */
 	label?: string;
 } & OrientationProps &
-	Pick<TabItemProps, 'filled'>;
+	Pick<TabItemProps, 'filled' | 'transitionIn' | 'transitionOut'>;

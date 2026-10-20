@@ -6,7 +6,7 @@ export type Color = 'primary' | 'secondary' | 'foreground' | 'background' | 'mut
 export type Orientation = 'horizontal' | 'vertical';
 export type Dimension = 'fit' | 'fill';
 
-export type { TabItemProps, TabItemDataProps, TabsProps } from './tabs/types.js';
+export type { TabItemProps, TabItemDataProps, TabsProps, TabTransition } from './tabs/types.js';
 export type { ButtonProps } from './button/types.js';
 export type {
 	ComboboxProps,
