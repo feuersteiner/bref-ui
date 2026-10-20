@@ -1,10 +1,10 @@
-import type { IconName, Orientation } from '../types.ts';
+import type { Dimension, IconName } from '../types.ts';
 
 /** Data for a tab in the strip. */
 export interface TabItemDataProps {
 	/** Unique tab ID used for selection. */
 	id: string;
-	/** Visible tab text and accessible name. */
+	/** Accessible name and tab text; small screens show only the selected horizontal label. */
 	label: string;
 	/** Material Symbols icon displayed beside the label. */
 	icon: IconName;
@@ -13,25 +13,33 @@ export interface TabItemDataProps {
 }
 
 /** Props for a rendered tab item, including its selection state. */
-export interface TabItemProps extends TabItemDataProps {
+export type TabItemProps = TabItemDataProps & {
 	/** Whether this item is selected, derived from the strip's value. */
 	selected?: boolean;
-}
+	/** Use filled glyphs for all tab icons. */
+	filled?: boolean;
+} & OrientationProps;
+
+type OrientationProps =
+	| {
+			orientation?: 'horizontal';
+			/** Fit content and scroll on overflow, or fill the parent and truncate labels. */
+			size?: Dimension;
+	  }
+	| {
+			orientation: 'vertical';
+			size?: never;
+	  };
 
 /** A horizontal or vertical tab strip; the consumer owns the content. */
-export interface TabsProps {
+export type TabsProps = {
 	/** Tabs in display order. */
 	items: readonly TabItemDataProps[];
-	/** Direction of the tab strip. */
-	orientation?: Orientation;
 	/** ID of the selected tab. */
 	value?: string;
 	/** Called with the tab ID when user interaction changes selection. */
 	onChange?: (id: string) => void;
 	/** Accessible name for the tab list. */
 	label?: string;
-	/** Use filled glyphs for all tab icons. */
-	filled?: boolean;
-	/** Apply translucent styling and backdrop blur to the tab strip. */
-	glass?: boolean;
-}
+} & OrientationProps &
+	Pick<TabItemProps, 'filled'>;
