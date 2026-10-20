@@ -18,6 +18,7 @@ import comboboxUsage from './combobox.js';
 import treeViewUsage from './tree-view.js';
 import dialogUsage from './dialog.js';
 import popoverUsage from './popover.js';
+import tabsUsage from './tabs.js';
 import type { RequestHandler } from './$types.js';
 
 export const prerender = true;
@@ -44,7 +45,8 @@ const componentUsage: Record<
 	Combobox: comboboxUsage,
 	TreeView: treeViewUsage,
 	Dialog: dialogUsage,
-	Popover: popoverUsage
+	Popover: popoverUsage,
+	Tabs: tabsUsage
 };
 
 export const GET: RequestHandler = () => {

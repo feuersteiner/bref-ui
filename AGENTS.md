@@ -8,13 +8,11 @@
 - Let the human's review pace govern coding patterns, speed and scope at all times.
   Default to one small, reviewable step: explain it, make the scoped change, show the
   diff and checks, then wait for human approval before the next step. Do not batch
-  tickets or expand implementation unless the human explicitly authorizes it.
-- Read the assigned ticket, [delivery workflow](.tasks/README.md) and
-  `references.local.md`. Consult matching components and their coding rules read-only,
+  work or expand implementation unless the human explicitly authorizes it.
+- Read `references.local.md`. Consult matching components and their coding rules read-only,
   in the order specified there. Report missing references; keep reference names and
   private paths out of tracked documentation.
-- Follow the workflow's ownership, independent review and human approval gates.
-  Confirm public contracts before implementation; examples below illustrate patterns,
+- Confirm public contracts before implementation; examples below illustrate patterns,
   not approval of new APIs. Never commit, push or publish without authorization.
 
 ## Checklist
@@ -160,8 +158,8 @@ keyboard/focus, SSR/hydration and contrast. Distribution changes also require ta
 inspection and clean npm/CLI Svelte and SvelteKit consumers; copying must preview
 changes, resolve dependencies and handle overwrites explicitly.
 
-Record results and independent code/rendered review evidence using
-[the ticket template](.tasks/TEMPLATE.md). Static checks do not grant visual approval.
+Record verification results and code/rendered review evidence.
+Static checks do not grant visual approval.
 For UI changes, include tightly cropped screenshots of the actual rendered components
 in the PR description, showing all available variants and relevant interaction states,
 with before/after comparisons when useful. Keep screenshots only in the PR
