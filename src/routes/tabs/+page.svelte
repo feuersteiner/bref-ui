@@ -86,7 +86,8 @@
 			type: 'Orientation',
 			required: false,
 			default: 'horizontal',
-			description: 'Horizontal row or vertical column; determines arrow-key navigation.'
+			description:
+				'Soft glass pills in a horizontal row or equal-width vertical column; determines arrow-key navigation.'
 		},
 		{
 			name: 'size',
@@ -122,7 +123,8 @@
 			type: 'boolean',
 			required: false,
 			default: 'false',
-			description: 'Use filled Material Symbols icons; does not change the tab background.'
+			description:
+				'Fill every Material Symbols icon; the selected icon is always filled. Does not change the soft glass background.'
 		},
 		{
 			name: 'transitionIn',
@@ -143,11 +145,13 @@
 
 <Page
 	title={chapter}
-	description="Switch between sections with a horizontal or vertical tab strip."
+	description="Switch between sections with primary-colored floating pills and soft glass selection, horizontally or vertically."
 >
 	<Section {...sections.find((section) => section.id === 'horizontal')!}>
 		<div data-demo="horizontal">
-			<Tabs {items} bind:value={horizontal} label="Horizontal workspace sections" />
+			<div data-tabs>
+				<Tabs {items} bind:value={horizontal} label="Horizontal workspace sections" />
+			</div>
 			<div data-content>
 				<small>Workspace</small>
 				<h3>{selectedLabel(horizontal)}</h3>
@@ -161,13 +165,15 @@
 	</Section>
 	<Section {...sections.find((section) => section.id === 'vertical')!}>
 		<div data-demo="vertical">
-			<Tabs
-				{items}
-				bind:value={vertical}
-				orientation="vertical"
-				label="Vertical workspace sections"
-				filled
-			/>
+			<div data-tabs>
+				<Tabs
+					{items}
+					bind:value={vertical}
+					orientation="vertical"
+					label="Vertical workspace sections"
+					filled
+				/>
+			</div>
 			<div data-content>
 				<small>Workspace</small>
 				<h3>{selectedLabel(vertical)}</h3>
@@ -306,6 +312,7 @@
 <style>
 	[data-demo] {
 		min-width: 0;
+		border: 1px solid var(--docs-rule-strong);
 		border-radius: 0.75rem;
 		background: var(--docs-surface);
 	}
@@ -313,9 +320,19 @@
 		display: grid;
 		grid-template-columns: auto minmax(0, 1fr);
 	}
+	[data-tabs] {
+		min-width: 0;
+		padding: 0.75rem;
+	}
 	[data-content] {
 		min-width: 0;
 		padding: 1.5rem;
+	}
+	[data-demo='horizontal'] [data-content] {
+		border-block-start: 1px solid var(--docs-rule-strong);
+	}
+	[data-demo='vertical'] [data-content] {
+		border-inline-start: 1px solid var(--docs-rule-strong);
 	}
 	[data-content] h3 {
 		margin-block: 0.5rem;
@@ -357,6 +374,10 @@
 		}
 		[data-demo='vertical'] {
 			grid-template-columns: minmax(0, 1fr);
+		}
+		[data-demo='vertical'] [data-content] {
+			border-inline-start: 0;
+			border-block-start: 1px solid var(--docs-rule-strong);
 		}
 	}
 </style>

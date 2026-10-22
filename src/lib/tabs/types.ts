@@ -20,7 +20,7 @@ export interface TabItemDataProps {
 export type TabItemProps = TabItemDataProps & {
 	/** Whether this item is selected, derived from the strip's value. */
 	selected?: boolean;
-	/** Use filled glyphs for all tab icons. */
+	/** Fill every icon; the selected tab's icon is always filled. */
 	filled?: boolean;
 	/** Select this item when activated. */
 	onSelect: () => void;

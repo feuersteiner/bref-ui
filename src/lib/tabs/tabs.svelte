@@ -19,7 +19,7 @@
 	let strip: HTMLDivElement | undefined = $state();
 	const layout = $derived(orientation === 'horizontal' ? { orientation, size } : { orientation });
 	const [send, receive] = crossfade({
-		duration: () => (matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 220),
+		duration: () => (matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 180),
 		easing: cubicOut
 	});
 	const intro = (node: HTMLElement) =>
@@ -81,20 +81,17 @@
 
 <style>
 	div {
-		--tabs-indicator-block-start: auto;
-		--tabs-indicator-inline-start: 0;
-		--tabs-indicator-width: auto;
-		--tabs-indicator-height: 2px;
 		box-sizing: border-box;
 		display: inline-flex;
 		align-self: start;
 		align-items: stretch;
+		gap: 0.5rem;
 		justify-self: start;
 		width: max-content;
 		max-width: 100%;
 		min-width: 0;
+		padding: 4px;
 		border: 0;
-		border-block-end: 1px solid color-mix(in srgb, var(--color-foreground) 12%, transparent);
 		overflow: auto;
 		overscroll-behavior-inline: contain;
 		scrollbar-width: thin;
@@ -103,22 +100,11 @@
 		width: 100%;
 	}
 	div[data-orientation='vertical'] {
-		--tabs-indicator-block-start: 0;
-		--tabs-indicator-inline-start: auto;
-		--tabs-indicator-width: 2px;
-		--tabs-indicator-height: auto;
 		flex-direction: column;
 		max-height: 100%;
 		min-height: 0;
-		border-block-end: 0;
-		border-inline-end: 1px solid color-mix(in srgb, var(--color-foreground) 12%, transparent);
 		overflow-x: hidden;
 		overflow-y: auto;
 		overscroll-behavior-block: contain;
-	}
-	@media (forced-colors: active) {
-		div {
-			border-color: ButtonBorder;
-		}
 	}
 </style>

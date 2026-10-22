@@ -2,5 +2,5 @@
 	"id": "tabs",
 	"files": ["tabs.svelte", "item.svelte"],
 	"exports": { "Tabs": "tabs.svelte" },
-	"dependencies": ["icon"]
+	"dependencies": ["icon", "theme"]
 }
