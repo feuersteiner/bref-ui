@@ -1,7 +1,13 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep both orientations and their interactive examples together. */
 	import { Button, Checkbox, Select, Tabs, TextInput } from '$lib/index.js';
-	import type { Dimension, Orientation, TabItemDataProps, TabTransition } from '$lib/types.js';
+	import type {
+		BaseSize,
+		Dimension,
+		Orientation,
+		TabItemDataProps,
+		TabTransition
+	} from '$lib/types.js';
 	import { fade, fly } from 'svelte/transition';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
@@ -22,14 +28,16 @@
 	let vertical = $state('overview');
 	let previewValue = $state<string | undefined>('overview');
 	let orientation = $state<Orientation>('horizontal');
-	let size = $state<Dimension>('fit');
+	let width = $state<Dimension>('fit');
+	let size = $state<BaseSize>('medium');
 	let filled = $state(false);
 	let customTransitions = $state(false);
 	let label = $state('Preview sections');
 	let empty = $state(false);
 	let changes = $state(0);
 	const previewItems = $derived(empty ? [] : items);
-	const layout = $derived(orientation === 'horizontal' ? { orientation, size } : { orientation });
+	const layout = $derived(orientation === 'horizontal' ? { orientation, width } : { orientation });
+	const sizes: BaseSize[] = ['small', 'medium', 'large'];
 	const customIn: TabTransition = (node) => fly(node, { y: 6, duration: 150 });
 	const customOut: TabTransition = (node) => fade(node, { duration: 100 });
 	const selectedLabel = (id: string | undefined) =>
@@ -56,7 +64,8 @@
 <Tabs
   {items}
   bind:value
-  orientation="${orientation}"${orientation === 'horizontal' ? `\n  size="${size}"` : ''}
+  orientation="${orientation}"${orientation === 'horizontal' ? `\n  width="${width}"` : ''}
+  size="${size}"
   label={${JSON.stringify(label)}}
   filled={${filled}}${customTransitions ? '\n  transitionIn={(node) => fly(node, { y: 6, duration: 150 })}\n  transitionOut={(node) => fade(node, { duration: 100 })}' : ''}
   onChange={() => changes++}
@@ -65,7 +74,8 @@
 	const reset = () => {
 		previewValue = 'overview';
 		orientation = 'horizontal';
-		size = 'fit';
+		width = 'fit';
+		size = 'medium';
 		filled = false;
 		customTransitions = false;
 		label = 'Preview sections';
@@ -90,12 +100,20 @@
 				'Soft glass pills in a horizontal row or equal-width vertical column; determines arrow-key navigation.'
 		},
 		{
-			name: 'size',
+			name: 'width',
 			type: 'Dimension',
 			required: false,
 			default: 'fit',
 			description:
-				'Horizontal only: fit keeps natural item widths and scrolls; fill spans the parent and truncates labels. Vertical rejects size.'
+				'Horizontal only: fit keeps natural item widths and scrolls; fill spans the parent and truncates labels. Vertical rejects width.'
+		},
+		{
+			name: 'size',
+			type: 'BaseSize',
+			required: false,
+			default: 'medium',
+			description:
+				'Scales tab height, padding, label and icon in both orientations. Coarse pointers keep 44px touch targets.'
 		},
 		{
 			name: 'value',
@@ -191,6 +209,18 @@
 			/>
 		</details>
 	</Section>
+	<Section {...sections.find((section) => section.id === 'sizes')!}>
+		<div data-sizes>
+			{#each sizes as tabSize (tabSize)}
+				<h3>{tabSize}</h3>
+				<Tabs {items} value="overview" size={tabSize} label={`${tabSize} workspace sections`} />
+			{/each}
+		</div>
+		<CodeSnippet
+			source={'<Tabs {items} bind:value size="small" label="Workspace sections" />'}
+			label="Tab sizes code"
+		/>
+	</Section>
 	<Section {...sections.find((section) => section.id === 'playground')!}>
 		<Playground source={playgroundSource} onReset={reset}>
 			{#snippet preview()}
@@ -199,6 +229,7 @@
 						items={previewItems}
 						bind:value={previewValue}
 						{...layout}
+						{size}
 						{label}
 						{filled}
 						transitionIn={customTransitions ? customIn : undefined}
@@ -218,12 +249,19 @@
 						bind:value={() => orientation, (next) => (orientation = next as Orientation)}
 					/>
 				</PlaygroundField>
+				<PlaygroundField id="tabs-size" label="Size">
+					<Select
+						id="tabs-size"
+						items={sizes.map((id) => ({ id, label: id }))}
+						bind:value={() => size, (next) => (size = next as BaseSize)}
+					/>
+				</PlaygroundField>
 				{#if orientation === 'horizontal'}
-					<PlaygroundField id="tabs-size" label="Size">
+					<PlaygroundField id="tabs-width" label="Width">
 						<Select
-							id="tabs-size"
+							id="tabs-width"
 							items={['fit', 'fill'].map((id) => ({ id, label: id }))}
-							bind:value={() => size, (next) => (size = next as Dimension)}
+							bind:value={() => width, (next) => (width = next as Dimension)}
 						/>
 					</PlaygroundField>
 				{/if}
@@ -262,7 +300,7 @@
 			<Tabs
 				items={items.map((item) => ({ ...item, label: `${item.label} and workspace preferences` }))}
 				value="overview"
-				size="fill"
+				width="fill"
 				label="Fill workspace sections"
 			/>
 			<p>Vertical: truncated labels with vertical scrolling.</p>
@@ -340,6 +378,17 @@
 	}
 	small {
 		color: var(--color-muted);
+	}
+	[data-sizes] {
+		display: grid;
+		gap: 0.5rem;
+		min-width: 0;
+	}
+	[data-sizes] h3 {
+		margin: 0.5rem 0 0;
+		font-size: 0.875rem;
+		color: var(--color-muted);
+		text-transform: capitalize;
 	}
 	[data-preview] {
 		min-width: 0;

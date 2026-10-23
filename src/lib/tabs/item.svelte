@@ -10,7 +10,8 @@
 		disabled = false,
 		selected,
 		orientation = 'horizontal',
-		size = 'fit',
+		width = 'fit',
+		size = 'medium',
 		filled = false,
 		onSelect,
 		transitionIn = () => ({}),
@@ -25,7 +26,8 @@
 	role="tab"
 	aria-label={label}
 	aria-selected={selected ?? false}
-	data-size={orientation === 'horizontal' ? size : undefined}
+	data-width={orientation === 'horizontal' ? width : undefined}
+	data-size={size}
 	data-orientation={orientation}
 	data-icon-only={!showLabel}
 	tabindex={selected === undefined ? undefined : selected ? 0 : -1}
@@ -52,6 +54,9 @@
 			var(--color-foreground)
 		);
 		--internal-hover-background: color-mix(in srgb, var(--color-primary) 5%, transparent);
+		--internal-height: 2.75rem;
+		--internal-padding: 0.875rem;
+		--internal-font-size: 0.875rem;
 		position: relative;
 		isolation: isolate;
 		box-sizing: border-box;
@@ -61,15 +66,15 @@
 		justify-content: center;
 		gap: 0.5rem;
 		width: max-content;
-		min-width: 44px;
-		min-height: 44px;
-		padding: 0.5rem 0.875rem;
+		min-width: var(--internal-height);
+		min-height: var(--internal-height);
+		padding: 0.25rem var(--internal-padding);
 		border: 0;
 		border-radius: 999px;
 		background: transparent;
 		color: var(--color-primary);
 		font: inherit;
-		font-size: 0.875rem;
+		font-size: var(--internal-font-size);
 		font-weight: 500;
 		line-height: 1.5;
 		text-align: start;
@@ -79,11 +84,21 @@
 			color 150ms ease,
 			background-color 150ms ease;
 	}
-	button[data-size='fill'] {
+	button[data-size='small'] {
+		--internal-height: 2.25rem;
+		--internal-padding: 0.625rem;
+		--internal-font-size: 0.8125rem;
+	}
+	button[data-size='large'] {
+		--internal-height: 3.25rem;
+		--internal-padding: 1.125rem;
+		--internal-font-size: 1rem;
+	}
+	button[data-width='fill'] {
 		flex: 1 1 auto;
 		width: auto;
 		max-width: 100%;
-		padding-inline: 0.5rem;
+		padding-inline: calc(var(--internal-padding) * 0.6);
 	}
 	button[data-orientation='vertical'] {
 		justify-content: start;
@@ -92,7 +107,7 @@
 	}
 	button[data-icon-only='true'] {
 		justify-content: center;
-		padding-inline: 0.75rem;
+		padding-inline: calc(var(--internal-padding) * 0.85);
 	}
 	button[aria-selected='true'] {
 		color: var(--internal-selected-foreground);
@@ -118,6 +133,11 @@
 		z-index: -1;
 		border-radius: inherit;
 		pointer-events: none;
+	}
+	@media (pointer: coarse) {
+		button[data-size='small'] {
+			--internal-height: 44px;
+		}
 	}
 	@media (hover: hover) {
 		button:hover:not(:disabled, [aria-selected='true']) {

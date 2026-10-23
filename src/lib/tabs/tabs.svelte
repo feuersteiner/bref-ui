@@ -8,7 +8,8 @@
 	let {
 		items,
 		orientation = 'horizontal',
-		size = 'fit',
+		width = 'fit',
+		size = 'medium',
 		value = $bindable(),
 		onChange,
 		label = 'Tabs',
@@ -17,7 +18,7 @@
 		transitionOut
 	}: TabsProps = $props();
 	let strip: HTMLDivElement | undefined = $state();
-	const layout = $derived(orientation === 'horizontal' ? { orientation, size } : { orientation });
+	const layout = $derived(orientation === 'horizontal' ? { orientation, width } : { orientation });
 	const [send, receive] = crossfade({
 		duration: () => (matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 180),
 		easing: cubicOut
@@ -63,7 +64,7 @@
 	aria-label={label}
 	aria-orientation={orientation}
 	data-orientation={orientation}
-	data-size={orientation === 'horizontal' ? size : undefined}
+	data-width={orientation === 'horizontal' ? width : undefined}
 	onkeydown={navigate}
 >
 	{#each items as item (item.id)}
@@ -71,6 +72,7 @@
 			{...item}
 			selected={value === undefined ? undefined : value === item.id}
 			{...layout}
+			{size}
 			{filled}
 			onSelect={() => select(item.id)}
 			transitionIn={intro}
@@ -96,7 +98,7 @@
 		overscroll-behavior-inline: contain;
 		scrollbar-width: thin;
 	}
-	div[data-size='fill'] {
+	div[data-width='fill'] {
 		width: 100%;
 	}
 	div[data-orientation='vertical'] {
