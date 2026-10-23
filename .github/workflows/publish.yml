@@ -3,6 +3,7 @@ name: Publish to npm
 on:
   push:
     branches: [main]
+    paths: [package.json]
 
 permissions:
   contents: read
