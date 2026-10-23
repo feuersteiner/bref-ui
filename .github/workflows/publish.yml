@@ -1,8 +1,8 @@
 name: Publish to npm
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
 
 permissions:
   contents: read
@@ -13,16 +13,14 @@ concurrency:
 
 jobs:
   publish:
-    if: ${{ !github.event.release.prerelease }}
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       id-token: write
     steps:
-      - name: Checkout release tag
+      - name: Checkout
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.release.tag_name }}
           persist-credentials: false
 
       - name: Setup Node
@@ -32,39 +30,61 @@ jobs:
           registry-url: https://registry.npmjs.org
           package-manager-cache: false
 
-      - name: Verify release version
-        env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
+      - name: Check package version
+        id: version
         run: |
           node --input-type=module <<'NODE'
           import assert from 'node:assert/strict';
-          import { readFileSync } from 'node:fs';
-          const { version } = JSON.parse(readFileSync('package.json', 'utf8'));
-          assert.match(process.env.RELEASE_TAG, /^v\d+\.\d+\.\d+$/);
-          assert.equal(process.env.RELEASE_TAG, `v${version}`);
+          import { appendFileSync, readFileSync } from 'node:fs';
+          const { name, version } = JSON.parse(readFileSync('package.json', 'utf8'));
+          assert.match(version, /^\d+\.\d+\.\d+$/);
+          const response = await fetch(`https://registry.npmjs.org/${encodeURIComponent(name)}/${version}`, {
+            signal: AbortSignal.timeout(30000)
+          });
+          assert(response.ok || response.status === 404, `npm registry returned ${response.status}`);
+          appendFileSync(process.env.GITHUB_OUTPUT, `tag=v${version}\npublished=${response.ok}\n`);
+          console.log(`${name}@${version}: ${response.ok ? 'already published' : 'ready to publish'}`);
           NODE
 
       - name: Setup Bun
+        if: steps.version.outputs.published == 'false'
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: '1.3.4'
 
       - name: Install dependencies
+        if: steps.version.outputs.published == 'false'
         run: bun install --frozen-lockfile
 
       - name: Check
+        if: steps.version.outputs.published == 'false'
         run: bun run check
 
       - name: Lint
+        if: steps.version.outputs.published == 'false'
         run: bun run lint
 
       - name: Build
+        if: steps.version.outputs.published == 'false'
         run: bun run build
 
       - name: Pack and inspect
+        if: steps.version.outputs.published == 'false'
         run: |
           npm pack --ignore-scripts
           tar -tzf bref-ui-*.tgz
 
       - name: Publish
+        if: steps.version.outputs.published == 'false'
         run: npm publish bref-ui-*.tgz --access public --provenance
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists."
+          else
+            gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --title "$RELEASE_TAG" --generate-notes
+          fi
