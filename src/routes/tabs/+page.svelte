@@ -35,6 +35,17 @@
 	let label = $state('Preview sections');
 	let empty = $state(false);
 	let changes = $state(0);
+	let unavailableValue = $state('overview');
+	let removeOverview = $state(false);
+	let disableOverview = $state(false);
+	const availableItems = $derived(
+		items
+			.filter((item) => !removeOverview || item.id !== 'overview')
+			.map((item) => ({
+				...item,
+				disabled: item.disabled || (disableOverview && item.id === 'overview')
+			}))
+	);
 	const previewItems = $derived(empty ? [] : items);
 	const layout = $derived(orientation === 'horizontal' ? { orientation, width } : { orientation });
 	const sizes: BaseSize[] = ['small', 'medium', 'large'];
@@ -120,7 +131,8 @@
 			type: 'string',
 			required: false,
 			default: 'undefined',
-			description: 'Bindable selected ID. Omitted or unmatched IDs leave the strip unselected.'
+			description:
+				'Bindable selected ID. If missing or disabled, the first enabled tab stays focusable without changing the value. Omitted values preserve native Tab order.'
 		},
 		{
 			name: 'onChange',
@@ -286,6 +298,20 @@
 	<Section {...sections.find((section) => section.id === 'states')!}>
 		<h3>No initial selection</h3>
 		<Tabs {items} label="Initially unselected sections" />
+		<h3>Unavailable selection</h3>
+		<label><Checkbox bind:checked={removeOverview} /> Remove Overview</label>
+		<label><Checkbox bind:checked={disableOverview} /> Disable Overview</label>
+		<Button label="Select Overview" size="small" onClick={() => (unavailableValue = 'overview')} />
+		<Tabs
+			items={availableItems}
+			bind:value={unavailableValue}
+			label="Changing workspace sections"
+		/>
+		<p role="status">Selected ID: {unavailableValue}</p>
+		<p>
+			Remove or disable Overview, then press Tab from Select Overview. The first enabled tab remains
+			reachable; the selected ID changes only when a tab is activated.
+		</p>
 		<h3>All tabs disabled</h3>
 		<Tabs items={items.map((item) => ({ ...item, disabled: true }))} label="Unavailable sections" />
 		<h3>Long labels in a narrow container</h3>
@@ -336,9 +362,10 @@
 			are decorative; each item's label names its tab.
 		</p>
 		<p>
-			Without a selected ID, enabled tabs keep native Tab order. A matching selected ID gives its
-			tab the only Tab stop; unmatched or disabled IDs provide no enabled Tab stop. Empty and fully
-			disabled strips have no Tab stop. The shared theme control switches light and dark modes.
+			Without a selected ID, enabled tabs keep native Tab order. A matching enabled selected ID
+			gives its tab the only Tab stop. If that ID is missing or disabled, the first enabled tab
+			becomes the Tab stop without changing selection or calling onChange. Empty and fully disabled
+			strips have no Tab stop. The shared theme control switches light and dark modes.
 		</p>
 		<p>
 			Custom transitions return a Svelte TransitionConfig or a function returning one. Use closures

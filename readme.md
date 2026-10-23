@@ -7,6 +7,10 @@ and apps with components you can make your own.
 [![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.gg/JpgQRTUsVS)
 [![MIT license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
+Ready-made themes and complete site demos are hosted in
+[bref-ui-themes](https://github.com/feuersteiner/bref-ui-themes), the companion package
+for Bref-ui. [Explore the themes showcase](https://feuersteiner.github.io/bref-ui-themes/).
+
 https://github.com/user-attachments/assets/09b9a73d-c6fb-4e8d-b4f5-2267c4552ad7
 
 ## Get started

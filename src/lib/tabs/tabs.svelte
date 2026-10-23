@@ -18,6 +18,11 @@
 		transitionOut
 	}: TabsProps = $props();
 	let strip: HTMLDivElement | undefined = $state();
+	const fallbackId = $derived(
+		items.some((item) => item.id === value && !item.disabled)
+			? undefined
+			: items.find((item) => !item.disabled)?.id
+	);
 	const layout = $derived(orientation === 'horizontal' ? { orientation, width } : { orientation });
 	const [send, receive] = crossfade({
 		duration: () => (matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 180),
@@ -70,7 +75,7 @@
 	{#each items as item (item.id)}
 		<Item
 			{...item}
-			selected={value === undefined ? undefined : value === item.id}
+			selected={value === undefined || item.id === fallbackId ? undefined : value === item.id}
 			{...layout}
 			{size}
 			{filled}
