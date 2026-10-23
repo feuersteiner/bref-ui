@@ -1,5 +1,4 @@
 <script lang="ts">
-	/* eslint-disable max-lines -- Keep the homepage video, transcript and rationale together. */
 	import { chapter, sections } from './sections.js';
 	import { resolve } from '$app/paths';
 	import Page from './components/page-container.svelte';
