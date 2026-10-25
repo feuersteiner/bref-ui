@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { chapter, sections } from './sections.js';
-	import { resolve } from '$app/paths';
+	import { asset, resolve } from '$app/paths';
 	import Page from './components/page-container.svelte';
 	import Section from './components/section.svelte';
 	import CodeSnippet from './components/code-snippet.svelte';
@@ -63,7 +63,7 @@
 			height="720"
 			aria-label="Bref-ui in 60 seconds: themes, scoped Svelte CSS, npm and CLI installation"
 		>
-			<source src="./bref-ui-demo.mp4" type="video/mp4" />
+			<source src={asset('bref-ui-demo.mp4')} type="video/mp4" />
 			Your browser does not support embedded video.
 		</video>
 		<p>
