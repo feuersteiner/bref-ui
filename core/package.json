@@ -5,7 +5,8 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/feuersteiner/bref-ui.git"
+		"url": "git+https://github.com/feuersteiner/bref-ui.git",
+		"directory": "core"
 	},
 	"homepage": "https://github.com/feuersteiner/bref-ui#readme",
 	"bugs": {

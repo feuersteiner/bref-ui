@@ -28,3 +28,5 @@ Thumbs.db
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 /references.local.md
+
+/themes/LICENSE
