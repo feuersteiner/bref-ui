@@ -1,3 +1,6 @@
+import { existsSync } from 'node:fs';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { dirname } from 'node:path';
 import type { PreparedFile, PreviewChange } from '../types.js';
 
 /**
@@ -19,8 +22,9 @@ export const writePreparedFiles = async (
 			if (status === 'unchanged') return;
 
 			const target = `${destination}/${path}`;
-			if (status === 'add' && (await Bun.file(target).exists()))
+			if (status === 'add' && existsSync(target))
 				throw new Error(`Destination appeared after preview for "${path}".`);
-			await Bun.write(target, content, { createPath: true });
+			await mkdir(dirname(target), { recursive: true });
+			await writeFile(target, content, { flag: status === 'add' ? 'wx' : 'w' });
 		})
 	).then(() => undefined);

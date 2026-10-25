@@ -7,23 +7,23 @@ configured UI directory, using package types from `bref-ui/types`.
 
 The executable routes init and add to the implemented stages and ships in the local package.
 `init` adds a `#bref` subpath import to `package.json`; `add` copies into the directory
-it maps to. There is no configuration file. Bun is required to run the CLI.
+it maps to. There is no configuration file. The CLI runs on Node.js through npm.
 Run commands from the consumer project directory:
 
 ```sh
-bun run bref-ui init
-bun run bref-ui add button
-bun run bref-ui add theme
+npx bref-ui init
+npx bref-ui add button
+npx bref-ui add theme
 ```
 
-Install the local tarball with `bun add /path/to/bref-ui-<version>.tgz`. The executable loads
+Install the local tarball with `npm install /path/to/bref-ui-<version>.tgz`. The executable loads
 the canonical registry shipped in the package; copied components use its `bref-ui/types`
-entry. `add theme` copies a separate default-only Theme; edit its CSS tokens directly. The package Theme accepts a palette prop. Use `bun run bref-ui --help` for usage. Direct source invocation remains available
-with `bun /path/to/bref-ui/cli/index.ts <command>`.
+entry. `add theme` copies a separate default-only Theme; edit its CSS tokens directly. The package Theme accepts a palette prop. Use `npx bref-ui --help` for usage. Direct source invocation remains available
+with `node /path/to/bref-ui/dist-cli/index.js <command>` after packing.
 
-`bun pm pack --destination .workbench/artifacts` validates manifests through `loadRegistry`,
+`npm pack` from `core/` validates manifests through `loadRegistry`,
 builds the library and runs publint before producing a local tarball. The package ships
-CLI TypeScript modules and canonical `src/lib` sources alongside `dist`. Import/export
+compiled CLI JavaScript modules and canonical `src/lib` sources alongside `dist`. Import/export
 parsing reuses `svelte/compiler`; the TypeScript compiler remains development-only and
 is not installed for CLI consumers. Packing does not publish to npm.
 

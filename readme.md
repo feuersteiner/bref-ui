@@ -48,11 +48,11 @@ Paint native HTML with the same recipe as `Surface` and `Button`:
 <button class={surface({ variant: 'filled', color: 'primary', shadow: 'small' })}>Save</button>
 ```
 
-Or own the source: the optional CLI (requires Bun) copies components into your project.
+Or own the source: the optional CLI (runs on Node.js) copies components into your project.
 
 ```sh
-bun run bref-ui init
-bun run bref-ui add button
+npx bref-ui init
+npx bref-ui add button
 ```
 
 `init` adds a `#bref` import to `package.json`, pointing at `src/lib/ui` by default:

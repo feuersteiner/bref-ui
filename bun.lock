@@ -9,7 +9,7 @@
       "name": "bref-ui",
       "version": "3.0.0",
       "bin": {
-        "bref-ui": "cli/index.ts",
+        "bref-ui": "dist-cli/index.js",
       },
       "dependencies": {
         "@fontsource-variable/material-symbols-outlined": "^5.3.5",
@@ -26,6 +26,7 @@
         "@sveltejs/package": "^3.0.1",
         "@sveltejs/vite-plugin-svelte": "^7.3.1",
         "@types/bun": "^1.4.2",
+        "@types/estree": "^1.0.9",
         "@types/node": "^22",
         "eslint": "^10.4.1",
         "eslint-config-prettier": "^10.1.8",

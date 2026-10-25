@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 import { runCommand } from './commands/index.js';
 
-if (import.meta.main) await runCommand(Bun.argv.slice(2), process.cwd());
+await runCommand(process.argv.slice(2), process.cwd());

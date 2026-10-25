@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import type { PreparedFile } from '../types.js';
 import type { DestinationFile } from './types.js';
 
@@ -15,7 +16,7 @@ export const readDestinationFiles = async (
 	Promise.all(
 		files.map(async ({ path }): Promise<DestinationFile> => {
 			try {
-				return { path, exists: true, content: await Bun.file(`${destination}/${path}`).text() };
+				return { path, exists: true, content: await readFile(`${destination}/${path}`, 'utf8') };
 			} catch (error) {
 				if (error instanceof Error && 'code' in error && error.code === 'ENOENT')
 					return { path, exists: false };
