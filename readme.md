@@ -117,6 +117,11 @@ The default destination is a `ui` directory inside the project's `#lib/*` target
 `src/lib/ui` without one. Edit both `#bref` entries to change the destination; `add`
 copies into the directory mapped by `"#bref/*"`.
 
+Upgrading from v2: `bref.config.json` and `$lib` paths are no longer read. Run
+`bun run bref-ui init`, point both `#bref` entries at the directory your `ui` setting
+used (for example `$lib/ui` becomes `./src/lib/ui`), delete `bref.config.json` and
+import copied components from `#bref`.
+
 `add <component>` copies the component and its registry dependencies, then merges
 component exports into the destination's `index.ts`. Button includes Icon and Theme.
 The preview lists `add`, `unchanged` and `conflict` files. Each conflicting file

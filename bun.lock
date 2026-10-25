@@ -7,7 +7,7 @@
     },
     "core": {
       "name": "bref-ui",
-      "version": "2.2.3",
+      "version": "3.0.0",
       "bin": {
         "bref-ui": "cli/index.ts",
       },
