@@ -22,27 +22,38 @@ flowchart TD
     args["CLI arguments"] --> parse["parse"]
     parse --> route["execute"]
     route --> help["Print help"]
-    route --> init["initConfig"]
+    route --> init["initImports"]
     route --> add["addComponent"]
     init --> report["Report result or failure"]
     add --> report
 ```
 
-## Initialize configuration
+## Initialize imports
 
-[`initConfig(projectRoot)`](init.ts) creates `bref.config.json` with `{ "ui": "$lib/ui" }`
-and returns `created`. An existing file is preserved without parsing and returns `exists`,
-even if its contents are invalid. Checking or writing errors propagate, and the project
-directory must already exist. The Bun existence check and write are separate operations;
-concurrent initialization of the same project is unsupported.
+[`initImports(projectRoot)`](init-imports.ts) adds `"#bref"` and `"#bref/*"` to the
+consumer's `package.json` `imports` and returns `created`. They map to a `ui` directory
+inside the `#lib/*` target, or to `src/lib/ui` without one:
+
+```json
+"imports": {
+	"#bref": "./src/lib/ui/index.js",
+	"#bref/*": "./src/lib/ui/*"
+}
+```
+
+When either key is already declared, nothing is changed and `exists` is returned.
+The file's indentation and key order are kept. A missing or invalid `package.json`, a
+non-object `imports` field and write failures propagate. Reading and writing are separate
+operations; concurrent initialization of the same project is unsupported.
 
 ```mermaid
 flowchart TD
-    project["Existing consumer project directory"] --> init["initConfig(projectRoot)"]
-    init --> existing["Bun.file · check bref.config.json existence"]
-    existing -->|Present| preserve["Return exists · preserve contents"]
-    existing -->|Absent| config["Bun.write · default configuration"]
-    config --> created["Return created"]
+    project["Existing consumer project directory"] --> init["initImports(projectRoot)"]
+    init --> lib["readImportAliases(projectRoot) · #lib directory or src/lib"]
+    lib --> manifest["Bun.file · read and validate package.json"]
+    manifest -->|#bref declared| preserve["Return exists · preserve contents"]
+    manifest -->|Absent| write["Bun.write · add #bref and #bref/*"]
+    write --> created["Return created"]
 ```
 
 ## Add a component
@@ -50,16 +61,15 @@ flowchart TD
 [`addComponent`](add/index.ts) connects [configuration](../config/README.md),
 [registry loading](../registry/load/README.md), [dependency planning](../registry/README.md)
 and [installation](../installation/README.md). It accepts the component ID, consumer
-project root, canonical source root and optional alias mappings, then returns
-`installed` or `cancelled`. Errors propagate to the caller.
+project root and canonical source root, then returns `installed` or `cancelled`.
+Errors propagate to the caller.
 
-The consumer must already have `bref.config.json`. Alias discovery is deferred;
-the caller supplies overrides for the default `$lib` mapping.
+The consumer's `package.json` must declare `"#bref/*"`; its directory receives the
+copied components. Edit that import to change the destination.
 
 ```mermaid
 flowchart TD
-    add["addComponent"] --> read["readConfig(projectRoot)"]
-    read --> resolve["resolveTargetDir(projectRoot, ui, aliases)"]
+    add["addComponent"] --> resolve["resolveUiDir(projectRoot)"]
     add --> load["loadRegistry(sourceRoot)"]
     load --> plan["planDependencies(componentId, registry)"]
     resolve --> install["installComponent(entries, destination, reviewChanges)"]

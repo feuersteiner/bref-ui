@@ -1,5 +1,5 @@
 import { addComponent } from './add/index.js';
-import { initConfig } from './init.js';
+import { initImports } from './init-imports.js';
 import type { Command } from './types.js';
 
 /**
@@ -13,7 +13,7 @@ export const execute = async (command: Command, projectRoot: string): Promise<vo
 		console.log(
 			'Usage: bref-ui <command>\n\n' +
 				'Commands:\n' +
-				'  init             Create bref.config.json with the default UI alias\n' +
+				'  init             Add the #bref UI imports to package.json\n' +
 				'  add <component>  Preview and install a component and its dependencies\n\n' +
 				'Options:\n' +
 				'  -h, --help       Show this help\n\n' +
@@ -22,9 +22,11 @@ export const execute = async (command: Command, projectRoot: string): Promise<vo
 		return;
 	}
 	if (command.name === 'init') {
-		const result = await initConfig(projectRoot);
+		const result = await initImports(projectRoot);
 		console.log(
-			result === 'created' ? 'Created bref.config.json.' : 'bref.config.json already exists.'
+			result === 'created'
+				? 'Added #bref imports to package.json.'
+				: 'package.json already declares #bref imports.'
 		);
 		return;
 	}

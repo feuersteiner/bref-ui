@@ -6,7 +6,8 @@ configured UI directory, using package types from `bref-ui/types`.
 ## Overview
 
 The executable routes init and add to the implemented stages and ships in the local package.
-Automatic project alias discovery remains unfinished. Bun is required to run the CLI.
+`init` adds a `#bref` subpath import to `package.json`; `add` copies into the directory
+it maps to. There is no configuration file. Bun is required to run the CLI.
 Run commands from the consumer project directory:
 
 ```sh
@@ -28,11 +29,11 @@ is not installed for CLI consumers. Packing does not publish to npm.
 
 ```mermaid
 flowchart TD
-    entry["index.ts"] --> init["initConfig"]
+    entry["index.ts"] --> init["initImports"]
     entry --> add["addComponent"]
-    init --> config["bref.config.json"]
-    add --> read["readConfig"]
-    read --> resolve["resolveTargetDir"]
+    init --> imports["package.json #bref imports"]
+    add --> resolve["resolveUiDir"]
+    imports --> resolve
     add --> load["loadRegistry"]
     load --> plan["planDependencies"]
     resolve --> install["installComponent"]
@@ -50,13 +51,13 @@ flowchart TD
 
 | Directory                                | Workflows                                                | Status      |
 | ---------------------------------------- | -------------------------------------------------------- | ----------- |
-| [config](config/README.md)               | Read configuration; resolve the destination alias        | Implemented |
+| [config](config/README.md)               | Read import aliases; resolve the UI directory            | Implemented |
 | [registry](registry/README.md)           | Plan dependencies                                        | Implemented |
 | [registry/load](registry/load/README.md) | Discover and validate manifests and dependencies         | Implemented |
 | [installation](installation/README.md)   | Prepare sources and exports; preview changes; copy files | Implemented |
 | [installation](installation/README.md)   | Coordinate installation                                  | Implemented |
 | [commands](commands/README.md)           | Add components with terminal review                      | Implemented |
-| [commands](commands/README.md)           | Initialize configuration                                 | Implemented |
+| [commands](commands/README.md)           | Initialize imports                                       | Implemented |
 | [commands](commands/README.md)           | Route commands                                           | Implemented |
 
 ## Source layout
@@ -76,18 +77,13 @@ cli/
       display-changes.ts
       review-changes.ts
       utils.ts
-    init.ts
+    init-imports.ts
   config/
-    read/
+    imports/
       index.ts
-      normalize-config.ts
-      read-config-file.ts
-    resolve/
-      index.ts
-      resolve-alias-target.ts
-      resolve-alias.ts
-    schema.json
-    types.ts
+      collect-directory-aliases.ts
+      read-package-imports.ts
+    resolve-ui-dir.ts
   installation/
     index.ts
     copy/

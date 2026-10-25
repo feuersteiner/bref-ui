@@ -1,46 +1,44 @@
 # Configuration
 
-[CLI overview](../README.md) · [Configuration types](types.ts) · [JSON schema](schema.json)
+[CLI overview](../README.md)
 
-## Read configuration
+The CLI has no configuration file. The consumer's `package.json` `imports` field is the
+single source of truth: `"#bref/*"` names the directory receiving copied components.
 
-[`readConfig(projectRoot)`](read/index.ts) reads `bref.config.json` and returns `{ ui }`.
-An omitted `ui` defaults to `$lib/ui`; a missing file is an error, not a default configuration.
+## Read import aliases
 
-```mermaid
-flowchart TD
-    read["readConfig(projectRoot)"] --> json["readConfigFile(projectRoot)"]
-    json --> normalize["normalizeConfig(configPath, config)"]
-    normalize --> object{"Root is an object?"}
-    object -->|No| error["Throw error"]
-    object -->|Yes| supplied{"ui supplied?"}
-    supplied -->|No| default["Return ui: $lib/ui"]
-    supplied -->|Yes| string{"ui is a string?"}
-    string -->|No| error
-    string -->|Yes| result["Return supplied ui"]
-```
-
-Unreadable files and invalid JSON also reject the operation. Other configuration fields
-are not returned.
-
-## Resolve the destination
-
-[`resolveTargetDir(projectRoot, ui, aliases?)`](resolve/index.ts) returns a normalized absolute
-destination without accessing the filesystem. Supplied mappings override `$lib → src/lib`.
+[`readImportAliases(projectRoot)`](imports/index.ts) reads `package.json` `imports` and
+returns directory aliases without executing project configuration. Only `#` patterns
+mapping `/*` to a `./<directory>/*` string, or a conditional object's string `default`,
+are returned; `"#bref/*": "./src/lib/ui/*"` becomes `#bref → src/lib/ui`.
 
 ```mermaid
 flowchart TD
-    resolve["resolveTargetDir(projectRoot, ui, aliases)"] --> match["resolveAlias(ui, aliases): merge and sort mappings"]
-    match --> found{"Exact alias or alias/ prefix matches?"}
-    found -->|No| error["Throw unknown-alias error"]
-    found -->|Yes| target["resolveAliasTarget(projectRoot, ui, alias, target)"]
-    target --> absoluteCheck{"Alias target is absolute?"}
-    absoluteCheck -->|No| relative["Base target on projectRoot"]
-    absoluteCheck -->|Yes| absolute["Use target directly"]
-    relative --> result["Append suffix and normalize absolute path"]
-    absolute --> result
+    read["readImportAliases(projectRoot)"] --> manifest["readPackageImports(projectRoot)"]
+    manifest -->|Absent file or no imports| empty["Return no aliases"]
+    manifest -->|imports value| collect["collectDirectoryAliases(imports)"]
+    collect --> shape{"#alias/* maps to ./directory/*?"}
+    shape -->|No| skip["Skip entry"]
+    shape -->|Yes| result["Return alias → directory"]
 ```
 
-With defaults, `$lib/ui` resolves to `<projectRoot>/src/lib/ui`. Actual project alias
-discovery is deferred; callers must supply overrides. The command connecting reading
-and resolution remains WIP.
+A missing `package.json` returns no aliases; unreadable files and invalid JSON reject.
+Exact entries such as `"#bref": "./src/lib/ui/index.js"`, suffixed patterns, arrays and
+conditions without a string `default` are skipped.
+
+## Resolve the UI directory
+
+[`resolveUiDir(projectRoot)`](resolve-ui-dir.ts) returns the normalized absolute directory
+mapped by `"#bref/*"`. A missing or non-directory `"#bref/*"` import is an error that
+points to `bref-ui init`.
+
+```mermaid
+flowchart TD
+    resolve["resolveUiDir(projectRoot)"] --> aliases["readImportAliases(projectRoot)"]
+    aliases --> found{"#bref alias found?"}
+    found -->|No| error["Throw missing-import error"]
+    found -->|Yes| result["Return projectRoot/directory, normalized"]
+```
+
+Import targets cannot reference other `#` imports, so `init` writes a concrete path
+inside the project's `#lib/*` directory rather than `#lib/ui`.

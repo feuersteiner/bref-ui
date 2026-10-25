@@ -103,18 +103,19 @@ bun run bref-ui add button
 bun run bref-ui --help
 ```
 
-`init` creates `bref.config.json` and leaves an existing file untouched:
+`init` adds a `#bref` subpath import to `package.json` and leaves existing `#bref`
+entries untouched:
 
 ```json
-{
-	"ui": "$lib/ui"
+"imports": {
+	"#bref": "./src/lib/ui/index.js",
+	"#bref/*": "./src/lib/ui/*"
 }
 ```
 
-The default destination is `src/lib/ui`. Edit `ui` to another `$lib` path, such as
-`$lib/bref`, to change the destination. The CLI maps `$lib` to `src/lib`; it does not
-discover project aliases or accept an `--alias` option. Configure the same alias
-in a plain Svelte project if using `$lib/ui` imports.
+The default destination is a `ui` directory inside the project's `#lib/*` target, or
+`src/lib/ui` without one. Edit both `#bref` entries to change the destination; `add`
+copies into the directory mapped by `"#bref/*"`.
 
 `add <component>` copies the component and its registry dependencies, then merges
 component exports into the destination's `index.ts`. Button includes Icon and Theme.
@@ -126,7 +127,7 @@ Use the copied components in a `.svelte` file:
 
 ```svelte
 <script lang="ts">
-	import { Button, Theme } from '$lib/ui';
+	import { Button, Theme } from '#bref';
 </script>
 
 <Theme />
