@@ -8,7 +8,7 @@ import globals from 'globals';
 import ts from 'typescript-eslint';
 import { filenameRules, sharedRules, svelteRules } from './eslint-rules.js';
 
-const gitignorePath = path.resolve(import.meta.dirname, '.gitignore');
+const gitignorePath = path.resolve(import.meta.dirname, '../.gitignore');
 const sourceFiles = ['**/*.{js,mjs,cjs,ts,mts,cts,svelte}'];
 
 export default defineConfig(

@@ -8,4 +8,5 @@ bun.lockb
 # Generated and static files
 **/.svelte-kit/
 **/build/
+**/dist/
 **/static/
