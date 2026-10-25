@@ -76,12 +76,12 @@
 		<nav aria-label="Bref UI resources">
 			<h2>Bref UI</h2>
 			<a href="https://github.com/feuersteiner/bref-ui">GitHub</a>
-			<a href="https://feuersteiner.github.io/bref-ui/">Documentation</a>
+			<a href={resolve('/(docs)')}>Documentation</a>
 		</nav>
 		<nav aria-label="Bref themes resources">
 			<h2>Themes</h2>
-			<a href="https://github.com/feuersteiner/bref-ui-themes">GitHub</a>
-			<a href="https://github.com/feuersteiner/bref-ui-themes#site-palettes">Documentation</a>
+			<a href="https://github.com/feuersteiner/bref-ui">GitHub</a>
+			<a href="https://github.com/feuersteiner/bref-ui#readme">Documentation</a>
 		</nav>
 		<nav aria-label="Community">
 			<h2>Community</h2>

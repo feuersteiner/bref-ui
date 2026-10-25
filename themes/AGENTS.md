@@ -1,6 +1,8 @@
 # Contributing to bref-ui-themes
 
-<!-- todo: should explain the difrence between skin and theme -->
+A skin is a complete application demo using canonical Bref components and palette
+configuration; skins belong in `docs`. A theme owns reusable component styling and
+ships through an individual `bref-ui-themes` entry point.
 
 ## Themes
 

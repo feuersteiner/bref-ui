@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { TreeView } from 'bref-ui';
 	import SidebarNode from './sidebar-node.svelte';
@@ -10,7 +9,7 @@
 			...group,
 			items: [...group.links]
 				.sort((a, b) => a.title.localeCompare(b.title, 'en'))
-				.map((link) => ({ id: resolve(link.href), label: link.title }))
+				.map((link) => ({ id: link.href, label: link.title }))
 		}))
 	);
 </script>

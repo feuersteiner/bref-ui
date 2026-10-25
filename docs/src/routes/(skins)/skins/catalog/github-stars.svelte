@@ -3,7 +3,7 @@
 	import type { ThemeMode } from 'bref-ui/types';
 
 	const user = 'feuersteiner';
-	const repo = 'bref-ui-themes';
+	const repo = 'bref-ui';
 	let { mode }: { mode: ThemeMode } = $props();
 	let count = $state<string>();
 

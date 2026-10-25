@@ -1,3 +1,6 @@
+import { resolve } from '$app/paths';
+import { chapter as configChapter, sections as configSections } from '../../config/sections.js';
+import { chapter as themesChapter, sections as themesSections } from '../../themes/sections.js';
 import {
 	chapter as comboboxChapter,
 	sections as comboboxSections
@@ -49,47 +52,65 @@ import {
 export const navigation = [
 	{
 		title: 'Get started',
+		links: [{ title: introductionChapter, href: resolve('/(docs)') }]
+	},
+	{
+		title: 'Config',
 		links: [
-			{ title: introductionChapter, href: '/(docs)' },
-			{ title: themeChapter, href: '/(docs)/theme' }
+			{ title: configChapter, href: resolve('/(docs)/config') },
+			{ title: themeChapter, href: resolve('/(docs)/theme') }
 		]
 	},
 	{
+		title: 'Skins',
+		links: [
+			{ title: 'All skins', href: resolve('/(skins)/skins') },
+			{ title: 'Todo', href: resolve('/(skins)/skins/(sites)/(todo)/todo') },
+			{ title: 'House Shop', href: resolve('/(skins)/skins/(sites)/(house-shop)/house-shop') },
+			{ title: 'RunnerAI', href: resolve('/(skins)/skins/(sites)/(runner-ai)/runner-ai') }
+		]
+	},
+	{
+		title: 'Themes',
+		links: [{ title: themesChapter, href: resolve('/(docs)/themes') }]
+	},
+
+	{
 		title: 'Base',
 		links: [
-			{ title: buttonChapter, href: '/(docs)/button' },
-			{ title: iconChapter, href: '/(docs)/icon' },
-			{ title: pillChapter, href: '/(docs)/pill' },
-			{ title: pillGroupChapter, href: '/(docs)/pill-group' },
-			{ title: tabsChapter, href: '/(docs)/tabs' },
-			{ title: treeViewChapter, href: '/(docs)/tree-view' }
+			{ title: buttonChapter, href: resolve('/(docs)/button') },
+			{ title: iconChapter, href: resolve('/(docs)/icon') },
+			{ title: pillChapter, href: resolve('/(docs)/pill') },
+			{ title: pillGroupChapter, href: resolve('/(docs)/pill-group') },
+			{ title: tabsChapter, href: resolve('/(docs)/tabs') },
+			{ title: treeViewChapter, href: resolve('/(docs)/tree-view') }
 		]
 	},
 	{
 		title: 'Feedback',
 		links: [
-			{ title: progressChapter, href: '/(docs)/progress' },
-			{ title: spinnerChapter, href: '/(docs)/spinner' }
+			{ title: progressChapter, href: resolve('/(docs)/progress') },
+			{ title: spinnerChapter, href: resolve('/(docs)/spinner') }
 		]
 	},
 	{
 		title: 'Inputs',
 		links: [
-			{ title: checkboxChapter, href: '/(docs)/checkbox' },
-			{ title: comboboxChapter, href: '/(docs)/combobox' },
-			{ title: pillChoiceGroupChapter, href: '/(docs)/pill-choice-group' },
-			{ title: selectChapter, href: '/(docs)/select' },
-			{ title: switchChapter, href: '/(docs)/switch' },
-			{ title: textAreaChapter, href: '/(docs)/text-area' },
-			{ title: textInputChapter, href: '/(docs)/text-input' }
+			{ title: checkboxChapter, href: resolve('/(docs)/checkbox') },
+			{ title: comboboxChapter, href: resolve('/(docs)/combobox') },
+			{ title: pillChoiceGroupChapter, href: resolve('/(docs)/pill-choice-group') },
+			{ title: selectChapter, href: resolve('/(docs)/select') },
+			{ title: switchChapter, href: resolve('/(docs)/switch') },
+			{ title: textAreaChapter, href: resolve('/(docs)/text-area') },
+			{ title: textInputChapter, href: resolve('/(docs)/text-input') }
 		]
 	},
 	{
 		title: 'Surfaces',
 		links: [
-			{ title: dialogChapter, href: '/(docs)/dialog' },
-			{ title: popoverChapter, href: '/(docs)/popover' },
-			{ title: surfaceChapter, href: '/(docs)/surface' }
+			{ title: dialogChapter, href: resolve('/(docs)/dialog') },
+			{ title: popoverChapter, href: resolve('/(docs)/popover') },
+			{ title: surfaceChapter, href: resolve('/(docs)/surface') }
 		]
 	}
 ] as const;
@@ -100,6 +121,8 @@ export interface PageSection {
 }
 
 export const pageSections: Record<string, readonly PageSection[]> = {
+	'/config': configSections,
+	'/themes': themesSections,
 	'/': introductionSections,
 	'/button': buttonSections,
 	'/icon': iconSections,

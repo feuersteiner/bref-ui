@@ -29,14 +29,14 @@
 				<img src={asset('favicon.svg')} alt="" width="40" height="40" />
 				<strong>bref<span data-slash>/</span>themes</strong>
 			</a>
-			<a data-attribution href="https://feuersteiner.github.io/bref-ui/">
+			<a data-attribution href={resolve('/(docs)')}>
 				Part of <strong>bref<span data-slash>/</span>ui</strong>
 			</a>
 		</div>
 		<p>Svelte themes & demos.</p>
 		<nav aria-label="Showcase">
 			<a href={resolve('/(skins)/skins#demos')}>Demos</a>
-			<a href={resolve('/(skins)/skins#themes')}>Themes</a>
+			<a href={resolve('/(docs)/themes')}>Themes</a>
 		</nav>
 		<span data-header-actions>
 			<GithubStars {mode} />
