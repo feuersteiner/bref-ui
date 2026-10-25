@@ -43,7 +43,8 @@
 					{#if demo.preview === 'elsewhere'}<figcaption>Earlier audit demo</figcaption>{/if}
 				</figure>
 				<h3>
-					<span data-brand><Icon name={demo.icon} />{demo.name}</span><Icon name="arrow_outward" />
+					<span data-brand><Icon name={demo.icon} />{demo.name}</span>
+					<Icon name="arrow_outward" />
 				</h3>
 				<p>{demo.description}</p>
 				<span data-link>Explore demo</span>

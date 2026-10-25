@@ -5,7 +5,11 @@
 	import { Icon, Tabs } from 'bref-ui';
 	const demos = [
 		{ label: 'Todo', icon: 'checklist', id: '/(skins)/skins/(sites)/(todo)/todo' },
-		{ label: 'House Shop', icon: 'storefront', id: '/(skins)/skins/(sites)/(house-shop)/house-shop' },
+		{
+			label: 'House Shop',
+			icon: 'storefront',
+			id: '/(skins)/skins/(sites)/(house-shop)/house-shop'
+		},
 		{ label: 'RunnerAI', icon: 'smart_toy', id: '/(skins)/skins/(sites)/(runner-ai)/runner-ai' }
 	] as const;
 </script>

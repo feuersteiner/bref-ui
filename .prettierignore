@@ -11,3 +11,8 @@ bun.lockb
 **/dist/
 **/dist-cli/
 **/static/
+
+# Generated package metadata and local refactor notes
+core/readme.md
+core/LICENSE
+refactor-plan.md

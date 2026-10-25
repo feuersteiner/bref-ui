@@ -44,13 +44,13 @@ npx bref-ui add button`}</code></pre>
 			Edit these paths to choose another destination. Existing Bref imports are preserved. <code>
 				add
 			</code>
-			 previews every change and requests approval before overwriting a file.
+			previews every change and requests approval before overwriting a file.
 		</p>
 	</Section>
 	<Section {...sections[2]}>
 		<p>
 			Use the <a href={resolve('/(docs)/theme')}>Theme documentation</a>
-			 to configure the palette and shared light, dark or system mode. Fonts and icon assets remain opt-in.
+			to configure the palette and shared light, dark or system mode. Fonts and icon assets remain opt-in.
 		</p>
 	</Section>
 </PageContainer>

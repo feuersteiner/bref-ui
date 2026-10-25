@@ -8,7 +8,7 @@ import globals from 'globals';
 import ts from 'typescript-eslint';
 import { filenameRules, sharedRules, svelteRules } from './eslint-rules.js';
 
-const gitignorePath = path.resolve(import.meta.dirname, '../.gitignore');
+const gitignorePath = path.resolve(import.meta.dirname, '.gitignore');
 const sourceFiles = ['**/*.{js,mjs,cjs,ts,mts,cts,svelte}'];
 
 export default defineConfig(
@@ -43,14 +43,39 @@ export default defineConfig(
 		rules: filenameRules
 	},
 	{
-		files: ['src/routes/llms.txt/*.ts'],
+		files: ['docs/src/routes/**/*.ts', 'docs/src/routes/**/*.svelte'],
+		plugins: { 'check-file': checkFile },
 		ignores: ['**/+*.ts'],
 		rules: {
 			'check-file/folder-naming-convention': [
 				'error',
-				{ 'src/**/': 'KEBAB_CASE' },
-				{ ignoreWords: ['llms.txt'] }
+				{ '**/src/**/': 'KEBAB_CASE' },
+				{
+					ignoreWords: [
+						'llms.txt',
+						'(docs)',
+						'(skins)',
+						'(sites)',
+						'(themes)',
+						'(todo)',
+						'(house-shop)',
+						'(runner-ai)',
+						'[theme]'
+					]
+				}
 			]
+		}
+	},
+	{
+		// Keep imported application demos in their original authoring style.
+		files: ['docs/src/routes/(skins)/**/*.{ts,svelte}'],
+		rules: {
+			'max-lines': 'off',
+			'func-style': 'off',
+			curly: 'off',
+			'@typescript-eslint/consistent-type-definitions': 'off',
+			'@typescript-eslint/consistent-type-imports': 'off',
+			'svelte/consistent-selector-style': 'off'
 		}
 	}
 );

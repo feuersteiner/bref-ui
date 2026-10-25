@@ -27,10 +27,18 @@
 		<div data-brand>
 			<a data-logo href={resolve('/(docs)')} aria-label="Bref documentation home">
 				<img src={asset('favicon.svg')} alt="" width="40" height="40" />
-				<strong>bref<span data-slash>/</span>themes</strong>
+				<strong>
+					bref
+					<span data-slash>/</span>
+					themes
+				</strong>
 			</a>
 			<a data-attribution href={resolve('/(docs)')}>
-				Part of <strong>bref<span data-slash>/</span>ui</strong>
+				Part of <strong>
+					bref
+					<span data-slash>/</span>
+					ui
+				</strong>
 			</a>
 		</div>
 		<p>Svelte themes & demos.</p>

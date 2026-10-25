@@ -18,7 +18,11 @@
 	<main id="showcase-content" tabindex="-1">
 		<div data-intro>
 			<p data-eyebrow>Made with Bref · Built with Svelte</p>
-			<h1>App demos and<br />design system foundations.</h1>
+			<h1>
+				App demos and
+				<br />
+				design system foundations.
+			</h1>
 			<p>Try working apps built with bref/ui and route-specific palettes.</p>
 		</div>
 		<section id="demos" aria-labelledby="demos-heading">

@@ -68,7 +68,10 @@
 			<p data-cta><Icon name="arrow_forward" /> {run.copy.cta}</p>
 			<details>
 				<summary>Campaign brief</summary>
-				<p><strong>Audience</strong> {sample.audience}</p>
+				<p>
+					<strong>Audience</strong>
+					{sample.audience}
+				</p>
 				<p>{sample.context}</p>
 			</details>
 		</section>

@@ -16,7 +16,7 @@
 		</p>
 		<p>
 			The <a href={resolve('/(skins)/skins')}>skins</a>
-			 are complete application demos using canonical Bref components and palette configuration.
+			are complete application demos using canonical Bref components and palette configuration.
 		</p>
 	</Section>
 </PageContainer>
