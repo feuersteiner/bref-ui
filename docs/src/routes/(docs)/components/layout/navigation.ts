@@ -1,5 +1,6 @@
-import type { Path } from '$app/types';
 import { demoNavigation, demoPageSections } from '../../demo/catalog.js';
+import { chapter as configChapter, sections as configSections } from '../../config/sections.js';
+import { chapter as themesChapter, sections as themesSections } from '../../themes/sections.js';
 import {
 	chapter as comboboxChapter,
 	sections as comboboxSections
@@ -51,11 +52,18 @@ import {
 export const navigation = [
 	{
 		title: 'Get started',
+		links: [{ title: introductionChapter, href: '' }, demoNavigation]
+	},
+	{
+		title: 'Config',
 		links: [
-			{ title: introductionChapter, href: '' },
-			{ title: themeChapter, href: 'theme' },
-			demoNavigation
+			{ title: configChapter, href: 'config' },
+			{ title: themeChapter, href: 'theme' }
 		]
+	},
+	{
+		title: 'Themes',
+		links: [{ title: themesChapter, href: 'themes' }]
 	},
 	{
 		title: 'Base',
@@ -99,7 +107,7 @@ export const navigation = [
 
 export interface NavigationPage {
 	title: string;
-	href: Exclude<Path, `/${string}` | `${string}/`>;
+	href: (typeof navigation)[number]['links'][number]['href'];
 	children?: readonly NavigationPage[];
 }
 
@@ -116,6 +124,8 @@ export interface NavigationItem {
 }
 
 export const pageSections: Record<string, readonly PageSection[]> = {
+	'/config': configSections,
+	'/themes': themesSections,
 	'/': introductionSections,
 	'/button': buttonSections,
 	'/icon': iconSections,

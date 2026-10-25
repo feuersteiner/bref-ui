@@ -1,6 +1,8 @@
 # Contributing to bref-ui-themes
 
-<!-- todo: should explain the difrence between skin and theme -->
+A demo is a complete application using canonical Bref components and palette
+configuration; demos belong in `docs`. A theme owns reusable component styling and
+ships through an individual `bref-ui-themes` entry point.
 
 ## Themes
 
@@ -16,4 +18,4 @@
   no runtime color-generation dependencies. Explicit overrides win; validate final
   contrast pairs and report failures without silently replacing inputs.
 - Keep `src/lib` for published sources; `src/routes` is a local preview only. Full theme
-  previews and skins belong in [docs](../docs/AGENTS.md).
+  previews and demos belong in [docs](../docs/AGENTS.md).
