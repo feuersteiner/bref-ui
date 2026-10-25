@@ -25,7 +25,7 @@
 						{item}
 						current={item.id === page.url.pathname}
 						sections={item.id === page.url.pathname
-							? (pageSections[page.route.id ?? ''] ?? [])
+							? (pageSections[page.route.id?.replace('/(docs)', '') || '/'] ?? [])
 							: []}
 					/>
 				{/snippet}
