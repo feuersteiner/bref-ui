@@ -67,8 +67,12 @@ export default defineConfig(
 		}
 	},
 	{
-		// Keep imported application demos in their original authoring style.
-		files: ['docs/src/routes/(skins)/**/*.{ts,svelte}'],
+		// Keep imported demos and theme implementations in their original authoring style.
+		files: [
+			'docs/src/routes/(skins)/**/*.{ts,svelte}',
+			'docs/src/routes/(themes)/**/*.{ts,svelte}',
+			'themes/src/lib/**/*.{ts,svelte}'
+		],
 		rules: {
 			'max-lines': 'off',
 			'func-style': 'off',
