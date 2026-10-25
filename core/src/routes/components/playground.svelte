@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { Button } from '$lib/index.js';
+	import { Button } from '#lib/index.js';
 	import CodeSnippet from './code-snippet.svelte';
 
 	let {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TreeItemProps } from '$lib/types.js';
+	import type { TreeItemProps } from '#lib/types.js';
 	import NavigationLink from './navigation-link.svelte';
 	import Toc from './toc.svelte';
 	import type { PageSection } from './navigation.js';

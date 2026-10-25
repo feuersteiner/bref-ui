@@ -10,8 +10,8 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Pill, TextInput, Select, Checkbox } from '$lib/index.js';
-	import type { Color, Size, Variant, IconName } from '$lib/types.js';
+	import { Pill, TextInput, Select, Checkbox } from '#lib/index.js';
+	import type { Color, Size, Variant, IconName } from '#lib/types.js';
 
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const variants = ['neutral', 'soft', 'filled'] as const;

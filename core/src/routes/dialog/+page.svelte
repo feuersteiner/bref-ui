@@ -1,13 +1,13 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the dialog's interactive gallery examples together. */
-	import { Button, Checkbox, Dialog, TextInput, Select } from '$lib/index.js';
+	import { Button, Checkbox, Dialog, TextInput, Select } from '#lib/index.js';
 	import type {
 		DialogProps,
 		StatusColor,
 		DialogHeaderDataProps,
 		DialogActionProps,
 		IconName
-	} from '$lib/types.js';
+	} from '#lib/types.js';
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';
 	import PlaygroundGroup from '../components/playground-group.svelte';

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { TreeView } from '$lib/index.js';
+	import { TreeView } from '#lib/index.js';
 	import SidebarNode from './sidebar-node.svelte';
 	import { navigation, pageSections } from './navigation.js';
 

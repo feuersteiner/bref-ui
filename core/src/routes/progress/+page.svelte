@@ -1,7 +1,7 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the progress controls and interactive examples together. */
-	import { Progress, TextInput, Select, Checkbox, Button } from '$lib/index.js';
-	import type { BaseSize } from '$lib/types.js';
+	import { Progress, TextInput, Select, Checkbox, Button } from '#lib/index.js';
+	import type { BaseSize } from '#lib/types.js';
 
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';

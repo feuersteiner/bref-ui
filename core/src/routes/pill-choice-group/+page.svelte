@@ -7,8 +7,8 @@
 	import DemoGroup from '../components/demo-group.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import type { Color, Size, Variant, PillDataProps } from '$lib/types.js';
-	import { Button, PillChoiceGroup, Select, Checkbox } from '$lib/index.js';
+	import type { Color, Size, Variant, PillDataProps } from '#lib/types.js';
+	import { Button, PillChoiceGroup, Select, Checkbox } from '#lib/index.js';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import MovingBackground from '../components/moving-background.svelte';

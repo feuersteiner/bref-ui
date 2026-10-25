@@ -1,7 +1,7 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the native form examples and component matrix together on the documentation page. */
-	import { TextArea, Select, Checkbox, TextInput, Button } from '$lib/index.js';
-	import type { BaseSize, Variant, IconProps } from '$lib/types.js';
+	import { TextArea, Select, Checkbox, TextInput, Button } from '#lib/index.js';
+	import type { BaseSize, Variant, IconProps } from '#lib/types.js';
 
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';

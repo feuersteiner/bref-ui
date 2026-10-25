@@ -10,8 +10,8 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { PillGroup, Select, Checkbox } from '$lib/index.js';
-	import type { Color, Size, Variant, PillDataProps } from '$lib/types.js';
+	import { PillGroup, Select, Checkbox } from '#lib/index.js';
+	import type { Color, Size, Variant, PillDataProps } from '#lib/types.js';
 
 	const items = [
 		{ id: 'draft', label: 'Draft', icon: { name: 'draft' } },

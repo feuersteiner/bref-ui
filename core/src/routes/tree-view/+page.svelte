@@ -9,8 +9,8 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Button, TreeView, Select, Checkbox, TextInput } from '$lib/index.js';
-	import type { BaseSize, TreeItemProps, TreeSectionProps } from '$lib/types.js';
+	import { Button, TreeView, Select, Checkbox, TextInput } from '#lib/index.js';
+	import type { BaseSize, TreeItemProps, TreeSectionProps } from '#lib/types.js';
 
 	const exampleItems: TreeItemProps[] = [
 		{ id: 'projects', label: 'Projects', children: [{ id: 'notes', label: 'Notes' }] }

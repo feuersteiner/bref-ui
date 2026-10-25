@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
-	import { Dialog } from '$lib/index.js';
+	import { Dialog } from '#lib/index.js';
 	import type { Snippet } from 'svelte';
 	import { MediaQuery } from 'svelte/reactivity';
 	import SiteHeader from './header.svelte';
@@ -10,7 +10,10 @@
 	let navOpen = $state(false);
 	const smallScreen = new MediaQuery('(max-width: 815px)', false);
 	const dialogOpen = $derived(smallScreen.current && navOpen);
-	afterNavigate(() => {
+
+	afterNavigate(({ shallow, type }) => {
+		if (shallow && type === 'goto') return;
+
 		navOpen = false;
 	});
 </script>

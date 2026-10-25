@@ -1,7 +1,7 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the selection and overflow regression demos together. */
-	import { Checkbox, Select, TextInput, Button } from '$lib/index.js';
-	import type { SelectOptionDataProps, BaseSize, IconProps } from '$lib/types.js';
+	import { Checkbox, Select, TextInput, Button } from '#lib/index.js';
+	import type { SelectOptionDataProps, BaseSize, IconProps } from '#lib/types.js';
 
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';

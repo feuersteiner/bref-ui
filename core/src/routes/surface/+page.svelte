@@ -19,8 +19,8 @@
 		Spinner,
 		Select,
 		Checkbox
-	} from '$lib/index.js';
-	import type { Color, Size, SurfaceProps, SurfaceRadius, Variant } from '$lib/types.js';
+	} from '#lib/index.js';
+	import type { Color, Size, SurfaceProps, SurfaceRadius, Variant } from '#lib/types.js';
 
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const variants = ['neutral', 'soft', 'filled'] as const;

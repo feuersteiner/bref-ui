@@ -32,7 +32,7 @@
 
 <script lang="ts">
 	import { onDestroy } from 'svelte';
-	import { Button } from '$lib/index.js';
+	import { Button } from '#lib/index.js';
 
 	let { source, label = 'Code snippet' }: { source: string; label?: string } = $props();
 	const newline = '\n';

@@ -10,9 +10,9 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Popover, TextInput, Checkbox, Button, Select } from '$lib/index.js';
+	import { Popover, TextInput, Checkbox, Button, Select } from '#lib/index.js';
 
-	import type { PopoverProps } from '$lib/types.js';
+	import type { PopoverProps } from '#lib/types.js';
 
 	let inputOpen = $state(false);
 	let inputWide = $state(false);
@@ -69,11 +69,13 @@
 				? true
 				: (shadow as NonNullable<PopoverProps['shadow']>)
 	);
+
 	const previewHover = $derived(hover === 'none' ? undefined : (hover as PopoverProps['hover']));
 	const previewWidth = $derived(width === 'default' ? undefined : (width as PopoverProps['width']));
 	const previewHeight = $derived(
 		height === 'default' ? undefined : (height as PopoverProps['height'])
 	);
+
 	const reset = () => {
 		previewOpen = false;
 		previewDisabled = false;
@@ -322,14 +324,20 @@ ${content === 'form' ? '  <label for="popover-preview-name">Display name</label>
 									disabled={previewDisabled}
 									aria-expanded={previewOpen}
 									onClick={() => (previewOpen = !previewOpen)}
-								/>{/snippet}
-							{#if content === 'form'}<label for="popover-preview-name">Display name</label>
+								/>
+							{/snippet}
+
+							{#if content === 'form'}
+								<label for="popover-preview-name">Display name</label>
 								<TextInput id="popover-preview-name" value="Example" />
-							{:else if content === 'long'}{#each Array.from({ length: 18 }, (_, index) => index + 1) as detail (detail)}<p
-									>
-										Detail {detail}. Longer content helps test height and scrolling.
-									</p>{/each}
-							{:else}<p>Helpful details beside the trigger.</p>{/if}
+							{:else if content === 'long'}
+								{#each Array.from({ length: 18 }, (_, index) => index + 1) as detail (detail)}
+									<p>Detail {detail}. Longer content helps test height and scrolling.</p>
+								{/each}
+							{:else}
+								<p>Helpful details beside the trigger.</p>
+							{/if}
+
 							<Button label="Done" onClick={() => (previewOpen = false)} />
 						</Popover>
 					</div>
@@ -454,12 +462,13 @@ ${content === 'form' ? '  <label for="popover-preview-name">Display name</label>
 				{#snippet trigger()}
 					<Button label="Edit settings" onClick={() => (open = !open)} aria-expanded={open} />
 				{/snippet}
-				<label>
-					Display name <TextInput value="Example" />
-				</label>
+
+				<label>Display name <TextInput value="Example" /></label>
 				<Button label="Done" onClick={() => (open = false)} />
 			</Popover>
+
 			<Button label="Open programmatically" onClick={() => (open = true)} />
+
 			<Button label="Close programmatically" onClick={() => (open = false)} />
 		</div>
 		<p role="status">Settings {open ? 'open' : 'closed'}.</p>
@@ -515,6 +524,7 @@ ${content === 'form' ? '  <label for="popover-preview-name">Display name</label>
 					/>
 				{/snippet}
 				<p>This bound example starts open when the page loads.</p>
+
 				<Button label="Dismiss initial example" onClick={() => (initiallyOpen = false)} />
 			</Popover>
 		</div>
@@ -523,10 +533,13 @@ ${content === 'form' ? '  <label for="popover-preview-name">Display name</label>
 			anchoring and light/dark modes.
 		</p>
 	</Section>
+
 	<Section {...sections.find((section) => section.id === 'props')!}>
 		<PropTable {props} />
+
 		<p>
-			Popover accepts <a href={resolve('/surface#props')}>Surface props</a>
+			Popover accepts
+			<a href={resolve('surface#props')}>Surface props</a>
 			for styling and layout, including class and style, without inheriting generic HTML attributes. Every
 			panel uses glass, with soft as the default variant. Explicit spacing, radius, shadow, variant, color
 			and class choices customize that material. Another instance uses a soft primary color.
@@ -592,11 +605,15 @@ ${content === 'form' ? '  <label for="popover-preview-name">Display name</label>
 						aria-expanded={fitOpen}
 					/>
 				{/snippet}
+
 				<p>
 					Longer prose fits its content until the viewport provides a comfortable wrapping boundary.
 				</p>
+
 				<p>
-					Unbroken tokens wrap only when needed: <code>
+					Unbroken tokens wrap only when needed:
+
+					<code>
 						workspace_0123456789abcdefghijklmnopqrstuvwxyz_0123456789abcdefghijklmnopqrstuvwxyz_0123456789abcdefghijklmnopqrstuvwxyz
 					</code>
 				</p>

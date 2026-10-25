@@ -10,8 +10,8 @@
 	import PlaygroundGroup from '../components/playground-group.svelte';
 	import DemoGroup from '../components/demo-group.svelte';
 	import MovingBackground from '../components/moving-background.svelte';
-	import { Button, TextInput, Select, Checkbox, Switch } from '$lib/index.js';
-	import type { Color, Size, Variant, IconName } from '$lib/types.js';
+	import { Button, TextInput, Select, Checkbox, Switch } from '#lib/index.js';
+	import type { Color, Size, Variant, IconName } from '#lib/types.js';
 
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const variants = ['neutral', 'soft', 'filled'] as const;

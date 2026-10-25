@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { asset, resolve } from '$app/paths';
-	import { Button, ThemeModeToggle } from '$lib/index.js';
-	import type { IconName, ThemeMode } from '$lib/types.js';
+	import { Button, ThemeModeToggle } from '#lib/index.js';
+	import type { IconName, ThemeMode } from '#lib/types.js';
 	import { getContext } from 'svelte';
 	import GithubStars from './github-stars.svelte';
 
@@ -39,11 +39,12 @@
 				onClick={() => (navOpen = true)}
 			/>
 		{/if}
+
 		<a href={resolve('/')} aria-label="Bref documentation home" data-logo>
-			<img src={asset('/favicon.svg')} alt="" width="40" height="40" />
+			<img src={asset('favicon.svg')} alt="" width="40" height="40" />
+
 			<strong>
-				bref
-				<span data-slash>/</span>
+				bref <span data-slash>/</span>
 				ui
 			</strong>
 		</a>

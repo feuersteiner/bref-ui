@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 	import type { Snippet } from 'svelte';
-	import type { ThemeMode, ThemeProps } from '$lib/types.js';
+	import type { ThemeMode, ThemeProps } from '#lib/types.js';
 	import Layout from './components/layout/docs-layout.svelte';
-	import { Theme } from '$lib/index.js';
+	import { Theme } from '#lib/index.js';
 	import '@fontsource-variable/syne';
 	import '@fontsource-variable/inter';
 

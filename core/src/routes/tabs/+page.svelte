@@ -1,13 +1,13 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep both orientations and their interactive examples together. */
-	import { Button, Checkbox, Select, Tabs, TextInput } from '$lib/index.js';
+	import { Button, Checkbox, Select, Tabs, TextInput } from '#lib/index.js';
 	import type {
 		BaseSize,
 		Dimension,
 		Orientation,
 		TabItemDataProps,
 		TabTransition
-	} from '$lib/types.js';
+	} from '#lib/types.js';
 	import { fade, fly } from 'svelte/transition';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';

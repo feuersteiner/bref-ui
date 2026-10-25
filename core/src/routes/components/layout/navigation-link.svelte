@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Icon } from '$lib/index.js';
+	import { Icon } from '#lib/index.js';
 
 	let {
 		href,

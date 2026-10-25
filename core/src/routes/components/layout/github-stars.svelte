@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import type { ThemeMode } from '$lib/types.js';
+	import type { ThemeMode } from '#lib/types.js';
 	import { fly } from 'svelte/transition';
 
 	const user = 'feuersteiner';

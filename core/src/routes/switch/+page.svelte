@@ -9,8 +9,8 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import { Icon, Switch, Button, Checkbox, Select, TextInput } from '$lib/index.js';
-	import type { BaseSize } from '$lib/types.js';
+	import { Icon, Switch, Button, Checkbox, Select, TextInput } from '#lib/index.js';
+	import type { BaseSize } from '#lib/types.js';
 
 	const sizes: BaseSize[] = ['small', 'medium', 'large'];
 	let enabled = $state(false);

@@ -1,6 +1,6 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep controls, native form behavior and fixed examples together. */
-	import { Checkbox, Button, Select, TextInput } from '$lib/index.js';
+	import { Checkbox, Button, Select, TextInput } from '#lib/index.js';
 
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';
@@ -9,7 +9,7 @@
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
-	import type { Size } from '$lib/types.js';
+	import type { Size } from '#lib/types.js';
 	import { chapter, sections } from './sections.js';
 
 	let checked = $state(false);

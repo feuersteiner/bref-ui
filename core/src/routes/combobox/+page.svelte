@@ -1,7 +1,7 @@
 <script lang="ts">
 	/* eslint-disable max-lines -- Keep the size, state and native form examples together on the documentation page. */
-	import { Button, Checkbox, Combobox, Select, TextInput } from '$lib/index.js';
-	import type { SelectOptionDataProps, BaseSize, IconProps } from '$lib/types.js';
+	import { Button, Checkbox, Combobox, Select, TextInput } from '#lib/index.js';
+	import type { SelectOptionDataProps, BaseSize, IconProps } from '#lib/types.js';
 
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';

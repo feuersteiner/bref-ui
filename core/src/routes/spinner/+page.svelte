@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Spinner, Select, Checkbox, TextInput } from '$lib/index.js';
-	import type { Size } from '$lib/types.js';
+	import { Spinner, Select, Checkbox, TextInput } from '#lib/index.js';
+	import type { Size } from '#lib/types.js';
 
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';

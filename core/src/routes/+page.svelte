@@ -4,7 +4,7 @@
 	import Page from './components/page-container.svelte';
 	import Section from './components/section.svelte';
 	import CodeSnippet from './components/code-snippet.svelte';
-	import { Button, Icon, Progress, Surface, Switch } from '$lib/index.js';
+	import { Button, Icon, Progress, Surface, Switch } from '#lib/index.js';
 	import MovingBackground from './components/moving-background.svelte';
 
 	let count = $state(0);
@@ -40,7 +40,7 @@
 					/>
 					<Button
 						label="Explore Button"
-						href={resolve('/button')}
+						href={resolve('button')}
 						trailingIcon={{ name: 'arrow_forward' }}
 					/>
 				</div>
@@ -92,10 +92,10 @@
 	<Section {...sections[2]}>
 		<p>These pages document the current Button, Icon and Theme APIs.</p>
 		<ul>
-			<li><a href={resolve('/button')}>Button: actions, sizes, variants and icons</a></li>
-			<li><a href={resolve('/icon')}>Icon: Material Symbols and accessible names</a></li>
-			<li><a href={resolve('/surface')}>Surface: semantic containers, layout and treatments</a></li>
-			<li><a href={resolve('/theme')}>Theme: palette, modes and customization</a></li>
+			<li><a href={resolve('button')}>Button: actions, sizes, variants and icons</a></li>
+			<li><a href={resolve('icon')}>Icon: Material Symbols and accessible names</a></li>
+			<li><a href={resolve('surface')}>Surface: semantic containers, layout and treatments</a></li>
+			<li><a href={resolve('theme')}>Theme: palette, modes and customization</a></li>
 		</ul>
 		<p>ThemeModeToggle is also available from the package exports.</p>
 	</Section>

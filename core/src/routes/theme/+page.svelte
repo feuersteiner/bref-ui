@@ -9,8 +9,8 @@
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';
 	import PlaygroundGroup from '../components/playground-group.svelte';
-	import { Button, Icon, Select, TextInput, Checkbox } from '$lib/index.js';
-	import type { ThemeMode, ThemeProps, Palette, Color } from '$lib/types.js';
+	import { Button, Icon, Select, TextInput, Checkbox } from '#lib/index.js';
+	import type { ThemeMode, ThemeProps, Palette, Color } from '#lib/types.js';
 	const theme = getContext<{ mode: ThemeMode; palette: NonNullable<ThemeProps['palette']> }>(
 		'documentation-theme'
 	);
