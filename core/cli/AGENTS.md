@@ -1,8 +1,5 @@
 # CLI contribution rules
 
-Follow the [root contribution rules](../AGENTS.md). The [CLI overview](README.md) describes
-the agreed layout and current stage status.
-
 ## Modules
 
 - Keep one public function per functional module. A single-file stage stays a named file;
