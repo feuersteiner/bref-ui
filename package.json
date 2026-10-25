@@ -3,6 +3,8 @@
 	"private": true,
 	"type": "module",
 	"workspaces": [
-		"core"
+		"core",
+		"themes",
+		"docs"
 	]
 }
