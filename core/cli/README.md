@@ -27,6 +27,9 @@ compiled CLI JavaScript modules and canonical `src/lib` sources alongside `dist`
 parsing reuses `svelte/compiler`; the TypeScript compiler remains development-only and
 is not installed for CLI consumers. Packing does not publish to npm.
 
+Packing copies the repository README and license into `core/` so npm includes them.
+These generated copies are ignored; edit the root originals.
+
 ```mermaid
 flowchart TD
     entry["index.ts"] --> init["initImports"]

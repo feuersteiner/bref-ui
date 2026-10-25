@@ -11,6 +11,8 @@ node_modules
 build
 dist
 dist-cli
+/core/readme.md
+/core/LICENSE
 
 # OS
 .DS_Store
