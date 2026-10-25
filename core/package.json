@@ -50,7 +50,6 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
-		"@fontsource-variable/bricolage-grotesque": "^5.3.0",
 		"@fontsource/meow-script": "5.2.8",
 		"@fontsource/spectral": "5.2.8",
 		"@sveltejs/adapter-static": "^4.0.0",
