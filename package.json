@@ -25,6 +25,7 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"build": "bun run --cwd core build && bun run --cwd themes build && bun run --cwd docs build",
-		"preview": "bun run --cwd docs preview"
+		"preview": "bun run --cwd docs preview",
+		"test:ci": "node --test .github/scripts/changes.test.mjs"
 	}
 }
