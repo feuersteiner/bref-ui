@@ -15,57 +15,35 @@ https://github.com/user-attachments/assets/09b9a73d-c6fb-4e8d-b4f5-2267c4552ad7
 
 ## Get started
 
-### Explore the gallery
+### Install
 
-Use Bun and Node 22.12+ within Node 22, or Node 24:
-
-```sh
-git clone https://github.com/feuersteiner/bref-ui.git
-cd bref-ui
-bun install
-bun run dev
-```
-
-Open the URL printed in the terminal. The gallery includes component examples,
-props and theme customization on `/button`, `/icon` and `/theme`.
-
-### Use the local package
-
-The package includes the component CLI and canonical sources. Build a local package
-from the development checkout:
+In an existing Svelte 5.56.1+ or SvelteKit project:
 
 ```sh
-bun run build
-npm pack --ignore-scripts
+npm install bref-ui
 ```
 
-This produces `bref-ui-<version>.tgz`, named after the `package.json` version. In an
-existing Svelte 5.56.1+ project with its dependencies installed, install that
-tarball, replacing the example path:
+Import components directly from `bref-ui`. Bun and local packaging are not required.
 
-```sh
-npm install /path/to/bref-ui-<version>.tgz
-```
+### Use components
 
-Then use the components in a `.svelte` file:
+Render `Theme` once in the application root (`src/routes/+layout.svelte` in SvelteKit
+or `src/App.svelte` in a plain Svelte app). It opts into the palette, reset and
+Material Symbols font setup. If already configured, import only `Button` where needed.
+
+Minimal `.svelte` example:
 
 ```svelte
 <script lang="ts">
 	import { Button, Theme } from 'bref-ui';
-
-	let count = $state(0);
 </script>
 
 <Theme />
-<Button label={`Count: ${count}`} onClick={() => count++} />
+<Button label="Save" />
 ```
 
-The button increments the count when clicked. The current Button uses `label` and
-`onClick`; the gallery documents each component's current API.
-
-Render `Theme` once in the application root to opt into its palette, reset and
-Material Symbols font setup. The current package declares a Material Symbols font
-dependency, so zero runtime dependencies beyond Svelte remains a goal.
+Button accepts text through `label` and a click handler through `onClick`. See the
+[Button documentation](https://feuersteiner.github.io/bref-ui/button) for the full API.
 
 ### Shared surface styles
 
@@ -114,10 +92,10 @@ The [demo video](static/bref-ui-demo.mp4) is also available in this repository.
    complete site generation, generative UI and interactive interfaces for agent
    workflows.
 
-## Copy components into a project
+## Copy components into a project (optional)
 
-The package includes the `bref-ui` executable, which requires Bun. After installing
-the tarball, run commands from the consumer project's root:
+The optional `bref-ui` CLI requires Bun to copy editable component source into a
+project. After `npm install bref-ui`, run commands from the project's root:
 
 ```sh
 bun run bref-ui init
@@ -166,7 +144,19 @@ Available component IDs: `button`, `checkbox`, `combobox`, `dialog`, `icon`, `pi
 
 ## Documentation and demos
 
-Run `bun run dev` in the repository for the gallery and current API documentation.
+Explore the [component gallery](https://feuersteiner.github.io/bref-ui/) for examples,
+props and theme customization.
+
+To run the gallery locally, use Bun and Node 22.12+ within Node 22, or Node 24:
+
+```sh
+git clone https://github.com/feuersteiner/bref-ui.git
+cd bref-ui
+bun install
+bun run dev
+```
+
+Open the URL printed in the terminal.
 Explore the [component exports](src/lib/index.ts) and [component source](src/lib)
 to inspect and customize the implementation.
 
