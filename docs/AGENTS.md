@@ -25,8 +25,7 @@ explain native attributes/bindings/snippets, and show minimal usage:
 
 ### Agent documentation (`/llms.txt`)
 
-Until the gallery moves here, its routes and `/llms.txt` references live in
-`core/src/routes`; the paths below apply to whichever package hosts them.
+Documentation routes and `/llms.txt` references live in `docs/src/routes`.
 
 Whenever a public component is added, changed or removed, update its documentation
 page's `props` array, navigation and its `src/routes/llms.txt/<component>.ts` reference
