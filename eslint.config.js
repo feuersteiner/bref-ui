@@ -79,7 +79,8 @@ export default defineConfig(
 			curly: 'off',
 			'@typescript-eslint/consistent-type-definitions': 'off',
 			'@typescript-eslint/consistent-type-imports': 'off',
-			'svelte/consistent-selector-style': 'off'
+			'svelte/consistent-selector-style': 'off',
+			'svelte/no-unused-class-name': 'off'
 		}
 	}
 );

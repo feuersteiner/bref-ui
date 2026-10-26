@@ -7,16 +7,24 @@
 
 <PageContainer
 	title={chapter}
-	description="Reusable component themes are being prepared for the themes package."
+	description="Reusable component themes with individual package entry points and interactive galleries."
 >
 	<Section {...sections[0]}>
 		<p>
-			Full themes own their component styling and have individual package entry points. They will be
-			added through separate pull requests after the workspace migration.
+			Full themes own their component styling and have individual package entry points. Each gallery
+			below imports its theme through the matching public package entry point.
 		</p>
 		<p>
 			The <a href={resolve('/(skins)/skins')}>skins</a>
 			are complete application demos using canonical Bref components and palette configuration.
+		</p>
+	</Section>
+	<Section {...sections[1]}>
+		<p>Black and ivory controls, serif typography and opaque paper overlays.</p>
+		<p>
+			<a href={resolve('/(themes)/themes/new-paris')}>Open New Paris gallery</a>
+			·
+			<code>bref-ui-themes/new-paris</code>
 		</p>
 	</Section>
 </PageContainer>

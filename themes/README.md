@@ -19,3 +19,17 @@ Edit the root license; generated package copies are ignored.
 Theme pull requests add individual subpaths such as `bref-ui-themes/new-paris`.
 The root entry does not aggregate themes or load their CSS. The package peers on
 workspace-compatible Bref/Svelte versions and supplies the icons used by the imported themes.
+
+## New Paris
+
+Black and ivory controls, serif typography and opaque paper overlays. All twenty components are exported through the theme subpath:
+
+```svelte
+<script>
+	import { Theme, Button } from 'bref-ui-themes/new-paris';
+</script>
+
+<Theme><Button label="Save" /></Theme>
+```
+
+The gallery uses the same public package exports at `/themes/new-paris`.
