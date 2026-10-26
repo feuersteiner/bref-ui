@@ -27,6 +27,12 @@ compiled CLI JavaScript modules and canonical `src/lib` sources alongside `dist`
 parsing reuses `svelte/compiler`; the TypeScript compiler remains development-only and
 is not installed for CLI consumers. Packing does not publish to npm.
 
+Run `bun run --cwd core test` from the workspace root for Vitest executable contracts.
+The suite packs and installs the local package into a temporary npm consumer, then runs
+`npx --no -- bref-ui` offline against isolated projects. It covers initialization, copying,
+dependency files, repeat runs, invalid arguments and cancellation/overwrite approvals.
+Initial npm installation may download package dependencies; temporary files are cleaned up.
+
 ```mermaid
 flowchart TD
     entry["index.ts"] --> init["initImports"]

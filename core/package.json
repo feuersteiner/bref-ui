@@ -20,6 +20,7 @@
 		"prepack": "tsc -p cli/tsconfig.json && node dist-cli/pack.js && svelte-kit sync && svelte-package && publint",
 		"check": "tsc -p cli/tsconfig.json --noEmit && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"test": "vitest run --config vitest.config.js",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write ."
 	},
@@ -75,7 +76,8 @@
 		"svelte-check": "^4.7.7",
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.60.1",
-		"vite": "^8.3.5"
+		"vite": "^8.3.5",
+		"vitest": "^5.0.5"
 	},
 	"keywords": [
 		"svelte",
