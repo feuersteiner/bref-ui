@@ -26,7 +26,9 @@ src/routes/(docs)/
     sections.ts
 ```
 
-- SvelteKit uses `src/routes` as its route root; `(docs)` owns the docs shell.
+- SvelteKit uses `src/routes` as its route root; `(docs)` groups the docs shell in
+  the filesystem only. Public URLs remain `/`, `/button`, etc. Build navigation
+  with Kit's `resolve()` using base-relative pathnames (`''`, `'button'`, etc.).
 - Each documentation page lives in `<topic>/+page.svelte`.
 - `+layout.svelte` composes the shared layout component.
 - Shared documentation components belong in `components/`.

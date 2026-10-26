@@ -10,9 +10,17 @@
 			...group,
 			items: [...group.links]
 				.sort((a, b) => a.title.localeCompare(b.title, 'en'))
-				.map((link) => ({ id: resolve(link.href), label: link.title }))
+				.map((link) => ({
+					id: resolve(link.href),
+					label: link.title,
+					href: link.href
+				}))
 		}))
 	);
+	const activeLink = $derived(
+		groups.flatMap((group) => group.items).find((link) => link.id === page.url.pathname)
+	);
+	const activeSections = $derived(activeLink ? (pageSections[`/${activeLink.href}`] ?? []) : []);
 </script>
 
 <nav aria-label="Documentation">
@@ -24,9 +32,7 @@
 					<SidebarNode
 						{item}
 						current={item.id === page.url.pathname}
-						sections={item.id === page.url.pathname
-							? (pageSections[page.route.id?.replace('/(docs)', '') || '/'] ?? [])
-							: []}
+						sections={item.id === page.url.pathname ? activeSections : []}
 					/>
 				{/snippet}
 			</TreeView>
