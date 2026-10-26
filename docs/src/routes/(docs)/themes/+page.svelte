@@ -27,4 +27,12 @@
 			<code>bref-ui-themes/new-paris</code>
 		</p>
 	</Section>
+	<Section {...sections[2]}>
+		<p>Translucent controls and frosted overlays with scoped component styling.</p>
+		<p>
+			<a href={resolve('/(themes)/themes/glassy')}>Open Glassy gallery</a>
+			·
+			<code>bref-ui-themes/glassy</code>
+		</p>
+	</Section>
 </PageContainer>

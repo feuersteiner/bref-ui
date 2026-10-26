@@ -33,6 +33,10 @@
 		"./new-paris": {
 			"types": "./dist/new-paris/index.d.ts",
 			"svelte": "./dist/new-paris/index.js"
+		},
+		"./glassy": {
+			"types": "./dist/glassy/index.d.ts",
+			"svelte": "./dist/glassy/index.js"
 		}
 	},
 	"peerDependencies": {
