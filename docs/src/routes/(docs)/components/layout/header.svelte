@@ -40,7 +40,7 @@
 			/>
 		{/if}
 
-		<a href={resolve('/')} aria-label="Bref documentation home" data-logo>
+		<a href={resolve('')} aria-label="Bref documentation home" data-logo>
 			<img src={asset('favicon.svg')} alt="" width="40" height="40" />
 
 			<strong>

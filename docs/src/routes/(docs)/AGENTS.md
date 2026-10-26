@@ -6,7 +6,7 @@ examples and shared documentation components.
 ## Structure
 
 ```text
-src/routes/
+src/routes/(docs)/
   AGENTS.md
   +layout.svelte
   +page.svelte
@@ -26,7 +26,9 @@ src/routes/
     sections.ts
 ```
 
-- SvelteKit uses `src/routes` as its default route root.
+- SvelteKit uses `src/routes` as its route root; `(docs)` groups the docs shell in
+  the filesystem only. Public URLs remain `/`, `/button`, etc. Build navigation
+  with Kit's `resolve()` using base-relative pathnames (`''`, `'button'`, etc.).
 - Each documentation page lives in `<topic>/+page.svelte`.
 - `+layout.svelte` composes the shared layout component.
 - Shared documentation components belong in `components/`.

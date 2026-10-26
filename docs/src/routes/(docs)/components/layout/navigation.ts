@@ -50,46 +50,46 @@ export const navigation = [
 	{
 		title: 'Get started',
 		links: [
-			{ title: introductionChapter, href: '/' },
-			{ title: themeChapter, href: '/theme' }
+			{ title: introductionChapter, href: '' },
+			{ title: themeChapter, href: 'theme' }
 		]
 	},
 	{
 		title: 'Base',
 		links: [
-			{ title: buttonChapter, href: '/button' },
-			{ title: iconChapter, href: '/icon' },
-			{ title: pillChapter, href: '/pill' },
-			{ title: pillGroupChapter, href: '/pill-group' },
-			{ title: tabsChapter, href: '/tabs' },
-			{ title: treeViewChapter, href: '/tree-view' }
+			{ title: buttonChapter, href: 'button' },
+			{ title: iconChapter, href: 'icon' },
+			{ title: pillChapter, href: 'pill' },
+			{ title: pillGroupChapter, href: 'pill-group' },
+			{ title: tabsChapter, href: 'tabs' },
+			{ title: treeViewChapter, href: 'tree-view' }
 		]
 	},
 	{
 		title: 'Feedback',
 		links: [
-			{ title: progressChapter, href: '/progress' },
-			{ title: spinnerChapter, href: '/spinner' }
+			{ title: progressChapter, href: 'progress' },
+			{ title: spinnerChapter, href: 'spinner' }
 		]
 	},
 	{
 		title: 'Inputs',
 		links: [
-			{ title: checkboxChapter, href: '/checkbox' },
-			{ title: comboboxChapter, href: '/combobox' },
-			{ title: pillChoiceGroupChapter, href: '/pill-choice-group' },
-			{ title: selectChapter, href: '/select' },
-			{ title: switchChapter, href: '/switch' },
-			{ title: textAreaChapter, href: '/text-area' },
-			{ title: textInputChapter, href: '/text-input' }
+			{ title: checkboxChapter, href: 'checkbox' },
+			{ title: comboboxChapter, href: 'combobox' },
+			{ title: pillChoiceGroupChapter, href: 'pill-choice-group' },
+			{ title: selectChapter, href: 'select' },
+			{ title: switchChapter, href: 'switch' },
+			{ title: textAreaChapter, href: 'text-area' },
+			{ title: textInputChapter, href: 'text-input' }
 		]
 	},
 	{
 		title: 'Surfaces',
 		links: [
-			{ title: dialogChapter, href: '/dialog' },
-			{ title: popoverChapter, href: '/popover' },
-			{ title: surfaceChapter, href: '/surface' }
+			{ title: dialogChapter, href: 'dialog' },
+			{ title: popoverChapter, href: 'popover' },
+			{ title: surfaceChapter, href: 'surface' }
 		]
 	}
 ] as const;
