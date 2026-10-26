@@ -71,8 +71,9 @@ export default defineConfig(
 	{
 		// Preserve the imported theme libraries and galleries in their original authoring style.
 		files: [
-			'themes/src/lib/{new-paris,glassy}/**/*.{ts,svelte}',
-			'docs/src/routes/(themes)/themes/{new-paris,glassy}/*.svelte'
+			'themes/src/lib/{new-paris,glassy,vscode}/**/*.{ts,svelte}',
+			'docs/src/routes/(themes)/themes/{new-paris,glassy,vscode}/*.svelte',
+			'docs/src/routes/(docs)/themes/+page.svelte'
 		],
 		rules: {
 			'max-lines': 'off',
@@ -84,7 +85,9 @@ export default defineConfig(
 		rules: { 'func-style': 'off', 'svelte/no-unused-class-name': 'off' }
 	},
 	{
-		files: ['docs/src/routes/(themes)/themes/{new-paris,glassy}/additional-components.svelte'],
+		files: [
+			'docs/src/routes/(themes)/themes/{new-paris,glassy,vscode}/additional-components.svelte'
+		],
 		rules: { '@typescript-eslint/consistent-type-imports': 'off' }
 	}
 );

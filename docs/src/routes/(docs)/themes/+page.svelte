@@ -128,6 +128,16 @@
 <Theme><Button label="Save" icon={{ name: 'check' }} /></Theme>`}
 		/>
 	</Section>
+	<Section {...sections[3]}>
+		<p>Fixed-dark workbench controls with native interactions and scoped styling.</p>
+		<p>
+			<a href={resolve('themes/vscode')} target="_blank" rel="noopener noreferrer">
+				Open VS Code gallery (opens in new tab)
+			</a>
+			·
+			<code>bref-ui-themes/vscode</code>
+		</p>
+	</Section>
 </PageContainer>
 
 <style>
