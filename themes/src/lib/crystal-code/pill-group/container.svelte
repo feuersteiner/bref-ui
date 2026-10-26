@@ -1,0 +1,73 @@
+<script lang="ts">
+	import type { PillGroupContainerProps } from './types.ts';
+
+	let { items, renderItem, size = 'medium', ...attributes }: PillGroupContainerProps = $props();
+</script>
+
+<ul {...attributes} data-size={size}>
+	{#each items as item (item.id)}
+		<li>{@render renderItem(item)}</li>
+	{/each}
+</ul>
+
+<style>
+	ul {
+		--pill-group-gap: 0.5rem;
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--pill-group-gap);
+		margin: 0;
+		padding: 0;
+	}
+	ul[data-size='x-small'] {
+		--pill-group-gap: 0.25rem;
+	}
+	ul[data-size='small'] {
+		--pill-group-gap: 0.375rem;
+	}
+	ul[data-size='large'] {
+		--pill-group-gap: 0.75rem;
+	}
+	ul[data-size='x-large'] {
+		--pill-group-gap: 1rem;
+	}
+	li {
+		display: inline-flex;
+		max-width: 100%;
+		min-width: 0;
+	}
+
+	:focus-visible {
+		outline: 1px solid var(--color-primary);
+		outline-offset: 3px;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		* {
+			animation: none !important;
+			transition: none !important;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		*::before {
+			animation: none !important;
+			transition: none !important;
+		}
+	}
+	@media (forced-colors: active) {
+		:focus-visible {
+			outline-color: Highlight;
+		}
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 2px;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		* {
+			animation: none;
+			transition: none;
+		}
+	}
+</style>

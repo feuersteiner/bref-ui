@@ -80,3 +80,17 @@ match the gallery typography, install `@fontsource-variable/inter` and import
 `@fontsource-variable/inter/index.css` in the app.
 
 The gallery uses the same public package exports at `/themes/glassy`.
+
+## Crystal Code
+
+Light and dark frosted workbench controls with a complete component reference. All twenty components are exported through the theme subpath:
+
+```svelte
+<script>
+	import { Theme, Button } from 'bref-ui-themes/crystal-code';
+</script>
+
+<Theme><Button label="Save" /></Theme>
+```
+
+The gallery uses the same public package exports at `/themes/crystal-code`.

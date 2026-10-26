@@ -128,6 +128,14 @@
 <Theme><Button label="Save" icon={{ name: 'check' }} /></Theme>`}
 		/>
 	</Section>
+	<Section {...sections[3]}>
+		<p>Light and dark frosted workbench controls with a complete component reference.</p>
+		<p>
+			<a href={resolve('themes/crystal-code')}>Open Crystal Code gallery</a>
+			·
+			<code>bref-ui-themes/crystal-code</code>
+		</p>
+	</Section>
 </PageContainer>
 
 <style>
