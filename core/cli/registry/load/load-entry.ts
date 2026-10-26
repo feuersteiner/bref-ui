@@ -1,3 +1,4 @@
+import { readFile, stat } from 'node:fs/promises';
 import type { RegistryEntry } from '../types.js';
 import { parseItem } from './utils.js';
 
@@ -8,12 +9,12 @@ import { parseItem } from './utils.js';
  * @throws When the manifest cannot be read, metadata is invalid or a file is missing.
  */
 export const loadEntry = async (manifest: string): Promise<RegistryEntry> => {
-	const item = parseItem(await Bun.file(manifest).json(), manifest);
+	const item = parseItem(JSON.parse(await readFile(manifest, 'utf8')), manifest);
 	const directory = manifest.slice(0, -'/registry.json'.length);
 
 	await Promise.all(
 		item.files.map(async (file) => {
-			if (!(await Bun.file(`${directory}/${file}`).exists()))
+			if (!(await stat(`${directory}/${file}`).catch(() => null))?.isFile())
 				throw new Error(`${manifest}: missing file "${file}".`);
 		})
 	);

@@ -9,4 +9,5 @@ bun.lockb
 **/.svelte-kit/
 **/build/
 **/dist/
+**/dist-cli/
 **/static/

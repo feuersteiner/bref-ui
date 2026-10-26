@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises';
+
 /**
  * Read the destination index, treating only a missing file as empty content.
  * @param destination Consumer UI directory.
@@ -6,7 +8,7 @@
  */
 export const readIndex = async (destination: string): Promise<string> => {
 	try {
-		return await Bun.file(`${destination}/index.ts`).text();
+		return await readFile(`${destination}/index.ts`, 'utf8');
 	} catch (error) {
 		if (error instanceof Error && 'code' in error && error.code === 'ENOENT') return '';
 		throw error;

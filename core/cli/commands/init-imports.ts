@@ -1,3 +1,4 @@
+import { readFile, writeFile } from 'node:fs/promises';
 import { readImportAliases } from '../config/imports/index.js';
 
 /**
@@ -12,8 +13,8 @@ import { readImportAliases } from '../config/imports/index.js';
  */
 export const initImports = async (projectRoot: string): Promise<'created' | 'exists'> => {
 	const lib = (await readImportAliases(projectRoot))['#lib'] ?? 'src/lib';
-	const file = Bun.file(`${projectRoot}/package.json`);
-	const content = await file.text();
+	const file = `${projectRoot}/package.json`;
+	const content = await readFile(file, 'utf8');
 	const manifest: unknown = JSON.parse(content);
 	if (typeof manifest !== 'object' || manifest === null || Array.isArray(manifest))
 		throw new Error('package.json: expected a JSON object.');
@@ -29,6 +30,6 @@ export const initImports = async (projectRoot: string): Promise<'created' | 'exi
 		imports: { ...imports, '#bref': `${ui}/index.js`, '#bref/*': `${ui}/*` }
 	};
 	const indent = /^[ \t]+(?=")/m.exec(content)?.[0] ?? '\t';
-	await Bun.write(file, `${JSON.stringify(updated, null, indent)}\n`);
+	await writeFile(file, `${JSON.stringify(updated, null, indent)}\n`);
 	return 'created';
 };

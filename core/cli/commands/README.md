@@ -4,7 +4,7 @@
 
 The executable and init/add commands are implemented. Commands use the current directory
 as the consumer project; the registry comes from canonical sources beside the executable,
-either in the installed package or the source checkout. Bun is required.
+either in the installed package or the source checkout. Node.js runs the compiled executable.
 
 ## Route commands
 
@@ -50,9 +50,9 @@ operations; concurrent initialization of the same project is unsupported.
 flowchart TD
     project["Existing consumer project directory"] --> init["initImports(projectRoot)"]
     init --> lib["readImportAliases(projectRoot) · #lib directory or src/lib"]
-    lib --> manifest["Bun.file · read and validate package.json"]
+    lib --> manifest["readFile · read and validate package.json"]
     manifest -->|#bref declared| preserve["Return exists · preserve contents"]
-    manifest -->|Absent| write["Bun.write · add #bref and #bref/*"]
+    manifest -->|Absent| write["writeFile · add #bref and #bref/*"]
     write --> created["Return created"]
 ```
 
@@ -84,7 +84,7 @@ flowchart TD
     accepted --> copy["copyFiles"]
 ```
 
-Confirmations use Bun's native `prompt`. Only `y` or `yes` accepts, ignoring case and
+Confirmations read one line from standard input. Only `y` or `yes` accepts, ignoring case and
 surrounding whitespace. Refusal, empty input or closed input at any prompt cancels
 without writes; remaining prompts are skipped. `index.ts` needs its own approval
 when its content changes. Accepted copying can fail partially; writes are not atomic.

@@ -17,9 +17,10 @@
 		"demo-site-build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"prepack": "bun cli/pack.ts && bun run svelte-kit sync && bun run svelte-package && bun run publint",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"prepack": "tsc -p cli/tsconfig.json && node dist-cli/pack.js && svelte-kit sync && svelte-package && publint",
+		"check": "tsc -p cli/tsconfig.json --noEmit && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"test": "vitest run --config vitest.config.js",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write ."
 	},
@@ -27,7 +28,7 @@
 		"dist",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*",
-		"cli/**/*.ts",
+		"dist-cli",
 		"src/lib"
 	],
 	"sideEffects": [
@@ -60,6 +61,7 @@
 		"@sveltejs/package": "^3.0.1",
 		"@sveltejs/vite-plugin-svelte": "^7.3.1",
 		"@types/bun": "^1.4.2",
+		"@types/estree": "^1.0.9",
 		"@types/node": "^22",
 		"eslint": "^10.4.1",
 		"eslint-config-prettier": "^10.1.8",
@@ -74,7 +76,8 @@
 		"svelte-check": "^4.7.7",
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.60.1",
-		"vite": "^8.3.5"
+		"vite": "^8.3.5",
+		"vitest": "^5.0.5"
 	},
 	"keywords": [
 		"svelte",
@@ -100,7 +103,7 @@
 		"@fontsource-variable/material-symbols-outlined": "^5.3.5"
 	},
 	"bin": {
-		"bref-ui": "cli/index.ts"
+		"bref-ui": "dist-cli/index.js"
 	},
 	"imports": {
 		"#lib": "./src/lib/index.js",

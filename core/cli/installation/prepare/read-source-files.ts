@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import type { PreparedFile } from '../types.js';
 import type { SourceFile } from './types.js';
 import { rewriteSource } from './rewrite-source.js';
@@ -13,7 +14,7 @@ export const readSourceFiles = async (files: SourceFile[]): Promise<PreparedFile
 		files.map(async ({ source, path }) => ({
 			path,
 			content: rewriteSource(
-				await Bun.file(source).text(),
+				await readFile(source, 'utf8'),
 				source,
 				files.map((file) => file.source)
 			)

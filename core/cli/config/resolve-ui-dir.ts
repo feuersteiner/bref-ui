@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import { readImportAliases } from './imports/index.js';
 
 /**
@@ -12,6 +13,5 @@ export const resolveUiDir = async (projectRoot: string): Promise<string> => {
 	if (directory === undefined)
 		throw new Error('package.json: missing "#bref/*" import. Run bref-ui init.');
 
-	const path = Bun.fileURLToPath(Bun.pathToFileURL(`${projectRoot}/${directory}`));
-	return path.replace(/(?<=.)\/$/, '');
+	return resolve(projectRoot, directory);
 };

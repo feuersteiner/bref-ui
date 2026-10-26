@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import { addComponent } from './add/index.js';
 import { initImports } from './init-imports.js';
 import type { Command } from './types.js';
@@ -31,7 +32,7 @@ export const execute = async (command: Command, projectRoot: string): Promise<vo
 		return;
 	}
 
-	const sourceRoot = Bun.fileURLToPath(new URL('../../src/lib/', import.meta.url));
+	const sourceRoot = fileURLToPath(new URL('../../src/lib/', import.meta.url));
 	const result = await addComponent(command.componentId, projectRoot, sourceRoot);
 	console.log(
 		result === 'installed'

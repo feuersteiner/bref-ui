@@ -99,8 +99,8 @@ installation/
 ## Copy files
 
 [`copyFiles(files, destination, overwrites)`](copy/index.ts) accepts explicit relative overwrite
-paths, skips identical files and rejects unapproved conflicts before any writes. Bun writes
-create missing directories. Checks and writes are not atomic; write failures may leave
+paths, skips identical files and rejects unapproved conflicts before any writes. Node filesystem writes
+create missing directories and refuse additions that appeared after preview. Checks and writes are not atomic; write failures may leave
 some files copied. Cancellation must skip this call.
 
 ```mermaid
