@@ -3,7 +3,7 @@
 ## Site
 
 - Keep the site static: every route must prerender with `@sveltejs/adapter-static`.
-  Support a configurable base path for GitHub Pages; build links with Kit's path helpers.
+  Build links with Kit's path helpers.
 - Import components and themes only through the public `bref-ui`, `bref-ui/types` and
   `bref-ui-themes` exports, never from another package's source files.
 - Keep site helpers in this package; never add docs-only code to published packages.

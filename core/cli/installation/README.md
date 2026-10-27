@@ -153,8 +153,7 @@ unapproved conflicts reject the installation. Successful copying returns `instal
 including repeated unchanged installations; cancellation returns `cancelled`.
 
 Preparation, preview and review failures propagate before writes. Copy failures can leave
-partial changes because writes are not atomic. The caller provides the review UI; command
-wiring remains unfinished.
+partial changes because writes are not atomic. The command supplies terminal review before copying.
 
 ```mermaid
 flowchart TD

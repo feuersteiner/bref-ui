@@ -1,46 +1,38 @@
 # Contributing to Bref
 
-**Svelte-first.** Bref-ui is modern Svelte with no runtime dependencies beyond Svelte.
-Components are built from familiar HTML and scoped native CSS, forward native attributes,
-events, bindings and snippets, and need no class-name vocabulary to use.
+Keep Bref Svelte-first, human-first and agent-first: native HTML and Svelte APIs,
+scoped CSS, readable source and composable components. The [root instructions](AGENTS.md)
+contain the full contribution and review rules.
 
-**Human-first.** Components are composable, readable and fully
-customizable, and their source can be copied into a project to become the project's own
-code.
+## Working together
 
-**Agent-first.** Bref-ui is built so agents can discover, compose, customize and verify
-interfaces.
+- Keep changes small and scoped; preserve unrelated work and ask before large diffs.
+- Agree on public APIs before implementation. Explain one reviewable step, show its
+  diff and checks, then wait for approval before expanding the work.
+- Never commit, push or publish without authorization.
 
-## Contribution guidelines
+## Package guidance
 
-### Before starting
+- [Core](core/AGENTS.md) and [CLI rules](core/cli/AGENTS.md): use canonical component sources, native attributes/events,
+  agreed tokens and accessible behavior. Keep CLI stages focused, preview copies and
+  require explicit overwrite decisions.
+- [Docs](docs/AGENTS.md) and [route rules](<docs/src/routes/(docs)/AGENTS.md>): keep the site static, import public package exports and use
+  Kit path helpers. Cover APIs, variants, interactions and accessibility in galleries;
+  keep navigation and `/llms.txt` current.
+- [Themes](themes/AGENTS.md): agree on theme contracts, isolate styles and entry points,
+  keep assets opt-in and validate contrast without silently changing inputs.
 
-- Stay scoped, preserve unrelated changes and ask before large diffs. Communicate briefly.
-- Let the human's review pace govern coding patterns, speed and scope at all times.
-  Default to one small, reviewable step: explain it, make the scoped change, show the
-  diff and checks, then wait for human approval before the next step. Do not batch
-  work or expand implementation unless the human explicitly authorizes it.
-- Confirm public contracts before implementation; examples in package rules illustrate
-  patterns, not approval of new APIs. Never commit, push or publish without authorization.
+## Verification
 
-## Repository structure
+Run relevant checks from the repository root:
 
-A Bun workspace: run `bun install` at the root, then `bun run dev` inside a package.
+```sh
+bun run check
+bun run lint
+bun run --workspaces --if-present test
+bun run build
+```
 
-- [`core`](core): the `bref-ui` package, with [components](core/src/lib), the
-  [copy CLI](core/cli/README.md) and the gallery.
-- [`themes`](themes): the `bref-ui-themes` package, one entry point per theme (in progress).
-- [`docs`](docs): the static documentation site, playgrounds and demos (in progress).
-
-## Building
-
-- For UI changes, include tightly cropped screenshots of the actual rendered components
-  in the PR description, showing all available variants and relevant interaction states,
-  with before/after comparisons when useful. Keep screenshots only in the PR
-  description—never commit image files or include them in the diff.
-
-### Checklist when adding a component
-
-- [ ] Agree on the component API/types first with the user, keeping it closer to base html (i.e. a `<Button>` component should use just `<button>`)
-- [ ] Scoped styles use agreed tokens and variants
-- [ ] In docs, buil the gallery, covering variants, interactions and meaningful states (with one playground)
+Distribution changes also need tarball inspection and clean npm/CLI consumers in
+Svelte and SvelteKit. UI pull requests need cropped screenshots of rendered variants
+and interaction states; keep screenshots in the PR description, outside the Git diff.

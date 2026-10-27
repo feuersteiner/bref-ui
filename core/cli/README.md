@@ -1,6 +1,6 @@
 # Component CLI
 
-The Bref CLI is being built to copy editable component source into a consumer project's
+The Bref CLI copies editable component source into a consumer project's
 configured UI directory, using package types from `bref-ui/types`.
 
 ## Overview
@@ -18,8 +18,8 @@ npx bref-ui add theme
 
 Install the local tarball with `npm install /path/to/bref-ui-<version>.tgz`. The executable loads
 the canonical registry shipped in the package; copied components use its `bref-ui/types`
-entry. `add theme` copies a separate default-only Theme; edit its CSS tokens directly. The package Theme accepts a palette prop. Use `npx bref-ui --help` for usage. Direct source invocation remains available
-with `node /path/to/bref-ui/dist-cli/index.js <command>` after packing.
+entry. `add theme` copies a separate default-only Theme; edit its CSS tokens directly. The package Theme accepts a palette prop. Use `npx bref-ui --help` for usage. The built executable can also run
+with `node /path/to/bref-ui/core/dist-cli/index.js <command>` after packing.
 
 `npm pack` from `core/` validates manifests through `loadRegistry`,
 builds the library and runs publint before producing a local tarball. The package ships
