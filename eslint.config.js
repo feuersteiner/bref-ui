@@ -51,24 +51,14 @@ export default defineConfig(
 				'error',
 				{ '**/src/**/': 'KEBAB_CASE' },
 				{
-					ignoreWords: [
-						'llms.txt',
-						'(docs)',
-						'(skins)',
-						'(sites)',
-						'(themes)',
-						'(todo)',
-						'(house-shop)',
-						'(runner-ai)',
-						'[theme]'
-					]
+					ignoreWords: ['llms.txt', '(docs)', '[theme]']
 				}
 			]
 		}
 	},
 	{
 		// Keep imported application demos in their original authoring style.
-		files: ['docs/src/routes/(skins)/**/*.{ts,svelte}'],
+		files: ['docs/src/routes/(docs)/demo/**/*.{ts,svelte}'],
 		rules: {
 			'max-lines': 'off',
 			'func-style': 'off',
