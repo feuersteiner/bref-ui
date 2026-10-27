@@ -5,7 +5,8 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/feuersteiner/bref-ui.git"
+		"url": "git+https://github.com/feuersteiner/bref-ui.git",
+		"directory": "core"
 	},
 	"homepage": "https://github.com/feuersteiner/bref-ui#readme",
 	"bugs": {
@@ -17,7 +18,7 @@
 		"demo-site-build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"prepack": "tsc -p cli/tsconfig.json && node dist-cli/pack.js && svelte-kit sync && svelte-package && publint",
+		"prepack": "tsc -p cli/tsconfig.json && node dist-cli/pack.js && node ../scripts/package.mjs && svelte-kit sync && svelte-package && publint",
 		"check": "tsc -p cli/tsconfig.json --noEmit && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test": "vitest run --config vitest.config.js",

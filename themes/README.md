@@ -12,3 +12,6 @@ Run `bun install` and `bun run dev` from the repository root. The docs site cons
 public workspace source exports directly. Package-level `check`, `build` and `prepack`
 remain available here; `src/lib` holds published sources and `src/routes` is only
 a local library preview.
+
+Packing includes this README and a generated copy of the repository MIT license.
+Edit the root license; generated package copies are ignored.
