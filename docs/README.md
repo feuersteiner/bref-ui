@@ -22,7 +22,7 @@ Docs deploy on every push to `main`, with manual dispatch also available.
 
 Component pages stay in `src/routes/(docs)/<topic>/+page.svelte`, with colocated
 `sections.ts` and shared `components/`. Keep live examples and playgrounds explicit;
-see the [route contribution rules](<src/routes/(docs)/AGENTS.md>).
+see the [route contribution rules](AGENTS.md#documentation-routes-and-shared-components).
 
 The `(docs)` layout owns documentation typography, the `/demo` catalog and palette
 previews. Standalone demos at `/demo/todo`, `/demo/house-shop` and `/demo/runner-ai`
