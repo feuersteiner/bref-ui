@@ -19,12 +19,12 @@
 		"typescript-eslint": "^8.60.1"
 	},
 	"scripts": {
-		"dev": "node scripts/dev.mjs",
-		"build:packages": "bun run --cwd core prepack && bun run --cwd themes prepack",
-		"check": "bun run build:packages && bun run --cwd core check && bun run --cwd themes check && bun run --cwd docs check",
+		"dev": "bun run --cwd docs dev",
+		"build:packages": "bun run --filter bref-ui --filter bref-ui-themes prepack",
+		"check": "bun run --workspaces --if-present check",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
-		"build": "bun run --cwd core build && bun run --cwd themes build && bun run --cwd docs build",
+		"build": "bun run --workspaces --if-present build",
 		"preview": "bun run --cwd docs preview"
 	}
 }
