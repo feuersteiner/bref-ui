@@ -95,7 +95,7 @@
 			<li><a href={resolve('button')}>Button: actions, sizes, variants and icons</a></li>
 			<li><a href={resolve('icon')}>Icon: Material Symbols and accessible names</a></li>
 			<li><a href={resolve('surface')}>Surface: semantic containers, layout and treatments</a></li>
-			<li><a href={resolve('theme')}>Theme: palette, modes and customization</a></li>
+			<li><a href={resolve('library')}>Theme: palette, modes and customization</a></li>
 		</ul>
 		<p>ThemeModeToggle is also available from the package exports.</p>
 	</Section>

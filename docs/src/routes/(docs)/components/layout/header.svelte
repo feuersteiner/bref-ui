@@ -40,7 +40,7 @@
 			/>
 		{/if}
 
-		<a href={resolve('/(docs)')} aria-label="Bref documentation home" data-logo>
+		<a href={resolve('')} aria-label="Bref documentation home" data-logo>
 			<img src={asset('favicon.svg')} alt="" width="40" height="40" />
 
 			<strong>
@@ -69,7 +69,9 @@
 		top: 0;
 		z-index: 2;
 		height: 72px;
-		background: color-mix(in srgb, var(--color-background) 94%, transparent);
+		background: color-mix(in srgb, var(--color-background) 80%, transparent);
+		-webkit-backdrop-filter: blur(16px);
+		backdrop-filter: blur(16px);
 	}
 	header > div {
 		width: min(1128px, calc(100vw - 48px));
