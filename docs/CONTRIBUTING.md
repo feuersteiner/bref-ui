@@ -3,7 +3,7 @@
 ## Site
 
 - Keep the site static: every route must prerender with `@sveltejs/adapter-static`.
-  Support a configurable base path for GitHub Pages; build links with Kit's path helpers.
+  Build links with Kit's path helpers.
 - Import components and themes only through the public `bref-ui`, `bref-ui/types` and
   `bref-ui-themes` exports, never from another package's source files.
 - Keep site helpers in this package; never add docs-only code to published packages.
@@ -26,6 +26,10 @@ explain native attributes/bindings/snippets, and show minimal usage:
 ### Agent documentation (`/llms.txt`)
 
 Documentation routes and `/llms.txt` references live in `docs/src/routes/(docs)`.
+`(docs)` is only a filesystem layout group; public URLs remain `/`, `/button`,
+`/llms.txt`, etc. Build navigation with Kit's `resolve()` using base-relative
+pathnames (`''` for `/`, `'button'` for `/button`).
+Use the package (`/library`) covers setup and Theme; Own the code (`/cli`) covers copied source.
 
 Whenever a public component is added, changed or removed, update its documentation
 page's `props` array, navigation and its `src/routes/(docs)/llms.txt/<component>.ts` reference

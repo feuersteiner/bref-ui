@@ -1,14 +1,14 @@
 # bref-ui-themes
 
-Reusable full themes for [Bref-ui](../readme.md), with an individual public entry
-point for each theme. Full-theme implementations are reviewed in separate pull requests.
+Reusable themes for [Bref-ui](../readme.md), each intended to have its own public
+entry point. Theme implementations are reviewed in separate pull requests.
 
-The current-main Todo, House Shop and RunnerAI skins use canonical Bref components
-and palette configuration. Their sources and previews now live in [docs](../docs/README.md),
-not in this published package.
+The Todo, House Shop and RunnerAI demos use canonical Bref components and palette
+configuration. Their sources and previews live in [docs](../docs/README.md).
 
 ## Development
 
-Run `bun install` and `bun dev` from the repository root. Root commands build public
-workspace exports before the docs site uses them. Package-level `check`, `build` and
-`prepack` remain available here; `src/routes` is only a local library preview.
+Run `bun install` and `bun run dev` from the repository root. The docs site consumes
+public workspace source exports directly. Package-level `check`, `build` and `prepack`
+remain available here; `src/lib` holds published sources and `src/routes` is only
+a local library preview.

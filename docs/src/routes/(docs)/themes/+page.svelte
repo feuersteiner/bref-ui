@@ -7,16 +7,17 @@
 
 <PageContainer
 	title={chapter}
-	description="Reusable component themes are being prepared for the themes package."
+	description="Work in progress: predefined themes will be available through the themes package."
 >
 	<Section {...sections[0]}>
 		<p>
-			Full themes own their component styling and have individual package entry points. They will be
-			added through separate pull requests after the workspace migration.
+			Predefined themes, such as a VS Code theme, are planned for later pull requests. They will
+			provide reusable component styling through individual package entry points; import
+			instructions will be documented when those themes are available.
 		</p>
 		<p>
-			The <a href={resolve('/(skins)/skins')}>skins</a>
-			are complete application demos using canonical Bref components and palette configuration.
+			<a href={resolve('demo')}>Demo</a>
+			shows complete applications using canonical Bref components and palette configuration.
 		</p>
 	</Section>
 </PageContainer>
