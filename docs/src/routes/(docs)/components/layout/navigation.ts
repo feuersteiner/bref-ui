@@ -1,5 +1,5 @@
-import { resolve } from '$app/paths';
-import { chapter as configChapter, sections as configSections } from '../../config/sections.js';
+import { demoNavigation, demoPageSections } from '../../demo/catalog.js';
+import { chapter as cliChapter, sections as cliSections } from '../../cli/sections.js';
 import { chapter as themesChapter, sections as themesSections } from '../../themes/sections.js';
 import {
 	chapter as comboboxChapter,
@@ -14,7 +14,7 @@ import {
 import { chapter as buttonChapter, sections as buttonSections } from '../../button/sections.js';
 import { chapter as surfaceChapter, sections as surfaceSections } from '../../surface/sections.js';
 import { chapter as iconChapter, sections as iconSections } from '../../icon/sections.js';
-import { chapter as themeChapter, sections as themeSections } from '../../theme/sections.js';
+import { chapter as libraryChapter, sections as librarySections } from '../../library/sections.js';
 import {
 	chapter as checkboxChapter,
 	sections as checkboxSections
@@ -51,77 +51,79 @@ import {
 
 export const navigation = [
 	{
+		title: 'Overview',
+		links: [{ title: introductionChapter, href: '' }, demoNavigation]
+	},
+	{
 		title: 'Get started',
-		links: [{ title: introductionChapter, href: resolve('/(docs)') }]
-	},
-	{
-		title: 'Config',
+		sort: false,
 		links: [
-			{ title: configChapter, href: resolve('/(docs)/config') },
-			{ title: themeChapter, href: resolve('/(docs)/theme') }
+			{ title: libraryChapter, href: 'library' },
+			{ title: cliChapter, href: 'cli' },
+			{ title: themesChapter, href: 'themes' }
 		]
 	},
-	{
-		title: 'Skins',
-		links: [
-			{ title: 'All skins', href: resolve('/(skins)/skins') },
-			{ title: 'Todo', href: resolve('/(skins)/skins/(sites)/(todo)/todo') },
-			{ title: 'House Shop', href: resolve('/(skins)/skins/(sites)/(house-shop)/house-shop') },
-			{ title: 'RunnerAI', href: resolve('/(skins)/skins/(sites)/(runner-ai)/runner-ai') }
-		]
-	},
-	{
-		title: 'Themes',
-		links: [{ title: themesChapter, href: resolve('/(docs)/themes') }]
-	},
-
 	{
 		title: 'Base',
 		links: [
-			{ title: buttonChapter, href: resolve('/(docs)/button') },
-			{ title: iconChapter, href: resolve('/(docs)/icon') },
-			{ title: pillChapter, href: resolve('/(docs)/pill') },
-			{ title: pillGroupChapter, href: resolve('/(docs)/pill-group') },
-			{ title: tabsChapter, href: resolve('/(docs)/tabs') },
-			{ title: treeViewChapter, href: resolve('/(docs)/tree-view') }
+			{ title: buttonChapter, href: 'button' },
+			{ title: iconChapter, href: 'icon' },
+			{ title: pillChapter, href: 'pill' },
+			{ title: pillGroupChapter, href: 'pill-group' },
+			{ title: tabsChapter, href: 'tabs' },
+			{ title: treeViewChapter, href: 'tree-view' }
 		]
 	},
 	{
 		title: 'Feedback',
 		links: [
-			{ title: progressChapter, href: resolve('/(docs)/progress') },
-			{ title: spinnerChapter, href: resolve('/(docs)/spinner') }
+			{ title: progressChapter, href: 'progress' },
+			{ title: spinnerChapter, href: 'spinner' }
 		]
 	},
 	{
 		title: 'Inputs',
 		links: [
-			{ title: checkboxChapter, href: resolve('/(docs)/checkbox') },
-			{ title: comboboxChapter, href: resolve('/(docs)/combobox') },
-			{ title: pillChoiceGroupChapter, href: resolve('/(docs)/pill-choice-group') },
-			{ title: selectChapter, href: resolve('/(docs)/select') },
-			{ title: switchChapter, href: resolve('/(docs)/switch') },
-			{ title: textAreaChapter, href: resolve('/(docs)/text-area') },
-			{ title: textInputChapter, href: resolve('/(docs)/text-input') }
+			{ title: checkboxChapter, href: 'checkbox' },
+			{ title: comboboxChapter, href: 'combobox' },
+			{ title: pillChoiceGroupChapter, href: 'pill-choice-group' },
+			{ title: selectChapter, href: 'select' },
+			{ title: switchChapter, href: 'switch' },
+			{ title: textAreaChapter, href: 'text-area' },
+			{ title: textInputChapter, href: 'text-input' }
 		]
 	},
 	{
 		title: 'Surfaces',
 		links: [
-			{ title: dialogChapter, href: resolve('/(docs)/dialog') },
-			{ title: popoverChapter, href: resolve('/(docs)/popover') },
-			{ title: surfaceChapter, href: resolve('/(docs)/surface') }
+			{ title: dialogChapter, href: 'dialog' },
+			{ title: popoverChapter, href: 'popover' },
+			{ title: surfaceChapter, href: 'surface' }
 		]
 	}
 ] as const;
+
+export interface NavigationPage {
+	title: string;
+	href: (typeof navigation)[number]['links'][number]['href'];
+	children?: readonly NavigationPage[];
+}
 
 export interface PageSection {
 	id: string;
 	title: string;
 }
 
+export interface NavigationItem {
+	id: string;
+	label: string;
+	sections?: readonly PageSection[];
+	children?: NavigationItem[];
+}
+
 export const pageSections: Record<string, readonly PageSection[]> = {
-	'/config': configSections,
+	'/cli': cliSections,
+	'/library': librarySections,
 	'/themes': themesSections,
 	'/': introductionSections,
 	'/button': buttonSections,
@@ -142,5 +144,5 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/pill': pillSections,
 	'/pill-group': pillGroupSections,
 	'/pill-choice-group': pillChoiceGroupSections,
-	'/theme': themeSections
+	...demoPageSections
 };

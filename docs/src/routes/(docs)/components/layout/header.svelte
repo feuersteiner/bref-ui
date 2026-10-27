@@ -40,7 +40,7 @@
 			/>
 		{/if}
 
-		<a href={resolve('/(docs)')} aria-label="Bref documentation home" data-logo>
+		<a href={resolve('')} aria-label="Bref documentation home" data-logo>
 			<img src={asset('favicon.svg')} alt="" width="40" height="40" />
 
 			<strong>
@@ -48,7 +48,7 @@
 				ui
 			</strong>
 		</a>
-		<p>Svelte components, simply.</p>
+		<p>A Svelte-first, human-first, agent-first UI library.</p>
 		<ThemeModeToggle mode={theme.mode} />
 		<span data-actions>
 			<GithubStars />
@@ -69,7 +69,9 @@
 		top: 0;
 		z-index: 2;
 		height: 72px;
-		background: color-mix(in srgb, var(--color-background) 94%, transparent);
+		background: color-mix(in srgb, var(--color-background) 80%, transparent);
+		-webkit-backdrop-filter: blur(16px);
+		backdrop-filter: blur(16px);
 	}
 	header > div {
 		width: min(1128px, calc(100vw - 48px));
@@ -106,6 +108,8 @@
 	}
 	header p {
 		color: var(--color-muted);
+		font-size: 0.875rem;
+		opacity: 0.65;
 	}
 	@supports (width: round(down, 100px, 24px)) {
 		header > div {
