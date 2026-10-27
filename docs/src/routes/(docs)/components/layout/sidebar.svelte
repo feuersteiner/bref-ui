@@ -3,24 +3,30 @@
 	import { page } from '$app/state';
 	import { TreeView } from 'bref-ui';
 	import SidebarNode from './sidebar-node.svelte';
-	import { navigation, pageSections } from './navigation.js';
+	import {
+		navigation,
+		pageSections,
+		type NavigationItem,
+		type NavigationPage
+	} from './navigation.js';
+
+	const navigationItem = (link: NavigationPage): NavigationItem => {
+		return {
+			id: link.href === '' ? resolve('') : resolve(link.href),
+			label: link.title,
+			sections: pageSections[`/${link.href}`] ?? [],
+			children: link.children?.map(navigationItem)
+		};
+	};
 
 	let groups = $derived(
 		navigation.map((group) => ({
 			...group,
 			items: [...group.links]
 				.sort((a, b) => a.title.localeCompare(b.title, 'en'))
-				.map((link) => ({
-					id: resolve(link.href),
-					label: link.title,
-					href: link.href
-				}))
+				.map(navigationItem)
 		}))
 	);
-	const activeLink = $derived(
-		groups.flatMap((group) => group.items).find((link) => link.id === page.url.pathname)
-	);
-	const activeSections = $derived(activeLink ? (pageSections[`/${activeLink.href}`] ?? []) : []);
 </script>
 
 <nav aria-label="Documentation">
@@ -29,11 +35,7 @@
 			<h2>{group.title}</h2>
 			<TreeView items={group.items} label={group.title}>
 				{#snippet node(item)}
-					<SidebarNode
-						{item}
-						current={item.id === page.url.pathname}
-						sections={item.id === page.url.pathname ? activeSections : []}
-					/>
+					<SidebarNode {item} currentPath={page.url.pathname} />
 				{/snippet}
 			</TreeView>
 		</section>
