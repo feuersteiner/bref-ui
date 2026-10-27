@@ -9,7 +9,7 @@
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';
 	import PlaygroundGroup from '../components/playground-group.svelte';
-	import ThemePreview from './theme-preview.svelte';
+	import ThemePreview from '../theme/theme-preview.svelte';
 	import { Button, Icon, Select, TextInput, Checkbox } from 'bref-ui';
 	import type { ThemeMode, ThemeProps, Palette, Color } from 'bref-ui/types';
 	const theme = getContext<{ mode: ThemeMode; palette: NonNullable<ThemeProps['palette']> }>(
@@ -92,6 +92,13 @@
 	);
 	const variants = ['neutral', 'soft', 'filled'] as const;
 	const noop = () => undefined;
+	const packageSource = `<script>
+  import { Theme, Button } from 'bref-ui';
+<${'/'}script>
+
+<Theme>
+  <Button label="Save" variant="filled" color="primary" />
+</Theme>`;
 	const source = `<script lang="ts">
   import { Select, Theme, ThemeModeToggle } from 'bref-ui';
   import type { ThemeMode, ThemeProps, Palette, Color } from 'bref-ui/types';
@@ -148,9 +155,20 @@
 
 <Page
 	title={chapter}
-	description="An opt-in theme setup with light, dark and system modes, semantic palette variables, a global reset and the Material Symbols font. ThemeModeToggle sets color-scheme metadata for your own mode control."
+	description="Install Bref as a library, import its components and customize the shared theme."
 >
 	<Section {...sections[0]}>
+		<pre aria-label="npm installation command"><code>npm install bref-ui</code></pre>
+		<p>
+			Import components from <code>bref-ui</code>
+			and types from
+			<code>bref-ui/types</code>
+			. Render Theme once at the application root for palette tokens, the global reset and Material Symbols.
+			Components do not load Theme automatically.
+		</p>
+		<CodeSnippet source={packageSource} label="Packaged Theme and Button usage" />
+	</Section>
+	<Section {...sections[1]}>
 		<div data-control>
 			<label for="theme-theme-mode">Demo theme</label>
 			<Select
@@ -176,9 +194,9 @@
 		</div>
 		<CodeSnippet {source} label="Theme usage code" />
 	</Section>
-	<Section {...sections[1]}>
+	<Section {...sections[2]}>
 		<p>
-			Try a shared palette or separate light and dark colors. Changes apply to the whole demo site
+			Try a shared palette or separate light and dark colors. Changes apply to the documentation
 			while this page is open.
 		</p>
 		<Playground
@@ -260,8 +278,8 @@ ${variants.map((variant) => `  <Button variant="${variant}" color="primary" labe
 			</PlaygroundGroup>
 		</Playground>
 	</Section>
-	<Section {...sections[2]}><PropTable {props} /></Section>
-	<Section {...sections[3]}>
+	<Section {...sections[3]}><PropTable {props} /></Section>
+	<Section {...sections[4]}>
 		<p>
 			Use the navbar theme control to test every example in light, dark or system mode. System
 			follows the browser preference.
@@ -283,7 +301,7 @@ ${variants.map((variant) => `  <Button variant="${variant}" color="primary" labe
 			on a container to select its palette.
 		</p>
 	</Section>
-	<Section {...sections[4]}>
+	<Section {...sections[5]}>
 		<p>
 			The active palette includes foreground and background colors, accents and semantic status
 			colors.
@@ -297,7 +315,7 @@ ${variants.map((variant) => `  <Button variant="${variant}" color="primary" labe
 			{/each}
 		</div>
 	</Section>
-	<Section {...sections[5]}>
+	<Section {...sections[6]}>
 		<p>
 			Pass palette to the application-root Theme. Omitted roles retain defaults. Existing CSS
 			overrides still apply; verify contrast for custom colors.
@@ -353,6 +371,13 @@ ${variants.map((variant) => `  <Button variant="${variant}" color="primary" labe
 </Page>
 
 <style>
+	pre {
+		max-width: 100%;
+		overflow: auto;
+		padding: 24px;
+		background: var(--docs-code-background);
+		border-radius: 12px;
+	}
 	[data-demo='row'] {
 		display: flex;
 		flex-wrap: wrap;

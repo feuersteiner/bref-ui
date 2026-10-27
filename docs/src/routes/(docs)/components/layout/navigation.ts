@@ -1,5 +1,6 @@
-import type { Path } from '$app/types';
 import { demoNavigation, demoPageSections } from '../../demo/catalog.js';
+import { chapter as cliChapter, sections as cliSections } from '../../cli/sections.js';
+import { chapter as themesChapter, sections as themesSections } from '../../themes/sections.js';
 import {
 	chapter as comboboxChapter,
 	sections as comboboxSections
@@ -13,7 +14,7 @@ import {
 import { chapter as buttonChapter, sections as buttonSections } from '../../button/sections.js';
 import { chapter as surfaceChapter, sections as surfaceSections } from '../../surface/sections.js';
 import { chapter as iconChapter, sections as iconSections } from '../../icon/sections.js';
-import { chapter as themeChapter, sections as themeSections } from '../../theme/sections.js';
+import { chapter as libraryChapter, sections as librarySections } from '../../library/sections.js';
 import {
 	chapter as checkboxChapter,
 	sections as checkboxSections
@@ -50,11 +51,16 @@ import {
 
 export const navigation = [
 	{
+		title: 'Overview',
+		links: [{ title: introductionChapter, href: '' }, demoNavigation]
+	},
+	{
 		title: 'Get started',
+		sort: false,
 		links: [
-			{ title: introductionChapter, href: '' },
-			{ title: themeChapter, href: 'theme' },
-			demoNavigation
+			{ title: libraryChapter, href: 'library' },
+			{ title: cliChapter, href: 'cli' },
+			{ title: themesChapter, href: 'themes' }
 		]
 	},
 	{
@@ -99,7 +105,7 @@ export const navigation = [
 
 export interface NavigationPage {
 	title: string;
-	href: Exclude<Path, `/${string}` | `${string}/`>;
+	href: (typeof navigation)[number]['links'][number]['href'];
 	children?: readonly NavigationPage[];
 }
 
@@ -116,6 +122,9 @@ export interface NavigationItem {
 }
 
 export const pageSections: Record<string, readonly PageSection[]> = {
+	'/cli': cliSections,
+	'/library': librarySections,
+	'/themes': themesSections,
 	'/': introductionSections,
 	'/button': buttonSections,
 	'/icon': iconSections,
@@ -135,6 +144,5 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/pill': pillSections,
 	'/pill-group': pillGroupSections,
 	'/pill-choice-group': pillChoiceGroupSections,
-	'/theme': themeSections,
 	...demoPageSections
 };

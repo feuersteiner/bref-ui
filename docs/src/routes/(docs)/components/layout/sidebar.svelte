@@ -22,9 +22,10 @@
 	let groups = $derived(
 		navigation.map((group) => ({
 			...group,
-			items: [...group.links]
-				.sort((a, b) => a.title.localeCompare(b.title, 'en'))
-				.map(navigationItem)
+			items: ('sort' in group && group.sort === false
+				? [...group.links]
+				: [...group.links].sort((a, b) => a.title.localeCompare(b.title, 'en'))
+			).map(navigationItem)
 		}))
 	);
 </script>

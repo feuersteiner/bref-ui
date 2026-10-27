@@ -29,6 +29,7 @@ Documentation routes and `/llms.txt` references live in `docs/src/routes/(docs)`
 `(docs)` is only a filesystem layout group; public URLs remain `/`, `/button`,
 `/llms.txt`, etc. Build navigation with Kit's `resolve()` using base-relative
 pathnames (`''` for `/`, `'button'` for `/button`).
+Use the package (`/library`) covers setup and Theme; Own the code (`/cli`) covers copied source.
 
 Whenever a public component is added, changed or removed, update its documentation
 page's `props` array, navigation and its `src/routes/(docs)/llms.txt/<component>.ts` reference
