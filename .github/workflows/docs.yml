@@ -3,11 +3,6 @@ name: Deploy documentation
 on:
   push:
     branches: [main]
-    paths:
-      - 'docs/**'
-      - 'core/package.json'
-      - 'themes/package.json'
-      - '.github/workflows/docs.yml'
   workflow_dispatch:
 
 permissions:
