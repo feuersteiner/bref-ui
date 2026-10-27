@@ -1,5 +1,5 @@
 export default {
 	props: 'palette?: Palette | { dark: Palette; light: Palette } = {}; children?: Snippet',
-	purpose: 'Set up palettes, resets and icon fonts at the app root.',
+	purpose: 'Use the packaged Theme to set up palettes, resets and icon fonts at the app root.',
 	example: '<Theme />'
 };
