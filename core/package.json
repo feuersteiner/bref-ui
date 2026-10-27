@@ -34,16 +34,16 @@
 	"sideEffects": [
 		"**/*.css"
 	],
-	"svelte": "./dist/index.js",
-	"types": "./dist/index.d.ts",
+	"svelte": "./src/lib/index.ts",
+	"types": "./src/lib/index.ts",
 	"type": "module",
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"svelte": "./dist/index.js"
+			"types": "./src/lib/index.ts",
+			"svelte": "./src/lib/index.ts"
 		},
 		"./types": {
-			"types": "./dist/types.d.ts"
+			"types": "./src/lib/types.ts"
 		}
 	},
 	"peerDependencies": {
@@ -56,7 +56,6 @@
 		"@sveltejs/kit": "^3.1.0",
 		"@sveltejs/package": "^3.0.1",
 		"@sveltejs/vite-plugin-svelte": "^7.3.1",
-		"@types/bun": "^1.4.2",
 		"@types/estree": "^1.0.9",
 		"@types/node": "^22",
 		"publint": "^0.3.21",
