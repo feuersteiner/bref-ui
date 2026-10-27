@@ -146,4 +146,4 @@ Single-file stages use named files. Stages with supporting files use a folder wh
 `index.ts` is the sole public entry. Each functional module exposes one public function.
 An entry file contains only its orchestration function, calling named steps in sibling
 files. General helpers live in the stage's `utils.ts`; types stay within their responsibility.
-See [CLI contribution rules](../AGENTS.md#4-copy-cli).
+See [CLI contribution rules](AGENTS.md).

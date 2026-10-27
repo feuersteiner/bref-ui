@@ -13,10 +13,10 @@ contain the full contribution and review rules.
 
 ## Package guidance
 
-- [Core](core/AGENTS.md): use canonical component sources, native attributes/events,
+- [Core](core/AGENTS.md) and [CLI rules](core/cli/AGENTS.md): use canonical component sources, native attributes/events,
   agreed tokens and accessible behavior. Keep CLI stages focused, preview copies and
   require explicit overwrite decisions.
-- [Docs](docs/AGENTS.md): keep the site static, import public package exports and use
+- [Docs](docs/AGENTS.md) and [route rules](<docs/src/routes/(docs)/AGENTS.md>): keep the site static, import public package exports and use
   Kit path helpers. Cover APIs, variants, interactions and accessibility in galleries;
   keep navigation and `/llms.txt` current.
 - [Themes](themes/AGENTS.md): agree on theme contracts, isolate styles and entry points,
