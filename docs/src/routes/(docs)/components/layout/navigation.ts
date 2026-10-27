@@ -1,5 +1,5 @@
 import { demoNavigation, demoPageSections } from '../../demo/catalog.js';
-import { chapter as configChapter, sections as configSections } from '../../config/sections.js';
+import { chapter as cliChapter, sections as cliSections } from '../../cli/sections.js';
 import { chapter as themesChapter, sections as themesSections } from '../../themes/sections.js';
 import {
 	chapter as comboboxChapter,
@@ -14,7 +14,7 @@ import {
 import { chapter as buttonChapter, sections as buttonSections } from '../../button/sections.js';
 import { chapter as surfaceChapter, sections as surfaceSections } from '../../surface/sections.js';
 import { chapter as iconChapter, sections as iconSections } from '../../icon/sections.js';
-import { chapter as themeChapter, sections as themeSections } from '../../theme/sections.js';
+import { chapter as libraryChapter, sections as librarySections } from '../../library/sections.js';
 import {
 	chapter as checkboxChapter,
 	sections as checkboxSections
@@ -51,19 +51,17 @@ import {
 
 export const navigation = [
 	{
-		title: 'Get started',
+		title: 'Overview',
 		links: [{ title: introductionChapter, href: '' }, demoNavigation]
 	},
 	{
-		title: 'Config',
+		title: 'Get started',
+		sort: false,
 		links: [
-			{ title: configChapter, href: 'config' },
-			{ title: themeChapter, href: 'theme' }
+			{ title: libraryChapter, href: 'library' },
+			{ title: cliChapter, href: 'cli' },
+			{ title: themesChapter, href: 'themes' }
 		]
-	},
-	{
-		title: 'Themes',
-		links: [{ title: themesChapter, href: 'themes' }]
 	},
 	{
 		title: 'Base',
@@ -124,7 +122,8 @@ export interface NavigationItem {
 }
 
 export const pageSections: Record<string, readonly PageSection[]> = {
-	'/config': configSections,
+	'/cli': cliSections,
+	'/library': librarySections,
 	'/themes': themesSections,
 	'/': introductionSections,
 	'/button': buttonSections,
@@ -145,6 +144,5 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/pill': pillSections,
 	'/pill-group': pillGroupSections,
 	'/pill-choice-group': pillChoiceGroupSections,
-	'/theme': themeSections,
 	...demoPageSections
 };
