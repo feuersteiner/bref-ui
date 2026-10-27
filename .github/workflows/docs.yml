@@ -8,7 +8,6 @@ on:
       - 'core/package.json'
       - 'themes/package.json'
       - '.github/workflows/docs.yml'
-      - '.github/scripts/changes.mjs'
   workflow_dispatch:
 
 permissions:
@@ -19,27 +18,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    outputs:
-      docs: ${{ steps.changes.outputs.docs }}
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - uses: actions/setup-node@v7
-        with:
-          node-version: '24'
-          package-manager-cache: false
-      - id: changes
-        env:
-          BEFORE: ${{ github.event.before }}
-        run: node .github/scripts/changes.mjs
-
   build:
-    needs: changes
-    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.docs == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -57,11 +36,7 @@ jobs:
           bun-version: '1.3.4'
       - run: bun install --frozen-lockfile
       - uses: actions/configure-pages@v5
-        id: pages
-      - run: bun run build:packages
       - name: Build static docs
-        env:
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}
         run: bun run --cwd docs build
       - uses: actions/upload-pages-artifact@v3
         with:

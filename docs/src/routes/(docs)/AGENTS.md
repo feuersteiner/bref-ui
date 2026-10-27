@@ -26,8 +26,16 @@ src/routes/(docs)/
     sections.ts
 ```
 
-- SvelteKit uses `src/routes` as its route root; `(docs)` owns the docs shell.
+- SvelteKit uses `src/routes` as its route root; `(docs)` groups the docs shell in
+  the filesystem only. Public URLs remain `/`, `/button`, etc. Build navigation
+  with Kit's `resolve()` using base-relative pathnames (`''`, `'button'`, etc.).
 - Each documentation page lives in `<topic>/+page.svelte`.
+- Get started contains Use the package (`library/`), Own the code (`cli/`) and Use a prebuilt
+  theme (`themes/`), in that declared order. Keep Theme API documentation and its playground
+  in `library/`; `theme/` and `config/` redirect to the canonical guides.
+- Keep the home page and Demo (`demo/`) under Overview. Demo's index and palette previews use
+  the docs shell and scoped palettes. Open app demos in new tabs with standalone layouts and
+  a footer link back to Bref docs.
 - `+layout.svelte` composes the shared layout component.
 - Shared documentation components belong in `components/`.
 - Implement page-specific examples directly in `<topic>/+page.svelte`.
@@ -69,7 +77,7 @@ and shared navigation/ToC; do not duplicate chapter names or section definitions
 - Show matrices for combinations that affect rendering (such as color × variant,
   size × kind, and icon size × color × fill).
 - Keep the main theme control in the documentation navbar. All pages and demos follow that shared mode.
-  The theme page may include a second control bound to the same state. Do not
+  The library guide may include a second control bound to the same state. Do not
   duplicate demos per theme or force contrasting demo backgrounds; switch the shared
   control to test light, dark and system modes.
 - Provide local interactive controls to combine props and test scenarios beyond

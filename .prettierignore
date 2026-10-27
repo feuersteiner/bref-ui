@@ -15,4 +15,5 @@ bun.lockb
 # Generated package metadata and local refactor notes
 core/readme.md
 core/LICENSE
+themes/LICENSE
 refactor-plan.md
