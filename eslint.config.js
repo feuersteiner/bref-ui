@@ -51,17 +51,7 @@ export default defineConfig(
 				'error',
 				{ '**/src/**/': 'KEBAB_CASE' },
 				{
-					ignoreWords: [
-						'llms.txt',
-						'(docs)',
-						'(skins)',
-						'(sites)',
-						'(themes)',
-						'(todo)',
-						'(house-shop)',
-						'(runner-ai)',
-						'[theme]'
-					]
+					ignoreWords: ['llms.txt', '(docs)', '(themes)', '[theme]']
 				}
 			]
 		}
@@ -69,7 +59,7 @@ export default defineConfig(
 	{
 		// Keep imported demos and theme implementations in their original authoring style.
 		files: [
-			'docs/src/routes/(skins)/**/*.{ts,svelte}',
+			'docs/src/routes/(docs)/demo/**/*.{ts,svelte}',
 			'docs/src/routes/(themes)/**/*.{ts,svelte}',
 			'themes/src/lib/**/*.{ts,svelte}'
 		],
