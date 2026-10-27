@@ -34,22 +34,15 @@ jobs:
       - run: bun run check
       - run: bun run lint
       - run: bun run build
-      - name: Pack and inspect
-        working-directory: themes
-        run: |
-          PACKAGE_VERSION=$(npm pkg get version --workspaces=false | tr -d '"')
-          PACKAGE_FILE="bref-ui-themes-$PACKAGE_VERSION.tgz"
-          echo "PACKAGE_FILE=$PACKAGE_FILE" >> "$GITHUB_ENV"
-          echo "RELEASE_TAG=bref-ui-themes@$PACKAGE_VERSION" >> "$GITHUB_ENV"
-          npm pack --ignore-scripts --pack-destination "$RUNNER_TEMP"
-          tar -tzf "$RUNNER_TEMP/$PACKAGE_FILE"
       - name: Publish
         working-directory: themes
-        run: npm publish "$RUNNER_TEMP/$PACKAGE_FILE" --access public --provenance
+        run: npm publish --ignore-scripts --access public --provenance
       - name: Create package release
+        working-directory: themes
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          RELEASE_TAG="bref-ui-themes@$(npm pkg get version --workspaces=false | tr -d '"')"
           if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
             gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --title "$RELEASE_TAG" --generate-notes
           fi
