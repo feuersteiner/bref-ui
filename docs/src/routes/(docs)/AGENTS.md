@@ -30,6 +30,9 @@ src/routes/(docs)/
   the filesystem only. Public URLs remain `/`, `/button`, etc. Build navigation
   with Kit's `resolve()` using base-relative pathnames (`''`, `'button'`, etc.).
 - Each documentation page lives in `<topic>/+page.svelte`.
+- Keep Demo (`demo/`) beside Theme in docs navigation, with its index and palette previews in the
+  docs shell. Scope preview palettes without changing the documentation theme. Open app demos
+  in new tabs with standalone layouts and a footer link back to Bref docs.
 - `+layout.svelte` composes the shared layout component.
 - Shared documentation components belong in `components/`.
 - Implement page-specific examples directly in `<topic>/+page.svelte`.

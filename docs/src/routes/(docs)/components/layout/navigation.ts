@@ -1,3 +1,5 @@
+import type { Path } from '$app/types';
+import { demoNavigation, demoPageSections } from '../../demo/catalog.js';
 import {
 	chapter as comboboxChapter,
 	sections as comboboxSections
@@ -51,7 +53,8 @@ export const navigation = [
 		title: 'Get started',
 		links: [
 			{ title: introductionChapter, href: '' },
-			{ title: themeChapter, href: 'theme' }
+			{ title: themeChapter, href: 'theme' },
+			demoNavigation
 		]
 	},
 	{
@@ -94,9 +97,22 @@ export const navigation = [
 	}
 ] as const;
 
+export interface NavigationPage {
+	title: string;
+	href: Exclude<Path, `/${string}` | `${string}/`>;
+	children?: readonly NavigationPage[];
+}
+
 export interface PageSection {
 	id: string;
 	title: string;
+}
+
+export interface NavigationItem {
+	id: string;
+	label: string;
+	sections?: readonly PageSection[];
+	children?: NavigationItem[];
 }
 
 export const pageSections: Record<string, readonly PageSection[]> = {
@@ -119,5 +135,6 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/pill': pillSections,
 	'/pill-group': pillGroupSections,
 	'/pill-choice-group': pillChoiceGroupSections,
-	'/theme': themeSections
+	'/theme': themeSections,
+	...demoPageSections
 };

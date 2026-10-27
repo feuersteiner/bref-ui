@@ -9,6 +9,7 @@
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';
 	import PlaygroundGroup from '../components/playground-group.svelte';
+	import ThemePreview from './theme-preview.svelte';
 	import { Button, Icon, Select, TextInput, Checkbox } from 'bref-ui';
 	import type { ThemeMode, ThemeProps, Palette, Color } from 'bref-ui/types';
 	const theme = getContext<{ mode: ThemeMode; palette: NonNullable<ThemeProps['palette']> }>(
@@ -194,16 +195,7 @@ ${variants.map((variant) => `  <Button variant="${variant}" color="primary" labe
 </Theme>`}
 		>
 			{#snippet preview()}
-				<div data-theme-preview>
-					<Icon name="check_circle" color="success" label="Complete" size="large" />
-					{#each variants as variant (variant)}<Button
-							{variant}
-							color="primary"
-							label={variant}
-							onClick={noop}
-						/>{/each}
-					<p>Readable text and semantic colors follow the shared theme.</p>
-				</div>
+				<ThemePreview />
 			{/snippet}
 			{#snippet status()}<p role="status">
 					Contrast — {contrastResults.join('; ')}. Ratios cover normal text and the primary filled
@@ -361,18 +353,6 @@ ${variants.map((variant) => `  <Button variant="${variant}" color="primary" labe
 </Page>
 
 <style>
-	[data-theme-preview] {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: center;
-		gap: 16px;
-	}
-	[data-theme-preview] p {
-		flex-basis: 100%;
-		text-align: center;
-	}
-
 	[data-demo='row'] {
 		display: flex;
 		flex-wrap: wrap;
