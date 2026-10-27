@@ -1,15 +1,31 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { TreeView } from 'bref-ui';
 	import SidebarNode from './sidebar-node.svelte';
-	import { navigation, pageSections } from './navigation.js';
+	import {
+		navigation,
+		pageSections,
+		type NavigationItem,
+		type NavigationPage
+	} from './navigation.js';
+
+	const navigationItem = (link: NavigationPage): NavigationItem => {
+		return {
+			id: link.href === '' ? resolve('') : resolve(link.href),
+			label: link.title,
+			sections: pageSections[`/${link.href}`] ?? [],
+			children: link.children?.map(navigationItem)
+		};
+	};
 
 	let groups = $derived(
 		navigation.map((group) => ({
 			...group,
-			items: [...group.links]
-				.sort((a, b) => a.title.localeCompare(b.title, 'en'))
-				.map((link) => ({ id: link.href, label: link.title }))
+			items: ('sort' in group && group.sort === false
+				? [...group.links]
+				: [...group.links].sort((a, b) => a.title.localeCompare(b.title, 'en'))
+			).map(navigationItem)
 		}))
 	);
 </script>
@@ -20,13 +36,7 @@
 			<h2>{group.title}</h2>
 			<TreeView items={group.items} label={group.title}>
 				{#snippet node(item)}
-					<SidebarNode
-						{item}
-						current={item.id === page.url.pathname}
-						sections={item.id === page.url.pathname
-							? (pageSections[page.route.id?.replace('/(docs)', '') || '/'] ?? [])
-							: []}
-					/>
+					<SidebarNode {item} currentPath={page.url.pathname} />
 				{/snippet}
 			</TreeView>
 		</section>

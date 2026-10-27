@@ -39,22 +39,22 @@
 		font: 400 16px / 24px var(--font-text);
 		font-synthesis: none;
 	}
-	:global([data-docs-root] h1),
-	:global([data-docs-root] h2),
-	:global([data-docs-root] h3) {
+	:global(:where([data-docs-root] h1)),
+	:global(:where([data-docs-root] h2)),
+	:global(:where([data-docs-root] h3)) {
 		font-family: var(--font-display);
 		font-weight: 400;
 	}
-	:global([data-docs-root] h1) {
+	:global(:where([data-docs-root] h1)) {
 		font-weight: 700;
 		font-size: clamp(36px, 5vw, 64px);
 		line-height: 1.05;
 	}
-	:global([data-docs-root] h2) {
+	:global(:where([data-docs-root] h2)) {
 		font-size: clamp(28px, 3vw, 36px);
 		line-height: 1.2;
 	}
-	:global([data-docs-root] h3) {
+	:global(:where([data-docs-root] h3)) {
 		font-size: 24px;
 		line-height: 24px;
 	}
@@ -64,7 +64,7 @@
 		}
 	}
 	@media (max-width: 575px) {
-		:global([data-docs-root] h2) {
+		:global(:where([data-docs-root] h2)) {
 			font-size: 24px;
 			line-height: 24px;
 		}
