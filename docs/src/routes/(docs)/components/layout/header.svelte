@@ -48,7 +48,7 @@
 				ui
 			</strong>
 		</a>
-		<p>Svelte components, simply.</p>
+		<p>A Svelte-first, human-first, agent-first UI library.</p>
 		<ThemeModeToggle mode={theme.mode} />
 		<span data-actions>
 			<GithubStars />
@@ -108,6 +108,8 @@
 	}
 	header p {
 		color: var(--color-muted);
+		font-size: 0.875rem;
+		opacity: 0.65;
 	}
 	@supports (width: round(down, 100px, 24px)) {
 		header > div {
