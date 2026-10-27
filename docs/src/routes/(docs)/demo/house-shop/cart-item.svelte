@@ -54,9 +54,9 @@
 			/>
 		</div>
 	</td>
-	<td data-cart-item-subtotal
-		><div data-cart-cell><strong>{money(item.product.price * item.quantity)}</strong></div></td
-	>
+	<td data-cart-item-subtotal>
+		<div data-cart-cell><strong>{money(item.product.price * item.quantity)}</strong></div>
+	</td>
 	<td data-cart-item-remove>
 		<div data-cart-cell>
 			<Button

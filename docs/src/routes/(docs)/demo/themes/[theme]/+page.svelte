@@ -36,12 +36,10 @@
 		fade(node, { duration: prefersReducedMotion.current ? 0 : 160 });
 </script>
 
-<svelte:head
-	><title>{name} palette | Bref</title><meta
-		name="description"
-		content={`Try the ${name} palette with canonical Bref components.`}
-	/></svelte:head
->
+<svelte:head>
+	<title>{name} palette | Bref</title>
+	<meta name="description" content={`Try the ${name} palette with canonical Bref components.`} />
+</svelte:head>
 
 <div data-theme-gallery>
 	<nav aria-label="Palette demonstrations">
@@ -50,8 +48,9 @@
 			{#each palettePages as palette (palette.href)}<a
 					href={resolve(palette.href)}
 					aria-current={palette.href === `demo/themes/${data.theme}` ? 'page' : undefined}
-					>{palette.title}</a
-				>{/each}
+				>
+					{palette.title}
+				</a>{/each}
 		</div>
 	</nav>
 	<div data-demo-content id="theme-content" tabindex="-1">
@@ -148,8 +147,8 @@
 		<section aria-labelledby={sections[1].id}>
 			<h2 id={sections[1].id}>{sections[1].title}</h2>
 			{#each ['neutral', 'soft', 'filled'] as variant (variant)}<div data-actions>
-					<span>{variant}</span
-					>{#each ['small', 'medium', 'large'] as size (size)}<components.Button
+					<span>{variant}</span>
+					{#each ['small', 'medium', 'large'] as size (size)}<components.Button
 							label={size}
 							variant={variant as 'neutral' | 'soft' | 'filled'}
 							size={size as 'small' | 'medium' | 'large'}
@@ -168,27 +167,28 @@
 		<section aria-labelledby={sections[2].id}>
 			<h2 id={sections[2].id}>{sections[2].title}</h2>
 			<div data-form>
-				<label
-					><span>Project name</span><components.TextInput
-						bind:value
-						placeholder="A new project"
-					/></label
-				>
-				<label
-					><span>Project</span><components.Select
+				<label>
+					<span>Project name</span>
+					<components.TextInput bind:value placeholder="A new project" />
+				</label>
+				<label>
+					<span>Project</span>
+					<components.Select
 						items={[
 							{ id: 'one', label: 'First project' },
 							{ id: 'two', label: 'Second project' }
 						]}
 						bind:value={choice}
-					/></label
-				>
-				<label data-checkbox-label
-					><components.Checkbox bind:checked /><span>Ready for review</span></label
-				>
-				<label data-checkbox-label
-					><components.Checkbox disabled checked /><span>Disabled checkbox</span></label
-				>
+					/>
+				</label>
+				<label data-checkbox-label>
+					<components.Checkbox bind:checked />
+					<span>Ready for review</span>
+				</label>
+				<label data-checkbox-label>
+					<components.Checkbox disabled checked />
+					<span>Disabled checkbox</span>
+				</label>
 			</div>
 		</section>
 		<section aria-labelledby={sections[3].id}>
@@ -202,8 +202,10 @@
 			<components.Progress value={0.65} aria-label="Project progress" /><components.Surface
 				variant="soft"
 				radius="medium"
-				spacing="large"><p>Theme colors, native CSS and reusable components.</p></components.Surface
+				spacing="large"
 			>
+				<p>Theme colors, native CSS and reusable components.</p>
+			</components.Surface>
 		</section>
 	</div>
 	<components.Dialog
@@ -217,10 +219,9 @@
 			primary: { label: 'Done', onClick: () => (open = false) },
 			secondary: { label: 'Cancel', onClick: () => (open = false) }
 		}}
-		><p>
-			Keyboard focus stays in this dialog and returns to the trigger when it closes.
-		</p></components.Dialog
 	>
+		<p>Keyboard focus stays in this dialog and returns to the trigger when it closes.</p>
+	</components.Dialog>
 </div>
 
 <style>

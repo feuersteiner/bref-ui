@@ -41,5 +41,5 @@ export const filenameRules = {
 		{ '**/*.{js,ts,svelte}': 'KEBAB_CASE' },
 		{ ignoreMiddleExtensions: true }
 	],
-	'check-file/folder-naming-convention': ['error', { 'src/**/': 'KEBAB_CASE' }]
+	'check-file/folder-naming-convention': ['error', { '**/src/**/': 'KEBAB_CASE' }]
 };

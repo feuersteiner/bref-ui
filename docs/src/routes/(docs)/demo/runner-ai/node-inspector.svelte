@@ -41,18 +41,20 @@
 	<div data-working>
 		<span data-status-icon aria-hidden="true">
 			<span data-visible={state === 'running'}><Spinner size="small" /></span>
-			<span data-visible={state !== 'running'}
-				><Icon
+			<span data-visible={state !== 'running'}>
+				<Icon
 					name={state === 'done' ? 'check_circle' : state === 'cancelled' ? 'close' : 'schedule'}
-				/></span
-			>
+				/>
+			</span>
 		</span>
-		<span data-status aria-label={labels[state]}
-			>{#each Object.entries(labels) as [value, label] (value)}<span
+		<span data-status aria-label={labels[state]}>
+			{#each Object.entries(labels) as [value, label] (value)}<span
 					data-visible={state === value}
-					aria-hidden="true">{label}</span
-				>{/each}</span
-		>
+					aria-hidden="true"
+				>
+					{label}
+				</span>{/each}
+		</span>
 		<span data-percentage>{node.progress}%</span>
 	</div>
 	<div data-review-progress>

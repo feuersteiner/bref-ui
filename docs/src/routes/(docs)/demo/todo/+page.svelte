@@ -133,8 +133,8 @@
 							size="small"
 						/>
 					</div>
-					<span data-new-task-action
-						><Button
+					<span data-new-task-action>
+						<Button
 							label="New task"
 							data-new-task
 							size="small"
@@ -142,8 +142,8 @@
 							variant="filled"
 							color="primary"
 							onClick={() => edit()}
-						/></span
-					>
+						/>
+					</span>
 				</div>
 			</div>
 			<div data-task-tabs>

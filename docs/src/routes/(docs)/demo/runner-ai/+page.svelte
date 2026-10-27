@@ -119,7 +119,8 @@
 	/>
 </svelte:head>
 
-<div data-demo-content
+<div
+	data-demo-content
 	id="demo-content"
 	tabindex="-1"
 	data-run-workspace
@@ -141,7 +142,10 @@
 				<svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
 					<path d="M8 21V7h7a4.5 4.5 0 0 1 0 9H8m7 0 5 5" />
 				</svg>
-				<h1>Runner<span>AI</span></h1>
+				<h1>
+					Runner
+					<span>AI</span>
+				</h1>
 			</a>
 			<Button
 				label="New assessment"
@@ -168,11 +172,11 @@
 								onClick={() => selectRun(item.id)}
 							/>
 							<!-- TODO(bref-ui#70): Button trailing content/loading. Overlay the status inside the item until Button supports it. -->
-							{#if isActive}<span data-run-status={item.status} aria-hidden="true"
-									>{#if item.status === 'running'}<Spinner size="small" />{:else}{labels[
+							{#if isActive}<span data-run-status={item.status} aria-hidden="true">
+									{#if item.status === 'running'}<Spinner size="small" />{:else}{labels[
 											item.status
-										]}{/if}</span
-								>{/if}
+										]}{/if}
+								</span>{/if}
 						</li>
 					{/each}
 				</ul>
@@ -197,7 +201,8 @@
 				</div>
 				<div>
 					<p data-run-kicker>
-						Run {String(run.id).padStart(2, '0')} <span> / </span>
+						Run {String(run.id).padStart(2, '0')}
+						<span>/</span>
 						{labels[run.status]}
 					</p>
 					<h2>{run.title}</h2>

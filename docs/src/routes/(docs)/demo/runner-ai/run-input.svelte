@@ -78,23 +78,24 @@
 		/>
 	</div>
 	<div data-brief>
-		<p><strong>Audience</strong>{sample.audience}</p>
-		<p><strong>Campaign brief</strong>{sample.context}</p>
+		<p>
+			<strong>Audience</strong>
+			{sample.audience}
+		</p>
+		<p>
+			<strong>Campaign brief</strong>
+			{sample.context}
+		</p>
 	</div>
-	<label
-		>Copy to assess<TextArea
-			value={workflows[run.config.workflow].prompt}
-			rows={5}
-			readonly
-			wide
-		/></label
-	>
+	<label>
+		Copy to assess<TextArea value={workflows[run.config.workflow].prompt} rows={5} readonly wide />
+	</label>
 	<fieldset disabled={active}>
 		<legend>Review scope</legend>
 		<p>Select at least one check.</p>
 		<div data-options>
-			{#each sample.insights as insight (insight.field)}<label
-					><Checkbox
+			{#each sample.insights as insight (insight.field)}<label>
+					<Checkbox
 						bind:checked={
 							() => run.config.scope.includes(insight.field),
 							(checked) =>
@@ -105,11 +106,15 @@
 										: run.config.scope.filter((field) => field !== insight.field)
 								})
 						}
-					/><span>{insight.title}<small>{copyLabels[insight.field]}</small></span></label
-				>{/each}
-			{#each run.config.custom as step (step.name)}<span data-custom-step
-					><label
-						><Checkbox
+					/>
+					<span>
+						{insight.title}
+						<small>{copyLabels[insight.field]}</small>
+					</span>
+				</label>{/each}
+			{#each run.config.custom as step (step.name)}<span data-custom-step>
+					<label>
+						<Checkbox
 							bind:checked={
 								() => step.checked,
 								(checked) =>
@@ -120,15 +125,20 @@
 										)
 									})
 							}
-						/><span>{step.name}<small>Custom step</small></span></label
-					><Button
+						/>
+						<span>
+							{step.name}
+							<small>Custom step</small>
+						</span>
+					</label>
+					<Button
 						icon={{ name: 'close' }}
 						aria-label={`Remove ${step.name}`}
 						size="x-small"
 						variant="neutral"
 						onClick={() => removeStep(step.name)}
-					/></span
-				>{/each}
+					/>
+				</span>{/each}
 		</div>
 		<div data-add-step>
 			<TextInput

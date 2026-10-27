@@ -24,13 +24,13 @@
 			>
 				<span data-top>
 					<span data-icon aria-hidden="true">
-						<span data-visible={state === 'queued' || state === 'running'}
-							><Icon
+						<span data-visible={state === 'queued' || state === 'running'}>
+							<Icon
 								name={node.insightIndex === undefined
 									? 'checklist'
 									: samples[run.workflow].insights[node.insightIndex].icon}
-							/></span
-						>
+							/>
+						</span>
 						<span data-visible={state === 'done'}><Icon name="check" /></span>
 						<span data-visible={state === 'cancelled'}><Icon name="close" /></span>
 					</span>
@@ -45,9 +45,8 @@
 				</span>
 				<span data-progress>
 					<!-- TODO(bref-ui#67): Progress renders a <div>, which is invalid inside this <button>. -->
-					<Progress value={node.progress / 100} label={`${node.name} progress`} size="small" /><span
-						>{node.progress}%</span
-					>
+					<Progress value={node.progress / 100} label={`${node.name} progress`} size="small" />
+					<span>{node.progress}%</span>
 				</span>
 			</button>
 		</li>
