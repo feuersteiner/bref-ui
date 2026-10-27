@@ -19,8 +19,7 @@
 		"src/lib"
 	],
 	"sideEffects": [
-		"**/*.css",
-		"**/*.svelte"
+		"**/*.css"
 	],
 	"svelte": "./src/lib/index.ts",
 	"types": "./src/lib/index.ts",
@@ -32,8 +31,7 @@
 		}
 	},
 	"peerDependencies": {
-		"svelte": "^5.57.1",
-		"bref-ui": "^3.0.0"
+		"svelte": "^5.0.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^8.0.0",
@@ -64,8 +62,5 @@
 	"homepage": "https://github.com/feuersteiner/bref-ui#readme",
 	"bugs": {
 		"url": "https://github.com/feuersteiner/bref-ui/issues"
-	},
-	"dependencies": {
-		"@fontsource-variable/material-symbols-outlined": "^5.3.5"
 	}
 }

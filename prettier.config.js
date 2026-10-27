@@ -6,13 +6,7 @@ const config = {
 	printWidth: 100,
 	htmlWhitespaceSensitivity: 'ignore',
 	plugins: ['prettier-plugin-svelte'],
-	overrides: [
-		{ files: '*.svelte', options: { parser: 'svelte' } },
-		{
-			files: ['themes/src/lib/**/*.svelte', 'docs/src/routes/(themes)/**/*.svelte'],
-			options: { htmlWhitespaceSensitivity: 'css' }
-		}
-	]
+	overrides: [{ files: '*.svelte', options: { parser: 'svelte' } }]
 };
 
 export default config;

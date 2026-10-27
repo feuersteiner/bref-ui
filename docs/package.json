@@ -20,6 +20,7 @@
 		"@sveltejs/kit": "^3.1.0",
 		"@sveltejs/vite-plugin-svelte": "^7.3.1",
 		"bref-ui": "workspace:*",
+		"bref-ui-themes": "workspace:*",
 		"prettier": "^3.8.3",
 		"prettier-plugin-svelte": "^4.1.1",
 		"shiki": "^4.4.3",
@@ -27,8 +28,7 @@
 		"svelte-check": "^4.7.7",
 		"typescript": "^6.0.3",
 		"vite": "^8.3.5",
-		"@fontsource-variable/bricolage-grotesque": "^5.3.0",
-		"bref-ui-themes": "workspace:*"
+		"@fontsource-variable/bricolage-grotesque": "^5.3.0"
 	},
 	"imports": {
 		"#lib": "./src/lib/index.js",

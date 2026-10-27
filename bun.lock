@@ -69,9 +69,6 @@
     "themes": {
       "name": "bref-ui-themes",
       "version": "0.0.1",
-      "dependencies": {
-        "@fontsource-variable/material-symbols-outlined": "^5.3.5",
-      },
       "devDependencies": {
         "@sveltejs/adapter-auto": "^8.0.0",
         "@sveltejs/kit": "^3.1.0",
@@ -85,8 +82,7 @@
         "vite": "^8.3.5",
       },
       "peerDependencies": {
-        "bref-ui": "^3.0.0",
-        "svelte": "^5.57.1",
+        "svelte": "^5.0.0",
       },
     },
   },

@@ -15,7 +15,3 @@ a local library preview.
 
 Packing includes this README and a generated copy of the repository MIT license.
 Edit the root license; generated package copies are ignored.
-
-Theme pull requests add individual subpaths such as `bref-ui-themes/new-paris`.
-The root entry does not aggregate themes or load their CSS. The package peers on
-workspace-compatible Bref/Svelte versions and supplies the icons used by the imported themes.
