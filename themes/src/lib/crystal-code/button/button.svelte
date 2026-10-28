@@ -244,8 +244,6 @@
 		--glass-paint: var(--surface-fill, var(--color-background, white));
 		--glass-opacity: 20%;
 		--glass-blur: blur(0.75rem) saturate(120%);
-	}
-	.bref-glass {
 		background: var(--glass-paint);
 		color: var(--surface-content, var(--color-foreground, black));
 		box-shadow:
@@ -367,10 +365,6 @@
 		}
 	}
 
-	:focus-visible {
-		outline: 1px solid var(--color-primary);
-		outline-offset: 3px;
-	}
 	.bref-surface {
 		--surface-hover: 0%;
 		--surface-neutral-strength: 0%;
@@ -432,9 +426,6 @@
 		--internal-padding: 22px;
 		--internal-font-size: 14px;
 	}
-	.button[data-rounded] {
-		border-radius: 50%;
-	}
 	.button:is(:hover, :focus-visible, :active, [aria-pressed='true']) {
 		filter: none;
 	}
@@ -443,10 +434,6 @@
 	}
 	.button.bref-surface-filled:not(:disabled, [aria-disabled='true']):hover {
 		color: var(--surface-content);
-	}
-	div.bref-surface[data-color][data-size] {
-		border-radius: var(--crystal-code-radius);
-		--pill-choice-hover: 0%;
 	}
 	.bref-glass {
 		--glass-blur: blur(32px);
@@ -470,11 +457,6 @@
 		*::before {
 			animation: none !important;
 			transition: none !important;
-		}
-	}
-	@media (pointer: coarse) {
-		.button {
-			--internal-target: 44px;
 		}
 	}
 	@media (forced-colors: active) {
@@ -504,11 +486,5 @@
 	:focus-visible {
 		outline: 2px solid var(--color-primary);
 		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
-		}
 	}
 </style>
