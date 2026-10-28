@@ -1116,6 +1116,7 @@
 	}
 	.dialog-note {
 		margin-top: 24px;
+		margin-bottom: 8px;
 	}
 	.colophon span {
 		color: var(--color-muted);

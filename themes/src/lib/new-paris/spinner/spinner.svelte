@@ -109,6 +109,14 @@
 		border-radius: 0;
 		animation: np-print 1s ease-in-out infinite alternate;
 	}
+	@keyframes np-print {
+		from {
+			opacity: 0.35;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 	:focus-visible:not(input) {
 		outline: 2px solid var(--color-primary);
 		outline-offset: 4px;

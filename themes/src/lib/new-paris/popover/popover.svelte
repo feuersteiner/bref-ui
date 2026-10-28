@@ -81,7 +81,7 @@
 		width: fit-content;
 		min-width: min(anchor-size(width), calc(100vw - 1rem));
 		max-width: calc(100vw - 1rem);
-		max-height: min(24rem, calc(100% - 0.75rem));
+		max-height: min(24rem, calc(100vh - 0.75rem));
 		margin: 0.375rem 0;
 		padding: 0;
 		overflow: visible;

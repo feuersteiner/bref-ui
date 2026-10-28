@@ -157,6 +157,7 @@
 	section {
 		margin-block: 3rem;
 		padding-block: 1.5rem;
+		padding-inline: var(--np-page-gutter, 24px);
 		border-block-start: 1px solid color-mix(in srgb, var(--color-foreground) 20%, transparent);
 	}
 	h2,

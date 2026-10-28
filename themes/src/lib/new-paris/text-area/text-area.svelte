@@ -433,7 +433,7 @@
 		background: var(--np-paper);
 		--surface-border: var(--np-rule);
 	}
-	:focus-visible:not(input) {
+	:focus-visible:not(textarea) {
 		outline: 2px solid var(--color-primary);
 		outline-offset: 4px;
 	}
@@ -462,7 +462,7 @@
 		}
 	}
 	@media (forced-colors: active) {
-		:focus-visible:not(input) {
+		:focus-visible:not(textarea) {
 			outline-color: Highlight;
 		}
 	}
@@ -472,7 +472,7 @@
 		}
 	}
 
-	:focus-visible {
+	:focus-visible:not(textarea) {
 		outline: 2px solid var(--color-primary);
 		outline-offset: 2px;
 	}
