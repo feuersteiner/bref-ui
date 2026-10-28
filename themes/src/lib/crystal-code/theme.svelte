@@ -71,12 +71,21 @@
 		font-synthesis: none;
 	}
 
-	:global([data-theme='light']) [data-bref-theme],
 	:global(:where(:root:has(meta[name='color-scheme'][content='light']))) [data-bref-theme] {
 		color-scheme: light;
 	}
-	:global([data-theme='dark']) [data-bref-theme],
 	:global(:where(:root:has(meta[name='color-scheme'][content='dark']))) [data-bref-theme] {
 		color-scheme: dark;
+	}
+
+	@scope ([data-theme='light']) {
+		[data-bref-theme] {
+			color-scheme: light;
+		}
+	}
+	@scope ([data-theme='dark']) {
+		[data-bref-theme] {
+			color-scheme: dark;
+		}
 	}
 </style>
