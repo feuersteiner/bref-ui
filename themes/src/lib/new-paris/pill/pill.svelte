@@ -66,7 +66,6 @@
 >
 	<Content {label} {icon} />
 	{@render children?.()}
-	<!-- todo: the on delete should always be at right msot of the pill, content has to "fill the parent" -->
 	{#if onDelete}<OnDelete {label} {onDelete} />{/if}
 </div>
 
@@ -321,7 +320,7 @@
 		--pill-padding: 0.75rem;
 		--pill-height: 2rem;
 		--pill-icon-size: 1.125rem;
-		--pill-delete-size: 1.5rem;
+		--pill-delete-size: calc(var(--pill-height) - 0.5rem - 2px);
 		box-sizing: border-box;
 		display: inline-flex;
 		position: relative;
@@ -359,13 +358,11 @@
 		--pill-height: 2.25rem;
 		--pill-padding: 0.875rem;
 		--pill-icon-size: 1.25rem;
-		--pill-delete-size: 1.75rem;
 	}
 	div[data-size='x-large'] {
 		--pill-height: 2.5rem;
 		--pill-padding: 1rem;
 		--pill-icon-size: 1.375rem;
-		--pill-delete-size: 2rem;
 		font-size: 1.125rem;
 	}
 	div[data-variant='filled'] {
@@ -375,7 +372,9 @@
 		padding-left: calc(var(--pill-padding) * 0.6);
 	}
 	div[data-removable] {
-		padding-right: calc(var(--pill-padding) / 2);
+		gap: 0.5rem;
+		padding-block: 0.25rem;
+		padding-right: 0.25rem;
 	}
 	div[data-wide='true'] {
 		width: 100%;

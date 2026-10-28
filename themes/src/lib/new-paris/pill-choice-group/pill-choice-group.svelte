@@ -126,7 +126,7 @@
 	div:has(input:focus-visible) {
 		outline: 2px solid var(--color-primary, currentColor);
 		outline-offset: 3px;
-		border-radius: 999px;
+		border-radius: 0;
 	}
 	div[data-disabled] label {
 		pointer-events: none;

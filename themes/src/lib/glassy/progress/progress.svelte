@@ -74,7 +74,10 @@
 				onpointercancel?.(event);
 			}}
 		/>
-		<span class={['bref-glass']} style:inset-inline-start={`${percentage}%`} aria-hidden="true"
+		<span
+			class={['bref-glass']}
+			style:inset-inline-start={`${percentage}%`}
+			aria-hidden="true"
 		></span>
 	{/if}
 </div>

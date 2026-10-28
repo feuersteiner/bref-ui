@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '@fontsource-variable/inter/index.css';
 	import AdditionalComponents from './additional-components.svelte';
 	import * as AllComponents from 'bref-ui-themes/glassy';
 	import { resolve } from '$app/paths';
@@ -128,11 +129,9 @@
 			</a>
 			<div class="nav-links">
 				<a href={resolve('/(docs)/themes')}>Showcase <Icon name="north_east" /></a>
-				<a href={resolve('/(skins)/skins/(themes)/themes/[theme]', { theme: 'relay' })}>Relay</a>
-				<a href={resolve('/(skins)/skins/(themes)/themes/[theme]', { theme: 'forma' })}>Forma</a>
-				<a href={resolve('/(skins)/skins/(themes)/themes/[theme]', { theme: 'elsewhere' })}>
-					Elsewhere
-				</a>
+				<a href={resolve('/(docs)/demo/themes/[theme]', { theme: 'relay' })}>Relay</a>
+				<a href={resolve('/(docs)/demo/themes/[theme]', { theme: 'forma' })}>Forma</a>
+				<a href={resolve('/(docs)/demo/themes/[theme]', { theme: 'elsewhere' })}>Elsewhere</a>
 				<a href={resolve('/(themes)/themes/glassy')} aria-current="page">Glassy</a>
 			</div>
 		</nav>
@@ -659,6 +658,17 @@
 </Theme>
 
 <style>
+	/* Keep the donor gallery reset local to this standalone preview. */
+	:global(body:has([data-glassy-gallery])) {
+		margin: 0;
+	}
+
+	:global(:where([data-glassy-gallery], [data-glassy-gallery] *)) {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
 	main {
 		min-width: 0;
 		scroll-behavior: smooth;
@@ -691,6 +701,7 @@
 	}
 
 	[data-glassy-gallery] {
+		display: flow-root;
 		overflow-x: clip;
 		max-width: 1280px;
 		padding: 0 40px;

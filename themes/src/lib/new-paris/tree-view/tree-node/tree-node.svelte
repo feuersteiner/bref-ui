@@ -257,7 +257,7 @@
 		min-height: var(--tree-height);
 		padding: 0.125rem 0.25rem;
 		border: 1px solid transparent;
-		border-radius: 999px;
+		border-radius: 0;
 		overflow-wrap: anywhere;
 		transition: all 150ms ease;
 	}

@@ -475,7 +475,7 @@
 		}
 	}
 
-	:focus-visible {
+	:focus-visible:not(input) {
 		outline: 2px solid var(--color-primary);
 		outline-offset: 2px;
 	}

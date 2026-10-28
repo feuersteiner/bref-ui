@@ -8,8 +8,9 @@ and apps with components you can make your own.
 [![MIT license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 The [documentation](https://feuersteiner.github.io/bref-ui/) includes component
-playgrounds and the [Todo, House Shop and RunnerAI skins](https://feuersteiner.github.io/bref-ui/skins).
-Reusable full themes are being prepared in the workspace’s `themes` package.
+playgrounds and the [Todo, House Shop and RunnerAI demos](https://feuersteiner.github.io/bref-ui/demo).
+The `themes` package includes [New Paris](themes/README.md#new-paris), available through
+`bref-ui-themes/new-paris`.
 
 https://github.com/user-attachments/assets/09b9a73d-c6fb-4e8d-b4f5-2267c4552ad7
 
@@ -91,7 +92,9 @@ Components: `button`, `checkbox`, `combobox`, `dialog`, `icon`, `pill`,
 ## Documentation
 
 Explore the [component gallery](https://feuersteiner.github.io/bref-ui/) for examples,
-props and theme customization.
+props and theme customization. Get started with [Use the package](https://feuersteiner.github.io/bref-ui/library),
+[Own the code](https://feuersteiner.github.io/bref-ui/cli) and
+[Use a prebuilt theme](https://feuersteiner.github.io/bref-ui/themes).
 
 ## Repository structure
 
@@ -100,26 +103,26 @@ Bun is used for workspace development; the published CLI runs through Node.js an
 
 ```sh
 bun install
-bun dev          # docs with core/themes library watchers
-bun run check   # library packaging and all package checks
+bun run dev     # docs from workspace source exports
+bun run check   # all package checks
 bun run lint
-bun run test:ci
+bun run --workspaces --if-present test # CLI contract tests
 bun run build   # both libraries and the static docs site
 bun run preview # preview docs/build
 ```
 
 - [`core`](core): the `bref-ui` package, with [components](core/src/lib), the
-  [copy CLI](core/cli/README.md); its local demo page is empty.
-- [`themes`](themes): the `bref-ui-themes` package, one entry point per theme (in progress).
-- [`docs`](docs): the static component documentation, playgrounds, skins and palette previews.
+  [copy CLI](core/cli/README.md).
+- [`themes`](themes): the `bref-ui-themes` package, including New Paris through its own entry point.
+- [`docs`](docs): the static component documentation, playgrounds, demos and palette previews.
 
-The root lint/format configuration covers every package. Docs import public package
-exports; build the libraries before running an individual package’s checks.
+The root lint/format configuration covers every package. The docs site imports public
+package source exports directly; no package prebuild is required for development or checks.
 
-CI publishes `bref-ui` and `bref-ui-themes` separately after their own version bumps,
-with release tags such as `bref-ui@3.0.0`. Docs deploy after docs changes or either
-library’s version bump. Publishing requires npm trusted-publisher configuration for
-`publish-core.yml` and `publish-themes.yml`; see [npm setup](https://docs.npmjs.com/trusted-publishers/).
+On `main`, each package publishes directly when its manifest changes; npm rejects
+already-published versions. Releases use tags such as `bref-ui@3.0.0`. Docs deploy on
+every push to `main` and support manual dispatch. Publishing requires npm trusted-publisher
+configuration for `publish-core.yml` and `publish-themes.yml`; see [npm setup](https://docs.npmjs.com/trusted-publishers/).
 
 ## Roadmap
 

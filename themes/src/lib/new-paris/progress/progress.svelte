@@ -517,7 +517,7 @@
 	progress {
 		border-radius: 0;
 	}
-	[data-unknown='true']::after {
+	div[data-unknown='true']::after {
 		border-radius: 0;
 	}
 	progress::-webkit-progress-value {

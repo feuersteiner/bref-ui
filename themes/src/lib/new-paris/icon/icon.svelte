@@ -31,7 +31,7 @@
 		justify-content: center;
 		flex-shrink: 0;
 		vertical-align: middle;
-		font-family: 'Material Symbols Outlined';
+		font-family: 'Material Symbols Outlined Variable', 'Material Symbols Outlined';
 		font-style: normal;
 		font-weight: 100;
 		line-height: 1;

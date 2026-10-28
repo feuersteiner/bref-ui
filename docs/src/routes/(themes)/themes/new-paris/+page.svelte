@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '@fontsource-variable/inter/index.css';
 	import NewParisShowcase from './showcase.svelte';
 </script>
 
@@ -11,3 +12,16 @@
 </svelte:head>
 
 <NewParisShowcase />
+
+<style>
+	/* Keep the donor gallery reset local to this standalone preview. */
+	:global(body:has([data-new-paris-showcase])) {
+		margin: 0;
+	}
+
+	:global(:where([data-new-paris-showcase], [data-new-paris-showcase] *)) {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+</style>

@@ -51,36 +51,40 @@ export default defineConfig(
 				'error',
 				{ '**/src/**/': 'KEBAB_CASE' },
 				{
-					ignoreWords: [
-						'llms.txt',
-						'(docs)',
-						'(skins)',
-						'(sites)',
-						'(themes)',
-						'(todo)',
-						'(house-shop)',
-						'(runner-ai)',
-						'[theme]'
-					]
+					ignoreWords: ['llms.txt', '(docs)', '(themes)', '[theme]']
 				}
 			]
 		}
 	},
 	{
-		// Keep imported demos and theme implementations in their original authoring style.
-		files: [
-			'docs/src/routes/(skins)/**/*.{ts,svelte}',
-			'docs/src/routes/(themes)/**/*.{ts,svelte}',
-			'themes/src/lib/**/*.{ts,svelte}'
-		],
+		// Keep imported application demos in their original authoring style.
+		files: ['docs/src/routes/(docs)/demo/**/*.{ts,svelte}'],
 		rules: {
 			'max-lines': 'off',
 			'func-style': 'off',
 			curly: 'off',
 			'@typescript-eslint/consistent-type-definitions': 'off',
 			'@typescript-eslint/consistent-type-imports': 'off',
-			'svelte/consistent-selector-style': 'off',
-			'svelte/no-unused-class-name': 'off'
+			'svelte/consistent-selector-style': 'off'
 		}
+	},
+	{
+		// Preserve the imported theme libraries and galleries in their original authoring style.
+		files: [
+			'themes/src/lib/{new-paris,glassy}/**/*.{ts,svelte}',
+			'docs/src/routes/(themes)/themes/{new-paris,glassy}/*.svelte'
+		],
+		rules: {
+			'max-lines': 'off',
+			'svelte/consistent-selector-style': 'off'
+		}
+	},
+	{
+		files: ['docs/src/routes/(themes)/themes/new-paris/showcase.svelte'],
+		rules: { 'func-style': 'off', 'svelte/no-unused-class-name': 'off' }
+	},
+	{
+		files: ['docs/src/routes/(themes)/themes/{new-paris,glassy}/additional-components.svelte'],
+		rules: { '@typescript-eslint/consistent-type-imports': 'off' }
 	}
 );
