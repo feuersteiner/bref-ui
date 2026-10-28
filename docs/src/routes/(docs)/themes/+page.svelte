@@ -135,8 +135,8 @@
 					<img
 						src={asset('previews/vscode.jpg')}
 						alt="VS Code gallery with a dark workbench, blue controls and an editor panel"
-						width="1432"
-						height="955"
+						width="1264"
+						height="652"
 						loading="lazy"
 						decoding="async"
 					/>
