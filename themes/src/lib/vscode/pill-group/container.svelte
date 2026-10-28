@@ -39,23 +39,12 @@
 	}
 
 	:focus-visible {
-		outline-color: var(--color-primary);
+		outline: 2px solid var(--color-primary);
 		outline-offset: 2px;
 	}
 	@media (forced-colors: active) {
 		:focus-visible {
 			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
 		}
 	}
 </style>
