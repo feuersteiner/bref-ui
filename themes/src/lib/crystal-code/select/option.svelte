@@ -84,7 +84,7 @@
 		background: transparent;
 		color: var(--color-muted);
 	}
-	button:has(> [data-label]):is(:hover, [aria-pressed='true']) {
+	button:has(> [data-label]):is(:hover:not(:disabled), [aria-pressed='true']) {
 		color: var(--crystal-code-bright);
 	}
 	@media (prefers-reduced-motion: reduce) {

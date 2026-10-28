@@ -193,8 +193,11 @@
 	[data-trigger-surface] {
 		display: flex;
 		align-items: center;
+		gap: 0.6rem;
 		width: 100%;
+		min-width: 0;
 		height: 100%;
+		padding-inline: var(--internal-padding);
 		border-radius: inherit;
 	}
 
@@ -216,15 +219,6 @@
 		cursor: pointer;
 		transition: background-color 150ms ease;
 	}
-	span:first-child {
-		margin-inline-start: var(--internal-padding);
-	}
-	span:last-child {
-		margin-inline-end: var(--internal-padding);
-	}
-	span + span {
-		margin-inline-start: 0.6rem;
-	}
 	[data-value] {
 		flex: 1;
 		min-width: 0;
@@ -239,11 +233,9 @@
 		color: color-mix(in srgb, var(--color-muted) 90%, var(--color-foreground));
 	}
 	[data-icon] {
-		color: var(--color-muted);
-	}
-	[data-icon] {
 		display: inline-flex;
 		flex: 0 0 auto;
+		color: var(--color-muted);
 		font-size: var(--internal-icon-size);
 	}
 	button:hover:not(:disabled) {
