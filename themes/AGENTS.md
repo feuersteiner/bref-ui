@@ -10,6 +10,8 @@ ships through an individual `bref-ui-themes` entry point.
   entry points before implementation.
 - Expose each theme through its own package entry point. Importing one theme must not
   load another theme's CSS, and no entry point may import every theme.
+- Add explicit direct source export paths for new themes; keep shared type forwarding
+  and the package `types` field only at the root.
 - Theme styles must not leak. Keep `:global()` in explicit theme setup, scoped to the
   theme, and verify neighbouring components and previews stay unaffected.
 - Style Bref-ui through its public tokens and components; import it only through
