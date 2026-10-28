@@ -7,9 +7,12 @@ node_modules
 .vercel
 .netlify
 .wrangler
-/.svelte-kit
-/build
-/dist
+.svelte-kit
+build
+dist
+dist-cli
+/core/readme.md
+/core/LICENSE
 
 # OS
 .DS_Store
@@ -25,3 +28,5 @@ Thumbs.db
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 /references.local.md
+
+/themes/LICENSE

@@ -1,0 +1,42 @@
+import { fileURLToPath } from 'node:url';
+import { addComponent } from './add/index.js';
+import { initImports } from './init-imports.js';
+import type { Command } from './types.js';
+
+/**
+ * Run a validated request and print its outcome using the registry shipped beside the executable.
+ * @param command Parsed help, init or add request.
+ * @param projectRoot Consumer project directory, supplied by the executable's cwd.
+ * @throws When initialization or installation fails; the executable reports the error.
+ */
+export const execute = async (command: Command, projectRoot: string): Promise<void> => {
+	if (command.name === 'help') {
+		console.log(
+			'Usage: bref-ui <command>\n\n' +
+				'Commands:\n' +
+				'  init             Add the #bref UI imports to package.json\n' +
+				'  add <component>  Preview and install a component and its dependencies\n\n' +
+				'Options:\n' +
+				'  -h, --help       Show this help\n\n' +
+				'Commands use the current directory as the consumer project.'
+		);
+		return;
+	}
+	if (command.name === 'init') {
+		const result = await initImports(projectRoot);
+		console.log(
+			result === 'created'
+				? 'Added #bref imports to package.json.'
+				: 'package.json already declares #bref imports.'
+		);
+		return;
+	}
+
+	const sourceRoot = fileURLToPath(new URL('../../src/lib/', import.meta.url));
+	const result = await addComponent(command.componentId, projectRoot, sourceRoot);
+	console.log(
+		result === 'installed'
+			? `Installed ${command.componentId} and its dependencies.`
+			: 'Installation cancelled.'
+	);
+};

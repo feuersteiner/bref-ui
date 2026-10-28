@@ -1,0 +1,99 @@
+{
+	"name": "bref-ui",
+	"version": "3.0.0",
+	"description": "A Svelte-first, human-first, agent-first UI library for building beautiful sites and apps with components you can make your own.",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/feuersteiner/bref-ui.git",
+		"directory": "core"
+	},
+	"homepage": "https://github.com/feuersteiner/bref-ui#readme",
+	"bugs": {
+		"url": "https://github.com/feuersteiner/bref-ui/issues"
+	},
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build && npm run prepack",
+		"demo-site-build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"prepack": "tsc -p cli/tsconfig.json && node dist-cli/pack.js && node ../scripts/package.mjs && svelte-kit sync && svelte-package && publint",
+		"check": "tsc -p cli/tsconfig.json --noEmit && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"test": "vitest run --config vitest.config.js",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
+	},
+	"files": [
+		"dist",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*",
+		"dist-cli",
+		"src/lib"
+	],
+	"sideEffects": [
+		"**/*.css"
+	],
+	"svelte": "./src/lib/index.ts",
+	"types": "./src/lib/index.ts",
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./src/lib/index.ts",
+			"svelte": "./src/lib/index.ts"
+		},
+		"./types": {
+			"types": "./src/lib/types.ts"
+		}
+	},
+	"peerDependencies": {
+		"svelte": "^5.56.1"
+	},
+	"devDependencies": {
+		"@fontsource/meow-script": "5.2.8",
+		"@fontsource/spectral": "5.2.8",
+		"@sveltejs/adapter-static": "^4.0.0",
+		"@sveltejs/kit": "^3.1.0",
+		"@sveltejs/package": "^3.0.1",
+		"@sveltejs/vite-plugin-svelte": "^7.3.1",
+		"@types/estree": "^1.0.9",
+		"@types/node": "^22",
+		"publint": "^0.3.21",
+		"svelte": "^5.57.2",
+		"svelte-check": "^4.7.7",
+		"typescript": "^6.0.3",
+		"vite": "^8.3.5",
+		"vitest": "^5.0.5"
+	},
+	"keywords": [
+		"svelte",
+		"svelte5",
+		"sveltekit",
+		"svelte-components",
+		"ui",
+		"ui-library",
+		"component-library",
+		"components",
+		"design-system",
+		"copy-paste",
+		"cli",
+		"native-css",
+		"theming",
+		"dark-mode",
+		"accessible",
+		"a11y",
+		"ai-friendly",
+		"agent-friendly"
+	],
+	"dependencies": {
+		"@fontsource-variable/material-symbols-outlined": "^5.3.5"
+	},
+	"bin": {
+		"bref-ui": "dist-cli/index.js"
+	},
+	"imports": {
+		"#lib": "./src/lib/index.js",
+		"#lib/*": "./src/lib/*"
+	}
+}

@@ -13,7 +13,7 @@ const sourceFiles = ['**/*.{js,mjs,cjs,ts,mts,cts,svelte}'];
 
 export default defineConfig(
 	includeIgnoreFile(gitignorePath),
-	globalIgnores(['**/.output/**', '**/build/**', '**/dist/**']),
+	globalIgnores(['**/.output/**', '**/build/**', '**/dist/**', '**/dist-cli/**']),
 	js.configs.recommended,
 	ts.configs.recommended,
 	svelte.configs.recommended,
@@ -43,14 +43,48 @@ export default defineConfig(
 		rules: filenameRules
 	},
 	{
-		files: ['src/routes/llms.txt/*.ts'],
+		files: ['docs/src/routes/**/*.ts', 'docs/src/routes/**/*.svelte'],
+		plugins: { 'check-file': checkFile },
 		ignores: ['**/+*.ts'],
 		rules: {
 			'check-file/folder-naming-convention': [
 				'error',
-				{ 'src/**/': 'KEBAB_CASE' },
-				{ ignoreWords: ['llms.txt'] }
+				{ '**/src/**/': 'KEBAB_CASE' },
+				{
+					ignoreWords: ['llms.txt', '(docs)', '(themes)', '[theme]']
+				}
 			]
 		}
+	},
+	{
+		// Keep imported application demos in their original authoring style.
+		files: ['docs/src/routes/(docs)/demo/**/*.{ts,svelte}'],
+		rules: {
+			'max-lines': 'off',
+			'func-style': 'off',
+			curly: 'off',
+			'@typescript-eslint/consistent-type-definitions': 'off',
+			'@typescript-eslint/consistent-type-imports': 'off',
+			'svelte/consistent-selector-style': 'off'
+		}
+	},
+	{
+		// Preserve the imported theme libraries and galleries in their original authoring style.
+		files: [
+			'themes/src/lib/{new-paris,glassy}/**/*.{ts,svelte}',
+			'docs/src/routes/(themes)/themes/{new-paris,glassy}/*.svelte'
+		],
+		rules: {
+			'max-lines': 'off',
+			'svelte/consistent-selector-style': 'off'
+		}
+	},
+	{
+		files: ['docs/src/routes/(themes)/themes/new-paris/showcase.svelte'],
+		rules: { 'func-style': 'off', 'svelte/no-unused-class-name': 'off' }
+	},
+	{
+		files: ['docs/src/routes/(themes)/themes/{new-paris,glassy}/additional-components.svelte'],
+		rules: { '@typescript-eslint/consistent-type-imports': 'off' }
 	}
 );

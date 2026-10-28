@@ -8,4 +8,15 @@ bun.lockb
 # Generated and static files
 **/.svelte-kit/
 **/build/
+**/dist/
+**/dist-cli/
 **/static/
+
+# Generated package metadata and local refactor notes
+core/readme.md
+core/LICENSE
+themes/LICENSE
+refactor-plan.md
+
+# Preserve the unchanged New Paris donor formatting
+themes/src/lib/new-paris/progress/progress.svelte

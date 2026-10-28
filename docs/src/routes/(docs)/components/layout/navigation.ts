@@ -1,0 +1,148 @@
+import { demoNavigation, demoPageSections } from '../../demo/catalog.js';
+import { chapter as cliChapter, sections as cliSections } from '../../cli/sections.js';
+import { chapter as themesChapter, sections as themesSections } from '../../themes/sections.js';
+import {
+	chapter as comboboxChapter,
+	sections as comboboxSections
+} from '../../combobox/sections.js';
+import { chapter as selectChapter, sections as selectSections } from '../../select/sections.js';
+import { chapter as tabsChapter, sections as tabsSections } from '../../tabs/sections.js';
+import {
+	chapter as introductionChapter,
+	sections as introductionSections
+} from '../../sections.js';
+import { chapter as buttonChapter, sections as buttonSections } from '../../button/sections.js';
+import { chapter as surfaceChapter, sections as surfaceSections } from '../../surface/sections.js';
+import { chapter as iconChapter, sections as iconSections } from '../../icon/sections.js';
+import { chapter as libraryChapter, sections as librarySections } from '../../library/sections.js';
+import {
+	chapter as checkboxChapter,
+	sections as checkboxSections
+} from '../../checkbox/sections.js';
+import { chapter as dialogChapter, sections as dialogSections } from '../../dialog/sections.js';
+import { chapter as popoverChapter, sections as popoverSections } from '../../popover/sections.js';
+import { chapter as switchChapter, sections as switchSections } from '../../switch/sections.js';
+import {
+	chapter as progressChapter,
+	sections as progressSections
+} from '../../progress/sections.js';
+import { chapter as spinnerChapter, sections as spinnerSections } from '../../spinner/sections.js';
+import {
+	chapter as textInputChapter,
+	sections as textInputSections
+} from '../../text-input/sections.js';
+import {
+	chapter as textAreaChapter,
+	sections as textAreaSections
+} from '../../text-area/sections.js';
+import {
+	chapter as treeViewChapter,
+	sections as treeViewSections
+} from '../../tree-view/sections.js';
+import { chapter as pillChapter, sections as pillSections } from '../../pill/sections.js';
+import {
+	chapter as pillGroupChapter,
+	sections as pillGroupSections
+} from '../../pill-group/sections.js';
+import {
+	chapter as pillChoiceGroupChapter,
+	sections as pillChoiceGroupSections
+} from '../../pill-choice-group/sections.js';
+
+export const navigation = [
+	{
+		title: 'Overview',
+		links: [{ title: introductionChapter, href: '' }, demoNavigation]
+	},
+	{
+		title: 'Get started',
+		sort: false,
+		links: [
+			{ title: libraryChapter, href: 'library' },
+			{ title: cliChapter, href: 'cli' },
+			{ title: themesChapter, href: 'themes' }
+		]
+	},
+	{
+		title: 'Base',
+		links: [
+			{ title: buttonChapter, href: 'button' },
+			{ title: iconChapter, href: 'icon' },
+			{ title: pillChapter, href: 'pill' },
+			{ title: pillGroupChapter, href: 'pill-group' },
+			{ title: tabsChapter, href: 'tabs' },
+			{ title: treeViewChapter, href: 'tree-view' }
+		]
+	},
+	{
+		title: 'Feedback',
+		links: [
+			{ title: progressChapter, href: 'progress' },
+			{ title: spinnerChapter, href: 'spinner' }
+		]
+	},
+	{
+		title: 'Inputs',
+		links: [
+			{ title: checkboxChapter, href: 'checkbox' },
+			{ title: comboboxChapter, href: 'combobox' },
+			{ title: pillChoiceGroupChapter, href: 'pill-choice-group' },
+			{ title: selectChapter, href: 'select' },
+			{ title: switchChapter, href: 'switch' },
+			{ title: textAreaChapter, href: 'text-area' },
+			{ title: textInputChapter, href: 'text-input' }
+		]
+	},
+	{
+		title: 'Surfaces',
+		links: [
+			{ title: dialogChapter, href: 'dialog' },
+			{ title: popoverChapter, href: 'popover' },
+			{ title: surfaceChapter, href: 'surface' }
+		]
+	}
+] as const;
+
+export interface NavigationPage {
+	title: string;
+	href: (typeof navigation)[number]['links'][number]['href'];
+	children?: readonly NavigationPage[];
+}
+
+export interface PageSection {
+	id: string;
+	title: string;
+}
+
+export interface NavigationItem {
+	id: string;
+	label: string;
+	sections?: readonly PageSection[];
+	children?: NavigationItem[];
+}
+
+export const pageSections: Record<string, readonly PageSection[]> = {
+	'/cli': cliSections,
+	'/library': librarySections,
+	'/themes': themesSections,
+	'/': introductionSections,
+	'/button': buttonSections,
+	'/icon': iconSections,
+	'/surface': surfaceSections,
+	'/dialog': dialogSections,
+	'/popover': popoverSections,
+	'/select': selectSections,
+	'/tabs': tabsSections,
+	'/combobox': comboboxSections,
+	'/checkbox': checkboxSections,
+	'/switch': switchSections,
+	'/progress': progressSections,
+	'/spinner': spinnerSections,
+	'/text-input': textInputSections,
+	'/text-area': textAreaSections,
+	'/tree-view': treeViewSections,
+	'/pill': pillSections,
+	'/pill-group': pillGroupSections,
+	'/pill-choice-group': pillChoiceGroupSections,
+	...demoPageSections
+};
