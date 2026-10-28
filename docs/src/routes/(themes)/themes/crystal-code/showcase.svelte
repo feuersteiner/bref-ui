@@ -225,7 +225,11 @@
 		<div class="workbench" style:--crystal-code-radius={radius} data-explorer={explorer}>
 			<a class="skip" href="#live-preview">Skip to live preview</a>
 			<header class="titlebar">
-				<a class="brand" href={resolve('themes')}>
+				<a
+					class="brand"
+					href={resolve('themes#crystal-code')}
+					aria-label="Back to Crystal Code docs"
+				>
 					<Icon name="code" />
 					<strong>bref</strong>
 					<span>/ crystal-code</span>
