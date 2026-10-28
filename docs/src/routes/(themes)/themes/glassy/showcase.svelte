@@ -819,24 +819,10 @@
 		color: var(--color-muted);
 	}
 	.grid {
-		position: relative;
-		isolation: isolate;
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		align-items: start;
 		gap: 40px;
-	}
-	.grid::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		z-index: -1;
-		pointer-events: none;
-		mask-image: linear-gradient(to right, transparent, black 8% 92%, transparent);
-		background:
-			radial-gradient(ellipse at 12% 15%, #88a8b8aa, transparent 36%),
-			radial-gradient(ellipse at 85% 45%, #baa99399, transparent 32%),
-			radial-gradient(ellipse at 25% 80%, #a59bb899, transparent 38%);
 	}
 	section {
 		margin: 0;
@@ -1107,9 +1093,6 @@
 		}
 	}
 	@media (forced-colors: active) {
-		.grid::before {
-			display: none;
-		}
 		nav {
 			background: Canvas;
 			border-color: CanvasText;
