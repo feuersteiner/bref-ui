@@ -14,7 +14,8 @@ ships through an individual `bref-ui-themes` entry point.
   theme, and verify neighbouring components and previews stay unaffected.
 - Style Bref-ui through its public tokens and components; import it only through
   `bref-ui` and `bref-ui/types`.
-- Fonts, resets and icon assets stay opt-in. Generate light/dark theme CSS in tooling;
+- Custom text fonts and resets stay opt-in. New Paris loads its Material Symbols font
+  dependency through Theme. Generate light/dark theme CSS in tooling;
   no runtime color-generation dependencies. Explicit overrides win; validate final
   contrast pairs and report failures without silently replacing inputs.
 - Keep `src/lib` for published sources; `src/routes` is a local preview only. Full theme

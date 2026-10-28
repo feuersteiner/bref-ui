@@ -51,7 +51,7 @@ export default defineConfig(
 				'error',
 				{ '**/src/**/': 'KEBAB_CASE' },
 				{
-					ignoreWords: ['llms.txt', '(docs)', '[theme]']
+					ignoreWords: ['llms.txt', '(docs)', '(themes)', '[theme]']
 				}
 			]
 		}
@@ -67,5 +67,24 @@ export default defineConfig(
 			'@typescript-eslint/consistent-type-imports': 'off',
 			'svelte/consistent-selector-style': 'off'
 		}
+	},
+	{
+		// Preserve the imported New Paris library and gallery authoring style.
+		files: [
+			'themes/src/lib/new-paris/**/*.{ts,svelte}',
+			'docs/src/routes/(themes)/themes/new-paris/*.svelte'
+		],
+		rules: {
+			'max-lines': 'off',
+			'svelte/consistent-selector-style': 'off'
+		}
+	},
+	{
+		files: ['docs/src/routes/(themes)/themes/new-paris/showcase.svelte'],
+		rules: { 'func-style': 'off', 'svelte/no-unused-class-name': 'off' }
+	},
+	{
+		files: ['docs/src/routes/(themes)/themes/new-paris/additional-components.svelte'],
+		rules: { '@typescript-eslint/consistent-type-imports': 'off' }
 	}
 );

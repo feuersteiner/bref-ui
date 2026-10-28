@@ -5,12 +5,12 @@
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
 		"preview": "vite preview",
-		"prepare": "svelte-kit sync || echo ''",
+		"prepare": "svelte-kit sync",
 		"prepack": "node ../scripts/package.mjs && svelte-kit sync && svelte-package && publint",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"lint": "prettier --check . --ignore-path ../.prettierignore && eslint .",
+		"format": "prettier --write . --ignore-path ../.prettierignore"
 	},
 	"files": [
 		"dist",
@@ -28,9 +28,17 @@
 		".": {
 			"types": "./src/lib/index.ts",
 			"svelte": "./src/lib/index.ts"
+		},
+		"./new-paris": {
+			"types": "./src/lib/new-paris/index.ts",
+			"svelte": "./src/lib/new-paris/index.ts"
 		}
 	},
+	"dependencies": {
+		"@fontsource-variable/material-symbols-outlined": "^5.3.5"
+	},
 	"peerDependencies": {
+		"bref-ui": "^3.0.0",
 		"svelte": "^5.0.0"
 	},
 	"devDependencies": {

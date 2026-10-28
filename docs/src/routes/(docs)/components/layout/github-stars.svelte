@@ -5,8 +5,8 @@
 
 	const user = 'feuersteiner';
 	const repo = 'bref-ui';
-	const theme = getContext<{ mode: ThemeMode }>('documentation-theme');
-	let themeMode = $derived(theme.mode);
+	const theme = getContext<{ mode: ThemeMode } | undefined>('documentation-theme');
+	let themeMode = $derived(theme?.mode ?? 'light');
 </script>
 
 <span data-theme={themeMode}>

@@ -12,10 +12,14 @@
 >
 	<Section {...sections[0]}>
 		<p>Run from a project containing package.json, using Node.js:</p>
-		<pre aria-label="CLI commands"><code>{`npm install bref-ui
+		<CodeSnippet
+			language="bash"
+			label="CLI commands"
+			source={`npm install bref-ui
 npx bref-ui init
 npx bref-ui add button
-npx bref-ui --help`}</code></pre>
+npx bref-ui --help`}
+		/>
 		<p>
 			<code>add button</code>
 			automatically copies Icon and Theme dependencies.
@@ -40,27 +44,44 @@ npx bref-ui --help`}</code></pre>
 			<code>#lib/*</code>
 			target. Existing Bref imports are preserved; no separate configuration file is used.
 		</p>
-		<pre aria-label="Default package.json imports"><code>{`"imports": {
+		<CodeSnippet
+			language="json"
+			label="Default package.json imports"
+			source={`"imports": {
   "#bref": "./src/lib/ui/index.js",
   "#bref/*": "./src/lib/ui/*"
-}`}</code></pre>
+}`}
+		/>
 		<p>To choose a custom destination, edit both paths before running add:</p>
-		<pre aria-label="Custom package.json imports"><code>{`"imports": {
+		<CodeSnippet
+			language="json"
+			label="Custom package.json imports"
+			source={`"imports": {
   "#bref": "./src/components/ui/index.js",
   "#bref/*": "./src/components/ui/*"
-}`}</code></pre>
+}`}
+		/>
 	</Section>
 	<Section {...sections[2]}>
 		<p>Before the commands, in an existing Svelte project:</p>
-		<pre aria-label="Project tree before npm install and CLI commands"><code>{`my-app/
+		<CodeSnippet
+			hideHeader
+			language="text"
+			label="Project tree before npm install and CLI commands"
+			source={`my-app/
 ├── package.json
 └── src/
     ├── lib/
     │   └── …
     └── routes/
-        └── +page.svelte`}</code></pre>
+        └── +page.svelte`}
+		/>
 		<p>After npm install, init and add button:</p>
-		<pre aria-label="Project tree after npm install, init and add button"><code>{`my-app/
+		<CodeSnippet
+			hideHeader
+			language="text"
+			label="Project tree after npm install, init and add button"
+			source={`my-app/
 ├── package.json          # init adds #bref imports
 ├── package-lock.json     # npm install
 ├── node_modules/         # npm install
@@ -79,7 +100,8 @@ npx bref-ui --help`}</code></pre>
     │           ├── surface.ts
     │           └── …
     └── routes/
-        └── +page.svelte`}</code></pre>
+        └── +page.svelte`}
+		/>
 		<p>
 			<code>init</code>
 			copies no files. The CLI writes
@@ -123,13 +145,3 @@ npx bref-ui --help`}</code></pre>
 		</p>
 	</Section>
 </PageContainer>
-
-<style>
-	pre {
-		max-width: 100%;
-		overflow: auto;
-		padding: 24px;
-		background: var(--docs-code-background);
-		border-radius: 12px;
-	}
-</style>
