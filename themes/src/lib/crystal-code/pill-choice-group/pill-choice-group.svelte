@@ -114,19 +114,10 @@
 		clip-path: inset(50%);
 		overflow: hidden;
 	}
-	div:has(input:checked) {
-		--pill-choice-emphasis: 18%;
-	}
-	div:not([data-disabled]):is(:hover, :has(input:focus-visible)) {
-		--pill-choice-hover: 2%;
-	}
-	div:not([data-disabled]):active {
-		--pill-choice-hover: 4%;
-	}
 	div:has(input:focus-visible) {
 		outline: 2px solid var(--color-primary, currentColor);
 		outline-offset: 3px;
-		border-radius: 999px;
+		border-radius: var(--crystal-code-radius, 8px);
 	}
 	div[data-disabled] label {
 		pointer-events: none;
@@ -146,40 +137,10 @@
 	@media (forced-colors: active) {
 		div:has(input:checked) {
 			outline: 2px solid Highlight;
-			border-radius: 999px;
+			border-radius: var(--crystal-code-radius, 8px);
 		}
-	}
-
-	:focus-visible {
-		outline: 1px solid var(--color-primary);
-		outline-offset: 3px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none !important;
-			transition: none !important;
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		*::before {
-			animation: none !important;
-			transition: none !important;
-		}
-	}
-	@media (forced-colors: active) {
-		:focus-visible {
+		div:has(input:focus-visible) {
 			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
 		}
 	}
 </style>
