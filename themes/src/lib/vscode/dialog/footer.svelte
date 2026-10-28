@@ -1,0 +1,53 @@
+<script lang="ts">
+	import Button from '../button/button.svelte';
+	import type { DialogProps } from 'bref-ui/types';
+
+	let { footer }: { footer: NonNullable<DialogProps['footer']> } = $props();
+</script>
+
+<footer>
+	{#if typeof footer === 'function'}
+		{@render footer()}
+	{:else}
+		<Button {...footer.secondary} size="small" variant="neutral" />
+		<Button
+			{...footer.primary}
+			color={footer.primary.color ?? 'primary'}
+			size="small"
+			variant="filled"
+		/>
+	{/if}
+</footer>
+
+<style>
+	footer {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin-left: 67px;
+		padding: 24px 4px 4px;
+	}
+
+	:focus-visible {
+		outline-color: var(--color-primary);
+		outline-offset: 2px;
+	}
+	@media (forced-colors: active) {
+		:focus-visible {
+			outline-color: Highlight;
+		}
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 2px;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		* {
+			animation: none;
+			transition: none;
+		}
+	}
+</style>
