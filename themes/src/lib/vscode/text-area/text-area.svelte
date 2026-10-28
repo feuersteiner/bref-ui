@@ -344,8 +344,6 @@
 		font-size: 1rem;
 		font-weight: 200;
 		line-height: 1.5;
-	}
-	textarea {
 		resize: vertical;
 	}
 	textarea[data-resizable='false'] {
@@ -389,10 +387,6 @@
 		}
 	}
 
-	:focus-visible {
-		outline-color: var(--color-primary);
-		outline-offset: 2px;
-	}
 	.bref-surface {
 		--surface-border: var(--vscode-border);
 		--surface-soft-strength: 14%;
@@ -449,16 +443,6 @@
 			color: CanvasText;
 			border-color: ButtonText;
 		}
-	}
-	@media (forced-colors: active) {
-		:focus-visible {
-			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		* {
