@@ -56,7 +56,7 @@
 		inline-size: var(--internal-size);
 		block-size: var(--internal-size);
 		border: 1px solid var(--internal-border);
-		border-radius: calc(var(--internal-size) * 0.2);
+		border-radius: 2px;
 		background: var(--internal-fill);
 		color: var(--color-foreground, black);
 		font-size: calc(var(--internal-size) * 0.8);
@@ -97,23 +97,13 @@
 		--internal-strength-dark: 12%;
 	}
 	div:has(input:checked) {
-		--internal-tint: var(--color-primary, blue);
-		--internal-strength-light: 88%;
-		--internal-strength-dark: 88%;
+		--internal-fill: var(--vscode-accent, var(--color-primary, blue));
 		--internal-border: var(--internal-fill);
-		color: var(--color-background, white);
-	}
-	div:has(input:checked:hover:not(:disabled)) {
-		--internal-strength-light: 92%;
-		--internal-strength-dark: 92%;
+		color: white;
 	}
 	div:has(input:active:not(:disabled)) {
 		--internal-strength-light: 12%;
 		--internal-strength-dark: 16%;
-	}
-	div:has(input:checked:active:not(:disabled)) {
-		--internal-strength-light: 96%;
-		--internal-strength-dark: 96%;
 	}
 	div:has(input:user-invalid),
 	div:has(input[aria-invalid='true']) {
@@ -140,9 +130,6 @@
 			border-color: ButtonText;
 			background: Canvas;
 			color: CanvasText;
-			box-shadow: none;
-			-webkit-backdrop-filter: none;
-			backdrop-filter: none;
 		}
 		div:has(input:checked) {
 			background: Highlight;
@@ -151,47 +138,6 @@
 		div:has(input:focus-visible) {
 			outline: 2px solid Highlight;
 			outline-offset: 3px;
-		}
-	}
-
-	:focus-visible {
-		outline-color: var(--color-primary);
-		outline-offset: 2px;
-	}
-	[data-checkbox] {
-		border-radius: 2px;
-	}
-	[data-checkbox]:has(input:checked) {
-		background: var(--vscode-accent);
-		color: white;
-	}
-	@media (forced-colors: active) {
-		[data-checkbox]:has(input:checked) {
-			background: Canvas;
-			color: CanvasText;
-			border-color: ButtonText;
-		}
-	}
-	@media (forced-colors: active) {
-		[data-checkbox]:has(input:checked) {
-			background: Highlight;
-			color: HighlightText;
-		}
-	}
-	@media (forced-colors: active) {
-		:focus-visible {
-			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
 		}
 	}
 </style>
