@@ -92,12 +92,12 @@
 		display: inline-flex;
 		align-self: start;
 		align-items: stretch;
-		gap: 0.5rem;
+		gap: 0;
 		justify-self: start;
 		width: max-content;
 		max-width: 100%;
 		min-width: 0;
-		padding: 4px;
+		padding: 0;
 		border: 0;
 		overflow: auto;
 		overscroll-behavior-inline: contain;
@@ -120,12 +120,8 @@
 		outline-offset: 2px;
 	}
 	[role='tablist'] {
-		--tabs-indicator-block-start: 0;
 		border-color: var(--vscode-border);
 		background: var(--vscode-panel);
-	}
-	[role='tablist'][data-orientation='vertical'] {
-		--tabs-indicator-inline-start: 0;
 	}
 	@media (forced-colors: active) {
 		[role='tablist'] {
