@@ -1,7 +1,8 @@
 <script lang="ts">
 	import AdditionalComponents from './additional-components.svelte';
+	import GithubStars from '../../../(docs)/components/layout/github-stars.svelte';
 	import * as AllComponents from 'bref-ui-themes/vscode';
-	import { resolve } from '$app/paths';
+	import { asset, resolve } from '$app/paths';
 	import { fade } from 'svelte/transition';
 	import {
 		Theme,
@@ -695,10 +696,20 @@
 			<AdditionalComponents components={AllComponents} />
 		</main>
 		<footer class="status-bar">
-			<span role="status">Activations: {presses}</span>
-			<span>{selectedLanguage}</span>
-			<span>20 exports · one reusable theme</span>
-			<a href={resolve('themes')}>Back to showcase ↗</a>
+			<div class="status-info">
+				<span role="status">Activations: {presses}</span>
+				<span>{selectedLanguage}</span>
+			</div>
+			<div class="footer-actions">
+				<a class="back-to-docs" href={resolve('themes#vscode')} aria-label="Back to Bref-ui docs">
+					<img src={asset('favicon.svg')} alt="" width="24" height="24" />
+					<span>
+						<strong>bref / ui</strong>
+						<span>Back to docs</span>
+					</span>
+				</a>
+				<GithubStars />
+			</div>
 		</footer>
 		<Dialog
 			bind:open
@@ -727,7 +738,7 @@
 	[data-vscode-gallery] {
 		display: grid;
 		--workbench-title-height: 46px;
-		--workbench-status-height: 24px;
+		--workbench-status-height: 40px;
 		grid-template-columns: 48px 240px minmax(0, 1fr);
 		grid-template-rows: auto auto auto 1fr;
 		min-height: 100vh;
@@ -1106,16 +1117,48 @@
 		inset: auto 0 0;
 		z-index: 1;
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
-		gap: 2px 16px;
+		gap: 4px 16px;
+		min-height: var(--workbench-status-height);
 		padding: 4px 12px;
 		background: #007acc;
 		color: white;
 		font-size: 11px;
 		flex-wrap: wrap;
 	}
-	.status-bar a {
+	.status-info,
+	.footer-actions {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+	}
+	.back-to-docs {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 2px 6px;
 		color: white;
+		text-decoration: none;
+	}
+	.back-to-docs img {
+		padding: 2px;
+		border-radius: 2px;
+		background: white;
+	}
+	.back-to-docs > span {
+		display: grid;
+		line-height: 1.2;
+	}
+	.back-to-docs strong {
+		font-size: 13px;
+	}
+	.back-to-docs:hover {
+		background: #ffffff20;
+	}
+	.back-to-docs:focus-visible {
+		outline: 2px solid white;
+		outline-offset: 1px;
 	}
 	.skip {
 		position: fixed;
@@ -1132,8 +1175,12 @@
 	@media (max-width: 680px) {
 		[data-vscode-gallery],
 		[data-vscode-gallery][data-sidebar-hidden] {
-			--workbench-status-height: 44px;
+			--workbench-status-height: 64px;
 			grid-template-columns: 48px minmax(0, 1fr);
+		}
+		.footer-actions {
+			width: 100%;
+			justify-content: space-between;
 		}
 		.explorer {
 			position: static;
@@ -1178,7 +1225,6 @@
 	@media (max-width: 380px) {
 		[data-vscode-gallery] {
 			--workbench-title-height: 70px;
-			--workbench-status-height: 64px;
 		}
 	}
 </style>
