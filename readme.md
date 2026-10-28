@@ -9,7 +9,8 @@ and apps with components you can make your own.
 
 The [documentation](https://feuersteiner.github.io/bref-ui/) includes component
 playgrounds and the [Todo, House Shop and RunnerAI demos](https://feuersteiner.github.io/bref-ui/demo).
-Reusable full themes are being prepared in the workspace’s `themes` package.
+The `themes` package includes [New Paris](themes/README.md#new-paris), available through
+`bref-ui-themes/new-paris`.
 
 https://github.com/user-attachments/assets/09b9a73d-c6fb-4e8d-b4f5-2267c4552ad7
 
@@ -112,7 +113,7 @@ bun run preview # preview docs/build
 
 - [`core`](core): the `bref-ui` package, with [components](core/src/lib), the
   [copy CLI](core/cli/README.md).
-- [`themes`](themes): the `bref-ui-themes` package, one entry point per theme (in progress).
+- [`themes`](themes): the `bref-ui-themes` package, including New Paris through its own entry point.
 - [`docs`](docs): the static component documentation, playgrounds, demos and palette previews.
 
 The root lint/format configuration covers every package. The docs site imports public
