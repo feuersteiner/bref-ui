@@ -17,8 +17,10 @@
 		--inset: 0.25rem;
 		position: relative;
 		display: inline-flex;
+		flex-shrink: 0;
 		width: var(--track-width);
 		height: var(--track-height);
+		border-radius: 2px;
 		vertical-align: middle;
 	}
 
@@ -47,7 +49,7 @@
 		width: 100%;
 		height: 100%;
 		border: 1px solid var(--internal-border);
-		border-radius: 999px;
+		border-radius: 2px;
 		background: var(--internal-fill);
 		pointer-events: none;
 		transition:
@@ -64,7 +66,7 @@
 		justify-content: center;
 		width: var(--thumb-size);
 		height: var(--thumb-size);
-		border-radius: 50%;
+		border-radius: 2px;
 		background: var(--color-background, white);
 		color: var(--color-foreground, black);
 		box-shadow: 0 1px 2px color-mix(in srgb, var(--color-background, white) 12%, transparent);
@@ -128,13 +130,6 @@
 		--thumb-size: 1.375rem;
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		[data-switch] > span,
-		[data-switch] > span > span {
-			transition: none;
-		}
-	}
-
 	@media (forced-colors: active) {
 		[data-switch] > span {
 			border-color: ButtonText;
@@ -157,20 +152,6 @@
 		}
 	}
 
-	:focus-visible {
-		outline-color: var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (forced-colors: active) {
-		:focus-visible {
-			outline-color: Highlight;
-		}
-	}
-	[data-switch],
-	[data-switch] > span,
-	[data-switch] > span > span {
-		border-radius: 2px;
-	}
 	:focus-visible {
 		outline: 2px solid var(--color-primary);
 		outline-offset: 2px;
