@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '../icon/icon.svelte';
 	import { surface } from '../theme/surface.js';
-	import type { SelectTriggerProps } from '#bref-types';
+	import type { SelectTriggerProps } from 'bref-ui/types';
 
 	let { id, open, selected, placeholder, disabled, onToggle, size }: SelectTriggerProps = $props();
 </script>

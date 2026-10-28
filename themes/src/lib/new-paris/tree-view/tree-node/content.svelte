@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '../../icon/icon.svelte';
-	import type { TreeNodeContentProps } from '#bref-types';
+	import type { TreeNodeContentProps } from 'bref-ui/types';
 
 	let { item, ...attributes }: TreeNodeContentProps = $props();
 </script>

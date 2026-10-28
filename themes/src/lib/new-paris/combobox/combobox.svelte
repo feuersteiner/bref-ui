@@ -3,7 +3,7 @@
 	import Input from './input.svelte';
 	import List from './list.svelte';
 	import Form from './form.svelte';
-	import type { ComboboxProps } from '#bref-types';
+	import type { ComboboxProps } from 'bref-ui/types';
 
 	const generatedId = $props.id();
 	let {

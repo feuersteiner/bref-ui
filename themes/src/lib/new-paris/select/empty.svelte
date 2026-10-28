@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '../icon/icon.svelte';
-	import type { SelectEmptyProps } from '#bref-types';
+	import type { SelectEmptyProps } from 'bref-ui/types';
 
 	let { message, icon }: SelectEmptyProps = $props();
 </script>

@@ -30,6 +30,3 @@ vite.config.ts.timestamp-*
 /references.local.md
 
 /themes/LICENSE
-
-# Generated private theme types
-/themes/src/lib/shared-types/

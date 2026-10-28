@@ -1,7 +1,7 @@
 <script lang="ts">
 	import TreeNode from './tree-node/tree-node.svelte';
 	import TreeViewSection from './tree-view-section.svelte';
-	import type { TreeViewProps } from '#bref-types';
+	import type { TreeViewProps } from 'bref-ui/types';
 
 	let {
 		items,

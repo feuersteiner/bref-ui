@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '../icon/icon.svelte';
 	import { surface } from '../theme/surface.js';
-	import type { ButtonProps } from '#bref-types';
+	import type { ButtonProps } from 'bref-ui/types';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 
 	let {

@@ -20,10 +20,17 @@
 			Install <a href="https://www.npmjs.com/package/bref-ui-themes">bref-ui-themes on npm</a>
 			in a Svelte 5 app, then import components from the theme's entry point:
 		</p>
-		<CodeSnippet language="bash" label="Install themes" source="npm install bref-ui-themes" />
+		<CodeSnippet
+			language="bash"
+			label="Install themes"
+			source="npm install bref-ui bref-ui-themes"
+		/>
 		<p>
-			Svelte 5 is the only peer dependency. No Bref-ui installation is needed, and the custom text
-			font remains optional.
+			Bref-ui 3 and Svelte 5 are peer dependencies. Shared types come from
+			<code>bref-ui/types</code>
+			and are re-exported as types from
+			<code>bref-ui-themes</code>
+			. The custom text font remains optional.
 		</p>
 		<CodeSnippet
 			label="Use New Paris"

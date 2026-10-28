@@ -2,7 +2,7 @@
 	import { untrack } from 'svelte';
 	import Pill from '../pill/pill.svelte';
 	import Container from '../pill-group/container.svelte';
-	import type { PillChoiceGroupProps } from '#bref-types';
+	import type { PillChoiceGroupProps } from 'bref-ui/types';
 
 	let {
 		items,

@@ -6,7 +6,7 @@
 	import DeleteButton from './delete-button.svelte';
 	import Content from './content.svelte';
 	import RecursiveNode from './tree-node.svelte';
-	import type { TreeNodeProps } from '#bref-types';
+	import type { TreeNodeProps } from 'bref-ui/types';
 
 	let {
 		item,

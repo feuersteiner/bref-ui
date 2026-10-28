@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PillProps } from '#bref-types';
+	import type { PillProps } from 'bref-ui/types';
 	import { surface } from '../theme/surface.js';
 	import Content from './content.svelte';
 	import OnDelete from './on-delete.svelte';

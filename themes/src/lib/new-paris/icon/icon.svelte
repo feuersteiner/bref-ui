@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { IconProps } from '#bref-types';
+	import type { IconProps } from 'bref-ui/types';
 
 	let {
 		class: className,

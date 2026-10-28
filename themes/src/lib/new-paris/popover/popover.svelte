@@ -3,8 +3,8 @@
 	import { prefersReducedMotion } from 'svelte/motion';
 	import type { TransitionConfig } from 'svelte/transition';
 	import Surface from '../surface/surface.svelte';
-	import type { PopoverProps } from '#bref-types';
-	import type { SurfaceProps } from '#bref-types';
+	import type { PopoverProps } from 'bref-ui/types';
+	import type { SurfaceProps } from 'bref-ui/types';
 
 	let {
 		trigger,

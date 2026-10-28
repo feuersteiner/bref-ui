@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '../icon/icon.svelte';
 	import { surface } from '../theme/surface.js';
-	import type { TextInputProps } from '#bref-types';
+	import type { TextInputProps } from 'bref-ui/types';
 
 	let {
 		value = $bindable(),

@@ -11,11 +11,10 @@ configuration. Their sources and previews live in [docs](../docs/README.md).
 Install [bref-ui-themes from npm](https://www.npmjs.com/package/bref-ui-themes) in a Svelte 5 app:
 
 ```sh
-npm install bref-ui-themes
+npm install bref-ui bref-ui-themes
 ```
 
-Svelte 5 is the only peer dependency. No Bref-ui installation is needed, and the custom
-text font remains optional.
+Bref-ui 3 and Svelte 5 are peer dependencies. The custom text font remains optional.
 
 Import components from the theme's entry point:
 
@@ -37,10 +36,8 @@ a local library preview.
 Packing includes this README and a generated copy of the repository MIT license.
 Edit the root license; generated package copies are ignored.
 
-The root entry does not aggregate themes or load their CSS. Workspace installation and
-packaging copy Bref's public types into private generated files, including icon
-names, so the published package does not depend on Bref-ui. After changing shared
-types in the workspace, run `bun run --cwd themes prepare` to refresh the copies.
+Shared types come directly from `bref-ui/types` and are re-exported as types from
+`bref-ui-themes`. The root entry does not aggregate components or load theme CSS.
 New Paris depends on Material Symbols and loads its variable fill font through Theme.
 
 ## New Paris

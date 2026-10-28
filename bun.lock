@@ -85,6 +85,7 @@
         "vite": "^8.3.5",
       },
       "peerDependencies": {
+        "bref-ui": "^3.0.0",
         "svelte": "^5.0.0",
       },
     },

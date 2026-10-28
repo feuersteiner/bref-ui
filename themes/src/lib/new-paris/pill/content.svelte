@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import Icon from '../icon/icon.svelte';
-	import type { PillProps } from '#bref-types';
+	import type { PillProps } from 'bref-ui/types';
 
 	let { label, icon }: Pick<PillProps, 'label' | 'icon'> = $props();
 </script>
