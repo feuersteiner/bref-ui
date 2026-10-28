@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Pill from '../pill/pill.svelte';
 	import Container from './container.svelte';
-	import type { PillGroupProps } from './types.js';
+	import type { PillGroupProps } from 'bref-ui/types';
 
 	let {
 		items,
