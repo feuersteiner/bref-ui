@@ -47,6 +47,7 @@
 		min-width: 0;
 		color: var(--color-foreground);
 		font: inherit;
+		font-size: 13px;
 		line-height: 1.25;
 	}
 	div[data-size='small'] {
@@ -68,30 +69,6 @@
 		div[role='group'] {
 			--tree-height: 2.75rem;
 			--tree-action-size: 2.75rem;
-		}
-	}
-
-	:focus-visible {
-		outline-color: var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (forced-colors: active) {
-		:focus-visible {
-			outline-color: Highlight;
-		}
-	}
-	[role='group'] {
-		--tree-action-size: 1.5rem;
-		font-size: 13px;
-	}
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
 		}
 	}
 </style>

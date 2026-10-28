@@ -107,34 +107,6 @@
 	.bref-surface-primary {
 		--surface-color: var(--color-primary, blue);
 	}
-	.bref-surface-secondary {
-		--surface-color: var(--color-secondary, purple);
-	}
-	.bref-surface-foreground {
-		--surface-color: var(--color-foreground, black);
-	}
-	.bref-surface-background {
-		--surface-color: var(--color-background, white);
-		--surface-tint: var(--surface-foreground);
-		--surface-soft-strength: 5%;
-		--surface-content: inherit;
-		--surface-neutral-content: inherit;
-	}
-	.bref-surface-muted {
-		--surface-color: var(--color-muted, gray);
-	}
-	.bref-surface-info {
-		--surface-color: var(--color-info, blue);
-	}
-	.bref-surface-success {
-		--surface-color: var(--color-success, green);
-	}
-	.bref-surface-warning {
-		--surface-color: var(--color-warning, brown);
-	}
-	.bref-surface-error {
-		--surface-color: var(--color-error, red);
-	}
 	.bref-surface-soft {
 		--surface-strength: var(--surface-soft-strength);
 		--surface-fill: color-mix(
@@ -144,43 +116,6 @@
 		);
 		--surface-content: color-mix(in srgb, var(--surface-color) 80%, var(--surface-foreground));
 	}
-	.bref-surface-filled {
-		--surface-strength: 100%;
-		--surface-fill: color-mix(
-			in srgb,
-			var(--surface-color) var(--surface-strength),
-			var(--surface-foreground)
-		);
-		--surface-content: var(--surface-base);
-	}
-	.bref-surface-background.bref-surface-filled {
-		--surface-fill: color-mix(
-			in srgb,
-			var(--surface-base) var(--surface-strength),
-			var(--surface-foreground)
-		);
-	}
-	.bref-surface-background:is(.bref-surface-soft, .bref-surface-filled) {
-		--surface-content: var(--surface-foreground);
-	}
-	.bref-surface-shadow-small {
-		--surface-shadow: 0 2px 6px color-mix(in srgb, black 8%, transparent);
-	}
-	.bref-surface-shadow-medium {
-		--surface-shadow: 0 0.5rem 1.5rem color-mix(in srgb, black 12%, transparent);
-	}
-	.bref-surface-shadow-large {
-		--surface-shadow: 0 1.5rem 4rem color-mix(in srgb, black 20%, transparent);
-	}
-	.bref-surface-hover-small {
-		--surface-hover: 2%;
-	}
-	.bref-surface-hover-medium {
-		--surface-hover: 4%;
-	}
-	.bref-surface-hover-large {
-		--surface-hover: 8%;
-	}
 	@media (prefers-reduced-motion: reduce) {
 		.bref-surface {
 			transition: none;
@@ -188,7 +123,7 @@
 	}
 	@media (forced-colors: active) {
 		.bref-surface {
-			border-color: CanvasText;
+			border-color: ButtonText;
 			background: Canvas;
 			color: CanvasText;
 			box-shadow: none;
@@ -209,18 +144,8 @@
 			inset 0 1px 0 color-mix(in srgb, var(--color-foreground, black) 8%, transparent),
 			var(--surface-shadow, 0 0.5rem 1.5rem color-mix(in srgb, black 12%, transparent));
 	}
-	.bref-glass:where(.bref-surface-neutral) {
-		--glass-paint: color-mix(
-			in srgb,
-			var(--surface-tint) var(--surface-strength),
-			var(--surface-base)
-		);
-	}
 	.bref-glass:where(.bref-surface-soft) {
 		--glass-opacity: 40%;
-	}
-	.bref-glass:where(.bref-surface-filled) {
-		--glass-opacity: 65%;
 	}
 	@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
 		.bref-glass {
@@ -239,7 +164,7 @@
 	}
 	@media (forced-colors: active) {
 		.bref-glass {
-			border-color: CanvasText;
+			border-color: ButtonText;
 			background: Canvas;
 			color: CanvasText;
 			box-shadow: none;
@@ -282,46 +207,8 @@
 		}
 	}
 
-	:focus-visible {
-		outline-color: var(--color-primary);
-		outline-offset: 2px;
-	}
 	.bref-surface {
 		--surface-border: var(--vscode-border);
 		--surface-soft-strength: 14%;
-	}
-	.bref-surface-primary.bref-surface-filled {
-		--surface-fill: var(--vscode-accent);
-		--surface-content: #ffffff;
-	}
-	@media (forced-colors: active) {
-		.bref-surface {
-			background: Canvas;
-			color: CanvasText;
-			border-color: ButtonText;
-		}
-	}
-	@media (forced-colors: active) {
-		.bref-surface-primary.bref-surface-filled {
-			background: Canvas;
-			color: CanvasText;
-			border-color: ButtonText;
-		}
-	}
-	@media (forced-colors: active) {
-		:focus-visible {
-			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
-		}
 	}
 </style>
