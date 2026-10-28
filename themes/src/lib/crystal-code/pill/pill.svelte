@@ -20,9 +20,17 @@
 		...attributes
 	}: PillProps = $props();
 
+	const disabled = $derived(
+		attributes['aria-disabled'] === true || attributes['aria-disabled'] === 'true'
+	);
+
 	const nativeAttributes = $derived({
 		...attributes,
-		onclick: onClick,
+		onclick: onClick
+			? (event: MouseEvent) => {
+					if (!disabled) onClick?.(event);
+				}
+			: undefined,
 		role: onClick ? 'button' : attributes.role,
 		tabindex: onClick ? (attributes.tabindex ?? 0) : attributes.tabindex,
 		'aria-label': attributes['aria-labelledby']
@@ -32,6 +40,7 @@
 			? (event: KeyboardEvent & { currentTarget: EventTarget & HTMLDivElement }) => {
 					attributes.onkeydown?.(event);
 					if (
+						!disabled &&
 						!event.defaultPrevented &&
 						event.target === event.currentTarget &&
 						(event.key === 'Enter' || event.key === ' ')
@@ -66,8 +75,7 @@
 >
 	<Content {label} {icon} />
 	{@render children?.()}
-	<!-- todo: the on delete should always be at right msot of the pill, content has to "fill the parent" -->
-	{#if onDelete}<OnDelete {label} {onDelete} />{/if}
+	{#if onDelete}<OnDelete {label} {onDelete} {disabled} />{/if}
 </div>
 
 <style>
@@ -408,10 +416,6 @@
 		}
 	}
 
-	:focus-visible {
-		outline: 1px solid var(--color-primary);
-		outline-offset: 3px;
-	}
 	.bref-surface {
 		--surface-hover: 0%;
 		--surface-neutral-strength: 0%;
@@ -447,7 +451,6 @@
 	}
 	div.bref-surface[data-color][data-size] {
 		border-radius: var(--crystal-code-radius);
-		--pill-choice-hover: 0%;
 	}
 	.bref-surface-filled[data-removable] {
 		--pill-delete-hover: var(--surface-content);
@@ -462,18 +465,6 @@
 			background: var(--crystal-code-panel);
 			-webkit-backdrop-filter: none;
 			backdrop-filter: none;
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none !important;
-			transition: none !important;
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		*::before {
-			animation: none !important;
-			transition: none !important;
 		}
 	}
 	@media (forced-colors: active) {
@@ -492,22 +483,6 @@
 			border-color: ButtonText;
 			box-shadow: none;
 			backdrop-filter: none;
-		}
-	}
-	@media (forced-colors: active) {
-		:focus-visible {
-			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
 		}
 	}
 </style>

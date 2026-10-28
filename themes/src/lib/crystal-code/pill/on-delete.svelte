@@ -2,11 +2,16 @@
 	import Icon from '../icon/icon.svelte';
 	import type { PillProps } from 'bref-ui/types';
 
-	let { label, onDelete }: Required<Pick<PillProps, 'label' | 'onDelete'>> = $props();
+	let {
+		label,
+		onDelete,
+		disabled = false
+	}: Required<Pick<PillProps, 'label' | 'onDelete'>> & { disabled?: boolean } = $props();
 </script>
 
 <button
 	type="button"
+	{disabled}
 	aria-label={`Remove ${label}`}
 	onclick={(event) => {
 		event.stopPropagation();
@@ -36,10 +41,10 @@
 		font-size: var(--pill-icon-size, 1.125rem);
 		cursor: pointer;
 	}
-	button:hover {
+	button:hover:not(:disabled) {
 		background: color-mix(in srgb, currentColor 8%, transparent);
 	}
-	button:active {
+	button:active:not(:disabled) {
 		background: color-mix(in srgb, currentColor 16%, transparent);
 	}
 	button:focus-visible {
@@ -53,42 +58,15 @@
 		}
 	}
 
-	:focus-visible {
-		outline: 1px solid var(--color-primary);
-		outline-offset: 3px;
-	}
-	button {
-		background: transparent;
-	}
-	button:hover {
+	button:hover:not(:disabled) {
 		color: var(--pill-delete-hover, var(--crystal-code-bright));
 	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none !important;
-			transition: none !important;
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		*::before {
-			animation: none !important;
-			transition: none !important;
-		}
+	button:disabled {
+		cursor: not-allowed;
 	}
 	@media (forced-colors: active) {
-		:focus-visible {
+		button:focus-visible {
 			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
 		}
 	}
 </style>
