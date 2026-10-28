@@ -93,6 +93,7 @@
 		bind:open={() => open, setOpen}
 		spacing="x-small"
 		radius="0.75rem"
+		width="fill"
 		shadow
 		scroll
 		disabled={disabled || !!attributes.readonly}
