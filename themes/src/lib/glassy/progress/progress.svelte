@@ -526,7 +526,7 @@
 	.bref-glass {
 		background: var(--glassy-paint, #f5f6f7);
 		color: var(--glassy-ink, var(--color-foreground));
-		box-shadow: var(--surface-highlight), var(--surface-shadow);
+		box-shadow: var(--surface-highlight, 0 0 0 transparent), var(--surface-shadow);
 	}
 	[data-surface] {
 		--surface-shadow: 0 12px 36px -16px #24344240;

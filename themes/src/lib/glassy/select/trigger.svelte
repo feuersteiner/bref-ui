@@ -219,13 +219,13 @@
 		cursor: pointer;
 		transition: background-color 150ms ease;
 	}
-	span:first-child {
+	[data-trigger-surface] > span:first-child {
 		margin-inline-start: var(--internal-padding);
 	}
-	span:last-child {
+	[data-trigger-surface] > span:last-child {
 		margin-inline-end: var(--internal-padding);
 	}
-	span + span {
+	[data-trigger-surface] > span + span {
 		margin-inline-start: 0.6rem;
 	}
 	[data-value] {

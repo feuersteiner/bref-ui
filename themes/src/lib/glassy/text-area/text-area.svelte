@@ -553,10 +553,6 @@
 		}
 	}
 
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
 	@media (prefers-reduced-motion: reduce) {
 		* {
 			animation: none;

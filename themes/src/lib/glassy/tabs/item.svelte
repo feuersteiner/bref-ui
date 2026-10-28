@@ -360,7 +360,7 @@
 			0 2px 6px #24344210;
 	}
 	[role='tab'] > i {
-		border-radius: 999px;
+		border-radius: inherit;
 	}
 	[role='tab']:focus-visible {
 		outline-offset: -4px;

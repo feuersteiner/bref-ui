@@ -63,10 +63,6 @@
 		}
 	}
 
-	:focus-visible:not(input):not(textarea) {
-		outline: 3px solid var(--color-primary);
-		outline-offset: 3px;
-	}
 	@media (prefers-reduced-motion: reduce) {
 		* {
 			transition: none;
@@ -91,10 +87,6 @@
 		}
 	}
 
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
 	@media (prefers-reduced-motion: reduce) {
 		* {
 			animation: none;

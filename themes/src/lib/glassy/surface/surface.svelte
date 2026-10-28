@@ -387,7 +387,7 @@
 		box-shadow: var(--surface-highlight), var(--surface-shadow);
 	}
 	[data-surface] {
-		--surface-shadow: 0 12px 36px -16px #24344240;
+		--surface-shadow: 0 0 0 transparent;
 	}
 	.bref-surface-shadow-small {
 		--surface-shadow: 0 4px 12px -4px #24344220;

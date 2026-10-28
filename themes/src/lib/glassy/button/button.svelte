@@ -453,7 +453,11 @@
 		--surface-border: color-mix(in srgb, var(--color-primary) 24%, transparent);
 	}
 	@media (hover: hover) {
-		.button.bref-surface-filled:not(:disabled, [aria-disabled='true']):hover {
+		.button.bref-surface-filled:not(:disabled, [aria-disabled='true']):hover:not(
+				:active,
+				[aria-pressed='true'],
+				[data-surface-pressed='true']
+			) {
 			--glassy-paint: color-mix(in srgb, var(--surface-color) 88%, #20262e);
 			filter: none;
 		}
