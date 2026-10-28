@@ -331,10 +331,6 @@
 		}
 	}
 
-	:focus-visible {
-		outline: 1px solid var(--color-primary);
-		outline-offset: 3px;
-	}
 	.bref-surface {
 		--surface-hover: 0%;
 		--surface-neutral-strength: 0%;
@@ -363,14 +359,18 @@
 		--surface-fill: var(--crystal-code-well);
 	}
 	[role='tab'] {
-		min-height: 40px;
+		--internal-height: 40px;
+		--internal-padding: 12px;
+		--internal-font-size: 12px;
 		border: 0;
-		padding: 8px 12px;
-		font-size: 12px;
+		padding-block: 8px;
 		font-weight: 400;
 		background: transparent;
 	}
-	[role='tab']:is(:hover, [aria-selected='true']) {
+	[role='tab'][data-size='small'] {
+		--internal-font-size: 11px;
+	}
+	[role='tab']:is(:hover:not(:disabled), [aria-selected='true']) {
 		background: transparent;
 		color: var(--crystal-code-bright);
 	}
@@ -398,15 +398,8 @@
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none !important;
-			transition: none !important;
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		*::before {
-			animation: none !important;
-			transition: none !important;
+		.bref-surface {
+			transition: none;
 		}
 	}
 	@media (pointer: coarse) {
@@ -433,19 +426,8 @@
 		}
 	}
 	@media (forced-colors: active) {
-		:focus-visible {
+		button:focus-visible {
 			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
 		}
 	}
 </style>
