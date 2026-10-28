@@ -25,14 +25,14 @@ interfaces.
 
 ## Repository structure
 
-A Bun workspace: run `bun install`, then `bun dev` at the root for docs and library
-watchers. Root `check`, `lint` and `build` commands cover all packages. The published
-copy CLI runs on Node.js through npm.
+A Bun workspace: run `bun install`, then `bun run dev` at the root to serve docs.
+Vite follows the core/themes source exports. Root `check`, `lint` and `build` commands
+cover all packages. The published copy CLI runs on Node.js through npm.
 
 - [`core`](core): the `bref-ui` package, with [components](core/src/lib), the
-  [copy CLI](core/cli/README.md), with an empty local demo page.
+  [copy CLI](core/cli/README.md).
 - [`themes`](themes): the `bref-ui-themes` package, one entry point per theme (in progress).
-- [`docs`](docs): the static component docs, playgrounds, skins and palette previews.
+- [`docs`](docs): the static component docs, playgrounds, demos and palette previews.
 
 ## Building
 

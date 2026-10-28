@@ -155,19 +155,19 @@
 	<div data-new-paris-showcase>
 		<a class="skip" href="#collection">Skip to components</a>
 		<nav class="masthead" aria-label="Theme demonstrations">
-			<a href={resolve('/(docs)/themes')} class="brand">
+			<a href={resolve('themes')} class="brand">
 				bref-ui
 				<span>/</span>
 				themes
 			</a>
-			<a class="wordmark" href={resolve('/(themes)/themes/new-paris')}>New Paris</a>
+			<a class="wordmark" href={resolve('themes/new-paris')}>New Paris</a>
 			<div class="theme-links">
 				{#each ['relay', 'forma', 'elsewhere'] as theme (theme)}
-					<a href={resolve('/(skins)/skins/(themes)/themes/[theme]', { theme })}>
+					<a href={resolve(`demo/themes/${theme}`)}>
 						{theme[0].toUpperCase() + theme.slice(1)}
 					</a>
 				{/each}
-				<a href={resolve('/(themes)/themes/new-paris')} aria-current="page">New Paris</a>
+				<a href={resolve('themes/new-paris')} aria-current="page">New Paris</a>
 			</div>
 		</nav>
 		<main id="theme-content" tabindex="-1">
@@ -750,7 +750,7 @@
 			<AdditionalComponents components={AllComponents} />
 		</main>
 		<footer class="colophon">
-			<a href={resolve('/(docs)/themes')}>← Back to showcase</a>
+			<a href={resolve('themes')}>← Back to showcase</a>
 			<span>NEW PARIS / BREF / COMPONENT COLLECTION 04</span>
 		</footer>
 		<Dialog

@@ -1,7 +1,7 @@
 # Contributing to bref-ui-themes
 
-A skin is a complete application demo using canonical Bref components and palette
-configuration; skins belong in `docs`. A theme owns reusable component styling and
+A demo is a complete application using canonical Bref components and palette
+configuration; demos belong in `docs`. A theme owns reusable component styling and
 ships through an individual `bref-ui-themes` entry point.
 
 ## Themes
@@ -18,4 +18,4 @@ ships through an individual `bref-ui-themes` entry point.
   no runtime color-generation dependencies. Explicit overrides win; validate final
   contrast pairs and report failures without silently replacing inputs.
 - Keep `src/lib` for published sources; `src/routes` is a local preview only. Full theme
-  previews and skins belong in [docs](../docs/AGENTS.md).
+  previews and demos belong in [docs](../docs/AGENTS.md).

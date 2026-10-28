@@ -1,21 +1,34 @@
 <script lang="ts">
-	import type { TreeItemProps } from 'bref-ui/types';
 	import NavigationLink from './navigation-link.svelte';
 	import Toc from './toc.svelte';
-	import type { PageSection } from './navigation.js';
+	import type { NavigationItem } from './navigation.js';
 
-	let {
-		item,
-		current,
-		sections
-	}: {
-		item: TreeItemProps;
-		current: boolean;
-		sections: readonly PageSection[];
-	} = $props();
+	let { item, currentPath }: { item: NavigationItem; currentPath: string } = $props();
 </script>
 
-<NavigationLink href={item.id} title={item.label} current={current ? 'page' : undefined} />
-{#if current && sections.length}
-	<Toc {sections} />
-{/if}
+{#snippet node(item: NavigationItem)}
+	<NavigationLink
+		href={item.id}
+		title={item.label}
+		current={item.id === currentPath ? 'page' : undefined}
+	/>
+	{#if item.id === currentPath && item.sections?.length}
+		<Toc sections={item.sections} />
+	{/if}
+	{#if item.children?.length}
+		<ul>
+			{#each item.children as child (child.id)}
+				<li>{@render node(child)}</li>
+			{/each}
+		</ul>
+	{/if}
+{/snippet}
+
+{@render node(item)}
+
+<style>
+	ul {
+		padding-left: 16px;
+		list-style: none;
+	}
+</style>
