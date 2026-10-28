@@ -356,7 +356,11 @@
 		--surface-soft-strength: 14%;
 	}
 	.bref-surface-primary.bref-surface-filled {
-		--surface-fill: var(--vscode-accent);
+		--surface-fill: color-mix(
+			in srgb,
+			var(--vscode-accent) var(--surface-strength),
+			var(--surface-base)
+		);
 		--surface-content: #ffffff;
 	}
 	div.bref-surface-secondary.bref-surface-filled[data-size][data-wide] {
