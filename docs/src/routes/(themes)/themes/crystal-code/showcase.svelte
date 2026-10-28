@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import { asset, resolve } from '$app/paths';
 	import { tick } from 'svelte';
+	import GithubStars from '../../../(docs)/components/layout/github-stars.svelte';
 	import {
 		Theme,
 		Button,
@@ -655,6 +656,26 @@
 			<summary>Complete component reference · all 20 exports</summary>
 			{#if reference}<Reference />{/if}
 		</details>
+		<footer class="gallery-footer">
+			<div>
+				<p>CRYSTAL CODE / BREF</p>
+				<h2>Build with Crystal Code.</h2>
+			</div>
+			<div class="footer-actions">
+				<a
+					class="back-to-docs"
+					href={resolve('themes#crystal-code')}
+					aria-label="Back to Bref-ui docs"
+				>
+					<img src={asset('favicon.svg')} alt="" width="40" height="40" />
+					<span>
+						<strong>bref / ui</strong>
+						<span>Back to docs</span>
+					</span>
+				</a>
+				<GithubStars />
+			</div>
+		</footer>
 		<Dialog
 			bind:open={dialog}
 			header={{ title: 'Name this preview', description: 'Native modal focus and Escape.' }}
@@ -1215,6 +1236,61 @@
 		padding: 18px 24px;
 		color: var(--color-muted);
 		font-size: 12px;
+	}
+	.gallery-footer {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		padding: 32px clamp(20px, 4vw, 56px);
+		border-top: 1px solid var(--crystal-code-border);
+		background: var(--color-background);
+	}
+	.gallery-footer p {
+		margin-bottom: 8px;
+		color: var(--color-muted);
+		font: 10px var(--crystal-code-font-mono);
+	}
+	.gallery-footer h2 {
+		font-size: clamp(20px, 3vw, 28px);
+		letter-spacing: -0.04em;
+	}
+	.footer-actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 24px;
+	}
+	.back-to-docs {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 14px 20px;
+		border: 1px solid var(--crystal-code-border);
+		border-radius: 8px;
+		background: var(--crystal-code-panel);
+		color: var(--color-foreground);
+	}
+	.back-to-docs img {
+		padding: 3px;
+		border-radius: 6px;
+		background: white;
+	}
+	.back-to-docs > span {
+		display: grid;
+		gap: 4px;
+		font-size: 12px;
+	}
+	.back-to-docs strong {
+		font-size: 22px;
+		font-weight: 700;
+		line-height: 1;
+		letter-spacing: -0.04em;
+	}
+	.back-to-docs:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 4px;
 	}
 	.palette-content {
 		display: grid;
