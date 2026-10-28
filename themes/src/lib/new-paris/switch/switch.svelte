@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SwitchProps } from 'bref-ui/types';
+	import type { SwitchProps } from '#bref-types';
 
 	let { checked = $bindable(), size = 'medium', children, ...attributes }: SwitchProps = $props();
 </script>

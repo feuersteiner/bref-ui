@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '../button/button.svelte';
-	import type { DialogProps } from 'bref-ui/types';
+	import type { DialogProps } from '#bref-types';
 
 	let { footer }: { footer: NonNullable<DialogProps['footer']> } = $props();
 </script>

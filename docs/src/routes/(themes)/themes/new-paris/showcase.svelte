@@ -737,8 +737,11 @@
 					<p data-eyebrow>Built to be used</p>
 					<h2 id="usage-heading">Make it yours.</h2>
 					<p>Wrap the components in one Theme per document.</p>
+					<p><a href={resolve('themes#new-paris')}>Optional font setup</a></p>
 				</div>
 				<pre><code>&lt;script&gt;
+  import '@fontsource-variable/inter/index.css';
+  import '@fontsource-variable/material-symbols-outlined/fill.css';
   import &#123; Theme, Button &#125;
     from 'bref-ui-themes/new-paris';
 &lt;/script&gt;

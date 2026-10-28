@@ -19,6 +19,7 @@
 		"typescript-eslint": "^8.60.1"
 	},
 	"scripts": {
+		"prepare": "bun run --cwd themes prepare",
 		"dev": "bun run --cwd docs dev",
 		"build:packages": "bun run --filter bref-ui --filter bref-ui-themes prepack",
 		"check": "bun run --workspaces --if-present check",

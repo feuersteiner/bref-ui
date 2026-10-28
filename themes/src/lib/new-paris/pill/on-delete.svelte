@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '../icon/icon.svelte';
-	import type { PillProps } from 'bref-ui/types';
+	import type { PillProps } from '#bref-types';
 
 	let { label, onDelete }: Required<Pick<PillProps, 'label' | 'onDelete'>> = $props();
 </script>

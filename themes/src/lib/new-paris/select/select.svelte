@@ -2,7 +2,7 @@
 	import Popover from '../popover/popover.svelte';
 	import Trigger from './trigger.svelte';
 	import List from './list.svelte';
-	import type { SelectProps } from 'bref-ui/types';
+	import type { SelectProps } from '#bref-types';
 
 	let {
 		id,

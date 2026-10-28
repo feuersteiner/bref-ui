@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
-	import type { ComboboxFormProps } from 'bref-ui/types';
+	import type { ComboboxFormProps } from '#bref-types';
 
 	let {
 		items,

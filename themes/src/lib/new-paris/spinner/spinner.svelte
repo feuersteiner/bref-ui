@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SpinnerProps } from 'bref-ui/types';
+	import type { SpinnerProps } from '#bref-types';
 
 	let { label, size }: SpinnerProps = $props();
 </script>

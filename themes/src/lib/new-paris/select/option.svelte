@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '../icon/icon.svelte';
-	import type { OptionProps } from 'bref-ui/types';
+	import type { OptionProps } from '#bref-types';
 
 	let { label, icon, disabled, selected, onSelect }: OptionProps = $props();
 </script>

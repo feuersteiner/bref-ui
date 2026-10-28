@@ -2,7 +2,7 @@
 	import { tick } from 'svelte';
 	import Icon from '../icon/icon.svelte';
 	import Option from './option.svelte';
-	import type { ComboboxListProps } from 'bref-ui/types';
+	import type { ComboboxListProps } from '#bref-types';
 
 	let {
 		id,

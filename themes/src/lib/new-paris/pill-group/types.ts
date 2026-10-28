@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'svelte/elements';
-import type { PillDataProps, PillProps } from 'bref-ui/types';
+import type { PillDataProps, PillProps } from '#bref-types';
 import type { Snippet } from 'svelte';
 
 export type PillGroupProps = Omit<HTMLAttributes<HTMLUListElement>, 'children' | 'color'> & {

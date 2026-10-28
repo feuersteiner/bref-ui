@@ -3,7 +3,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import { crossfade } from 'svelte/transition';
 	import Item from './item.svelte';
-	import type { TabsProps } from 'bref-ui/types';
+	import type { TabsProps } from '#bref-types';
 
 	let {
 		items,

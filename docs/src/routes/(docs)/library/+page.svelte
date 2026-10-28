@@ -158,7 +158,7 @@
 	description="Install Bref as a library, import its components and customize the shared theme."
 >
 	<Section {...sections[0]}>
-		<pre aria-label="npm installation command"><code>npm install bref-ui</code></pre>
+		<CodeSnippet language="bash" label="npm installation command" source="npm install bref-ui" />
 		<p>
 			Import components from <code>bref-ui</code>
 			and types from
@@ -371,13 +371,6 @@ ${variants.map((variant) => `  <Button variant="${variant}" color="primary" labe
 </Page>
 
 <style>
-	pre {
-		max-width: 100%;
-		overflow: auto;
-		padding: 24px;
-		background: var(--docs-code-background);
-		border-radius: 12px;
-	}
 	[data-demo='row'] {
 		display: flex;
 		flex-wrap: wrap;

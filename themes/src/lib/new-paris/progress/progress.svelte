@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ProgressProps } from 'bref-ui/types';
+	import type { ProgressProps } from '#bref-types';
 
 	let {
 		label,

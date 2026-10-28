@@ -3,7 +3,7 @@
 	import Icon from '../icon/icon.svelte';
 	import { fly } from 'svelte/transition';
 	import { prefersReducedMotion } from 'svelte/motion';
-	import type { DialogHeaderProps } from 'bref-ui/types';
+	import type { DialogHeaderProps } from '#bref-types';
 
 	let { title, description, icon, dismissible, id, onDismiss }: DialogHeaderProps = $props();
 </script>

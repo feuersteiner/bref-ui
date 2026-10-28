@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Size, SurfaceProps } from 'bref-ui/types';
+	import type { Size, SurfaceProps } from '#bref-types';
 	import { surface } from '../theme/surface.js';
 
 	let {

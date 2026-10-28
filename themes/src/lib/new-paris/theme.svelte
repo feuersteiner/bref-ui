@@ -1,7 +1,5 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import './theme/fonts.css';
-	import '@fontsource-variable/inter/index.css';
 	let { children }: { children?: Snippet } = $props();
 </script>
 

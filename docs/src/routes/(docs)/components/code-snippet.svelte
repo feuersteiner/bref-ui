@@ -2,6 +2,8 @@
 	import { createHighlighterCoreSync } from 'shiki/core';
 	import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
 	import svelte from 'shiki/langs/svelte.mjs';
+	import bash from 'shiki/langs/bash.mjs';
+	import json from 'shiki/langs/json.mjs';
 	import githubLight from 'shiki/themes/github-light.mjs';
 	import githubDark from 'shiki/themes/github-dark.mjs';
 	import { format } from 'prettier/standalone';
@@ -24,7 +26,7 @@
 
 	// Shared by every snippet; synchronous tokens also render during prerendering.
 	const highlighter = createHighlighterCoreSync({
-		langs: [svelte],
+		langs: [svelte, bash, json],
 		themes: [githubLight, githubDark],
 		engine: createJavaScriptRegexEngine()
 	});
@@ -34,7 +36,17 @@
 	import { onDestroy } from 'svelte';
 	import { Button } from 'bref-ui';
 
-	let { source, label = 'Code snippet' }: { source: string; label?: string } = $props();
+	let {
+		source,
+		label = 'Code snippet',
+		language = 'svelte',
+		hideHeader = false
+	}: {
+		source: string;
+		label?: string;
+		language?: 'svelte' | 'bash' | 'json' | 'text';
+		hideHeader?: boolean;
+	} = $props();
 	const newline = '\n';
 	// svelte-ignore state_referenced_locally
 
@@ -60,23 +72,25 @@
 	style:--snippet-light-background={highlighter.getTheme('github-light').bg}
 	style:--snippet-dark-background={highlighter.getTheme('github-dark').bg}
 >
-	<header>
-		<span>Svelte</span>
-		<Button
-			icon={{ name: copied ? 'check' : 'content_copy', label: copied ? 'Copied' : 'Copy code' }}
-			size="x-small"
-			color={copied ? 'success' : 'foreground'}
-			variant="neutral"
-			rounded
-			disabled={copied}
-			onClick={copy}
-		/>
-	</header>
+	{#if !hideHeader}
+		<header>
+			<span>{{ svelte: 'Svelte', bash: 'Bash', json: 'JSON', text: 'Text' }[language]}</span>
+			<Button
+				icon={{ name: copied ? 'check' : 'content_copy', label: copied ? 'Copied' : 'Copy code' }}
+				size="x-small"
+				color={copied ? 'success' : 'foreground'}
+				variant="neutral"
+				rounded
+				disabled={copied}
+				onClick={copy}
+			/>
+		</header>
+	{/if}
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex (Allow keyboard scrolling of wide code blocks.) -->
 	<svelte:boundary>
-		{@const formattedSource = await format(source, formatOptions)}
+		{@const formattedSource = language === 'svelte' ? await format(source, formatOptions) : source}
 		{@const highlighted = highlighter.codeToTokensWithThemes(formattedSource, {
-			lang: 'svelte',
+			lang: language,
 			themes: { light: 'github-light', dark: 'github-dark' }
 		})}
 		<pre

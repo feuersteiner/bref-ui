@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ThemeModeToggleProps } from 'bref-ui/types';
+	import type { ThemeModeToggleProps } from '#bref-types';
 
 	let { mode = 'auto' }: ThemeModeToggleProps = $props();
 </script>

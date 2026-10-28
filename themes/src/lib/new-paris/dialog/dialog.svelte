@@ -6,7 +6,7 @@
 	import { surface } from '../theme/surface.js';
 	import Header from './header.svelte';
 	import Footer from './footer.svelte';
-	import type { DialogProps } from 'bref-ui/types';
+	import type { DialogProps } from '#bref-types';
 
 	let {
 		open = $bindable(false),

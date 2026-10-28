@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Option from './option.svelte';
 	import Empty from './empty.svelte';
-	import type { SelectListProps } from 'bref-ui/types';
+	import type { SelectListProps } from '#bref-types';
 
 	let { items, value, emptyMessage, onSelect }: SelectListProps = $props();
 </script>

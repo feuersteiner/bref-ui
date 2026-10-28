@@ -5,8 +5,8 @@
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
 		"preview": "vite preview",
-		"prepare": "svelte-kit sync || echo ''",
-		"prepack": "node ../scripts/package.mjs && svelte-kit sync && svelte-package && publint",
+		"prepare": "node scripts/generate-types.mjs && svelte-kit sync",
+		"prepack": "node ../scripts/package.mjs && node scripts/generate-types.mjs && svelte-kit sync && svelte-package && publint",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . --ignore-path ../.prettierignore && eslint .",
@@ -35,8 +35,7 @@
 		}
 	},
 	"peerDependencies": {
-		"svelte": "^5.0.0",
-		"bref-ui": "^3.0.0"
+		"svelte": "^5.0.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^8.0.0",
@@ -55,7 +54,8 @@
 	],
 	"imports": {
 		"#lib": "./src/lib/index.js",
-		"#lib/*": "./src/lib/*"
+		"#lib/*": "./src/lib/*",
+		"#bref-types": "./src/lib/shared-types/types.js"
 	},
 	"description": "Pre-built turnkey beautiful themes using bref-ui.",
 	"license": "MIT",
@@ -67,9 +67,5 @@
 	"homepage": "https://github.com/feuersteiner/bref-ui#readme",
 	"bugs": {
 		"url": "https://github.com/feuersteiner/bref-ui/issues"
-	},
-	"dependencies": {
-		"@fontsource-variable/material-symbols-outlined": "^5.3.5",
-		"@fontsource-variable/inter": "^5.3.0"
 	}
 }

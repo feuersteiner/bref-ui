@@ -1,4 +1,4 @@
-import type { SurfaceBaseProps } from 'bref-ui/types';
+import type { SurfaceBaseProps } from '#bref-types';
 
 /** Compose typed surface classes; paint recipes are scoped in each owning component. */
 export const surface = ({

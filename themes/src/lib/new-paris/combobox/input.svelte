@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createAttachmentKey } from 'svelte/attachments';
 	import TextInput from '../text-input/text-input.svelte';
-	import type { ComboboxInputProps } from 'bref-ui/types';
+	import type { ComboboxInputProps } from '#bref-types';
 
 	let {
 		attributes,

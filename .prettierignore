@@ -20,3 +20,6 @@ refactor-plan.md
 
 # Preserve the unchanged New Paris donor formatting
 themes/src/lib/new-paris/progress/progress.svelte
+
+# Generated private theme types
+/themes/src/lib/shared-types/

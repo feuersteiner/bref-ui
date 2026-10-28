@@ -2,7 +2,7 @@
 	import { MediaQuery } from 'svelte/reactivity';
 	import Icon from '../icon/icon.svelte';
 	import { surface } from '../theme/surface.js';
-	import type { TabItemProps } from 'bref-ui/types';
+	import type { TabItemProps } from '#bref-types';
 
 	let {
 		label,

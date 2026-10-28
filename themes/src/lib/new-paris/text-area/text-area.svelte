@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '../icon/icon.svelte';
 	import { surface } from '../theme/surface.js';
-	import type { TextAreaProps } from 'bref-ui/types';
+	import type { TextAreaProps } from '#bref-types';
 
 	let {
 		value = $bindable(),

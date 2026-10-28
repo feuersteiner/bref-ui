@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '../icon/icon.svelte';
-	import type { ComboboxOptionProps } from 'bref-ui/types';
+	import type { ComboboxOptionProps } from '#bref-types';
 
 	let { id, item, selected, active, onSelect }: ComboboxOptionProps = $props();
 </script>
