@@ -375,10 +375,6 @@
 		}
 	}
 
-	:focus-visible {
-		outline: 1px solid var(--color-primary);
-		outline-offset: 3px;
-	}
 	.bref-surface {
 		--surface-hover: 0%;
 		--surface-neutral-strength: 0%;
@@ -434,13 +430,19 @@
 		border-color: var(--color-error);
 	}
 	.bref-glass {
+		--glass-paint: var(--crystal-code-input);
 		--glass-blur: blur(32px);
 		--glass-opacity: 78%;
 		box-shadow: var(--crystal-code-widget-shadow);
 	}
+	@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+		div.bref-surface.bref-glass:has(> textarea) {
+			background: color-mix(in srgb, var(--glass-paint) var(--glass-opacity), transparent);
+		}
+	}
 	@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-		.bref-glass {
-			background: var(--crystal-code-panel);
+		div.bref-surface.bref-glass:has(> textarea) {
+			background: var(--glass-paint);
 			-webkit-backdrop-filter: none;
 			backdrop-filter: none;
 		}
@@ -463,37 +465,14 @@
 		}
 	}
 	@media (forced-colors: active) {
-		.bref-surface {
+		div.bref-surface:has(> textarea),
+		div.bref-surface.bref-glass:has(> textarea) {
 			background: Canvas;
 			color: CanvasText;
 			border-color: ButtonText;
 			box-shadow: none;
+			-webkit-backdrop-filter: none;
 			backdrop-filter: none;
-		}
-	}
-	@media (forced-colors: active) {
-		.bref-glass {
-			background: Canvas;
-			color: CanvasText;
-			border-color: ButtonText;
-			box-shadow: none;
-			backdrop-filter: none;
-		}
-	}
-	@media (forced-colors: active) {
-		:focus-visible {
-			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
 		}
 	}
 </style>
