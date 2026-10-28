@@ -62,3 +62,21 @@ npm install @fontsource-variable/inter
 ```
 
 The gallery uses the same public package exports at `/themes/new-paris`.
+
+## Glassy
+
+Translucent controls and frosted overlays with scoped component styling. All twenty components are exported through the theme subpath:
+
+```svelte
+<script>
+	import { Theme, Button } from 'bref-ui-themes/glassy';
+</script>
+
+<Theme><Button label="Save" /></Theme>
+```
+
+Material Symbols icons load automatically with Theme. Inter remains optional; to
+match the gallery typography, install `@fontsource-variable/inter` and import
+`@fontsource-variable/inter/index.css` in the app.
+
+The gallery uses the same public package exports at `/themes/glassy`.

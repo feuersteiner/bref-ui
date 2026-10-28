@@ -90,6 +90,44 @@
 			<code>bref-ui-themes/new-paris</code>
 		</p>
 	</Section>
+	<Section {...sections[2]}>
+		<a data-theme-card href={resolve('themes/glassy')} target="_blank" rel="noopener noreferrer">
+			<Surface variant="soft" radius="medium" spacing="medium" hover="medium">
+				<div data-theme-preview>
+					<img
+						src={asset('previews/theme-glassy.jpg')}
+						alt="Glassy gallery with translucent controls and frosted panels over a soft gradient"
+						width="1264"
+						height="652"
+						loading="lazy"
+						decoding="async"
+					/>
+					<div data-theme-description>
+						<h3>Glassy</h3>
+						<p>Translucent controls, frosted overlays and soft gradient backgrounds.</p>
+						<span>Open gallery → (opens in new tab)</span>
+					</div>
+				</div>
+			</Surface>
+		</a>
+		<p>
+			Theme loads Material Symbols automatically. Inter stays opt-in to avoid unused font assets:
+		</p>
+		<CodeSnippet
+			language="bash"
+			label="Install optional Glassy font"
+			source="npm install @fontsource-variable/inter"
+		/>
+		<CodeSnippet
+			label="Glassy with optional font"
+			source={`<script>
+  import '@fontsource-variable/inter/index.css';
+  import { Theme, Button } from 'bref-ui-themes/glassy';
+<${'/'}script>
+
+<Theme><Button label="Save" icon={{ name: 'check' }} /></Theme>`}
+		/>
+	</Section>
 </PageContainer>
 
 <style>
