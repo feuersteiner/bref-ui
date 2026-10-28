@@ -24,44 +24,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
+		flex-shrink: 0;
 		flex-wrap: wrap;
 		gap: 0.75rem;
-		padding: 0 1.75rem 1.5rem;
-	}
-
-	:focus-visible {
-		outline: 1px solid var(--color-primary);
-		outline-offset: 3px;
-	}
-	footer {
 		padding: 0 24px 22px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none !important;
-			transition: none !important;
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		*::before {
-			animation: none !important;
-			transition: none !important;
-		}
-	}
-	@media (forced-colors: active) {
-		:focus-visible {
-			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
-		}
 	}
 </style>

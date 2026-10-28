@@ -38,8 +38,9 @@
 	header {
 		display: flex;
 		align-items: flex-start;
+		flex-shrink: 0;
 		gap: 1rem;
-		padding: 1.75rem 1.75rem 0;
+		padding: 22px 24px 8px;
 	}
 	header > div {
 		flex: 1;
@@ -54,7 +55,7 @@
 	h2 {
 		margin: 0;
 		font: inherit;
-		font-size: 1.5rem;
+		font-size: 13px;
 		font-weight: 400;
 		line-height: 1.3;
 	}
@@ -62,44 +63,5 @@
 		margin: 0.5rem 0 0;
 		color: var(--color-muted, #555);
 		line-height: 1.5;
-	}
-
-	:focus-visible {
-		outline: 1px solid var(--color-primary);
-		outline-offset: 3px;
-	}
-	header {
-		padding: 22px 24px 8px;
-	}
-	header h2 {
-		font-size: 13px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none !important;
-			transition: none !important;
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		*::before {
-			animation: none !important;
-			transition: none !important;
-		}
-	}
-	@media (forced-colors: active) {
-		:focus-visible {
-			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
-		}
 	}
 </style>
