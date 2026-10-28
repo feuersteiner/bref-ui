@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
-	import { Button } from 'bref-ui';
+	import { asset, resolve } from '$app/paths';
+	import { Surface } from 'bref-ui';
 	import PageContainer from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
@@ -39,7 +39,25 @@
 		</p>
 	</Section>
 	<Section {...sections[1]}>
-		<p>Black and ivory controls, serif typography and opaque paper overlays.</p>
+		<a data-theme-card href={resolve('themes/new-paris')} target="_blank" rel="noopener noreferrer">
+			<Surface variant="soft" radius="medium" spacing="medium" hover="medium">
+				<div data-theme-preview>
+					<img
+						src={asset('previews/theme-new-paris.jpg')}
+						alt="New Paris gallery with serif typography, an ivory panel and a black collection button"
+						width="1264"
+						height="652"
+						loading="lazy"
+						decoding="async"
+					/>
+					<div data-theme-description>
+						<h3>New Paris</h3>
+						<p>Black and ivory controls, serif typography and opaque paper overlays.</p>
+						<span>Open gallery → (opens in new tab)</span>
+					</div>
+				</div>
+			</Surface>
+		</a>
 		<p>
 			Fonts are opt-in to avoid bloating the package and apps with unused fonts. New Paris adds no
 			font dependencies or automatic font imports. Text falls back to system fonts; to match the
@@ -69,22 +87,38 @@
 		<p>
 			<code>bref-ui-themes/new-paris</code>
 		</p>
-		<div>
-			<Button
-				href={resolve('themes/new-paris')}
-				target="_blank"
-				rel="noopener noreferrer"
-				label="Open New Paris gallery"
-				variant="filled"
-				color="primary"
-				size="x-large"
-			/>
-		</div>
 	</Section>
 </PageContainer>
 
 <style>
-	div {
-		padding-block: 8px 24px;
+	[data-theme-card] {
+		min-width: 0;
+		color: inherit;
+		text-decoration: none;
+	}
+	[data-theme-card]:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 4px;
+	}
+	[data-theme-preview] {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+		align-items: center;
+		gap: 24px;
+	}
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+	[data-theme-description] {
+		display: grid;
+		gap: 16px;
+	}
+	[data-theme-description] p {
+		color: var(--color-muted);
+	}
+	[data-theme-description] span {
+		color: var(--color-primary);
 	}
 </style>
