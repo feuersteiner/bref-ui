@@ -45,7 +45,7 @@
 		</span>
 	{/if}
 	{#if showLabel}<span>{label}</span>{/if}
-	{#if selected && orientation === 'horizontal'}
+	{#if selected}
 		<i
 			class={surface({ color: 'primary', variant: 'soft', glass: true })}
 			aria-hidden="true"
@@ -480,9 +480,10 @@
 		pointer-events: none;
 	}
 
-	/* Vertical selection is expressed by the icon fill only. */
+	/* The connected editor-tab silhouette, turned toward the content beside the strip. */
 	[role='tab'][data-orientation='vertical'] {
-		--internal-height: 36px;
+		--internal-height: 31px;
+		--internal-join-offset: 3.5px;
 		justify-content: center;
 		width: var(--internal-height);
 		min-width: var(--internal-height);
@@ -490,31 +491,82 @@
 		height: var(--internal-height);
 		padding: 0;
 		border: 0;
-		border-radius: 4px;
+		border-radius: 0;
+		border-start-start-radius: 7px;
+		border-end-start-radius: 7px;
 		background: transparent;
-		color: #d7d7d7;
-		font-size: 24px;
+		color: #9d9d9d;
+		font-size: 13px;
 		transition: none;
 	}
+	[role='tab'][data-orientation='vertical']:dir(rtl) {
+		--internal-join-offset: -3.5px;
+	}
 	[role='tab'][data-orientation='vertical'][data-size='small'] {
-		--internal-height: 28px;
-		font-size: 16px;
+		--internal-height: 27px;
+		font-size: 12px;
 	}
 	[role='tab'][data-orientation='vertical'][data-size='large'] {
-		--internal-height: 48px;
+		--internal-height: 35px;
+		font-size: 14px;
+	}
+	[role='tab'][data-orientation='vertical'][aria-selected='true'] {
+		background: transparent;
+		color: #ffffff;
+	}
+	[role='tab'][data-orientation='vertical'] > i {
+		inset: 0;
+		inset-inline-end: -1px;
+		block-size: auto;
+		border: 1px solid transparent;
+		border-inline-end: 0;
+		border-radius: inherit;
+		background: var(--color-background);
+	}
+	[role='tab'][data-orientation='vertical'] > i::before,
+	[role='tab'][data-orientation='vertical'] > i::after {
+		content: '';
+		position: absolute;
+		inset-inline-end: 0;
+		inline-size: 7px;
+		block-size: 7px;
+		clip-path: inset(0);
+		pointer-events: none;
+	}
+	[role='tab'][data-orientation='vertical'] > i::before {
+		inset-block-end: 100%;
+		border-end-end-radius: 7px;
+		box-shadow: var(--internal-join-offset) 3.5px 0 3.5px var(--color-background);
+	}
+	[role='tab'][data-orientation='vertical'] > i::after {
+		inset-block-start: 100%;
+		border-start-end-radius: 7px;
+		box-shadow: var(--internal-join-offset) -3.5px 0 3.5px var(--color-background);
+	}
+	[role='tab'][data-orientation='vertical']:first-child > i::before {
+		content: none;
 	}
 	[role='tab'][data-orientation='vertical']:focus-visible {
 		outline: 1px solid var(--vscode-accent);
-		outline-offset: -2px;
+		outline-offset: -3px;
 	}
 	[role='tab'][data-orientation='vertical']:disabled {
-		color: #d7d7d7;
+		color: var(--color-muted);
 		opacity: 0.4;
 		cursor: default;
 	}
 	.activity-icon {
 		display: inline-flex;
+		flex-shrink: 0;
 		overflow: visible;
+		font-size: 16px;
+		line-height: 1;
+	}
+	[data-size='small'] > .activity-icon {
+		font-size: 14px;
+	}
+	[data-size='large'] > .activity-icon {
+		font-size: 18px;
 	}
 	.activity-icon :global(span) {
 		font-variation-settings:
@@ -527,9 +579,18 @@
 			'wght' 100;
 	}
 	@media (hover: hover) {
-		[role='tab'][data-orientation='vertical']:hover:not(:disabled) {
-			background: #ffffff0a;
-			color: #d7d7d7;
+		[role='tab'][data-orientation='vertical']:hover:not(:disabled, [aria-selected='true']) {
+			background: transparent;
+			color: #ffffff;
+		}
+		[role='tab'][data-orientation='vertical']:hover:not(:disabled, [aria-selected='true'])::after {
+			content: '';
+			position: absolute;
+			inset: 2px 0;
+			z-index: -1;
+			border-radius: 4px;
+			background: color-mix(in srgb, var(--color-foreground) 6%, #2b2b2b);
+			pointer-events: none;
 		}
 	}
 	@media (pointer: coarse) {
@@ -554,9 +615,18 @@
 		}
 		[role='tab'][data-orientation='vertical'],
 		[role='tab'][data-orientation='vertical']:is([aria-selected='true'], :focus-visible),
-		[role='tab'][data-orientation='vertical']:hover:not(:disabled) {
+		[role='tab'][data-orientation='vertical']:hover:not(:disabled, [aria-selected='true']) {
 			background: Canvas;
 			color: CanvasText;
+		}
+		[role='tab'][data-orientation='vertical'] > i {
+			background: Canvas;
+			border: 1px solid Highlight;
+		}
+		[role='tab'][data-orientation='vertical'] > i::before,
+		[role='tab'][data-orientation='vertical'] > i::after,
+		[role='tab'][data-orientation='vertical']::after {
+			display: none;
 		}
 		[role='tab'][data-orientation='vertical'][aria-selected='true']:not(:focus-visible) {
 			outline: none;

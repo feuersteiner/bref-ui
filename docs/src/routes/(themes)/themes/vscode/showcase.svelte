@@ -4,7 +4,8 @@
 	import GithubStars from '../../../(docs)/components/layout/github-stars.svelte';
 	import * as AllComponents from 'bref-ui-themes/vscode';
 	import { asset, resolve } from '$app/paths';
-	import { fade } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
+	import { crossfade, fade } from 'svelte/transition';
 	import {
 		Theme,
 		Button,
@@ -89,6 +90,10 @@
 		fade(node, {
 			duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 120
 		});
+	const [sendActivity, receiveActivity] = crossfade({
+		duration: () => (matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 180),
+		easing: cubicOut
+	});
 	let sidebarVisible = $state(true);
 	let searching = $state(false);
 	let query = $state('');
@@ -207,6 +212,14 @@ ${'</' + 'script>'}
 				<span class="workbench-icon" aria-hidden="true">
 					<Icon name="file_copy" filled={sidebarVisible && !searching} />
 				</span>
+				{#if sidebarVisible && !searching}
+					<span
+						class="activity-selection"
+						aria-hidden="true"
+						in:receiveActivity={{ key: 'active-view' }}
+						out:sendActivity={{ key: 'active-view' }}
+					></span>
+				{/if}
 			</button>
 			<button
 				type="button"
@@ -222,6 +235,14 @@ ${'</' + 'script>'}
 				<span class="workbench-icon" aria-hidden="true">
 					<Icon name="search" filled={sidebarVisible && searching} />
 				</span>
+				{#if sidebarVisible && searching}
+					<span
+						class="activity-selection"
+						aria-hidden="true"
+						in:receiveActivity={{ key: 'active-view' }}
+						out:sendActivity={{ key: 'active-view' }}
+					></span>
+				{/if}
 			</button>
 			<a class="manage" href="#inputs" aria-label="Settings" title="Settings">
 				<span class="workbench-icon" aria-hidden="true"><Icon name="settings" /></span>
@@ -822,8 +843,8 @@ ${'</' + 'script>'}
 							</div>
 						</div>
 						<p class="note">
-							Filled icons mark selection; inactive icons stay outlined. Use ↑/↓, Home or End to
-							switch categories. Extensions stays disabled.
+							The rounded selection moves between icons and joins the content panel. Use ↑/↓, Home
+							or End to switch categories. Extensions stays disabled.
 						</p>
 					</div>
 				</div>
@@ -945,10 +966,17 @@ ${'</' + 'script>'}
 		align-items: center;
 		gap: 4px;
 		padding-block: 8px;
-		background: var(--vscode-panel);
+		padding-inline: 3px 1px;
+		background: #2b2b2b;
+		box-shadow: inset -1px 0 var(--vscode-panel);
+	}
+	.activity-bar:dir(rtl) {
+		box-shadow: inset 1px 0 var(--vscode-panel);
 	}
 	.activity-bar button,
 	.activity-bar a {
+		position: relative;
+		isolation: isolate;
 		display: grid;
 		place-items: center;
 		width: 44px;
@@ -974,18 +1002,63 @@ ${'</' + 'script>'}
 		height: 24px;
 		font-size: 24px;
 	}
+	.activity-selection {
+		--rail-join-offset: 3.5px;
+		position: absolute;
+		inset: 0;
+		inset-inline-end: -1px;
+		z-index: -1;
+		border-start-start-radius: 7px;
+		border-end-start-radius: 7px;
+		background: var(--vscode-panel);
+		pointer-events: none;
+	}
+	.activity-selection:dir(rtl) {
+		--rail-join-offset: -3.5px;
+	}
+	.activity-selection::before,
+	.activity-selection::after {
+		content: '';
+		position: absolute;
+		inset-inline-end: 0;
+		inline-size: 7px;
+		block-size: 7px;
+		clip-path: inset(0);
+		pointer-events: none;
+	}
+	.activity-selection::before {
+		inset-block-end: 100%;
+		border-end-end-radius: 7px;
+		box-shadow: var(--rail-join-offset) 3.5px 0 3.5px var(--vscode-panel);
+	}
+	.activity-selection::after {
+		inset-block-start: 100%;
+		border-start-end-radius: 7px;
+		box-shadow: var(--rail-join-offset) -3.5px 0 3.5px var(--vscode-panel);
+	}
 	.activity-bar :is(button, a):focus-visible {
 		outline: 1px solid var(--vscode-accent);
 		outline-offset: -2px;
 	}
 	@media (hover: hover) {
-		.activity-bar :is(button, a):hover {
+		.activity-bar :is(button:not([aria-pressed='true']), a):hover {
 			background: #ffffff0a;
 		}
 	}
 	@media (forced-colors: active) {
-		.activity-bar {
+		.activity-bar,
+		.activity-bar:dir(rtl) {
 			background: Canvas;
+			box-shadow: none;
+		}
+		.activity-selection {
+			background: Canvas;
+			outline: 1px solid Highlight;
+			outline-offset: -1px;
+		}
+		.activity-selection::before,
+		.activity-selection::after {
+			display: none;
 		}
 		.activity-bar :is(button, a) {
 			color: ButtonText;
@@ -1347,6 +1420,10 @@ ${'</' + 'script>'}
 	.vertical-tabs {
 		display: grid;
 		grid-template-columns: auto minmax(0, 1fr);
+	}
+	.vertical-tabs > .tab-content {
+		border-inline-start: 0;
+		background: var(--color-background);
 	}
 	.setting-check {
 		display: flex !important;
