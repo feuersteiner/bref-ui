@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { TreeItemProps } from 'bref-ui/types';
 	let { components }: { components: typeof import('bref-ui-themes/crystal-code') } = $props();
-	const sizes = ['small', 'medium', 'large'] as const;
 	const languages = [
 		{ id: 'svelte', label: 'Svelte', icon: { name: 'code' as const } },
 		{ id: 'typescript', label: 'TypeScript', icon: { name: 'data_object' as const } },
@@ -14,6 +13,7 @@
 			icon: { name: 'folder' },
 			children: [
 				{ id: 'app', label: 'app.svelte', icon: { name: 'code' } },
+				{ id: 'theme', label: 'theme.css', icon: { name: 'palette' } },
 				{ id: 'locked', label: 'locked.ts', icon: { name: 'lock' }, disabled: true }
 			]
 		},
@@ -21,11 +21,9 @@
 	];
 	let enabled = $state(true);
 	let language = $state<string | string[]>('svelte');
-	let multiple = $state<string | string[]>(['svelte']);
-	let notes = $state('A theme owns every component and its scoped styles.');
+	let notes = $state('Keep the interface quiet. Give the work room to breathe.');
 	let selection = $state<string | string[]>('app');
 	let files = $state<TreeItemProps[]>(structuredClone(initialFiles));
-	let invalid = $state(false);
 	const removeFile = (id: string) => {
 		const remove = (items: TreeItemProps[]): TreeItemProps[] =>
 			items
@@ -35,169 +33,145 @@
 	};
 </script>
 
-<section aria-labelledby="additional-components" data-complete-components>
-	<h2 id="additional-components">More components</h2>
-	<p>
-		These controls use this theme's own CLI-copied sources. Tab through fields, search options with
-		the keyboard, and expand or select files.
-	</p>
-	<div data-grid>
-		{#each sizes as size (size)}
-			<div data-specimen>
-				<h3>{size}</h3>
-				<label data-switch-row>
-					<components.Switch {size} bind:checked={enabled} />
-					<span>Enable notifications · {size}</span>
-				</label>
-				<label>
-					Language · {size}<components.Combobox
-						{size}
-						items={languages}
-						bind:value={language}
-						aria-label={`Language ${size}`}
-					/>
-				</label>
-				<label>
-					Notes · {size}<components.TextArea
-						{size}
-						bind:value={notes}
-						rows={3}
-						aria-label={`Notes ${size}`}
-					/>
-				</label>
-				<components.TreeView
-					{size}
-					items={files}
-					bind:selection
-					defaultExpanded
-					label={`Project files ${size}`}
-					onDelete={removeFile}
+<section aria-labelledby="additional-components">
+	<div class="section-heading">
+		<div>
+			<p class="eyebrow">06 / THE REST OF THE TOOLKIT</p>
+			<h3 id="additional-components">More components</h3>
+		</div>
+		<code>Switch · Combobox · TextArea · TreeView</code>
+	</div>
+	<div class="grid">
+		<div class="panel stack">
+			<h4>Editor preferences</h4>
+			<label class="switch-row">
+				<components.Switch bind:checked={enabled} />
+				<span>Inline suggestions</span>
+			</label>
+			<p class="muted">Suggestions are {enabled ? 'enabled' : 'off'}.</p>
+			<label for="syntax-language">Syntax language</label>
+			<components.Combobox
+				id="syntax-language"
+				items={languages}
+				bind:value={language}
+				aria-label="Syntax language"
+			/>
+			<label for="workspace-notes">Workspace notes</label>
+			<components.TextArea id="workspace-notes" bind:value={notes} rows={4} />
+		</div>
+		<div class="panel stack">
+			<div class="files-heading">
+				<h4>Project files</h4>
+				<components.Button
+					label="Restore files"
+					icon={{ name: 'restart_alt' }}
+					onClick={() => {
+						files = structuredClone(initialFiles);
+						selection = 'app';
+					}}
 				/>
 			</div>
-		{/each}
-	</div>
-	<div data-grid>
-		<div data-specimen>
-			<h3>Selection and disabled states</h3>
-			<label data-switch-row>
-				<components.Switch checked disabled />
-				<span>Enabled and disabled</span>
-			</label>
-			<label data-switch-row>
-				<components.Switch disabled />
-				<span>Off and disabled</span>
-			</label>
-			<label>
-				Multiple languages<components.Combobox
-					items={languages}
-					bind:value={multiple}
-					aria-label="Multiple languages"
-				/>
-			</label>
-			<components.Combobox
-				items={languages}
-				value="svelte"
-				disabled
-				aria-label="Disabled language"
+			<components.TreeView
+				items={files}
+				bind:selection
+				defaultExpanded
+				label="Project files"
+				onDelete={removeFile}
 			/>
-			<components.TextArea value="Read only notes" readonly aria-label="Read only notes" />
-			<components.TextArea value="Unavailable notes" disabled aria-label="Disabled notes" />
-		</div>
-		<form
-			data-specimen
-			onsubmit={(event) => {
-				event.preventDefault();
-				invalid = false;
-			}}
-		>
-			<h3>Native validation</h3>
-			<label>
-				Required notes<components.TextArea
-					name="notes"
-					required
-					variant="soft"
-					aria-label="Required notes"
-					aria-invalid={invalid || undefined}
-					oninvalid={() => (invalid = true)}
-				/>
-			</label>
-			<label>
-				Required language<components.Combobox
-					items={languages}
-					name="language"
-					required
-					aria-label="Required language"
-					aria-invalid={invalid || undefined}
-				/>
-			</label>
-			{#if invalid}<p role="alert">Complete the required fields.</p>{/if}
-			<components.Button type="submit" label="Validate" variant="filled" color="primary" />
-		</form>
-		<div data-specimen>
-			<h3>Bound values</h3>
-			<p>Notifications: {enabled ? 'enabled' : 'off'}</p>
-			<p>Language: {Array.isArray(language) ? language.join(', ') : language}</p>
-			<p>Selection: {Array.isArray(selection) ? selection.join(', ') : selection}</p>
-			<components.Button
-				label="Reset files"
-				onClick={() => {
-					files = structuredClone(initialFiles);
-					selection = 'app';
-				}}
-			/>
-			<p>
-				<code>ThemeModeToggle</code>
-				is also exported for document color-scheme metadata. Fixed-color themes retain their own scheme.
+			<p class="muted">Expand folders, select a file, or remove an editable item.</p>
+			<p class="mono">
+				Selected: {Array.isArray(selection) ? selection.join(', ') || 'none' : selection || 'none'}
 			</p>
 		</div>
 	</div>
+	<p class="metadata">
+		<code>ThemeModeToggle</code>
+		supplies document color-scheme metadata. The header switches this preview between light and dark.
+	</p>
 </section>
 
 <style>
 	section {
-		margin-block: 3rem;
-		padding-block: 1.5rem;
-		border-block-start: 1px solid color-mix(in srgb, var(--color-foreground) 20%, transparent);
-	}
-	h2,
-	h3 {
-		font-family: var(--font-display, inherit);
-	}
-	h2 {
-		font-size: 1.5rem;
-		margin-block-end: 1rem;
-	}
-	h3 {
-		font-size: 1rem;
-	}
-	p {
-		font-size: 0.875rem;
-		line-height: 1.6;
-		overflow-wrap: anywhere;
-	}
-	[data-grid] {
 		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 1.5rem;
-		margin-block-start: 1.5rem;
-	}
-	[data-specimen] {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
+		gap: 24px;
 		min-width: 0;
 	}
-	label {
-		display: grid;
-		gap: 0.5rem;
-		font-size: 0.875rem;
-	}
-	[data-switch-row] {
+	.section-heading {
 		display: flex;
-		align-items: center;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: end;
+		gap: 16px;
 	}
-	@media (max-width: 60rem) {
-		[data-grid] {
+	.eyebrow,
+	code,
+	.mono {
+		font: 10px/1.7 var(--crystal-code-font-mono);
+		color: var(--color-muted);
+	}
+	.eyebrow {
+		letter-spacing: 0.06em;
+	}
+	.section-heading > code {
+		font-size: 11px;
+	}
+	h3 {
+		margin-top: 12px;
+		font-size: 20px;
+		font-weight: 500;
+		letter-spacing: -0.03em;
+	}
+	h4 {
+		font-size: 13px;
+		font-weight: 500;
+	}
+	p {
+		font-size: 12px;
+		line-height: 1.8;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 24px;
+	}
+	.panel {
+		padding: clamp(24px, 3vw, 40px);
+		background: var(--crystal-code-panel);
+		border-radius: 14px;
+		box-shadow: var(--crystal-code-pane-shadow);
+		min-width: 0;
+	}
+	.stack {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 16px;
+	}
+	.stack > h4 {
+		margin-bottom: 8px;
+	}
+	label {
+		font-size: 12px;
+	}
+	.switch-row,
+	.files-heading {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 12px;
+	}
+	.files-heading {
+		justify-content: space-between;
+	}
+	.muted,
+	.metadata {
+		color: var(--color-muted);
+	}
+	.metadata {
+		max-width: 680px;
+	}
+	@media (max-width: 760px) {
+		.grid {
 			grid-template-columns: 1fr;
 		}
 	}

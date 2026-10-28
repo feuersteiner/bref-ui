@@ -4,6 +4,7 @@
 	import GithubStars from '../../../(docs)/components/layout/github-stars.svelte';
 	import {
 		Theme,
+		ThemeModeToggle,
 		Button,
 		Checkbox,
 		Dialog,
@@ -39,7 +40,7 @@
 	const active = $derived(files.find((file) => file.id === activeId) ?? files[0]);
 	let mode = $state<'dark' | 'light'>('dark');
 	let explorer = $state(true);
-	let consoleVisible = $state(true);
+	let consoleVisible = $state(false);
 	let sourceView = $state('component');
 	let label = $state('Run example');
 	let variant = $state<Variant>('neutral');
@@ -76,9 +77,8 @@
 	let pendingFocus = '';
 	let query = $state('');
 	let consoleCommand = $state('');
-	let reference = $state(false);
 	let copied = $state(false);
-	let events = $state(['Workbench ready · 20 exports', 'Change a property or type help below.']);
+	let events = $state(['Ready. Choose a component to explore.']);
 	const disabled = $derived(controlState !== 'ready');
 	const options = [
 		{ id: 'ts', label: 'TypeScript' },
@@ -89,7 +89,7 @@
 	const variants: Variant[] = ['neutral', 'soft', 'filled'];
 	const sourceTabs = $derived<TabItemDataProps[]>([
 		{ id: 'component', label: active.file, icon: 'description' },
-		{ id: 'css', label: 'theme.css', icon: 'data_object' }
+		{ id: 'setup', label: 'setup.svelte', icon: 'data_object' }
 	]);
 	const previewTabs: TabItemDataProps[] = [
 		{ id: 'default', label: 'Editor', icon: 'edit' },
@@ -103,7 +103,7 @@
 			{ id: 'theme', label: 'Toggle light / dark theme', icon: 'contrast' as IconName },
 			{ id: 'reset', label: 'Reset preview properties', icon: 'restart_alt' as IconName },
 			{ id: 'console', label: 'Focus preview console', icon: 'terminal' as IconName },
-			{ id: 'reference', label: 'Open complete component reference', icon: 'widgets' as IconName }
+			{ id: 'reference', label: 'Browse component examples', icon: 'widgets' as IconName }
 		].filter((item) => item.label.toLowerCase().includes(query.toLowerCase()))
 	);
 	const log = (message: string) => {
@@ -132,10 +132,9 @@
 		palette = false;
 		if (id === 'theme') toggleMode();
 		else if (id === 'reset') reset();
-		else if (id === 'reference') {
-			reference = true;
+		else if (id === 'reference')
 			requestAnimationFrame(() => document.getElementById('reference')?.scrollIntoView());
-		} else if (id === 'console') {
+		else if (id === 'console') {
 			consoleVisible = true;
 			if (fromPalette) pendingFocus = 'preview-command';
 			else requestAnimationFrame(() => document.getElementById('preview-command')?.focus());
@@ -171,25 +170,25 @@
 	}
 	const source = $derived.by(() => {
 		const imports: Record<string, string> = {
-			buttons: 'Button, Spinner',
+			buttons: controlState === 'loading' ? 'Button, Spinner' : 'Button',
 			inputs: 'TextInput, Checkbox, Select',
 			choices: 'Pill, PillGroup, PillChoiceGroup',
 			feedback: 'Progress, Spinner, Icon',
-			surfaces: 'Surface, Dialog, Popover, Button',
-			tabs: 'Tabs, Checkbox'
+			surfaces: 'Surface, Dialog, Button',
+			tabs: 'Tabs'
 		};
 		const props = `variant=${JSON.stringify(variant)}\n  size=${JSON.stringify(size)}\n  color="primary"`;
-		if (sourceView === 'css')
-			return `/* workbench / theme.css */\n\n[data-bref-theme='crystal-code'] {\n  --color-background: ${mode === 'dark' ? '#0c0d10' : '#f0f0ee'};\n  --color-foreground: ${mode === 'dark' ? '#d9dade' : '#35373c'};\n  --color-primary: ${mode === 'dark' ? '#8aa7f8' : '#4e5969'};\n  --crystal-code-radius: ${radius};\n}\n\n/* Hover changes text and glyphs only. */\n/* Keyboard focus stays visible. */`;
+		if (sourceView === 'setup')
+			return `<script lang="ts">\n  // Optional text font. Icons are included by the theme.\n  import '@fontsource-variable/inter';\n  import { Theme, Button } from 'bref-ui-themes/crystal-code';\n</${'script'}>\n\n<Theme>\n  <Button label="Build something" icon={{ name: 'bolt' }} />\n</Theme>`;
 		const examples: Record<string, string> = {
 			buttons: `let activations = $state(0);\n</${'script'}>\n\n${controlState === 'loading' ? `<Spinner label="Loading preview" size=${JSON.stringify(size)} />\n` : ''}<Button\n  label={${JSON.stringify(label)}}\n  ${props}\n  icon={{ name: 'bolt' }}\n  disabled={${disabled}}\n  onClick={() => activations++}\n/>\n\n<p>{activations} activations</p>`,
-			inputs: `let value = $state('');\n  let checked = $state(true);\n  let language = $state('ts');\n</${'script'}>\n\n<TextInput aria-label="Setting name"\n  bind:value placeholder="editor.fontSize"\n  size=${JSON.stringify(fieldSize)} disabled={${disabled}} />\n<Checkbox bind:checked aria-label="Format on save"\n  size=${JSON.stringify(size)} disabled={${disabled}} />\n<Select items={[{ id: 'ts', label: 'TypeScript' },\n  { id: 'js', label: 'JavaScript' }]}\n  bind:value={language} size=${JSON.stringify(fieldSize)}\n  disabled={${disabled}} />`,
-			choices: `let selection = $state('default');\n  let tags = $state([{ id: 'svelte', label: 'Svelte' }]);\n</${'script'}>\n\n<Pill label={${JSON.stringify(label)}} ${props.replaceAll('\n  ', ' ')} />\n<PillGroup items={tags}\n  onDelete={(id) => tags = tags.filter(tag => tag.id !== id)} />\n<PillChoiceGroup bind:selection\n  items={[{ id: 'default', label: 'Default' },\n    { id: 'compact', label: 'Compact' }]}\n  size=${JSON.stringify(size)} variant=${JSON.stringify(choiceVariant)}\n  color="primary" disabled={${disabled}} />`,
+			inputs: `let value = $state('');\n  let checked = $state(true);\n  let language = $state<string | string[]>('ts');\n</${'script'}>\n\n<TextInput aria-label="Setting name"\n  bind:value placeholder="editor.fontSize"\n  size=${JSON.stringify(fieldSize)} disabled={${disabled}} />\n<Checkbox bind:checked aria-label="Format on save"\n  size=${JSON.stringify(size)} disabled={${disabled}} />\n<Select items={[{ id: 'ts', label: 'TypeScript' },\n  { id: 'js', label: 'JavaScript' }]}\n  bind:value={language} size=${JSON.stringify(fieldSize)}\n  disabled={${disabled}} />`,
+			choices: `let selection = $state<string | string[]>('default');\n  let tags = $state([{ id: 'svelte', label: 'Svelte' }]);\n</${'script'}>\n\n<Pill label={${JSON.stringify(label)}} ${props.replaceAll('\n  ', ' ')} />\n<PillGroup items={tags}\n  onDelete={(id) => tags = tags.filter(tag => tag.id !== id)} />\n<PillChoiceGroup bind:selection\n  items={[{ id: 'default', label: 'Default' },\n    { id: 'compact', label: 'Compact' }]}\n  size=${JSON.stringify(size)} variant=${JSON.stringify(choiceVariant)}\n  color="primary" disabled={${disabled}} />`,
 			feedback: `let progress = $state(0.42);\n</${'script'}>\n\n<Progress value={progress}\n  onSeek={(next) => progress = next}\n  label="Build progress" disabled={${disabled}} />\n<Spinner label="Loading preview" size=${JSON.stringify(size)} />\n<Icon name="check_circle" color="success" label="Ready" />`,
 			surfaces: `let open = $state(false);\n</${'script'}>\n\n<Surface variant=${JSON.stringify(variant)} color=${JSON.stringify(variant === 'neutral' ? 'background' : 'primary')}\n  spacing="medium" radius=${JSON.stringify(surfaceRadius)}>\n  <h3>Project settings</h3>\n  <p>Context, only when needed.</p>\n</Surface>\n<Button label="Open dialog" onClick={() => open = true} />\n<Dialog bind:open header={{ title: 'Name this preview' }}>\n  <p>Native modal focus and Escape.</p>\n</Dialog>`,
-			tabs: `let view = $state('default');\n  const items = [\n    { id: 'default', label: 'Editor', icon: 'edit' },\n    { id: 'files', label: 'Files', icon: 'folder' },\n    { id: 'locked', label: 'Unavailable', icon: 'lock', disabled: true }\n  ] as const;\n</${'script'}>\n\n<Tabs {items} bind:value={view} label="Preview preferences" />\n<p>{view === 'default' ? 'Editor preferences' : 'File preferences'}</p>`
+			tabs: `let view = $state('default');\n  const items: TabItemDataProps[] = [\n    { id: 'default', label: 'Editor', icon: 'edit' },\n    { id: 'files', label: 'Files', icon: 'folder' },\n    { id: 'locked', label: 'Unavailable', icon: 'lock', disabled: true }\n  ];\n</${'script'}>\n\n<Tabs {items} bind:value={view} label="Preview preferences" />\n<p>{view === 'default' ? 'Editor preferences' : 'File preferences'}</p>`
 		};
-		return `<script lang="ts">\n  import { ${imports[activeId]} }\n    from 'bref-ui-themes/crystal-code';\n\n  ${examples[activeId]}`;
+		return `<script lang="ts">\n  import { Theme, ${imports[activeId]} }\n    from 'bref-ui-themes/crystal-code';\n${activeId === 'tabs' ? "  import type { TabItemDataProps } from 'bref-ui/types';\n" : ''}\n  ${examples[activeId].replace('</' + 'script>\n\n', '</' + 'script>\n\n<Theme>\n')}\n</Theme>`;
 	});
 	$effect(() => {
 		void source;
@@ -221,6 +220,7 @@
 		}
 	}}
 />
+<ThemeModeToggle {mode} />
 <div data-crystal-code-gallery data-theme={mode}>
 	<Theme>
 		<div class="workbench" style:--crystal-code-radius={radius} data-explorer={explorer}>
@@ -266,6 +266,27 @@
 					</button>
 				</div>
 			</header>
+			<section class="intro" aria-labelledby="gallery-title">
+				<div>
+					<p class="eyebrow">CRYSTAL CODE / COMPONENT WORKBENCH</p>
+					<h1 id="gallery-title">
+						Less noise.
+						<br />
+						<span>More focus.</span>
+					</h1>
+				</div>
+				<div class="intro-copy">
+					<p>
+						Quiet surfaces, precise type, and a little room to think. A complete Svelte toolkit,
+						inspired by the editor.
+					</p>
+					<div class="intro-links">
+						<a href="#live-preview">Try the workbench <Icon name="south_east" /></a>
+						<a href="#reference">Explore components <Icon name="arrow_downward" /></a>
+					</div>
+					<span class="intro-meta">20 exports · Svelte 5 · Light & dark</span>
+				</div>
+			</section>
 			<main id="theme-content" class="body" tabindex="-1">
 				<nav class="rail" aria-label="Workbench views">
 					<button
@@ -320,19 +341,17 @@
 							<Icon name="description" filled={activeId === file.id} />{file.file}
 						</button>{/each}
 					<button
-						class="file css-file"
+						class="file setup-file"
 						type="button"
-						aria-current={sourceView === 'css' ? 'true' : undefined}
-						onclick={() => (sourceView = 'css')}
+						aria-current={sourceView === 'setup' ? 'true' : undefined}
+						onclick={() => (sourceView = 'setup')}
 					>
-						<Icon name="data_object" />theme.css
+						<Icon name="data_object" />setup.svelte
 					</button>
 					<div class="sidebar-bottom">
 						<span>• Local playground</span>
 						<p>Explore reusable components and their properties.</p>
-						<a href="#reference" onclick={() => (reference = true)}>
-							Complete component reference ↗
-						</a>
+						<a href="#reference">Browse component examples ↗</a>
 					</div>
 				</nav>
 				<section class="editor" aria-label="Component source" data-console={consoleVisible}>
@@ -341,9 +360,7 @@
 					</div>
 					<div class="editor-path">
 						<span>
-							src › {sourceView === 'css'
-								? 'lib › crystal-code › theme.svelte'
-								: `components › ${active.file}`}
+							src › {sourceView === 'setup' ? 'setup.svelte' : `components › ${active.file}`}
 						</span>
 						<button type="button" class="text-button" onclick={copySource}>
 							<Icon name="content_copy" />{copied ? 'Copied' : 'Copy'}
@@ -636,7 +653,7 @@
 						<br />
 						Tab to focus. Enter or Space to activate.
 						<br />
-						<a href="#reference" onclick={() => (reference = true)}>All variants and states ↗</a>
+						<a href="#reference">Browse component examples ↗</a>
 					</div>
 				</aside>
 			</main>
@@ -652,10 +669,9 @@
 				</span>
 			</footer>
 		</div>
-		<details class="reference-panel" id="reference" bind:open={reference}>
-			<summary>Complete component reference · all 20 exports</summary>
-			{#if reference}<Reference />{/if}
-		</details>
+		<section class="reference-panel" id="reference" aria-label="Component collection">
+			<Reference />
+		</section>
 		<footer class="gallery-footer">
 			<div>
 				<p>CRYSTAL CODE / BREF</p>
@@ -733,10 +749,9 @@
 
 <style>
 	.workbench {
-		height: 100dvh;
-		min-height: 600px;
+		min-height: 100dvh;
 		display: grid;
-		grid-template-rows: 52px minmax(0, 1fr) 28px;
+		grid-template-rows: 52px auto minmax(620px, 72dvh) 28px;
 		background: var(--color-background);
 	}
 	button,
@@ -832,13 +847,13 @@
 	}
 	.body {
 		display: grid;
-		grid-template-columns: 42px 176px minmax(0, 1fr) 330px;
+		grid-template-columns: 42px 166px minmax(0, 1fr) 350px;
 		gap: 12px;
 		min-height: 0;
 		padding: 0 14px 10px 2px;
 	}
 	.workbench[data-explorer='false'] .body {
-		grid-template-columns: 42px minmax(0, 1fr) 330px;
+		grid-template-columns: 42px minmax(0, 1fr) 350px;
 	}
 	.rail {
 		display: flex;
@@ -894,7 +909,7 @@
 	.file[aria-current] {
 		color: var(--crystal-code-bright);
 	}
-	.css-file {
+	.setup-file {
 		margin-top: 12px;
 	}
 	.sidebar-bottom {
@@ -1226,16 +1241,58 @@
 	.mobile-files {
 		display: none;
 	}
-	.reference-panel {
-		margin: 12px 14px 30px 56px;
-		background: var(--crystal-code-panel);
-		border-radius: 14px;
+	.intro {
+		display: grid;
+		grid-template-columns: 1.2fr 1fr;
+		align-items: end;
+		gap: 48px;
+		padding: clamp(48px, 7vw, 96px) clamp(24px, 5vw, 80px);
 	}
-	.reference-panel summary {
-		cursor: pointer;
-		padding: 18px 24px;
+	.eyebrow,
+	.intro-meta {
 		color: var(--color-muted);
+		font: 10px/1.6 var(--crystal-code-font-mono);
+		letter-spacing: 0.06em;
+	}
+	h1 {
+		margin-top: 24px;
+		font-size: clamp(44px, 6.5vw, 88px);
+		font-weight: 500;
+		letter-spacing: -0.065em;
+		line-height: 1.04;
+	}
+	h1 span {
+		color: var(--color-primary);
+	}
+	.intro-copy {
+		max-width: 390px;
+		padding-bottom: 5px;
+	}
+	.intro-copy > p {
+		font-size: 16px;
+		line-height: 1.8;
+		color: var(--color-muted);
+	}
+	.intro-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 16px 28px;
+		margin: 28px 0;
+	}
+	.intro-links a {
+		display: flex;
+		align-items: center;
+		gap: 8px;
 		font-size: 12px;
+	}
+	.reference-panel {
+		padding: clamp(48px, 7vw, 96px) clamp(24px, 5vw, 80px);
+	}
+	button:focus-visible,
+	a:focus-visible,
+	select:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 3px;
 	}
 	.gallery-footer {
 		display: flex;
@@ -1366,7 +1423,7 @@
 		.workbench {
 			height: auto;
 			min-height: 100dvh;
-			grid-template-rows: 52px 1fr 28px;
+			grid-template-rows: 52px auto 1fr 28px;
 		}
 		.titlebar {
 			position: sticky;
@@ -1485,8 +1542,15 @@
 		.status-file {
 			display: none;
 		}
-		.reference-panel {
-			margin-left: 38px;
+		.intro {
+			grid-template-columns: 1fr;
+			gap: 28px;
+		}
+		.intro-copy {
+			max-width: 440px;
+		}
+		.intro-links {
+			margin-block: 20px;
 		}
 	}
 	@media (max-width: 380px) {
@@ -1498,6 +1562,12 @@
 		}
 		.brand strong {
 			display: none;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.stack,
+		.console {
+			animation: none;
 		}
 	}
 	@media (pointer: coarse) {
