@@ -25,15 +25,15 @@
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		width: var(--pill-delete-size, 1.5rem);
-		height: var(--pill-delete-size, 1.5rem);
+		width: var(--pill-delete-size, 1.375rem);
+		height: var(--pill-delete-size, 1.375rem);
 		padding: 0;
 		border: 0;
-		border-radius: 50%;
+		border-radius: 2px;
 		background: transparent;
 		color: inherit;
 		font: inherit;
-		font-size: var(--pill-icon-size, 1.125rem);
+		font-size: var(--pill-icon-size, 1rem);
 		cursor: pointer;
 	}
 	button:hover {

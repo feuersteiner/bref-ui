@@ -1,49 +1,24 @@
 <script lang="ts">
-	import type { TreeItemProps } from 'bref-ui/types';
 	let { components }: { components: typeof import('bref-ui-themes/vscode') } = $props();
 	const languages = [
 		{ id: 'svelte', label: 'Svelte', icon: { name: 'code' as const } },
 		{ id: 'typescript', label: 'TypeScript', icon: { name: 'data_object' as const } },
 		{ id: 'unavailable', label: 'Unavailable language', disabled: true }
 	];
-	const initialFiles: TreeItemProps[] = [
-		{
-			id: 'src',
-			label: 'src',
-			icon: { name: 'folder' },
-			children: [
-				{ id: 'app', label: 'app.svelte', icon: { name: 'code' } },
-				{ id: 'styles', label: 'styles.css', icon: { name: 'palette' } },
-				{ id: 'locked', label: 'locked.ts', icon: { name: 'lock' }, disabled: true }
-			]
-		},
-		{ id: 'readme', label: 'README.md', icon: { name: 'description' } }
+	const sizes = [
+		{ id: 'small', label: 'Small' },
+		{ id: 'medium', label: 'Medium' },
+		{ id: 'large', label: 'Large' }
 	];
 	let enabled = $state(true);
 	let language = $state<string | string[]>('svelte');
 	let notes = $state('A familiar workspace. A fresh place to build.');
-	let selection = $state<string | string[]>('app');
-	let files = $state<TreeItemProps[]>(structuredClone(initialFiles));
 	let disabled = $state(false);
 	let readonly = $state(false);
 	let multi = $state(false);
-	let size = $state<'small' | 'medium' | 'large'>('medium');
+	let size = $state<'small' | 'medium' | 'large'>('small');
 	let invalid = $state(false);
 	let saved = $state(false);
-	const removeFile = (id: string) => {
-		const remove = (items: TreeItemProps[]): TreeItemProps[] =>
-			items
-				.filter((item) => item.id !== id)
-				.map((item) => ({ ...item, children: item.children && remove(item.children) }));
-		files = remove(files);
-		const exists = (id: string, items: TreeItemProps[]): boolean =>
-			items.some((item) => item.id === id || (item.children && exists(id, item.children)));
-		selection = Array.isArray(selection)
-			? selection.filter((id) => exists(id, files))
-			: exists(selection, files)
-				? selection
-				: '';
-	};
 </script>
 
 <section aria-labelledby="additional-components" data-complete-components>
@@ -51,30 +26,45 @@
 		<h2 id="additional-components">
 			07 <span>More components</span>
 		</h2>
-		<code>Switch · Combobox · TextArea · TreeView</code>
+		<code>Switch · Combobox · TextArea</code>
 	</div>
-	<p class="note">
-		A few finishing touches for the workspace. Edit settings, search a language or explore a
-		project.
+	<p class="note introduction">
+		A few finishing touches for the workspace. Edit settings or search a language. The <a
+			href="#explorer"
+		>
+			navigation sidebar
+		</a>
+		is the TreeView example: expand the source folder, select a file or filter with Search. Tab between
+		controls; Enter or Space activates them. The unavailable file stays disabled.
 	</p>
 	<fieldset class="specimen-controls">
-		<legend>Preview controls</legend>
+		<legend>Preview configuration</legend>
+		<div class="size-control">
+			<label for="vscode-preview-size">Size</label>
+			<div class="size-field">
+				<components.Select
+					id="vscode-preview-size"
+					items={sizes}
+					value={size}
+					size="small"
+					onChange={(value) => {
+						if (value === 'small' || value === 'medium' || value === 'large') size = value;
+					}}
+				/>
+			</div>
+		</div>
 		<label>
-			Size <select bind:value={size}>
-				<option value="small">Small</option>
-				<option value="medium">Medium</option>
-				<option value="large">Large</option>
-			</select>
-		</label>
-		<label>
-			<input type="checkbox" bind:checked={disabled} />
+			<components.Checkbox bind:checked={disabled} />
 			Disabled fields
 		</label>
 		<label>
-			<input type="checkbox" bind:checked={readonly} />
+			<components.Checkbox bind:checked={readonly} />
 			Read only text
 		</label>
 	</fieldset>
+	<p class="note preview-status" role="status">
+		{disabled ? 'Fields disabled.' : readonly ? 'Text fields read only.' : 'Fields editable.'}
+	</p>
 	<div class="specimens">
 		<div class="specimen">
 			<div class="specimen-heading">
@@ -93,19 +83,21 @@
 				<code>Combobox</code>
 			</div>
 			<label for="vscode-search-language">Search languages</label>
-			<components.Combobox
-				id="vscode-search-language"
-				{size}
-				{disabled}
-				{readonly}
-				items={languages}
-				bind:value={language}
-				wide
-			/>
+			<div class="setting-field">
+				<components.Combobox
+					id="vscode-search-language"
+					{size}
+					{disabled}
+					{readonly}
+					items={languages}
+					bind:value={language}
+					wide
+				/>
+			</div>
 			<label class="switch-row">
-				<input
-					type="checkbox"
+				<components.Checkbox
 					bind:checked={multi}
+					disabled={disabled || readonly}
 					onchange={(event) => {
 						language = event.currentTarget.checked ? ['svelte'] : 'svelte';
 					}}
@@ -131,27 +123,29 @@
 			<label for="vscode-workspace-notes">
 				Notes <span class="note">(required)</span>
 			</label>
-			<components.TextArea
-				id="vscode-workspace-notes"
-				{size}
-				{disabled}
-				{readonly}
-				bind:value={notes}
-				rows={4}
-				wide
-				required
-				name="notes"
-				aria-invalid={invalid || undefined}
-				aria-describedby="vscode-notes-feedback"
-				oninvalid={() => {
-					invalid = true;
-					saved = false;
-				}}
-				oninput={() => {
-					invalid = false;
-					saved = false;
-				}}
-			/>
+			<div class="setting-field">
+				<components.TextArea
+					id="vscode-workspace-notes"
+					{size}
+					{disabled}
+					{readonly}
+					bind:value={notes}
+					rows={4}
+					wide
+					required
+					name="notes"
+					aria-invalid={invalid || undefined}
+					aria-describedby="vscode-notes-feedback"
+					oninvalid={() => {
+						invalid = true;
+						saved = false;
+					}}
+					oninput={() => {
+						invalid = false;
+						saved = false;
+					}}
+				/>
+			</div>
 			<p id="vscode-notes-feedback" class:error={invalid} class="note" role="status">
 				{invalid
 					? 'Enter a note before saving.'
@@ -170,46 +164,11 @@
 				/>
 			</div>
 		</form>
-		<div class="specimen">
-			<div class="specimen-heading">
-				<h3>Project files</h3>
-				<code>TreeView</code>
-			</div>
-			<components.TreeView
-				{size}
-				items={files}
-				bind:selection
-				defaultExpanded
-				label="Example project files"
-				onDelete={removeFile}
-			/>
-			<div class="tree-status">
-				<p class="note">
-					Selected: {Array.isArray(selection)
-						? selection.join(', ') || 'None'
-						: selection || 'None'}
-				</p>
-				<components.Button
-					label="Reset files"
-					size="small"
-					onClick={() => {
-						files = structuredClone(initialFiles);
-						selection = 'app';
-					}}
-				/>
-			</div>
-			<p class="note">
-				Expand folders, select a file or remove an item. The locked file stays disabled.
-			</p>
-		</div>
 	</div>
 	<div class="scheme-note">
 		<div>
-			<h3>One familiar color scheme.</h3>
-			<p class="note">
-				ThemeModeToggle controls document metadata. This fixed-color theme retains its dark
-				workbench palette.
-			</p>
+			<h3>Appearance</h3>
+			<p class="note">The VS Code preview uses a fixed dark workbench palette.</p>
 		</div>
 		<components.ThemeModeToggle mode="dark" />
 	</div>
@@ -218,13 +177,12 @@
 <style>
 	section {
 		display: grid;
-		gap: 24px;
+		gap: 16px;
 		padding-block: 44px;
 		border-top: 1px solid var(--vscode-border);
 	}
 	.section-title,
-	.specimen-heading,
-	.tree-status {
+	.specimen-heading {
 		display: flex;
 		align-items: baseline;
 		justify-content: space-between;
@@ -246,97 +204,109 @@
 		color: var(--color-foreground);
 	}
 	h3 {
-		font-size: 14px;
-		font-weight: 500;
+		margin: 0;
+		font-size: 13px;
+		font-weight: 600;
 	}
 	code {
 		font: 11px / 1.6 var(--vscode-font-mono);
-		color: var(--color-info);
+		color: var(--color-muted);
 		overflow-wrap: anywhere;
 	}
 	p,
 	label {
+		margin: 0;
 		font-size: 13px;
-		line-height: 1.6;
+		line-height: 1.4;
 	}
 	.note {
 		color: var(--color-muted);
+	}
+	.introduction {
+		max-width: 80ch;
+	}
+	.specimen-controls,
+	.specimens,
+	.scheme-note {
+		box-sizing: border-box;
+		width: 100%;
+		max-width: 740px;
+		min-width: 0;
 	}
 	.specimen-controls {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 16px 24px;
+		gap: 12px 20px;
+		margin: 0;
 		border: 1px solid var(--vscode-border);
-		padding: 12px 16px;
+		padding: 10px 14px 12px;
+		background: var(--vscode-panel);
 	}
 	legend {
 		padding-inline: 6px;
-		font: 11px / 1.5 var(--vscode-font-mono);
+		font:
+			12px / 1.5 'Segoe UI',
+			system-ui,
+			sans-serif;
 		color: var(--color-muted);
 	}
 	.specimen-controls label,
+	.size-control,
 	.switch-row {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: 9px;
+		min-height: 26px;
 	}
-	select {
-		padding: 4px 24px 4px 8px;
-		border: 1px solid var(--vscode-border);
-		border-radius: 0;
-		background: var(--vscode-input);
-		color: var(--color-foreground);
-		font: inherit;
+	.size-field {
+		width: 140px;
+		min-width: 0;
 	}
-	input {
-		accent-color: var(--color-primary);
+	.preview-status {
+		font-size: 12px;
+	}
+	.switch-row:has(:disabled) {
+		color: var(--color-muted);
 	}
 	.specimens {
 		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 32px;
+		grid-template-columns: minmax(0, 1fr);
 	}
 	.specimen {
 		display: grid;
 		align-content: start;
-		gap: 16px;
+		gap: 8px;
 		min-width: 0;
-		padding-top: 20px;
+		padding: 14px;
 		border-top: 1px solid var(--vscode-border);
 	}
-	.specimen-heading {
-		margin-bottom: 4px;
+	.setting-field {
+		width: 100%;
+		max-width: 420px;
+		min-width: 0;
 	}
 	.scheme-note {
 		display: flex;
 		align-items: center;
-		gap: 24px;
-		padding: 20px;
-		background: var(--vscode-panel);
-		border-left: 2px solid var(--color-primary);
+		gap: 16px;
+		padding: 14px;
+		border-top: 1px solid var(--vscode-border);
 	}
 	.scheme-note > div {
 		display: grid;
-		gap: 8px;
+		gap: 4px;
 		flex: 1;
 	}
 	.error {
 		color: var(--color-error);
 	}
-	select:focus-visible,
-	input:focus-visible {
-		outline: 1px solid var(--color-primary);
-		outline-offset: 3px;
-	}
-	@media (max-width: 1050px) {
-		.specimens {
-			grid-template-columns: 1fr;
-		}
-	}
 	@media (max-width: 680px) {
 		section {
 			padding-block: 32px;
+		}
+		.size-control {
+			flex-basis: 100%;
 		}
 		.scheme-note {
 			align-items: start;

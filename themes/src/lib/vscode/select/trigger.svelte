@@ -14,7 +14,13 @@
 		<span data-value data-placeholder={selected.length === 0 || undefined}>
 			{selected.length ? selected.map((item) => item.label).join(', ') : placeholder}
 		</span>
-		<span data-icon data-chevron><Icon name="keyboard_arrow_down" /></span>
+		<span data-icon data-chevron>
+			<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+				<path
+					d="M3.146 5.854 7.646 10.354a.5.5 0 0 0 .707 0l4.5-4.5a.5.5 0 0 0-.707-.707L8 9.293 3.854 5.147a.5.5 0 0 0-.708.707Z"
+				/>
+			</svg>
+		</span>
 	</span>
 </button>
 
@@ -196,8 +202,11 @@
 	[data-trigger-surface] {
 		display: flex;
 		align-items: center;
+		gap: 6px;
 		width: 100%;
+		min-width: 0;
 		height: 100%;
+		padding-inline: var(--internal-padding);
 		border-radius: inherit;
 	}
 
@@ -219,30 +228,21 @@
 		cursor: pointer;
 		transition: background-color 150ms ease;
 	}
-	span:first-child {
-		margin-inline-start: var(--internal-padding);
-	}
-	span:last-child {
-		margin-inline-end: var(--internal-padding);
-	}
-	span + span {
-		margin-inline-start: 0.6rem;
-	}
 	[data-value] {
 		flex: 1;
 		min-width: 0;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-		font-size: 1rem;
-		font-weight: 200;
-		line-height: 1.4;
+		font-size: 13px;
+		font-weight: 400;
+		line-height: 18px;
 	}
 	[data-placeholder] {
 		color: color-mix(in srgb, var(--color-muted) 90%, var(--color-foreground));
 	}
 	[data-icon] {
-		color: var(--color-muted);
+		color: inherit;
 	}
 	[data-icon] {
 		display: inline-flex;
@@ -256,14 +256,11 @@
 		);
 	}
 	[data-chevron] {
-		transition: transform 150ms ease;
-	}
-	button[aria-expanded='true'] [data-chevron] {
-		transform: rotate(180deg);
+		margin-inline-end: -4px;
 	}
 	button:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
+		outline: 1px solid var(--color-primary);
+		outline-offset: -1px;
 	}
 	button:disabled {
 		opacity: 0.5;
@@ -282,6 +279,7 @@
 	}
 	.bref-surface {
 		--surface-border: var(--vscode-border);
+		--surface-fill: var(--vscode-input);
 		--surface-soft-strength: 14%;
 	}
 	.bref-surface-primary.bref-surface-filled {
@@ -289,11 +287,11 @@
 		--surface-content: #ffffff;
 	}
 	button[aria-expanded]:has(> .bref-surface > [data-chevron]) {
-		border-radius: 2px;
+		border-radius: 4px;
 		background: var(--vscode-input);
 	}
 	button[aria-expanded]:has(> .bref-surface > [data-chevron]) > .bref-surface {
-		border-radius: 2px;
+		border-radius: 4px;
 	}
 	button[aria-expanded] > .bref-surface > [data-value] {
 		font-size: 13px;

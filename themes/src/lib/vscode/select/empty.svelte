@@ -15,10 +15,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
-		gap: 0.6rem;
+		gap: 6px;
+		font-size: 13px;
+		line-height: 22px;
 		min-height: fit-content;
 		margin: 0;
-		padding: 0.5rem;
+		padding: 4px 8px;
 		color: var(--color-muted);
 	}
 </style>

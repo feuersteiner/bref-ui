@@ -418,16 +418,30 @@
 		--internal-font-size: 0.8125rem;
 		--internal-padding: 1rem;
 	}
+	.button[data-size] {
+		--internal-font-size: 0.8125rem;
+	}
 	.button[data-size='medium'] {
 		--internal-height: 32px;
 	}
 	.button[data-size='small'] {
-		--internal-height: 28px;
-		--internal-padding: 0.75rem;
+		--internal-height: 26px;
+		--internal-padding: 0.5rem;
+		--internal-icon-size: 1rem;
+		--internal-font-size: 0.75rem;
+		gap: 4px;
+		padding-block: 4px;
+		line-height: 16px;
 	}
 	.button[data-size='x-small'] {
-		--internal-height: 24px;
-		--internal-padding: 0.625rem;
+		--internal-height: 22px;
+		--internal-target: 22px;
+		--internal-padding: 0.375rem;
+		--internal-icon-size: 0.875rem;
+		--internal-font-size: 0.6875rem;
+		gap: 4px;
+		padding-block: 3px;
+		line-height: 14px;
 	}
 	.button[data-size='large'] {
 		--internal-height: 40px;
@@ -444,7 +458,7 @@
 		border-radius: 3px;
 	}
 	@media (pointer: coarse) {
-		.button {
+		.button[data-size] {
 			--internal-target: 44px;
 		}
 	}
@@ -480,8 +494,5 @@
 	}
 	.button {
 		line-height: 1.5;
-	}
-	.button[data-size] {
-		--internal-font-size: 0.8125rem;
 	}
 </style>

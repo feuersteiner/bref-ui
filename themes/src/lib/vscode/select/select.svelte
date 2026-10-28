@@ -31,8 +31,8 @@
 	};
 </script>
 
-<div data-size={size}>
-	<Popover bind:open spacing="x-small" radius="0.75rem" width="fill" shadow scroll {disabled}>
+<div class="select" data-size={size}>
+	<Popover bind:open spacing={undefined} radius="0.5rem" width="fill" shadow scroll {disabled}>
 		{#snippet trigger()}
 			<Trigger
 				{id}
@@ -50,24 +50,35 @@
 
 <style>
 	div {
-		--internal-height: 2.5rem;
-		--internal-row-height: 2.125rem;
-		--internal-padding: 1rem;
-		--internal-icon-size: 1.25rem;
+		--internal-height: 26px;
+		--internal-row-height: 22px;
+		--internal-padding: 8px;
+		--internal-icon-size: 16px;
 		position: relative;
 		width: 100%;
 		min-width: 0;
 	}
 	div[data-size='small'] {
-		--internal-height: 2rem;
-		--internal-row-height: 1.875rem;
-		--internal-padding: 0.75rem;
-		--internal-icon-size: 1rem;
+		--internal-height: 22px;
+		--internal-row-height: 20px;
 	}
 	div[data-size='large'] {
-		--internal-height: 3rem;
-		--internal-row-height: 2.375rem;
-		--internal-padding: 1.125rem;
-		--internal-icon-size: 1.5rem;
+		--internal-height: 30px;
+		--internal-row-height: 24px;
+	}
+
+	/* Keep dropdown geometry local to this theme component. */
+	.select :global([popover]) {
+		margin-block: 0;
+	}
+	.select :global([data-overlay]) {
+		padding: 0;
+		border-radius: 8px;
+		background: var(--color-background);
+	}
+	@media (forced-colors: active) {
+		.select :global([data-overlay]) {
+			background: Canvas;
+		}
 	}
 </style>

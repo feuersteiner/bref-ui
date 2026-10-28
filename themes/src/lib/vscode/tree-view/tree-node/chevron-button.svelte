@@ -16,21 +16,22 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		min-width: var(--tree-action-size);
-		min-height: var(--tree-action-size);
+		width: var(--tree-action-size);
+		flex-shrink: 0;
+		height: var(--tree-height);
 		padding: 0;
 		border: 0;
-		border-radius: 50%;
+		border-radius: 0;
 		background: transparent;
 		color: var(--tree-action-color, inherit);
 		font: inherit;
 		cursor: pointer;
-		transition: background-color 150ms ease;
+		transition: none;
 	}
 	span {
 		display: inline-flex;
-		font-size: 1.125em;
-		transition: transform 150ms ease;
+		font-size: 16px;
+		transition: none;
 	}
 	button[aria-expanded='true'] span {
 		transform: rotate(90deg);
@@ -39,8 +40,8 @@
 		background: color-mix(in srgb, currentColor 8%, transparent);
 	}
 	button:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: -2px;
+		outline: 1px solid var(--color-primary);
+		outline-offset: -1px;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		button,

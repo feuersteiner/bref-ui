@@ -126,7 +126,7 @@
 	div:has(input:focus-visible) {
 		outline: 2px solid var(--color-primary, currentColor);
 		outline-offset: 3px;
-		border-radius: 999px;
+		border-radius: 2px;
 	}
 	div[data-disabled] label {
 		pointer-events: none;
@@ -146,12 +146,12 @@
 	@media (forced-colors: active) {
 		div:has(input:checked) {
 			outline: 2px solid Highlight;
-			border-radius: 999px;
+			border-radius: 2px;
 		}
 	}
 
 	div {
-		border-radius: 3px;
+		border-radius: 2px;
 	}
 	@media (forced-colors: active) {
 		:focus-visible {

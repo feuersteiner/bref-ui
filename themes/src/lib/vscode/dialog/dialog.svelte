@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import { fly } from 'svelte/transition';
-	import { prefersReducedMotion } from 'svelte/motion';
+	import { fade } from 'svelte/transition';
 	import { MediaQuery } from 'svelte/reactivity';
 	import { surface } from '../theme/surface.js';
 	import Header from './header.svelte';
@@ -62,6 +61,7 @@
 	bind:this={dialog}
 	{...attributes}
 	data-size={effectiveSize}
+	data-has-icon={!!header.icon}
 	data-visible={open}
 	aria-labelledby={`${id}-title`}
 	aria-describedby={header.description ? `${id}-description` : undefined}
@@ -73,10 +73,7 @@
 			data-surface
 			class={surface({ color: 'background', glass: true, shadow: 'large' })}
 			use:showModal
-			transition:fly|global={{
-				y: prefersReducedMotion.current ? 0 : 16,
-				duration: prefersReducedMotion.current ? 0 : 300
-			}}
+			transition:fade|global={{ duration: 0 }}
 			onoutroend={() => {
 				if (!open) dialog.close();
 			}}
@@ -334,23 +331,31 @@
 		}
 	}
 
+	/* VS Code 1.143.1: 480px content, 8px padding and a 1px widget border. */
 	dialog {
-		--internal-width: 42rem;
+		--internal-width: 498px;
+		--internal-content-inset: 24px;
 		box-sizing: border-box;
-		width: min(calc(100% - 2rem), var(--internal-width));
+		width: min(90vw, var(--internal-width));
 		max-width: var(--internal-width);
-		max-height: calc(100dvh - 2rem);
+		max-height: 90dvh;
 		margin: auto;
 		padding: 0;
 		border: 0;
 		background: transparent;
+		font: inherit;
+		font-size: 13px;
+		line-height: 1.4;
+		color: var(--color-foreground);
 		overflow: visible;
 	}
 	[data-surface] {
 		display: flex;
 		flex-direction: column;
-		max-height: calc(100dvh - 2rem);
-		border-radius: 1rem;
+		max-height: 90dvh;
+		min-height: 75px;
+		padding: 8px;
+		border-radius: 12px;
 	}
 	dialog[open] {
 		display: flex;
@@ -360,7 +365,7 @@
 		--internal-width: 20rem;
 	}
 	dialog[data-size='small'] {
-		--internal-width: 28rem;
+		--internal-width: 498px;
 	}
 	dialog[data-size='large'] {
 		--internal-width: 56rem;
@@ -369,30 +374,12 @@
 		--internal-width: 72rem;
 	}
 	dialog::backdrop {
-		background: color-mix(in srgb, var(--color-background, white) 48%, transparent);
-		-webkit-backdrop-filter: blur(0);
-		backdrop-filter: blur(0);
-		opacity: 0;
-		transition:
-			opacity 300ms ease,
-			-webkit-backdrop-filter 300ms ease,
-			backdrop-filter 300ms ease;
-	}
-	dialog[data-visible='true']::backdrop {
-		-webkit-backdrop-filter: blur(0.25rem);
-		backdrop-filter: blur(0.25rem);
-		opacity: 1;
-	}
-	@starting-style {
-		dialog[data-visible='true']::backdrop {
-			-webkit-backdrop-filter: blur(0);
-			backdrop-filter: blur(0);
-			opacity: 0;
-		}
+		background: rgb(0 0 0 / 50%);
 	}
 	[data-content] {
 		min-height: 0;
-		padding: 1.25rem 1.75rem 1.5rem;
+		padding: 0 8px 0 var(--internal-content-inset);
+		line-height: 20px;
 		overflow: auto;
 	}
 	dialog[data-size='full-screen'] {
@@ -440,22 +427,17 @@
 		--surface-content: #ffffff;
 	}
 	dialog[open] > .bref-surface {
-		border-radius: 3px;
-		background: var(--vscode-panel);
+		border-radius: 12px;
+		background: #202020;
 		-webkit-backdrop-filter: none;
 		backdrop-filter: none;
 	}
 	dialog[open] > .bref-surface {
-		border: 1px solid var(--vscode-border);
-		box-shadow: 0 12px 36px #0008;
+		border: 1px solid #313131;
+		box-shadow: 0 0 20px rgb(0 0 0 / 15%);
 	}
-	dialog[data-visible]::backdrop {
-		background: #0008;
-		-webkit-backdrop-filter: none;
-		backdrop-filter: none;
-	}
-	dialog [data-content] {
-		padding: 16px 20px;
+	dialog[data-has-icon='true'] {
+		--internal-content-inset: 48px;
 	}
 	@media (forced-colors: active) {
 		dialog[open] > .bref-surface {

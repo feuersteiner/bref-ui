@@ -10,17 +10,16 @@
 </span>
 
 <style>
+	/* Geometry and states follow VS Code 1.143.1's base/browser/ui/toggle/switch.css. */
 	[data-switch] {
-		--track-width: 2.75rem;
-		--track-height: 1.625rem;
-		--thumb-size: 1.125rem;
-		--inset: 0.25rem;
+		--track-width: 28px;
+		--track-height: 16px;
 		position: relative;
 		display: inline-flex;
 		flex-shrink: 0;
 		width: var(--track-width);
 		height: var(--track-height);
-		border-radius: 2px;
+		border-radius: 9999px;
 		vertical-align: middle;
 	}
 
@@ -36,68 +35,49 @@
 	}
 
 	[data-switch] > span {
-		--internal-tint: var(--color-foreground, black);
-		--internal-strength: 48%;
-		--internal-fill: color-mix(
-			in srgb,
-			var(--internal-tint) var(--internal-strength),
-			var(--color-background, white)
-		);
-		--internal-border: var(--internal-fill);
+		--internal-fill: color-mix(in srgb, var(--color-muted, #9d9d9d) 36%, transparent);
+		--internal-border: transparent;
 		box-sizing: border-box;
 		position: relative;
+		container-type: size;
 		width: 100%;
 		height: 100%;
 		border: 1px solid var(--internal-border);
-		border-radius: 2px;
+		border-radius: inherit;
 		background: var(--internal-fill);
 		pointer-events: none;
 		transition:
-			background-color 150ms ease,
-			border-color 150ms ease;
+			background-color 120ms ease,
+			border-color 120ms ease;
 	}
 
 	[data-switch] > span > span {
 		position: absolute;
-		top: 50%;
-		left: var(--inset);
+		top: 0;
+		bottom: 0;
+		left: 0;
+		box-sizing: border-box;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--thumb-size);
-		height: var(--thumb-size);
-		border-radius: 2px;
-		background: var(--color-background, white);
-		color: var(--color-foreground, black);
-		box-shadow: 0 1px 2px color-mix(in srgb, var(--color-background, white) 12%, transparent);
-		font-size: calc(var(--thumb-size) * 0.7);
-		transform: translateY(-50%);
-		transition: left 150ms ease;
-	}
-
-	input:hover:not(:disabled) + span {
-		--internal-strength: 52%;
-	}
-
-	input:active:not(:disabled) + span {
-		--internal-strength: 56%;
+		/* Border insets keep the thumb's gaps equal at fractional display scales. */
+		width: 100cqh;
+		border: 1px solid transparent;
+		border-radius: inherit;
+		background-color: white;
+		background-clip: padding-box;
+		color: var(--color-background, #1f1f1f);
+		font-size: calc((var(--track-height) - 4px) * 0.7);
+		transition: left 120ms ease;
 	}
 
 	input:checked + span {
-		--internal-tint: var(--color-primary, blue);
-		--internal-strength: 88%;
-	}
-
-	input:checked:hover:not(:disabled) + span {
-		--internal-strength: 92%;
-	}
-
-	input:checked:active:not(:disabled) + span {
-		--internal-strength: 96%;
+		--internal-fill: var(--vscode-accent, var(--color-primary, #0078d4));
+		--internal-border: var(--internal-fill);
 	}
 
 	input:checked + span > span {
-		left: calc(100% - var(--thumb-size) - var(--inset));
+		left: calc(100% - 100cqh);
 	}
 
 	input:user-invalid + span,
@@ -106,8 +86,8 @@
 	}
 
 	input:focus-visible + span {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 3px;
+		outline: 1px solid var(--vscode-accent, var(--color-primary, #0078d4));
+		outline-offset: 2px;
 	}
 
 	input:disabled {
@@ -115,50 +95,57 @@
 	}
 
 	input:disabled + span {
-		opacity: 0.45;
+		opacity: 0.5;
 	}
 
 	[data-size='small'] {
-		--track-width: 2.25rem;
-		--track-height: 1.375rem;
-		--thumb-size: 0.875rem;
+		--track-width: 24px;
+		--track-height: 14px;
 	}
 
 	[data-size='large'] {
-		--track-width: 3.25rem;
-		--track-height: 1.875rem;
-		--thumb-size: 1.375rem;
+		--track-width: 32px;
+		--track-height: 18px;
 	}
 
 	@media (forced-colors: active) {
 		[data-switch] > span {
+			forced-color-adjust: none;
 			border-color: ButtonText;
 			background: Canvas;
-			box-shadow: none;
-			-webkit-backdrop-filter: none;
-			backdrop-filter: none;
 		}
 		[data-switch] > span > span {
-			background: ButtonText;
+			background-color: ButtonText;
 			color: Canvas;
-			box-shadow: none;
 		}
 		input:checked + span {
 			background: Highlight;
 		}
 		input:checked + span > span {
-			background: HighlightText;
+			background-color: HighlightText;
 			color: Highlight;
+		}
+		input:focus-visible + span {
+			outline-color: Highlight;
+		}
+		input:disabled + span {
+			border-color: GrayText;
+			opacity: 1;
+		}
+		input:disabled + span > span {
+			background-color: GrayText;
+		}
+		input:disabled:checked + span {
+			background: GrayText;
+		}
+		input:disabled:checked + span > span {
+			background-color: Canvas;
 		}
 	}
 
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
 	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
+		[data-switch] > span,
+		[data-switch] > span > span {
 			transition: none;
 		}
 	}

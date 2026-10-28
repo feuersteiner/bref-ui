@@ -25,16 +25,14 @@
 		align-items: center;
 		justify-content: flex-end;
 		flex-wrap: wrap;
-		gap: 0.75rem;
-		padding: 0 1.75rem 1.5rem;
+		gap: 8px;
+		margin-left: 67px;
+		padding: 24px 4px 4px;
 	}
 
 	:focus-visible {
 		outline-color: var(--color-primary);
 		outline-offset: 2px;
-	}
-	footer {
-		padding: 0 20px 16px;
 	}
 	@media (forced-colors: active) {
 		:focus-visible {

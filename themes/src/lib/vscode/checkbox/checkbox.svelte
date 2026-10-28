@@ -26,27 +26,9 @@
 
 <style>
 	div {
-		--internal-size: 1.25rem;
-		--internal-tint: var(--color-foreground, black);
-		--internal-strength-light: 4%;
-		--internal-strength-dark: 8%;
-		--internal-fill: light-dark(
-			color-mix(
-				in srgb,
-				var(--internal-tint) var(--internal-strength-light),
-				var(--color-background, white)
-			),
-			color-mix(
-				in srgb,
-				var(--internal-tint) var(--internal-strength-dark),
-				var(--color-background, white)
-			)
-		);
-		--internal-border: color-mix(
-			in srgb,
-			var(--color-foreground, black) 48%,
-			var(--color-background, white)
-		);
+		--internal-size: 1.125rem;
+		--internal-fill: #313131;
+		--internal-border: #3c3c3c;
 		box-sizing: border-box;
 		position: relative;
 		display: inline-flex;
@@ -56,7 +38,7 @@
 		inline-size: var(--internal-size);
 		block-size: var(--internal-size);
 		border: 1px solid var(--internal-border);
-		border-radius: 2px;
+		border-radius: 3px;
 		background: var(--internal-fill);
 		color: var(--color-foreground, black);
 		font-size: calc(var(--internal-size) * 0.8);
@@ -92,26 +74,13 @@
 	div[data-size='x-large'] {
 		--internal-size: 1.75rem;
 	}
-	div:has(input:hover:not(:disabled):not(:checked)) {
-		--internal-strength-light: 8%;
-		--internal-strength-dark: 12%;
-	}
-	div:has(input:checked) {
-		--internal-fill: var(--vscode-accent, var(--color-primary, blue));
-		--internal-border: var(--internal-fill);
-		color: white;
-	}
-	div:has(input:active:not(:disabled)) {
-		--internal-strength-light: 12%;
-		--internal-strength-dark: 16%;
-	}
 	div:has(input:user-invalid),
 	div:has(input[aria-invalid='true']) {
 		--internal-border: var(--color-error, #bc2436);
 	}
 	div:has(input:focus-visible) {
-		outline: 2px solid var(--color-primary, blue);
-		outline-offset: 3px;
+		outline: 1px solid var(--vscode-accent, var(--color-primary, blue));
+		outline-offset: 2px;
 	}
 	div:has(input:disabled) {
 		opacity: 0.5;

@@ -18,13 +18,14 @@
 		transitionOut = () => ({})
 	}: TabItemProps = $props();
 	const smallScreen = new MediaQuery('(max-width: 575px)', false);
-	const showLabel = $derived(!smallScreen.current || (orientation === 'horizontal' && selected));
+	const showLabel = $derived(orientation === 'horizontal' && (!smallScreen.current || selected));
 </script>
 
 <button
 	type="button"
 	role="tab"
 	aria-label={label}
+	title={orientation === 'vertical' ? label : undefined}
 	aria-selected={selected ?? false}
 	data-width={orientation === 'horizontal' ? width : undefined}
 	data-size={size}
@@ -34,9 +35,17 @@
 	{disabled}
 	onclick={onSelect}
 >
-	<Icon name={icon} filled={filled || selected === true} />
+	{#if orientation === 'vertical'}
+		<span class="activity-icon" aria-hidden="true">
+			<Icon name={icon} filled={selected === true} />
+		</span>
+	{:else}
+		<span class="editor-icon" aria-hidden="true">
+			<Icon name={icon} filled={filled || selected === true} />
+		</span>
+	{/if}
 	{#if showLabel}<span>{label}</span>{/if}
-	{#if selected}
+	{#if selected && orientation === 'horizontal'}
 		<i
 			class={surface({ color: 'primary', variant: 'soft', glass: true })}
 			aria-hidden="true"
@@ -386,18 +395,151 @@
 		justify-content: center;
 		padding-inline: 8px;
 	}
-	[role='tab'][data-orientation='vertical'] {
-		border-inline-end: 0;
-		border-block-end: 1px solid var(--vscode-border);
+	/* VS Code 1.143.1 Modern UI connected editor tabs: 24px labels in a 32px row. */
+	[role='tab'][data-orientation='horizontal'] {
+		--internal-height: 31px;
+		--internal-padding: 8px;
+		min-height: var(--internal-height);
+		padding: 0 var(--internal-padding);
+		padding-inline-start: calc(var(--internal-padding) - 2px);
+		border: 0;
+		border-radius: 7px 7px 0 0;
+		background: transparent;
+		color: #9d9d9d;
+		font-size: 13px;
+		transition: none;
 	}
-	[role='tab'][data-orientation='vertical'] > i {
-		inset-block-end: 0;
-		inset-inline-end: auto;
-		inline-size: 2px;
+	[role='tab'][data-orientation='horizontal'][data-size='small'] {
+		--internal-height: 27px;
+		--internal-padding: 6px;
+		font-size: 12px;
+	}
+	[role='tab'][data-orientation='horizontal'][data-size='large'] {
+		--internal-height: 35px;
+		--internal-padding: 10px;
+		font-size: 14px;
+	}
+	.editor-icon {
+		display: inline-flex;
+		flex-shrink: 0;
+		overflow: visible;
+		font-size: 16px;
+		line-height: 1;
+	}
+	[data-size='small'] > .editor-icon {
+		font-size: 14px;
+	}
+	[data-size='large'] > .editor-icon {
+		font-size: 18px;
+	}
+	[role='tab'][data-orientation='horizontal'][aria-selected='true'] {
+		background: transparent;
+		color: #ffffff;
+	}
+	[role='tab'][data-orientation='horizontal'] > i {
+		inset: 0 0 -1px;
 		block-size: auto;
+		border: 1px solid transparent;
+		border-bottom: 0;
+		border-radius: inherit;
+		background: var(--color-background);
+	}
+	[role='tab'][data-orientation='horizontal'] > i::before,
+	[role='tab'][data-orientation='horizontal'] > i::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		width: 7px;
+		height: 7px;
+		clip-path: inset(0);
+		pointer-events: none;
+	}
+	[role='tab'][data-orientation='horizontal'] > i::before {
+		right: 100%;
+		border-bottom-right-radius: 7px;
+		box-shadow: 3.5px 3.5px 0 3.5px var(--color-background);
+	}
+	[role='tab'][data-orientation='horizontal'] > i::after {
+		left: 100%;
+		border-bottom-left-radius: 7px;
+		box-shadow: -3.5px 3.5px 0 3.5px var(--color-background);
+	}
+	[role='tab'][data-orientation='horizontal']:first-child > i::before {
+		content: none;
+	}
+	[role='tab'][data-orientation='horizontal']:hover:not(:disabled, [aria-selected='true']) {
+		background: transparent;
+	}
+	[role='tab'][data-orientation='horizontal']:hover:not(:disabled, [aria-selected='true'])::after {
+		content: '';
+		position: absolute;
+		inset: 0 2px;
+		z-index: -1;
+		border-radius: 4px;
+		background: color-mix(in srgb, var(--color-foreground) 6%, #2b2b2b);
+		pointer-events: none;
+	}
+
+	/* Vertical selection is expressed by the icon fill only. */
+	[role='tab'][data-orientation='vertical'] {
+		--internal-height: 36px;
+		justify-content: center;
+		width: var(--internal-height);
+		min-width: var(--internal-height);
+		min-height: var(--internal-height);
+		height: var(--internal-height);
+		padding: 0;
+		border: 0;
+		border-radius: 4px;
+		background: transparent;
+		color: #d7d7d7;
+		font-size: 24px;
+		transition: none;
+	}
+	[role='tab'][data-orientation='vertical'][data-size='small'] {
+		--internal-height: 28px;
+		font-size: 16px;
+	}
+	[role='tab'][data-orientation='vertical'][data-size='large'] {
+		--internal-height: 48px;
+	}
+	[role='tab'][data-orientation='vertical']:focus-visible {
+		outline: 1px solid var(--vscode-accent);
+		outline-offset: -2px;
+	}
+	[role='tab'][data-orientation='vertical']:disabled {
+		color: #d7d7d7;
+		opacity: 0.4;
+		cursor: default;
+	}
+	.activity-icon {
+		display: inline-flex;
+		overflow: visible;
+	}
+	.activity-icon :global(span) {
+		font-variation-settings:
+			'FILL' 0,
+			'wght' 100;
+	}
+	.activity-icon :global(.filled) {
+		font-variation-settings:
+			'FILL' 1,
+			'wght' 100;
+	}
+	@media (hover: hover) {
+		[role='tab'][data-orientation='vertical']:hover:not(:disabled) {
+			background: #ffffff0a;
+			color: #d7d7d7;
+		}
 	}
 	@media (pointer: coarse) {
-		[role='tab'] {
+		[role='tab'],
+		[role='tab'][data-orientation='horizontal'] {
+			min-height: 44px;
+		}
+		[role='tab'][data-orientation='vertical'] {
+			width: max(44px, var(--internal-height));
+			min-width: 44px;
 			min-height: 44px;
 		}
 	}
@@ -409,6 +551,22 @@
 		}
 		[role='tab'] > i {
 			background: Highlight;
+		}
+		[role='tab'][data-orientation='vertical'],
+		[role='tab'][data-orientation='vertical']:is([aria-selected='true'], :focus-visible),
+		[role='tab'][data-orientation='vertical']:hover:not(:disabled) {
+			background: Canvas;
+			color: CanvasText;
+		}
+		[role='tab'][data-orientation='vertical'][aria-selected='true']:not(:focus-visible) {
+			outline: none;
+		}
+		[role='tab'][data-orientation='vertical']:disabled {
+			color: GrayText;
+			opacity: 1;
+		}
+		[role='tab'][data-orientation='vertical']:focus-visible {
+			outline-color: Highlight;
 		}
 		[role='tab']:focus-visible {
 			outline-color: Highlight;
@@ -431,6 +589,31 @@
 	@media (forced-colors: active) {
 		:focus-visible {
 			outline-color: Highlight;
+		}
+	}
+
+	@media (forced-colors: active) {
+		[role='tab'][data-orientation='horizontal'],
+		[role='tab'][data-orientation='horizontal'][aria-selected='true'],
+		[role='tab'][data-orientation='horizontal']:hover:not(:disabled, [aria-selected='true']) {
+			background: Canvas;
+			color: CanvasText;
+		}
+		[role='tab'][data-orientation='horizontal'] > i {
+			background: Canvas;
+			border: 1px solid Highlight;
+		}
+		[role='tab'][data-orientation='horizontal'] > i::before,
+		[role='tab'][data-orientation='horizontal'] > i::after,
+		[role='tab'][data-orientation='horizontal']::after {
+			display: none;
+		}
+		[role='tab'][data-orientation='horizontal'][aria-selected='true']:not(:focus-visible) {
+			outline: none;
+		}
+		[role='tab'][data-orientation='horizontal']:disabled {
+			color: GrayText;
+			opacity: 1;
 		}
 	}
 

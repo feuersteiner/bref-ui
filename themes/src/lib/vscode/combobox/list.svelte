@@ -54,25 +54,28 @@
 
 <style>
 	div {
-		--internal-row-height: 2.125rem;
-		--internal-icon-size: 1.25rem;
+		--internal-row-height: 22px;
+		--internal-icon-size: 16px;
 		display: grid;
-		gap: 0.125rem;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0;
+		min-width: 0;
+		font-size: 13px;
+		font-weight: 400;
+		line-height: 18px;
 	}
 	div[data-size='small'] {
-		--internal-row-height: 1.875rem;
-		--internal-icon-size: 1rem;
+		--internal-row-height: 20px;
 	}
 	div[data-size='large'] {
-		--internal-row-height: 2.375rem;
-		--internal-icon-size: 1.5rem;
+		--internal-row-height: 24px;
 	}
 	p {
 		display: flex;
 		align-items: center;
-		gap: 0.6rem;
+		gap: 6px;
 		margin: 0;
-		padding: 0.5rem;
+		padding: 4px 8px;
 		color: var(--color-muted);
 	}
 

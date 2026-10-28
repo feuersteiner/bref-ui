@@ -318,24 +318,25 @@
 
 	div {
 		--pill-glint: color-mix(in srgb, var(--color-foreground, black) 8%, transparent);
-		--pill-padding: 0.75rem;
-		--pill-height: 2rem;
-		--pill-icon-size: 1.125rem;
-		--pill-delete-size: 1.5rem;
+		--pill-padding: 0.375rem;
+		--pill-height: 1.625rem;
+		--pill-icon-size: 1rem;
+		--pill-delete-size: 1.375rem;
 		box-sizing: border-box;
 		display: inline-flex;
 		position: relative;
 		isolation: isolate;
 		align-items: center;
-		gap: 0.375rem;
+		gap: 0.25rem;
 		justify-content: flex-start;
 		min-width: 0;
 		width: fit-content;
 		max-width: 100%;
 		min-height: var(--pill-height);
-		padding: 0.125rem var(--pill-padding);
-		border-radius: 999px;
+		padding: 0.0625rem var(--pill-padding);
+		border-radius: 2px;
 		font: inherit;
+		font-size: 0.8125rem;
 		line-height: 1.25;
 		text-align: left;
 		white-space: normal;
@@ -344,29 +345,32 @@
 		user-select: none;
 	}
 	div[data-size='x-small'] {
-		--pill-height: 1.5rem;
-		--pill-padding: 0.5rem;
-		--pill-icon-size: 0.875rem;
-		font-size: 0.8125rem;
+		--pill-height: 1.125rem;
+		--pill-padding: 0.25rem;
+		--pill-icon-size: 0.75rem;
+		--pill-delete-size: 0.875rem;
+		font-size: 0.6875rem;
 	}
 	div[data-size='small'] {
-		--pill-height: 1.75rem;
-		--pill-padding: 0.625rem;
-		--pill-icon-size: 1rem;
-		font-size: 0.875rem;
+		--pill-height: 1.375rem;
+		--pill-padding: 0.3125rem;
+		--pill-icon-size: 0.875rem;
+		--pill-delete-size: 1.125rem;
+		font-size: 0.75rem;
 	}
 	div[data-size='large'] {
-		--pill-height: 2.25rem;
-		--pill-padding: 0.875rem;
-		--pill-icon-size: 1.25rem;
-		--pill-delete-size: 1.75rem;
+		--pill-height: 1.875rem;
+		--pill-padding: 0.4375rem;
+		--pill-icon-size: 1.125rem;
+		--pill-delete-size: 1.625rem;
+		font-size: 0.875rem;
 	}
 	div[data-size='x-large'] {
-		--pill-height: 2.5rem;
-		--pill-padding: 1rem;
-		--pill-icon-size: 1.375rem;
-		--pill-delete-size: 2rem;
-		font-size: 1.125rem;
+		--pill-height: 2.125rem;
+		--pill-padding: 0.5rem;
+		--pill-icon-size: 1.25rem;
+		--pill-delete-size: 1.875rem;
+		font-size: 0.9375rem;
 	}
 	div[data-variant='filled'] {
 		--pill-glint: color-mix(in srgb, var(--surface-color) 28%, transparent);

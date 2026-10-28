@@ -26,15 +26,19 @@
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
-		gap: 0.6rem;
+		gap: 6px;
 		width: 100%;
+		min-width: 0;
 		min-height: var(--internal-row-height);
-		padding: 0.375rem 0.65rem;
+		padding: 0 8px;
 		border: 0;
-		border-radius: 0.5rem;
+		border-radius: 0;
 		background: transparent;
 		color: var(--color-foreground);
 		font: inherit;
+		font-size: 13px;
+		font-weight: 400;
+		line-height: 18px;
 		text-align: left;
 		cursor: pointer;
 		transition: background-color 150ms ease;
@@ -52,26 +56,28 @@
 		font-size: var(--internal-icon-size);
 	}
 	[data-check] {
-		color: var(--color-primary);
+		color: inherit;
 	}
 	button[aria-selected='true'] {
-		background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+		background: #04395e;
+		color: #ffffff;
 	}
 	button:hover:not(:disabled, [data-active]) {
-		background: color-mix(in srgb, var(--color-foreground) 6%, transparent);
+		background: #2a2d2e;
 	}
 	button[aria-selected='true']:hover:not(:disabled, [data-active]) {
-		background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+		background: #04395e;
 	}
 	button[data-active] {
-		background: color-mix(in srgb, var(--color-foreground) 12%, transparent);
+		background: #04395e;
+		color: #ffffff;
 	}
 	button[aria-selected='true'][data-active] {
-		background: color-mix(in srgb, var(--color-primary) 18%, transparent);
+		background: #04395e;
 	}
 	button:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: -2px;
+		outline: 1px solid var(--color-primary);
+		outline-offset: -1px;
 	}
 	button:disabled {
 		opacity: 0.5;
@@ -84,8 +90,8 @@
 	}
 	@media (forced-colors: active) {
 		button[data-active] {
-			outline: 2px solid Highlight;
-			outline-offset: -2px;
+			outline: 1px solid Highlight;
+			outline-offset: -1px;
 		}
 		button:focus-visible {
 			outline-color: Highlight;
@@ -97,10 +103,10 @@
 
 	:focus-visible {
 		outline-color: var(--color-primary);
-		outline-offset: 2px;
+		outline-offset: -1px;
 	}
 	button {
-		border-radius: 2px;
+		border-radius: 0;
 	}
 	@media (forced-colors: active) {
 		:focus-visible {
@@ -109,13 +115,20 @@
 	}
 
 	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
+		outline: 1px solid var(--color-primary);
+		outline-offset: -1px;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		* {
 			animation: none;
 			transition: none;
+		}
+	}
+	@media (forced-colors: active) {
+		button[aria-selected='true'],
+		button[data-active] {
+			background: Highlight;
+			color: HighlightText;
 		}
 	}
 </style>

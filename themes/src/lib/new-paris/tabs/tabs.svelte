@@ -103,6 +103,12 @@
 		overscroll-behavior-inline: contain;
 		scrollbar-width: thin;
 	}
+	div[data-orientation='horizontal'] {
+		scrollbar-width: none;
+	}
+	div[data-orientation='horizontal']::-webkit-scrollbar {
+		display: none;
+	}
 	div[data-width='fill'] {
 		width: 100%;
 	}

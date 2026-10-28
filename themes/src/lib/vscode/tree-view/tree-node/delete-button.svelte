@@ -14,24 +14,25 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		min-width: var(--tree-action-size);
-		min-height: var(--tree-action-size);
+		width: var(--tree-action-size);
+		flex-shrink: 0;
+		height: var(--tree-height);
 		padding: 0;
 		border: 0;
-		border-radius: 50%;
+		border-radius: 0;
 		background: transparent;
 		color: var(--tree-action-color, inherit);
 		font: inherit;
-		font-size: 1.125em;
+		font-size: 16px;
 		cursor: pointer;
-		transition: background-color 150ms ease;
+		transition: none;
 	}
 	button:not(:disabled):hover {
 		background: color-mix(in srgb, currentColor 8%, transparent);
 	}
 	button:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: -2px;
+		outline: 1px solid var(--color-primary);
+		outline-offset: -1px;
 	}
 	button:disabled {
 		color: var(--color-muted);

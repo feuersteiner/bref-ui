@@ -85,14 +85,15 @@
 </script>
 
 <div
+	class="combobox"
 	onfocusout={(event) => {
 		if (!event.currentTarget.contains(event.relatedTarget as Node | null)) cancel();
 	}}
 >
 	<Popover
 		bind:open={() => open, setOpen}
-		spacing="x-small"
-		radius="0.75rem"
+		spacing={undefined}
+		radius="0.5rem"
 		width="fill"
 		shadow
 		scroll
@@ -172,6 +173,21 @@
 		* {
 			animation: none;
 			transition: none;
+		}
+	}
+
+	/* Keep dropdown geometry local to this theme component. */
+	.combobox :global([popover]) {
+		margin-block: 0;
+	}
+	.combobox :global([data-overlay]) {
+		padding: 0;
+		border-radius: 8px;
+		background: var(--color-background);
+	}
+	@media (forced-colors: active) {
+		.combobox :global([data-overlay]) {
+			background: Canvas;
 		}
 	}
 </style>

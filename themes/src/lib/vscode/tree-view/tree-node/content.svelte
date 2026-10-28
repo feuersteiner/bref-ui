@@ -7,28 +7,23 @@
 
 <button {...attributes} type="button" disabled={item.disabled}>
 	{#if item.icon}
-		<Icon
-			{...item.icon}
-			color={attributes['aria-pressed'] === true && !item.disabled ? 'primary' : undefined}
-			label={undefined}
-		/>
+		<Icon {...item.icon} label={undefined} />
 	{/if}
-	<span>{item.label}</span>
+	<span data-label>{item.label}</span>
 </button>
 
 <style>
 	button {
-		display: grid;
-		grid-template-columns: 1em minmax(0, 1fr);
+		display: flex;
 		align-items: center;
 		justify-content: start;
 		flex: 1;
-		gap: 0.5rem;
+		gap: 6px;
 		min-width: 0;
-		min-height: var(--tree-action-size);
-		padding: 0.125rem 0.375rem;
+		height: var(--tree-height);
+		padding: 0;
 		border: 0;
-		border-radius: 0.375rem;
+		border-radius: 0;
 		outline: none;
 		background: transparent;
 		color: inherit;
@@ -36,9 +31,14 @@
 		text-align: start;
 		cursor: pointer;
 	}
-	span {
-		grid-column: 2;
+	button > :global([aria-hidden]) {
+		font-size: 16px;
+	}
+	span[data-label] {
 		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	button::before {
 		position: absolute;
@@ -47,8 +47,8 @@
 		content: '';
 	}
 	button:focus-visible::before {
-		outline: 2px solid var(--color-primary);
-		outline-offset: -2px;
+		outline: 1px solid var(--color-primary);
+		outline-offset: -1px;
 	}
 	button:disabled {
 		color: var(--color-muted);

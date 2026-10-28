@@ -22,7 +22,11 @@
 	div {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
-		gap: 0.125rem;
+		gap: 0;
+		font: inherit;
+		font-size: 13px;
+		font-weight: 400;
+		line-height: 18px;
 		min-width: 0;
 	}
 </style>

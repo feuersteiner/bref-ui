@@ -20,9 +20,17 @@
 		Spinner,
 		Surface,
 		Tabs,
-		TextInput
+		TextInput,
+		TreeView
 	} from 'bref-ui-themes/vscode';
-	import type { Size, Variant, Color, TabItemDataProps, TabTransition } from 'bref-ui/types';
+	import type {
+		Size,
+		Variant,
+		Color,
+		TabItemDataProps,
+		TabTransition,
+		TreeItemProps
+	} from 'bref-ui/types';
 	const files = [
 		{ id: 'buttons', name: 'Buttons' },
 		{ id: 'inputs', name: 'Inputs' },
@@ -34,6 +42,7 @@
 		{ id: 'usage', name: 'Getting started' }
 	];
 	let activeFileId = $state('buttons');
+	let editorTabs: HTMLDivElement | undefined = $state();
 	const activeFile = $derived(files.find((file) => file.id === activeFileId) ?? files[0]);
 	const editorFiles: TabItemDataProps[] = files.map((file) => ({
 		id: file.id,
@@ -41,7 +50,15 @@
 		icon: 'description'
 	}));
 	const revealFile = (id: string) =>
-		requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }));
+		requestAnimationFrame(() => {
+			const target = document.getElementById(id);
+			if (!target) return;
+			const margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+			window.scrollBy({
+				top: target.getBoundingClientRect().top - margin - (editorTabs?.offsetHeight ?? 0),
+				behavior: 'instant'
+			});
+		});
 	const panelTabs: TabItemDataProps[] = [
 		{ id: 'preview', label: 'Preview', icon: 'preview' },
 		{ id: 'usage', label: 'Usage', icon: 'code' },
@@ -59,8 +76,10 @@
 		{ id: 'extensions', label: 'Extensions', icon: 'extension', disabled: true }
 	];
 	let panel = $state('preview');
+	let horizontalSize = $state<'small' | 'medium' | 'large'>('medium');
 	let scope = $state('user');
 	let setting = $state('editor');
+	let activitySize = $state<'small' | 'medium' | 'large'>('medium');
 	let panelChanges = $state(0);
 	let userSetting = $state('14');
 	let workspaceSetting = $state('16');
@@ -73,9 +92,38 @@
 	let sidebarVisible = $state(true);
 	let searching = $state(false);
 	let query = $state('');
-	const visibleFiles = $derived(
-		files.filter((file) => file.name.toLowerCase().includes(query.toLowerCase()))
+	const fileNode = (file: (typeof files)[number]): TreeItemProps => ({
+		id: file.id,
+		label: `${file.name}.svelte`,
+		icon: { name: 'description' }
+	});
+	const visibleFiles = $derived<TreeItemProps[]>(
+		[
+			...files.map(fileNode),
+			{
+				id: 'unavailable-file',
+				label: 'Unavailable.svelte',
+				icon: { name: 'lock' as const },
+				disabled: true
+			}
+		].filter((file) => file.label.toLowerCase().includes(query.toLowerCase()))
 	);
+	const explorerItems = $derived<TreeItemProps[]>([
+		{
+			id: 'vscode-source',
+			label: 'src / lib / vscode',
+			icon: { name: 'folder_open' },
+			children: visibleFiles
+		}
+	]);
+	const navigateFile = (value: string | string[] | undefined) => {
+		if (typeof value === 'string' && files.some((file) => file.id === value)) {
+			activeFileId = value;
+			window.location.hash = value;
+			revealFile(value);
+		}
+	};
+
 	let enabled = $state(true);
 	let name = $state('');
 	let submitted = $state(false);
@@ -138,11 +186,9 @@ ${'</' + 'script>'}
 <Theme>
 	<div data-vscode-gallery data-sidebar-hidden={!sidebarVisible || undefined}>
 		<a class="skip" href="#theme-content">Skip to components</a>
-		<nav class="theme-nav" aria-label="Theme galleries">
+		<nav class="theme-nav" aria-label="VS Code theme navigation">
 			<a href={resolve('themes')}>← Theme docs</a>
 			<div>
-				<a href={resolve('themes/new-paris')}>New Paris</a>
-				<a href={resolve('themes/glassy')}>Glassy</a>
 				<a href={resolve('themes/vscode')} aria-current="page">VS Code</a>
 			</div>
 		</nav>
@@ -191,12 +237,11 @@ ${'</' + 'script>'}
 					</span>
 					OPEN EDITORS
 				</summary>
-				<a class="file-entry" href={`#${activeFile.id}`}>
-					<span class="workbench-icon file-icon" aria-hidden="true">
-						<Icon name="description" />
-					</span>
-					{activeFile.name}.svelte
-				</a>
+				<TreeView
+					items={[fileNode(activeFile)]}
+					label="Open editors"
+					bind:selection={() => activeFileId, navigateFile}
+				/>
 			</details>
 			<details class="explorer-group" open>
 				<summary>
@@ -205,31 +250,13 @@ ${'</' + 'script>'}
 					</span>
 					BREF-UI-THEMES
 				</summary>
-				<details class="folder" open>
-					<summary>
-						<span class="workbench-icon twistie" aria-hidden="true">
-							<Icon name="chevron_right" />
-						</span>
-						<span class="workbench-icon" aria-hidden="true"><Icon name="folder_open" /></span>
-						src / lib / vscode
-					</summary>
-					<div class="file-list">
-						{#each visibleFiles as file (file.id)}
-							<a
-								class="file-entry"
-								href={`#${file.id}`}
-								aria-current={activeFile.id === file.id ? 'true' : undefined}
-								onclick={() => (activeFileId = file.id)}
-							>
-								<span class="workbench-icon file-icon" aria-hidden="true">
-									<Icon name="description" />
-								</span>
-								{file.name}.svelte
-							</a>
-						{/each}
-						{#if visibleFiles.length === 0}<p class="empty-files">No matching files</p>{/if}
-					</div>
-				</details>
+				<TreeView
+					items={explorerItems}
+					label="Component files"
+					defaultExpanded
+					bind:selection={() => activeFileId, navigateFile}
+				/>
+				{#if visibleFiles.length === 0}<p class="empty-files">No matching files</p>{/if}
 			</details>
 			<details class="explorer-group outline">
 				<summary>
@@ -238,17 +265,18 @@ ${'</' + 'script>'}
 					</span>
 					OUTLINE
 				</summary>
-				{#each files as file (file.id)}<a
-						class="file-entry"
-						href={`#${file.id}`}
-						onclick={() => (activeFileId = file.id)}
-					>
-						<span class="workbench-icon" aria-hidden="true"><Icon name="data_object" /></span>
-						{file.name}
-					</a>{/each}
+				<TreeView
+					items={files.map((file) => ({
+						id: file.id,
+						label: file.name,
+						icon: { name: 'data_object' }
+					}))}
+					label="Component outline"
+					bind:selection={() => activeFileId, navigateFile}
+				/>
 			</details>
 		</nav>
-		<div class="editor-tabs">
+		<div class="editor-tabs" bind:this={editorTabs}>
 			<Tabs
 				items={editorFiles}
 				bind:value={activeFileId}
@@ -676,12 +704,21 @@ ${'</' + 'script>'}
 					Arrow keys select; Home and End jump. Disabled items are skipped. Overflow stays within
 					each strip.
 				</p>
+				<label class="editor-density">
+					Horizontal tab size
+					<select bind:value={horizontalSize}>
+						<option value="small">Small</option>
+						<option value="medium">Medium</option>
+						<option value="large">Large</option>
+					</select>
+				</label>
 				<div class="tabs-examples">
 					<div class="tab-example" data-tabs-example="fit">
 						<h3>Panel · horizontal fit</h3>
 						<div class="panel-strip">
 							<Tabs
 								items={panelTabs}
+								size={horizontalSize}
 								bind:value={panel}
 								label="Workbench panels"
 								onChange={() => panelChanges++}
@@ -714,6 +751,7 @@ ${'</' + 'script>'}
 						<h3>Settings scope · horizontal fill</h3>
 						<Tabs
 							items={scopeTabs}
+							size={horizontalSize}
 							bind:value={scope}
 							width="fill"
 							label="Settings scope"
@@ -746,14 +784,24 @@ ${'</' + 'script>'}
 					</div>
 					<div class="tab-example" data-tabs-example="vertical">
 						<h3>Preferences · vertical</h3>
+						<label class="activity-size">
+							Size
+							<select bind:value={activitySize}>
+								<option value="small">Small</option>
+								<option value="medium">Medium</option>
+								<option value="large">Large</option>
+							</select>
+						</label>
 						<div class="vertical-tabs">
 							<Tabs
 								items={settingTabs}
+								size={activitySize}
 								bind:value={setting}
 								orientation="vertical"
 								label="Preference categories"
 							/>
 							<div class="tab-content" role="region" aria-label="Selected preference category">
+								<h4>{setting === 'editor' ? 'Editor' : 'Files'}</h4>
 								{#if setting === 'editor'}
 									<label class="setting-check">
 										<Checkbox bind:checked={formatOnSave} /> Format on save
@@ -769,6 +817,10 @@ ${'</' + 'script>'}
 								{/if}
 							</div>
 						</div>
+						<p class="note">
+							Filled icons mark selection; inactive icons stay outlined. Use ↑/↓, Home or End to
+							switch categories. Extensions stays disabled.
+						</p>
 					</div>
 				</div>
 			</section>
@@ -809,22 +861,17 @@ ${'</' + 'script>'}
 		<Dialog
 			bind:open
 			header={{
-				title: 'Dialog reference',
-				icon: { name: 'settings' },
-				description: 'Native modal focus, Escape and return to trigger.'
+				title: 'Save changes to workspace settings?',
+				icon: { name: 'info' },
+				description: 'Changes apply to this workspace only.'
 			}}
 			footer={{
-				primary: { label: 'Done', onClick: () => (open = false) },
+				primary: { label: 'Save', onClick: () => (open = false) },
 				secondary: { label: 'Cancel', onClick: () => (open = false) }
 			}}
 			size="small"
 		>
-			<label for="dialog-setting">Example value</label>
-			<TextInput id="dialog-setting" placeholder="Type here" wide />
-			<p>
-				Tab and Shift+Tab cycle within the dialog. Small screens use the native full-screen
-				presentation.
-			</p>
+			<p style="margin: 0">Unsaved changes will be lost if this dialog is cancelled.</p>
 		</Dialog>
 	</div>
 </Theme>
@@ -947,8 +994,7 @@ ${'</' + 'script>'}
 		padding: 0 20px;
 		font-size: 11px;
 	}
-	.explorer summary,
-	.file-entry {
+	.explorer summary {
 		display: flex;
 		align-items: center;
 		gap: 6px;
@@ -970,39 +1016,8 @@ ${'</' + 'script>'}
 	.explorer details[open] > summary > .twistie {
 		transform: rotate(90deg);
 	}
-	.explorer .folder > summary {
-		padding-left: 18px;
-	}
-	.file-list {
-		position: relative;
-	}
-	.file-list::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 25px;
-		width: 1px;
-		background: #404040;
-		pointer-events: none;
-	}
-	.explorer .file-entry {
-		padding-left: 22px;
-		color: var(--color-foreground);
-		text-decoration: none;
-	}
-	.file-list .file-entry {
-		padding-left: 40px;
-	}
-	.file-entry:hover,
 	.explorer summary:hover {
 		background: #2a2d2e;
-	}
-	.file-entry[aria-current] {
-		background: #37373d;
-	}
-	.file-entry[aria-current]:focus {
-		background: #094771;
 	}
 	.explorer .outline {
 		margin-top: auto;
@@ -1023,12 +1038,13 @@ ${'</' + 'script>'}
 		padding: 4px 40px;
 		color: var(--color-muted);
 	}
-	.file-icon {
-		color: #e37933;
-	}
 	.editor-tabs {
-		background: var(--vscode-panel);
-		border-bottom: 1px solid var(--vscode-border);
+		position: sticky;
+		top: var(--workbench-title-height);
+		z-index: 1;
+		align-self: start;
+		background: #2b2b2b;
+		box-shadow: inset 0 -1px var(--color-background);
 	}
 
 	header,
@@ -1273,6 +1289,10 @@ ${'</' + 'script>'}
 		background: var(--vscode-panel);
 		overflow-wrap: anywhere;
 	}
+	.tab-example:is([data-tabs-example='fit'], [data-tabs-example='fill']) .tab-content {
+		border-block-start: 0;
+		background: var(--color-background);
+	}
 	.tab-content > p:first-child {
 		margin-top: 0;
 	}
@@ -1282,6 +1302,26 @@ ${'</' + 'script>'}
 	}
 	.tab-content > code {
 		white-space: normal;
+	}
+	.activity-size,
+	.editor-density {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 12px;
+		font-size: 13px;
+	}
+	.activity-size select,
+	.editor-density select {
+		padding: 4px 8px;
+		border: 1px solid var(--vscode-border);
+		background: var(--vscode-input);
+		color: var(--color-foreground);
+		font: inherit;
+	}
+	.activity-size select:focus-visible,
+	.editor-density select:focus-visible {
+		outline: 1px solid var(--vscode-accent);
 	}
 	.vertical-tabs {
 		display: grid;
@@ -1394,9 +1434,6 @@ ${'</' + 'script>'}
 		.command-preview,
 		.animated-pill {
 			padding: 16px;
-		}
-		.vertical-tabs {
-			grid-template-columns: minmax(90px, auto) minmax(0, 1fr);
 		}
 		.grid,
 		.surface-grid,

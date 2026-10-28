@@ -1,93 +1,98 @@
 <script lang="ts">
-	import Button from '../button/button.svelte';
 	import Icon from '../icon/icon.svelte';
-	import { fly } from 'svelte/transition';
-	import { prefersReducedMotion } from 'svelte/motion';
 	import type { DialogHeaderProps } from 'bref-ui/types';
 
 	let { title, description, icon, dismissible, id, onDismiss }: DialogHeaderProps = $props();
 </script>
 
 <header>
-	<div>
-		{#key `${icon?.name ?? ''}:${title}`}
-			<div
-				data-title
-				in:fly={{
-					y: prefersReducedMotion.current ? 0 : 8,
-					duration: prefersReducedMotion.current ? 0 : 180
-				}}
-			>
-				{#if icon}<Icon {...icon} size="medium" color="foreground" label={undefined} />{/if}
-				<h2 id={`${id}-title`}>{title}</h2>
-			</div>
-		{/key}
-		{#if description}<p id={`${id}-description`}>{description}</p>{/if}
+	<div data-toolbar>
+		{#if dismissible}
+			<button type="button" aria-label="Close dialog" onclick={onDismiss}>
+				<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+					<path d="m4 4 8 8m0-8-8 8" fill="none" stroke="currentColor" />
+				</svg>
+			</button>
+		{/if}
 	</div>
-	{#if dismissible}
-		<Button
-			rounded
-			icon={{ name: 'close', label: 'Close dialog' }}
-			size="small"
-			onClick={onDismiss}
-		/>
-	{/if}
+	<div data-message-row>
+		{#if icon}<div data-icon>
+				<Icon {...icon} size="medium" color="primary" label={undefined} />
+			</div>{/if}
+		<div data-message>
+			<h2 id={`${id}-title`}>{title}</h2>
+			{#if description}<p id={`${id}-description`}>{description}</p>{/if}
+		</div>
+	</div>
 </header>
 
 <style>
 	header {
-		display: flex;
-		align-items: flex-start;
-		gap: 1rem;
-		padding: 1.75rem 1.75rem 0;
-	}
-	header > div {
-		flex: 1;
 		min-width: 0;
 	}
-	[data-title] {
+	[data-toolbar] {
+		display: flex;
+		justify-content: flex-end;
+		height: 20px;
+		padding-bottom: 4px;
+	}
+	button {
 		display: flex;
 		align-items: center;
-		gap: 0.75rem;
-		min-height: 2.5rem;
+		justify-content: center;
+		width: 20px;
+		height: 20px;
+		padding: 2px;
+		border: 0;
+		border-radius: 4px;
+		background: transparent;
+		color: inherit;
+		cursor: pointer;
+	}
+	button:hover {
+		background: rgb(255 255 255 / 10%);
+	}
+	button:focus-visible {
+		outline: 1px solid var(--color-primary);
+		outline-offset: 1px;
+	}
+	[data-message-row] {
+		display: flex;
+		align-items: flex-start;
+		padding: 0 8px 0 12px;
+	}
+	[data-icon] {
+		flex: 0 0 24px;
+		height: 24px;
+	}
+	[data-message] {
+		flex: 1;
+		min-width: 0;
+		padding-left: 12px;
+		overflow-wrap: anywhere;
 	}
 	h2 {
-		margin: 0;
+		display: flex;
+		align-items: center;
+		min-height: 22px;
+		margin: 0 0 4px;
 		font: inherit;
-		font-size: 1.5rem;
-		font-weight: 400;
-		line-height: 1.3;
+		font-size: 14px;
+		font-weight: 600;
+		line-height: 22px;
 	}
 	p {
-		margin: 0.5rem 0 0;
-		color: var(--color-muted, #555);
-		line-height: 1.5;
-	}
-
-	:focus-visible {
-		outline-color: var(--color-primary);
-		outline-offset: 2px;
-	}
-	header {
-		padding: 16px 20px 0;
-	}
-	header h2 {
-		font-size: 18px;
+		margin: 0;
+		line-height: 20px;
+		white-space: pre-wrap;
 	}
 	@media (forced-colors: active) {
-		:focus-visible {
-			outline-color: Highlight;
+		button:hover {
+			background: Highlight;
+			color: HighlightText;
 		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
+		button:focus-visible {
+			outline-color: Highlight;
 		}
 	}
 </style>
