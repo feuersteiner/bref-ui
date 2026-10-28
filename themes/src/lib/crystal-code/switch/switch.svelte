@@ -20,6 +20,7 @@
 		width: var(--track-width);
 		height: var(--track-height);
 		vertical-align: middle;
+		font-size: 12px;
 	}
 
 	input {
@@ -104,7 +105,7 @@
 	}
 
 	input:focus-visible + span {
-		outline: 2px solid var(--color-primary);
+		outline: 2px solid var(--color-primary, blue);
 		outline-offset: 3px;
 	}
 
@@ -155,40 +156,8 @@
 			background: HighlightText;
 			color: Highlight;
 		}
-	}
-
-	:focus-visible {
-		outline: 1px solid var(--color-primary);
-		outline-offset: 3px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none !important;
-			transition: none !important;
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		*::before {
-			animation: none !important;
-			transition: none !important;
-		}
-	}
-	@media (forced-colors: active) {
-		:focus-visible {
+		input:focus-visible + span {
 			outline-color: Highlight;
-		}
-	}
-	[data-switch] {
-		font-size: 12px;
-	}
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
 		}
 	}
 </style>
