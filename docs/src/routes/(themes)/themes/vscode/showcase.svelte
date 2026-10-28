@@ -204,7 +204,9 @@ ${'</' + 'script>'}
 					query = '';
 				}}
 			>
-				<span class="workbench-icon" aria-hidden="true"><Icon name="file_copy" /></span>
+				<span class="workbench-icon" aria-hidden="true">
+					<Icon name="file_copy" filled={sidebarVisible && !searching} />
+				</span>
 			</button>
 			<button
 				type="button"
@@ -217,7 +219,9 @@ ${'</' + 'script>'}
 					query = '';
 				}}
 			>
-				<span class="workbench-icon" aria-hidden="true"><Icon name="search" /></span>
+				<span class="workbench-icon" aria-hidden="true">
+					<Icon name="search" filled={sidebarVisible && searching} />
+				</span>
 			</button>
 			<a class="manage" href="#inputs" aria-label="Settings" title="Settings">
 				<span class="workbench-icon" aria-hidden="true"><Icon name="settings" /></span>
@@ -935,22 +939,26 @@ ${'</' + 'script>'}
 	}
 	.activity-bar {
 		grid-column: 1;
-		background: #333333;
+		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+		padding-block: 8px;
+		background: var(--vscode-panel);
 	}
 	.activity-bar button,
 	.activity-bar a {
 		display: grid;
 		place-items: center;
-		width: 48px;
-		height: 48px;
+		width: 44px;
+		height: 44px;
 		flex-shrink: 0;
 		padding: 0;
 		border: 0;
-		border-left: 2px solid transparent;
+		border-radius: 4px;
 		background: transparent;
-		color: #858585;
+		color: var(--color-foreground);
 		text-decoration: none;
 		cursor: pointer;
 	}
@@ -966,12 +974,25 @@ ${'</' + 'script>'}
 		height: 24px;
 		font-size: 24px;
 	}
-	.activity-bar button[aria-pressed='true'] {
-		border-left-color: #ffffff;
-		color: #ffffff;
+	.activity-bar :is(button, a):focus-visible {
+		outline: 1px solid var(--vscode-accent);
+		outline-offset: -2px;
 	}
-	.activity-bar :is(button, a):hover {
-		color: #ffffff;
+	@media (hover: hover) {
+		.activity-bar :is(button, a):hover {
+			background: #ffffff0a;
+		}
+	}
+	@media (forced-colors: active) {
+		.activity-bar {
+			background: Canvas;
+		}
+		.activity-bar :is(button, a) {
+			color: ButtonText;
+		}
+		.activity-bar :is(button, a):focus-visible {
+			outline-color: Highlight;
+		}
 	}
 	.activity-bar .manage {
 		margin-top: auto;
