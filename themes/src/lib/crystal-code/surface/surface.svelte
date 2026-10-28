@@ -207,11 +207,6 @@
 		opacity: 0.45;
 		cursor: not-allowed;
 	}
-	@media (prefers-reduced-motion: reduce) {
-		.bref-surface {
-			transition: none;
-		}
-	}
 	@media (forced-colors: active) {
 		.bref-surface {
 			border-color: CanvasText;
@@ -334,10 +329,6 @@
 		overflow: auto;
 	}
 
-	:focus-visible {
-		outline: 1px solid var(--color-primary);
-		outline-offset: 3px;
-	}
 	.bref-surface {
 		--surface-hover: 0%;
 		--surface-neutral-strength: 0%;
@@ -371,10 +362,6 @@
 	.bref-surface[data-shadow] {
 		--surface-shadow: var(--crystal-code-widget-shadow);
 	}
-	div.bref-surface[data-color][data-size] {
-		border-radius: var(--crystal-code-radius);
-		--pill-choice-hover: 0%;
-	}
 	.bref-glass {
 		--glass-blur: blur(32px);
 		--glass-opacity: 78%;
@@ -397,13 +384,7 @@
 		}
 	}
 	@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-		.bref-glass {
-			background: var(--crystal-code-panel);
-			-webkit-backdrop-filter: none;
-			backdrop-filter: none;
-		}
-	}
-	@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+		.bref-glass,
 		[data-overlay].bref-surface {
 			background: var(--crystal-code-panel);
 			-webkit-backdrop-filter: none;
@@ -411,58 +392,22 @@
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none !important;
-			transition: none !important;
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		*::before {
+		.bref-surface,
+		.bref-surface::before {
 			animation: none !important;
 			transition: none !important;
 		}
 	}
 	@media (forced-colors: active) {
-		.bref-surface {
-			background: Canvas;
-			color: CanvasText;
-			border-color: ButtonText;
-			box-shadow: none;
-			backdrop-filter: none;
-		}
-	}
-	@media (forced-colors: active) {
-		.bref-glass {
-			background: Canvas;
-			color: CanvasText;
-			border-color: ButtonText;
-			box-shadow: none;
-			backdrop-filter: none;
-		}
-	}
-	@media (forced-colors: active) {
+		.bref-surface,
+		.bref-glass,
 		[data-overlay].bref-surface {
 			background: Canvas;
 			color: CanvasText;
 			border-color: ButtonText;
 			box-shadow: none;
+			-webkit-backdrop-filter: none;
 			backdrop-filter: none;
-		}
-	}
-	@media (forced-colors: active) {
-		:focus-visible {
-			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
 		}
 	}
 </style>
