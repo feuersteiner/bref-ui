@@ -41,7 +41,11 @@
 	};
 </script>
 
-<div data-size={size} data-seekable={seekable} data-unknown={checkedValue === undefined}>
+<div
+	data-size={size}
+	data-seekable={seekable}
+	data-unknown={!seekable && checkedValue === undefined}
+>
 	<progress
 		{...seekable ? {} : { ...attributes, oninput, onchange, onpointercancel }}
 		id={seekable ? undefined : id}
@@ -51,7 +55,7 @@
 		aria-label={seekable ? undefined : label || ariaLabel}
 		aria-hidden={seekable ? 'true' : undefined}
 		max="1"
-		value={checkedValue}
+		value={seekable ? display : checkedValue}
 	></progress>
 	{#if seekable}
 		<input
