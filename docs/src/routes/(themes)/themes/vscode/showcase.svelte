@@ -1,5 +1,6 @@
 <script lang="ts">
 	import AdditionalComponents from './additional-components.svelte';
+	import CodeSnippet from '../../../(docs)/components/code-snippet.svelte';
 	import GithubStars from '../../../(docs)/components/layout/github-stars.svelte';
 	import * as AllComponents from 'bref-ui-themes/vscode';
 	import { asset, resolve } from '$app/paths';
@@ -28,7 +29,9 @@
 		{ id: 'pills', name: 'Tags' },
 		{ id: 'feedback', name: 'Feedback' },
 		{ id: 'surfaces', name: 'Overlays' },
-		{ id: 'tabs', name: 'Tabs' }
+		{ id: 'tabs', name: 'Tabs' },
+		{ id: 'additional-components', name: 'More components' },
+		{ id: 'usage', name: 'Getting started' }
 	];
 	let activeFileId = $state('buttons');
 	const activeFile = $derived(files.find((file) => file.id === activeFileId) ?? files[0]);
@@ -40,11 +43,10 @@
 	const revealFile = (id: string) =>
 		requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }));
 	const panelTabs: TabItemDataProps[] = [
-		{ id: 'problems', label: 'Problems', icon: 'error' },
-		{ id: 'output', label: 'Output', icon: 'output' },
-		{ id: 'debug', label: 'Debug console', icon: 'bug_report', disabled: true },
-		{ id: 'terminal', label: 'Terminal', icon: 'terminal' },
-		{ id: 'ports', label: 'Forwarded ports', icon: 'lan' }
+		{ id: 'preview', label: 'Preview', icon: 'preview' },
+		{ id: 'usage', label: 'Usage', icon: 'code' },
+		{ id: 'shortcuts', label: 'Keyboard', icon: 'keyboard' },
+		{ id: 'history', label: 'History', icon: 'history', disabled: true }
 	];
 	const scopeTabs: TabItemDataProps[] = [
 		{ id: 'user', label: 'User', icon: 'person' },
@@ -56,7 +58,7 @@
 		{ id: 'files', label: 'Files', icon: 'folder_open' },
 		{ id: 'extensions', label: 'Extensions', icon: 'extension', disabled: true }
 	];
-	let panel = $state('problems');
+	let panel = $state('preview');
 	let scope = $state('user');
 	let setting = $state('editor');
 	let panelChanges = $state(0);
@@ -85,12 +87,22 @@
 	let multiple = $state<string | string[]>(['lint']);
 	let seek = $state(0.42);
 	let presses = $state(0);
+	let pressed = $state(true);
 	let tags = $state([
 		{ id: 'svelte', label: 'Svelte' },
 		{ id: 'typescript', label: 'TypeScript' },
 		{ id: 'css', label: 'CSS' }
 	]);
 	let removable = $state(true);
+	let swoosh = $state(true);
+	const usage = `<script>
+  import { Theme, Button, Pill } from 'bref-ui-themes/vscode';
+${'</' + 'script>'}
+
+<Theme>
+  <Button label="Save changes" variant="filled" color="primary" />
+  <Pill label="In progress" swoosh color="info" variant="soft" />
+</Theme>`;
 	const options = [
 		{ id: 'ts', label: 'TypeScript', icon: { name: 'code' as const } },
 		{ id: 'js', label: 'JavaScript' },
@@ -245,13 +257,39 @@
 			/>
 		</div>
 		<header>
-			<p class="eyebrow"><Icon name="code" /> BREF / THEME COLLECTION</p>
+			<p class="breadcrumb">
+				bref-ui-themes <span>›</span>
+				vscode
+				<span>›</span>
+				{activeFile.name}.svelte
+			</p>
+			<p class="eyebrow"><Icon name="code" /> THE WORKBENCH COLLECTION</p>
 			<h1>
 				VS Code
-				<span>Component reference</span>
+				<span>A familiar place to build.</span>
 			</h1>
-			<p>Editor colors. Workbench precision. Native Bref interactions.</p>
-			<code>import &#123; Theme, Button &#125; from 'bref-ui-themes/vscode';</code>
+			<p class="intro">
+				Editor colors, crisp controls and a little workbench precision. Explore twenty Svelte
+				exports, from the first button to the last setting.
+			</p>
+			<div class="hero-actions">
+				<Button
+					label="Explore components"
+					href="#buttons"
+					variant="filled"
+					color="primary"
+					icon={{ name: 'arrow_downward' }}
+				/>
+				<Button label="Use this theme" href="#usage" icon={{ name: 'code' }} />
+			</div>
+			<div class="hero-meta">
+				<span>
+					<span class="status-dot"></span>
+					Native Svelte
+				</span>
+				<span>Scoped CSS</span>
+				<span>Keyboard ready</span>
+			</div>
 		</header>
 		<main id="theme-content" tabindex="-1">
 			<section aria-labelledby="buttons">
@@ -262,6 +300,24 @@
 					<code>Button</code>
 				</div>
 				<p class="note">Neutral, soft and filled; five sizes. Tab to inspect focus.</p>
+				<div class="command-preview">
+					<div>
+						<h3>Ready when you are.</h3>
+						<p class="note">Native buttons, links and icon actions.</p>
+					</div>
+					<Button
+						label="Run action"
+						icon={{ name: 'play_arrow' }}
+						variant="filled"
+						color="primary"
+						onClick={() => presses++}
+					/>
+					<p role="status" class="action-status">
+						{presses
+							? `${presses} ${presses === 1 ? 'action' : 'actions'} triggered`
+							: 'Try an action'}
+					</p>
+				</div>
 				{#each variants as variant (variant)}<div class="row">
 						<span class="key">{variant}</span>
 						{#each sizes as size (size)}<Button
@@ -275,7 +331,8 @@
 				<div class="row">
 					<Button label="Disabled" disabled /><Button
 						label="Pressed"
-						aria-pressed="true"
+						aria-pressed={pressed}
+						onClick={() => (pressed = !pressed)}
 						color="primary"
 						variant="soft"
 					/><Button
@@ -416,6 +473,24 @@
 							color="info"
 							variant="soft"
 						/>{/each}
+				</div>
+				<div class="animated-pill">
+					<div>
+						<h3>Activity, at a glance</h3>
+						<p class="note">A subtle swoosh for work in progress. Respects reduced motion.</p>
+					</div>
+					<Pill
+						label={swoosh ? 'Syncing changes' : 'Changes synced'}
+						{swoosh}
+						icon={{ name: swoosh ? 'sync' : 'check' }}
+						color={swoosh ? 'info' : 'success'}
+						variant="soft"
+					/>
+					<Button
+						label={swoosh ? 'Finish sync' : 'Replay animation'}
+						size="small"
+						onClick={() => (swoosh = !swoosh)}
+					/>
 				</div>
 				<div class="grid">
 					<div class="control-stack">
@@ -613,20 +688,24 @@
 							/>
 						</div>
 						<div class="tab-content" role="region" aria-label="Selected workbench panel">
-							{#if panel === 'problems'}
-								<p>
-									<Icon name="check_circle" color="success" /> No problems detected in the workspace.
+							{#if panel === 'preview'}
+								<h4>Content belongs to the page.</h4>
+								<p class="note">
+									Tabs select a value. Compose the matching content with ordinary Svelte.
 								</p>
-							{:else if panel === 'output'}
-								<code>[formatter] Settings loaded. Ready to format on save.</code>
-							{:else if panel === 'terminal'}
+							{:else if panel === 'usage'}
 								<code>
-									$ bun run check
-									<br />
-									0 errors, 0 warnings
+									&lt;Tabs items=&#123;items&#125; bind:value label="Preview panels" /&gt;
 								</code>
-							{:else if panel === 'ports'}
-								<p>localhost:5173 · Development server · Private</p>
+							{:else if panel === 'shortcuts'}
+								<p>
+									<kbd>←</kbd>
+									<kbd>→</kbd>
+									Select a tab.
+									<kbd>Home</kbd>
+									<kbd>End</kbd>
+									Jump to an edge.
+								</p>
 							{/if}
 						</div>
 						<p class="note" role="status">Panel changes: {panelChanges}</p>
@@ -694,6 +773,22 @@
 				</div>
 			</section>
 			<AdditionalComponents components={AllComponents} />
+			<section aria-labelledby="usage">
+				<div class="section-title">
+					<h2 id="usage">
+						08 <span>Make it part of your workspace.</span>
+					</h2>
+					<code>Getting started</code>
+				</div>
+				<p class="note">
+					Import the theme and its components from one public entry point. Wrap the interface in
+					Theme to apply the workbench palette.
+				</p>
+				<div class="usage-code"><CodeSnippet source={usage} label="VS Code theme usage" /></div>
+				<a class="docs-link" href={resolve('themes#vscode')}>
+					Installation, fonts and theme documentation <span aria-hidden="true">↗</span>
+				</a>
+			</section>
 		</main>
 		<footer class="status-bar">
 			<div class="status-info">
@@ -737,6 +832,8 @@
 <style>
 	[data-vscode-gallery] {
 		display: grid;
+		font-size: 13px;
+		line-height: 1.6;
 		--workbench-title-height: 46px;
 		--workbench-status-height: 40px;
 		grid-template-columns: 48px 240px minmax(0, 1fr);
@@ -941,10 +1038,22 @@
 		min-width: 0;
 	}
 	main {
-		padding: 0 32px;
+		padding: 0 clamp(24px, 4vw, 64px);
 	}
 	header {
-		padding: 32px 32px 24px;
+		padding: 0 clamp(24px, 4vw, 64px) 48px;
+		background: linear-gradient(120deg, #007acc0a, transparent 65%);
+	}
+	.breadcrumb {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		padding-block: 12px 40px;
+		color: var(--color-muted);
+		font-size: 12px;
+	}
+	.breadcrumb span {
+		color: #777777;
 	}
 	.eyebrow {
 		display: flex;
@@ -955,34 +1064,65 @@
 		letter-spacing: 0.08em;
 	}
 	h1 {
-		margin: 12px 0;
-		font-size: 36px;
-		line-height: 1.2;
+		margin: 16px 0 20px;
+		font-size: clamp(42px, 5vw, 64px);
+		font-weight: 500;
+		letter-spacing: -0.04em;
+		line-height: 1.1;
 		color: #f0f0f0;
 	}
 	h1 span {
-		display: inline-block;
-		margin-left: 16px;
+		display: block;
+		margin-top: 12px;
 		color: var(--color-muted);
-		font-size: 16px;
+		font-size: clamp(20px, 2.3vw, 28px);
+		letter-spacing: -0.02em;
+	}
+	.intro {
+		max-width: 58ch;
+		font-size: 15px;
+		line-height: 1.8;
+		color: var(--color-muted);
+	}
+	.hero-actions,
+	.hero-meta,
+	.hero-meta > span {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 12px;
+	}
+	.hero-actions {
+		margin-top: 28px;
+	}
+	.hero-meta {
+		gap: 24px;
+		margin-top: 28px;
+		font: 11px / 1.6 var(--vscode-font-mono);
+		color: var(--color-muted);
+	}
+	.hero-meta > span {
+		gap: 6px;
+	}
+	.status-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--color-success);
 	}
 	code {
 		font: 12px / 1.6 var(--vscode-font-mono);
 		color: var(--color-info);
 		overflow-wrap: anywhere;
 	}
-	header > code {
-		display: block;
-		border-left: 2px solid var(--color-primary);
-		padding: 8px 12px;
-		background: var(--vscode-panel);
-	}
 	section {
 		display: grid;
-		gap: 16px;
-		padding: 24px 0;
+		gap: 24px;
+		padding: 44px 0;
 		border-top: 1px solid var(--vscode-border);
-		scroll-margin-top: 16px;
+	}
+	[id] {
+		scroll-margin-top: calc(var(--workbench-title-height) + 20px);
 	}
 	.section-title {
 		display: flex;
@@ -999,14 +1139,20 @@
 	h2 span {
 		margin-left: 10px;
 		font:
-			500 18px / 1.5 'Segoe UI',
+			500 22px / 1.4 'Segoe UI',
 			system-ui,
 			sans-serif;
 		color: var(--color-foreground);
 	}
 	h3 {
-		font-size: 13px;
+		font-size: 14px;
+		font-weight: 500;
 		margin: 0;
+	}
+	h4 {
+		margin-bottom: 8px;
+		font-size: 14px;
+		font-weight: 500;
 	}
 	p {
 		margin: 0;
@@ -1023,21 +1169,54 @@
 	.grid {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 32px;
+		gap: 40px;
 	}
 	form,
 	.control-stack {
 		display: grid;
 		align-content: start;
-		gap: 10px;
+		gap: 16px;
 		min-width: 0;
 	}
-	form :global(> .button),
-	.control-stack :global(> .button) {
-		justify-self: start;
-	}
 	section:last-child {
-		padding-bottom: 180px;
+		padding-bottom: 80px;
+	}
+	.command-preview,
+	.animated-pill {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 20px;
+		padding: 24px;
+		border: 1px solid var(--vscode-border);
+		background: var(--vscode-panel);
+	}
+	.command-preview > div,
+	.animated-pill > div {
+		flex: 1 1 220px;
+		display: grid;
+		gap: 6px;
+	}
+	.action-status {
+		font: 11px / 1.6 var(--vscode-font-mono);
+		color: var(--color-muted);
+	}
+	.usage-code {
+		--docs-rule: var(--vscode-border);
+		--docs-rule-subtle: var(--vscode-border);
+		--docs-surface: var(--vscode-panel);
+		min-width: 0;
+	}
+	.docs-link {
+		justify-self: start;
+		color: var(--color-info);
+		text-underline-offset: 4px;
+	}
+	kbd {
+		padding: 2px 6px;
+		border: 1px solid var(--vscode-border);
+		background: var(--vscode-input);
+		font: 11px / 1.6 var(--vscode-font-mono);
 	}
 	form > label:not(:first-child) {
 		margin-top: 8px;
@@ -1088,7 +1267,8 @@
 	}
 	.tab-content {
 		min-width: 0;
-		padding: 16px;
+		min-height: 140px;
+		padding: 20px;
 		border: 1px solid var(--vscode-border);
 		background: var(--vscode-panel);
 		overflow-wrap: anywhere;
@@ -1172,6 +1352,12 @@
 	.skip:focus {
 		transform: none;
 	}
+	@media (max-width: 1050px) {
+		.grid,
+		.tabs-examples {
+			grid-template-columns: 1fr;
+		}
+	}
 	@media (max-width: 680px) {
 		[data-vscode-gallery],
 		[data-vscode-gallery][data-sidebar-hidden] {
@@ -1201,6 +1387,16 @@
 		header,
 		main {
 			padding-inline: 16px;
+		}
+		section {
+			padding-block: 32px;
+		}
+		.command-preview,
+		.animated-pill {
+			padding: 16px;
+		}
+		.vertical-tabs {
+			grid-template-columns: minmax(90px, auto) minmax(0, 1fr);
 		}
 		.grid,
 		.surface-grid,
