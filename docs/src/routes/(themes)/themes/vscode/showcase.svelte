@@ -125,15 +125,12 @@
 <Theme>
 	<div data-vscode-gallery data-sidebar-hidden={!sidebarVisible || undefined}>
 		<a class="skip" href="#theme-content">Skip to components</a>
-		<nav class="theme-nav" aria-label="Theme demonstrations">
-			<a href={resolve('themes')}>← Showcase</a>
+		<nav class="theme-nav" aria-label="Theme galleries">
+			<a href={resolve('themes')}>← Theme docs</a>
 			<div>
-				{#each ['relay', 'forma', 'elsewhere', 'vscode'] as theme (theme)}<a
-						href={theme === 'vscode' ? resolve('themes/vscode') : resolve(`demo/themes/${theme}`)}
-						aria-current={theme === 'vscode' ? 'page' : undefined}
-					>
-						{theme === 'vscode' ? 'VS Code' : theme[0].toUpperCase() + theme.slice(1)}
-					</a>{/each}
+				<a href={resolve('themes/new-paris')}>New Paris</a>
+				<a href={resolve('themes/glassy')}>Glassy</a>
+				<a href={resolve('themes/vscode')} aria-current="page">VS Code</a>
 			</div>
 		</nav>
 		<nav class="activity-bar" aria-label="Workbench">
@@ -763,6 +760,9 @@
 		text-decoration: none;
 		color: var(--color-muted);
 	}
+	.theme-nav a:is(:hover, :focus-visible) {
+		color: var(--color-foreground);
+	}
 	.theme-nav a[aria-current] {
 		color: var(--color-foreground);
 		border-bottom: 2px solid var(--color-primary);
@@ -1167,6 +1167,9 @@
 		}
 		.theme-nav div {
 			gap: 12px;
+		}
+		.theme-nav {
+			padding-inline: 12px;
 		}
 		.explorer .outline {
 			margin-top: 16px;
