@@ -18,5 +18,6 @@ core/LICENSE
 themes/LICENSE
 refactor-plan.md
 
-# Preserve the unchanged New Paris donor formatting
+# Preserve unchanged donor formatting
 themes/src/lib/new-paris/progress/progress.svelte
+themes/src/lib/crystal-code/progress/progress.svelte

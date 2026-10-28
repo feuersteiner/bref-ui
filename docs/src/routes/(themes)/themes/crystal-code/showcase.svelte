@@ -19,7 +19,7 @@
 		TextInput
 	} from 'bref-ui-themes/crystal-code';
 	import type { Size, Variant, TabItemDataProps, IconName, SurfaceRadius } from 'bref-ui/types';
-	import Reference from './crystal-code-reference.svelte';
+	import Reference from './reference.svelte';
 
 	const files = [
 		{ id: 'buttons', file: 'button.svelte', name: 'Button', icon: 'bolt' },
@@ -220,12 +220,12 @@
 		}
 	}}
 />
-<div data-theme={mode}>
+<div data-crystal-code-gallery data-theme={mode}>
 	<Theme>
 		<div class="workbench" style:--crystal-code-radius={radius} data-explorer={explorer}>
 			<a class="skip" href="#live-preview">Skip to live preview</a>
 			<header class="titlebar">
-				<a class="brand" href={resolve('/(docs)/themes')}>
+				<a class="brand" href={resolve('themes')}>
 					<Icon name="code" />
 					<strong>bref</strong>
 					<span>/ crystal-code</span>
