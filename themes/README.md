@@ -90,7 +90,10 @@ Fixed-dark workbench controls with native interactions and scoped styling. All t
 	import { Theme, Button } from 'bref-ui-themes/vscode';
 </script>
 
-<Theme><Button label="Save" /></Theme>
+<Theme><Button label="Save" icon={{ name: 'check' }} /></Theme>
 ```
+
+Material Symbols icons load automatically with Theme. Text uses system fonts, so
+no custom text font installation is required.
 
 The gallery uses the same public package exports at `/themes/vscode`.
