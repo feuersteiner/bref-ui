@@ -150,13 +150,6 @@
 		}
 	}
 
-	:focus-visible {
-		outline-color: var(--color-primary);
-		outline-offset: 2px;
-	}
-	div {
-		border-radius: 3px;
-	}
 	div {
 		border-radius: 3px;
 	}
