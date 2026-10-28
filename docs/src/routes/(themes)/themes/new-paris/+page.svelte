@@ -1,6 +1,5 @@
 <script lang="ts">
 	import '@fontsource-variable/inter/index.css';
-	import '@fontsource-variable/material-symbols-outlined/fill.css';
 	import NewParisShowcase from './showcase.svelte';
 </script>
 

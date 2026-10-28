@@ -34,6 +34,9 @@
 			"svelte": "./src/lib/new-paris/index.ts"
 		}
 	},
+	"dependencies": {
+		"@fontsource-variable/material-symbols-outlined": "^5.3.5"
+	},
 	"peerDependencies": {
 		"svelte": "^5.0.0"
 	},

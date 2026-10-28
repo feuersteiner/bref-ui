@@ -22,8 +22,8 @@
 		</p>
 		<CodeSnippet language="bash" label="Install themes" source="npm install bref-ui-themes" />
 		<p>
-			Svelte 5 is the only peer dependency. No Bref-ui installation is needed, and fonts remain
-			optional.
+			Svelte 5 is the only peer dependency. No Bref-ui installation is needed, and the custom text
+			font remains optional.
 		</p>
 		<CodeSnippet
 			label="Use New Paris"
@@ -59,26 +59,21 @@
 			</Surface>
 		</a>
 		<p>
-			Fonts are opt-in to avoid bloating the package and apps with unused fonts. New Paris adds no
-			font dependencies or automatic font imports. Text falls back to system fonts; to match the
-			gallery typography and render icons, install and import
+			New Paris loads Material Symbols icons automatically with Theme. Its custom text font is
+			optional to avoid adding unused font assets to apps; text falls back to system fonts. To match
+			the gallery typography, install and import
 			<a href="https://www.npmjs.com/package/@fontsource-variable/inter">Inter</a>
-			and
-			<a href="https://www.npmjs.com/package/@fontsource-variable/material-symbols-outlined">
-				Material Symbols
-			</a>
-			directly:
+			:
 		</p>
 		<CodeSnippet
 			language="bash"
-			label="Install optional New Paris fonts"
-			source="npm install @fontsource-variable/inter @fontsource-variable/material-symbols-outlined"
+			label="Install optional New Paris font"
+			source="npm install @fontsource-variable/inter"
 		/>
 		<CodeSnippet
-			label="New Paris with optional fonts"
+			label="New Paris with optional font"
 			source={`<script>
   import '@fontsource-variable/inter/index.css';
-  import '@fontsource-variable/material-symbols-outlined/fill.css';
   import { Theme, Button } from 'bref-ui-themes/new-paris';
 <${'/'}script>
 

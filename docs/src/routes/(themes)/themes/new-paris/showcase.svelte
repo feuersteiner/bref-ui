@@ -1,5 +1,7 @@
 <script lang="ts">
+	import '@fontsource-variable/syne';
 	import AdditionalComponents from './additional-components.svelte';
+	import GithubStars from '../../../(docs)/components/layout/github-stars.svelte';
 	import * as AllComponents from 'bref-ui-themes/new-paris';
 	import { asset, resolve } from '$app/paths';
 	import { onDestroy } from 'svelte';
@@ -129,6 +131,8 @@
 	]);
 	let pillVisible = $state(true);
 	let pillClicks = $state(0);
+	let pillSwoosh = $state(true);
+	let removedSizes = $state<string[]>([]);
 	let progress = $state(0.64);
 	let popoverOpen = $state(false);
 	let open = $state(false);
@@ -155,19 +159,14 @@
 	<div data-new-paris-showcase>
 		<a class="skip" href="#collection">Skip to components</a>
 		<nav class="masthead" aria-label="Theme demonstrations">
-			<a href={resolve('themes')} class="brand">
+			<a href={resolve('themes#new-paris')} class="brand">
 				bref-ui
 				<span>/</span>
 				themes
 			</a>
 			<a class="wordmark" href={resolve('themes/new-paris')}>New Paris</a>
 			<div class="theme-links">
-				{#each ['relay', 'forma', 'elsewhere'] as theme (theme)}
-					<a href={resolve(`demo/themes/${theme}`)}>
-						{theme[0].toUpperCase() + theme.slice(1)}
-					</a>
-				{/each}
-				<a href={resolve('themes/new-paris')} aria-current="page">New Paris</a>
+				<a href="#usage">Use this theme</a>
 			</div>
 		</nav>
 		<main id="theme-content" tabindex="-1">
@@ -201,9 +200,9 @@
 					<em>the difference.</em>
 				</h2>
 				<p>
-					Twenty components.
+					Svelte components.
 					<br />
-					One visual language.
+					Black, ivory and square edges.
 				</p>
 			</div>
 			<div class="index-bar">
@@ -407,6 +406,17 @@
 									onClick={() => (pillVisible = true)}
 								/>{/if}
 						</div>
+						<h3>Animated pill</h3>
+						<div class="row">
+							<Pill label="In progress" swoosh={pillSwoosh} variant="soft" />
+							<Button
+								label={pillSwoosh ? 'Pause animation' : 'Play animation'}
+								size="small"
+								aria-pressed={pillSwoosh}
+								onClick={() => (pillSwoosh = !pillSwoosh)}
+							/>
+						</div>
+						<p data-caption>The swoosh follows the system’s reduced-motion preference.</p>
 						<h3>Single choice</h3>
 						<PillChoiceGroup
 							items={choices}
@@ -675,6 +685,22 @@
 									color="secondary"
 								/>{/each}
 						</div>
+						<div class="row" aria-label="Removable pill sizes">
+							{#each sizes as size (size)}
+								{#if !removedSizes.includes(size)}
+									<Pill
+										label={`${size} tag`}
+										{size}
+										onDelete={() => (removedSizes = [...removedSizes, size])}
+									/>
+								{/if}
+							{/each}
+							{#if removedSizes.length}<Button
+									label="Restore sizes"
+									size="small"
+									onClick={() => (removedSizes = [])}
+								/>{/if}
+						</div>
 						<div class="row">
 							{#each sizes as size (size)}<label class="checkbox-size">
 									<Checkbox {size} aria-label={`${size} checkbox`} />
@@ -741,7 +767,6 @@
 				</div>
 				<pre><code>&lt;script&gt;
   import '@fontsource-variable/inter/index.css';
-  import '@fontsource-variable/material-symbols-outlined/fill.css';
   import &#123; Theme, Button &#125;
     from 'bref-ui-themes/new-paris';
 &lt;/script&gt;
@@ -753,8 +778,27 @@
 			<AdditionalComponents components={AllComponents} />
 		</main>
 		<footer class="colophon">
-			<a href={resolve('themes')}>← Back to showcase</a>
-			<span>NEW PARIS / BREF / COMPONENT COLLECTION 04</span>
+			<div>
+				<p data-eyebrow>New Paris / Bref</p>
+				<h2>Build with New Paris.</h2>
+			</div>
+			<div class="footer-actions">
+				<a
+					class="back-to-docs"
+					href={resolve('themes#new-paris')}
+					aria-label="Back to Bref-ui docs"
+				>
+					<img src={asset('favicon.svg')} alt="" width="40" height="40" />
+					<span>
+						<strong>
+							bref <span data-slash>/</span>
+							ui
+						</strong>
+						<span>Back to docs</span>
+					</span>
+				</a>
+				<GithubStars />
+			</div>
 		</footer>
 		<Dialog
 			bind:open
@@ -838,10 +882,6 @@
 	}
 	.theme-links a {
 		padding-block: 8px;
-	}
-	.theme-links [aria-current] {
-		text-decoration: underline;
-		text-underline-offset: 6px;
 	}
 	.hero {
 		position: relative;
@@ -1108,21 +1148,60 @@
 		justify-content: space-between;
 		gap: 24px;
 		border-top: 1px solid var(--np-rule);
-		padding-block: 32px;
-		font-size: 12px;
-		letter-spacing: 0.06em;
-	}
-	.colophon a {
-		display: inline-flex;
+		padding-block: 64px;
 		align-items: center;
-		min-height: 32px;
+	}
+	.colophon h2 {
+		margin-top: 16px;
+	}
+	.footer-actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 24px;
+	}
+	.back-to-docs {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 14px 20px;
+		border: 1px solid #1d4ed8;
+		border-radius: 6px;
+		background: #1d4ed8;
+		color: white;
+	}
+	.back-to-docs img {
+		padding: 3px;
+		border-radius: 4px;
+		background: white;
+	}
+	.back-to-docs > span {
+		display: grid;
+		gap: 4px;
+		font-size: 14px;
+		font-weight: 600;
+	}
+	.back-to-docs strong {
+		font:
+			700 20px / 1 'Syne Variable',
+			'Syne',
+			sans-serif;
+		white-space: nowrap;
+	}
+	.back-to-docs [data-slash] {
+		color: white;
+	}
+	.back-to-docs:hover {
+		border-color: #1e40af;
+		background: #1e40af;
+	}
+	.back-to-docs:focus-visible {
+		outline: 2px solid #1d4ed8;
+		outline-offset: 4px;
 	}
 	.dialog-note {
 		margin-top: 24px;
 		margin-bottom: 8px;
-	}
-	.colophon span {
-		color: var(--color-muted);
 	}
 	.skip {
 		position: fixed;

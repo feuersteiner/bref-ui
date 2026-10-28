@@ -14,8 +14,8 @@ Install [bref-ui-themes from npm](https://www.npmjs.com/package/bref-ui-themes) 
 npm install bref-ui-themes
 ```
 
-Svelte 5 is the only peer dependency. No Bref-ui installation is needed, and fonts
-remain optional.
+Svelte 5 is the only peer dependency. No Bref-ui installation is needed, and the custom
+text font remains optional.
 
 Import components from the theme's entry point:
 
@@ -41,24 +41,23 @@ The root entry does not aggregate themes or load their CSS. Workspace installati
 packaging copy Bref's public types into private generated files, including icon
 names, so the published package does not depend on Bref-ui. After changing shared
 types in the workspace, run `bun run --cwd themes prepare` to refresh the copies.
-New Paris adds no font dependencies or automatic font imports.
+New Paris depends on Material Symbols and loads its variable fill font through Theme.
 
 ## New Paris
 
 Black and ivory controls, serif typography and opaque paper overlays. All twenty components are exported through the theme subpath.
 
-Fonts are opt-in to avoid bloating the package and apps with unused fonts. Text
-falls back to system fonts. To match the gallery typography and render icons,
-install and import Inter and Material Symbols directly:
+Material Symbols icons load automatically with Theme. The custom text font, Inter,
+is optional to avoid adding unused font assets to apps; text falls back to system
+fonts. To match the gallery typography, install and import Inter:
 
 ```sh
-npm install @fontsource-variable/inter @fontsource-variable/material-symbols-outlined
+npm install @fontsource-variable/inter
 ```
 
 ```svelte
 <script>
 	import '@fontsource-variable/inter/index.css';
-	import '@fontsource-variable/material-symbols-outlined/fill.css';
 	import { Theme, Button } from 'bref-ui-themes/new-paris';
 </script>
 

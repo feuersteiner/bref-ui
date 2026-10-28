@@ -10,7 +10,12 @@
 </div>
 
 <style>
-	@property --spinner-sweep {
+	@property --np-spinner-angle {
+		syntax: '<angle>';
+		inherits: false;
+		initial-value: 0deg;
+	}
+	@property --np-spinner-sweep {
 		syntax: '<angle>';
 		inherits: false;
 		initial-value: 90deg;
@@ -43,18 +48,19 @@
 	}
 	span {
 		box-sizing: border-box;
-		width: 80%;
-		height: 80%;
-		padding: max(1px, 0.055em);
+		width: 65%;
+		height: 65%;
+		padding: clamp(1px, 0.055em, 2px);
 		background: conic-gradient(
-			var(--spinner-fill) 0deg var(--spinner-sweep),
-			var(--spinner-track) var(--spinner-sweep) 360deg
+			from var(--np-spinner-angle),
+			var(--spinner-fill) 0deg var(--np-spinner-sweep),
+			var(--spinner-track) var(--np-spinner-sweep) 360deg
 		);
 		mask:
 			linear-gradient(black, black) content-box,
 			linear-gradient(black, black);
 		mask-composite: exclude;
-		border-radius: 50%;
+		border-radius: 0;
 		animation: spin 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 	}
 	i {
@@ -70,81 +76,35 @@
 	}
 	@keyframes spin {
 		0% {
-			--spinner-sweep: 30deg;
-			transform: rotate(0deg);
+			--np-spinner-angle: 0deg;
+			--np-spinner-sweep: 30deg;
 		}
 		50% {
-			--spinner-sweep: 210deg;
-			transform: rotate(90deg);
+			--np-spinner-angle: 90deg;
+			--np-spinner-sweep: 210deg;
 		}
 		100% {
-			--spinner-sweep: 30deg;
-			transform: rotate(360deg);
+			--np-spinner-angle: 360deg;
+			--np-spinner-sweep: 30deg;
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
 		span {
-			--spinner-sweep: 90deg;
 			animation: none;
-		}
-	}
-	@media (forced-colors: active) {
-		span {
 			padding: 0;
 			mask: none;
-			border: max(1px, 0.055em) solid CanvasText;
-			border-color: CanvasText;
-			border-top-color: Highlight;
+			border: clamp(1px, 0.055em, 2px) solid currentColor;
 			background: none;
 		}
 	}
-
-	div:is([role='status'], [aria-hidden='true']) > span[aria-hidden='true']:first-child {
-		padding: 0;
-		mask: none;
-		width: 65%;
-		height: 65%;
-		background: var(--color-primary);
-		border: 0;
-		border-radius: 0;
-		animation: np-print 1s ease-in-out infinite alternate;
-	}
-	@keyframes np-print {
-		from {
-			opacity: 0.35;
-		}
-		to {
-			opacity: 1;
-		}
-	}
-	:focus-visible:not(input) {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 4px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		div:is([role='status'], [aria-hidden='true']) > span[aria-hidden='true']:first-child {
-			animation: none;
-		}
-	}
 	@media (forced-colors: active) {
-		div:is([role='status'], [aria-hidden='true']) > span[aria-hidden='true']:first-child {
-			background: Highlight;
-		}
-	}
-	@media (forced-colors: active) {
-		:focus-visible:not(input) {
-			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
+		span {
 			animation: none;
-			transition: none;
+			padding: 0;
+			mask: none;
+			border: clamp(1px, 0.055em, 2px) solid CanvasText;
+			border-top-color: Highlight;
+			background: none;
 		}
 	}
 </style>
