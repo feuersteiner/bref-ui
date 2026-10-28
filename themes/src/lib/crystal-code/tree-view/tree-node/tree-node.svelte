@@ -60,20 +60,28 @@
 		/>
 	{/if}
 </div>
-{#if item.children?.length && expanded}
-	{#each item.children as child (child.id)}
-		<RecursiveNode
-			indent={indent + 1}
-			item={child}
-			bind:selection
-			{defaultExpanded}
-			{onDelete}
-			{glass}
-		/>
-	{/each}
+{#if item.children?.length}
+	<div id={childrenId} data-children hidden={!expanded}>
+		{#if expanded}
+			{#each item.children as child (child.id)}
+				<RecursiveNode
+					indent={indent + 1}
+					item={child}
+					bind:selection
+					{defaultExpanded}
+					{onDelete}
+					{glass}
+				/>
+			{/each}
+		{/if}
+	</div>
 {/if}
 
 <style>
+	[data-children]:not([hidden]) {
+		display: contents;
+	}
+
 	.bref-surface {
 		--surface-color: var(--color-foreground, black);
 		--surface-base: var(--color-background, white);
@@ -279,10 +287,6 @@
 		}
 	}
 
-	:focus-visible {
-		outline: 1px solid var(--color-primary);
-		outline-offset: 3px;
-	}
 	.bref-surface {
 		--surface-hover: 0%;
 		--surface-neutral-strength: 0%;
@@ -350,22 +354,6 @@
 			border-color: ButtonText;
 			box-shadow: none;
 			backdrop-filter: none;
-		}
-	}
-	@media (forced-colors: active) {
-		:focus-visible {
-			outline-color: Highlight;
-		}
-	}
-
-	:focus-visible {
-		outline: 2px solid var(--color-primary);
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		* {
-			animation: none;
-			transition: none;
 		}
 	}
 </style>
