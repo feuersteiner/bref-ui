@@ -40,6 +40,8 @@
 		font-size: inherit;
 		text-transform: none;
 		white-space: nowrap;
+		-webkit-user-select: none;
+		user-select: none;
 		font-feature-settings: 'liga';
 		font-variation-settings:
 			'FILL' 0,
