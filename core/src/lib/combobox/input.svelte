@@ -27,7 +27,15 @@
 	const attachment = {
 		[attachmentKey]: (element: HTMLInputElement) => {
 			input = element;
+			const trigger = element.parentElement!;
+			const activate = (event: MouseEvent) => {
+				if (event.target === element || disabled || attributes.readonly) return;
+				element.focus();
+				element.click();
+			};
+			trigger.addEventListener('click', activate);
 			return () => {
+				trigger.removeEventListener('click', activate);
 				if (input === element) input = undefined;
 			};
 		}

@@ -61,8 +61,8 @@
 		min-width: 0;
 		max-width: 100%;
 		min-height: var(--internal-height);
-		padding-inline: var(--internal-padding);
-		padding-block: 0.75rem;
+		padding-inline: var(--internal-padding) 0.25rem;
+		padding-block: 0.75rem 0.25rem;
 		border-radius: 0.625rem;
 	}
 	div[data-wide] {
@@ -91,6 +91,8 @@
 		width: 100%;
 		min-width: 0;
 		padding: 0;
+		padding-inline-end: calc(var(--internal-padding) - 0.25rem);
+		padding-block-end: 0.5rem;
 		border: 0;
 		outline: 0;
 		background: transparent;
