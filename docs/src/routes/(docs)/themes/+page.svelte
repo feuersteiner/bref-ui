@@ -129,6 +129,49 @@
 		/>
 	</Section>
 	<Section {...sections[3]}>
+		<a
+			data-theme-card
+			href={resolve('themes/crystal-code')}
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			<Surface variant="soft" radius="medium" spacing="medium" hover="medium">
+				<div data-theme-preview>
+					<img
+						src={asset('previews/theme-crystal-code.jpg')}
+						alt="Crystal Code gallery with a dark editor workbench, code tabs and a live component preview"
+						width="1264"
+						height="652"
+						loading="lazy"
+						decoding="async"
+					/>
+					<div data-theme-description>
+						<h3>Crystal Code</h3>
+						<p>Light and dark frosted workbench controls with compact editor styling.</p>
+						<span>Open gallery → (opens in new tab)</span>
+					</div>
+				</div>
+			</Surface>
+		</a>
+		<p>
+			Theme loads Material Symbols automatically. Inter stays opt-in to avoid unused font assets:
+		</p>
+		<CodeSnippet
+			language="bash"
+			label="Install optional Crystal Code font"
+			source="npm install @fontsource-variable/inter"
+		/>
+		<CodeSnippet
+			label="Crystal Code with optional font"
+			source={`<script>
+  import '@fontsource-variable/inter/index.css';
+  import { Theme, Button } from 'bref-ui-themes/crystal-code';
+<${'/'}script>
+
+<Theme><Button label="Save" icon={{ name: 'check' }} /></Theme>`}
+		/>
+	</Section>
+	<Section {...sections[4]}>
 		<a data-theme-card href={resolve('themes/vscode')} target="_blank" rel="noopener noreferrer">
 			<Surface variant="soft" radius="medium" spacing="medium" hover="medium">
 				<div data-theme-preview>

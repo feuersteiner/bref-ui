@@ -38,7 +38,7 @@ Edit the root license; generated package copies are ignored.
 
 Shared types come directly from `bref-ui/types` and are re-exported as types from
 `bref-ui-themes`. The root entry does not aggregate components or load theme CSS.
-New Paris, Glassy and VS Code load Material Symbols automatically through Theme.
+New Paris depends on Material Symbols and loads its variable fill font through Theme.
 
 ## New Paris
 
@@ -80,6 +80,36 @@ match the gallery typography, install `@fontsource-variable/inter` and import
 `@fontsource-variable/inter/index.css` in the app.
 
 The gallery uses the same public package exports at `/themes/glassy`.
+
+## Crystal Code
+
+Light and dark frosted workbench controls with a complete component reference. All twenty components are exported through the theme subpath:
+
+```svelte
+<script>
+	import { Theme, Button } from 'bref-ui-themes/crystal-code';
+</script>
+
+<Theme><Button label="Save" /></Theme>
+```
+
+Material Symbols icons load automatically with Theme. Inter remains optional; to
+match the gallery typography, install and import it:
+
+```sh
+npm install @fontsource-variable/inter
+```
+
+```svelte
+<script>
+	import '@fontsource-variable/inter/index.css';
+	import { Theme, Button } from 'bref-ui-themes/crystal-code';
+</script>
+
+<Theme><Button label="Save" icon={{ name: 'check' }} /></Theme>
+```
+
+The gallery uses the same public package exports at `/themes/crystal-code`.
 
 ## VS Code
 

@@ -28,6 +28,7 @@
 		".": "./src/lib/index.ts",
 		"./new-paris": "./src/lib/new-paris/index.ts",
 		"./glassy": "./src/lib/glassy/index.ts",
+		"./crystal-code": "./src/lib/crystal-code/index.ts",
 		"./vscode": "./src/lib/vscode/index.ts"
 	},
 	"dependencies": {
