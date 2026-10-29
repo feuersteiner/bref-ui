@@ -12,7 +12,7 @@ playgrounds and the [Todo, House Shop and RunnerAI demos](https://feuersteiner.g
 The `themes` package includes [New Paris](themes/README.md#new-paris), available through
 `bref-ui-themes/new-paris`.
 
-https://github.com/user-attachments/assets/3326a5c3-0573-4b40-bb8e-9a10da1fd6ac
+[Watch the 60-second demo](https://github.com/feuersteiner/bref-ui/blob/dev/docs/static/bref-ui-demo.mp4)
 
 Import and compose, own the source with the CLI, and explore New Paris, VS Code and
 Glassy. The [Svelte production app and storyboard](video-demo/README.md) live in this repository.

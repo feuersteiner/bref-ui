@@ -10,30 +10,51 @@ try {
 		const { scenes, starts, duration } = await import('/src/timeline.ts');
 		return { duration, scenes: scenes.map((s, i) => ({ ...s, start: starts[i] })) };
 	});
-	assert.equal(timeline.duration, 214);
-	const at = async (id, time) =>
-		seek(app.page, timeline.scenes.find((s) => s.id === id).start + time);
+	assert.equal(timeline.duration, 60);
+	const at = async (id, time) => {
+		const scene = timeline.scenes.find((s) => s.id === id);
+		await seek(app.page, scene.start + (time * scene.duration) / scene.sourceDuration);
+	};
 	const screenshot = async (name, selector = '.film') =>
 		app.page.locator(selector).screenshot({ path: resolve(output, `${name}.png`) });
+	await at('apps', 10.8);
+	assert.equal(await app.page.locator('.demo-column').count(), 3);
 	for (const id of ['todo', 'shop', 'runner']) {
-		await at(id, 1.8);
+		const column = app.page
+			.locator('.demo-column')
+			.filter({ has: app.page.locator(`video[src$="${id}.mp4"]`) });
 		assert.equal(
-			await app.page.locator('.kinetic').getAttribute('aria-label'),
+			await column.locator('h2').innerText(),
 			id === 'todo' ? 'Todo app.' : id === 'shop' ? 'Ecommerce shop.' : 'SaaS AI app.'
 		);
-		await at(id, 13.8);
-		const video = await app.page.locator('video').evaluate((v) => ({
+		const video = await column.locator('video').evaluate((v) => ({
 			duration: v.duration,
 			time: v.currentTime,
 			width: v.videoWidth,
-			height: v.videoHeight
+			height: v.videoHeight,
+			rate: v.playbackRate
 		}));
 		assert.ok(Math.abs(video.duration - 14) < 0.1);
 		assert.ok(Math.abs(video.time - 10.8) < 0.1);
+		assert.ok(Math.abs(video.rate - 14 / 9) < 0.001);
 		assert.equal(video.width, 1920);
 		assert.equal(video.height, 1080);
-		await screenshot(id);
+		const bounds = await column.boundingBox();
+		assert.ok(bounds.x >= 0 && bounds.x + bounds.width <= 1920);
 	}
+	await screenshot('apps');
+	await at('apps', 2);
+	assert.ok(
+		(
+			await app.page.locator('video').evaluateAll((videos) => videos.map((v) => v.currentTime))
+		).every((t) => Math.abs(t - 2) < 0.1)
+	);
+	await at('apps', 13.8);
+	assert.ok(
+		(
+			await app.page.locator('video').evaluateAll((videos) => videos.map((v) => v.currentTime))
+		).every((t) => Math.abs(t - 13.8) < 0.1)
+	);
 	await at('install', 2);
 	assert.match(await app.page.locator('.commands').innerText(), /npm install bref-ui/);
 	await at('compose', 8.1);
@@ -129,7 +150,7 @@ try {
 	);
 	assert.deepEqual(app.errors, []);
 	console.log(
-		`Verified 214-second storyboard, three 1080p app recordings, mini form interactions, isolated palettes, dark mode, theme interactions, seeking and mobile player. Screenshots: ${output}`
+		`Verified 60-second storyboard, three simultaneous 1080p app recordings, mini form interactions, isolated palettes, dark mode, theme interactions, seeking and mobile player. Screenshots: ${output}`
 	);
 } finally {
 	await app.close();

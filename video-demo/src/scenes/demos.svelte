@@ -1,45 +1,87 @@
 <script lang="ts">
 	import Cursor from '../components/cursor.svelte';
-	import Kinetic from '../components/kinetic.svelte';
-	import { motion, type Keyframe } from '../motion.js';
 	import shots from '../../public/footage/shots.json';
-	let { id, time, playing }: { id: string; time: number; playing: boolean } = $props();
-	let video: HTMLVideoElement;
-	const focus = $derived(shots[id as keyof typeof shots]);
-	const local = $derived(Math.max(0, time - 3));
-	const title = $derived(
-		id === 'todo' ? 'Todo app.' : id === 'shop' ? 'Ecommerce shop.' : 'SaaS AI app.'
-	);
-	const path = $derived<readonly Keyframe[]>([
-		[0, 1730, 950],
-		[5, 1730, 950],
-		[6.5, focus.first[0], focus.first[1]],
-		[8.3, focus.first[0], focus.first[1]],
-		[9.8, focus.second[0], focus.second[1]],
-		[14, focus.second[0], focus.second[1]]
-	]);
-	const point = $derived(motion(local, path));
+	let { time, playing, rate }: { time: number; playing: boolean; rate: number } = $props();
+	let videos: HTMLVideoElement[] = [];
+	const demos = [
+		{ id: 'todo', title: 'Todo app.', action: 'Complete a task. Add another.' },
+		{ id: 'shop', title: 'Ecommerce shop.', action: 'Explore the collection. Add to cart.' },
+		{ id: 'runner', title: 'SaaS AI app.', action: 'Retry a run. Inspect a workflow.' }
+	] as const;
 	$effect(() => {
-		if (!video) return;
-		if (playing && time >= 3) void video.play().catch(() => {});
-		else video.pause();
+		for (const video of videos) {
+			if (!video) continue;
+			video.playbackRate = rate;
+			if (playing) void video.play().catch(() => {});
+			else video.pause();
+		}
 	});
 </script>
 
-<div class="demo-shot" style:opacity={time >= 3 ? 1 : 0}>
-	<video
-		bind:this={video}
-		data-offset="3"
-		src={`./footage/${id}.mp4`}
-		muted
-		playsinline
-		preload="auto"
-		aria-label={`${id} running application`}
-	>
-		<track kind="captions" />
-	</video>
-	<Cursor time={local} path={[[0, point.x, point.y]]} clicks={[6.5, 9.8]} visible={local >= 5} />
+<div class="demo-grid">
+	{#each demos as demo, index (demo.id)}
+		{@const focus = shots[demo.id]}
+		<section class="demo-column" aria-label={demo.title}>
+			<h2>{demo.title}</h2>
+			<div class="demo-frame">
+				<div class="demo-shot">
+					<video
+						bind:this={videos[index]}
+						src={`./footage/${demo.id}.mp4`}
+						muted
+						playsinline
+						preload="auto"
+						aria-label={`${demo.id} running application`}
+					>
+						<track kind="captions" />
+					</video>
+					<Cursor
+						{time}
+						path={[
+							[0, 1730, 950],
+							[5, 1730, 950],
+							[6.5, focus.first[0], focus.first[1]],
+							[8.3, focus.first[0], focus.first[1]],
+							[9.8, focus.second[0], focus.second[1]],
+							[14, focus.second[0], focus.second[1]]
+						]}
+						clicks={[6.5, 9.8]}
+						visible={time >= 5}
+					/>
+				</div>
+			</div>
+			<p>{demo.action}</p>
+		</section>
+	{/each}
 </div>
-{#if time < 3}<div class="type-screen">
-		<Kinetic text={title} {time} speed={25} leave={2.55} />
-	</div>{/if}
+
+<style>
+	.demo-grid {
+		height: 100%;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		align-items: center;
+		gap: 24px;
+		padding: 48px;
+	}
+	section {
+		display: grid;
+		gap: 36px;
+	}
+	h2 {
+		font-size: 46px;
+		letter-spacing: -2px;
+	}
+	p {
+		font-size: 24px;
+	}
+	.demo-frame {
+		position: relative;
+		aspect-ratio: 16 / 9;
+		overflow: hidden;
+		border-radius: 12px;
+	}
+	.demo-shot {
+		transform: scale(0.3083333333);
+	}
+</style>

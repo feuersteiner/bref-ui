@@ -16,10 +16,10 @@
 	<div class="scene">
 		{#key scene.id}
 			{#if scene.id === 'intro' || scene.id === 'demos'}<Opening id={scene.id} {time} />
-			{:else if ['todo', 'shop', 'runner'].includes(scene.id)}<Demos
-					id={scene.id}
+			{:else if scene.id === 'apps'}<Demos
 					{time}
 					{playing}
+					rate={scene.sourceDuration / scene.duration}
 				/>
 			{:else if scene.id.endsWith('-title')}<Chapter chapter={scene.chapter} {time} />
 			{:else if ['install', 'cli', 'theme-install'].includes(scene.id)}<Terminal
