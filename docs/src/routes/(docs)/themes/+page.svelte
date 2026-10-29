@@ -171,6 +171,39 @@
 <Theme><Button label="Save" icon={{ name: 'check' }} /></Theme>`}
 		/>
 	</Section>
+	<Section {...sections[4]}>
+		<a data-theme-card href={resolve('themes/vscode')} target="_blank" rel="noopener noreferrer">
+			<Surface variant="soft" radius="medium" spacing="medium" hover="medium">
+				<div data-theme-preview>
+					<img
+						src={asset('previews/vscode.jpg')}
+						alt="VS Code gallery with a dark workbench, blue controls and an editor panel"
+						width="1264"
+						height="652"
+						loading="lazy"
+						decoding="async"
+					/>
+					<div data-theme-description>
+						<h3>VS Code</h3>
+						<p>Fixed-dark workbench controls with native interactions and scoped styling.</p>
+						<span>Open gallery → (opens in new tab)</span>
+					</div>
+				</div>
+			</Surface>
+		</a>
+		<p>
+			Theme loads Material Symbols automatically. Text uses system fonts, so no custom text font
+			installation is required.
+		</p>
+		<CodeSnippet
+			label="Use VS Code"
+			source={`<script>
+  import { Theme, Button } from 'bref-ui-themes/vscode';
+<${'/'}script>
+
+<Theme><Button label="Save" icon={{ name: 'check' }} /></Theme>`}
+		/>
+	</Section>
 </PageContainer>
 
 <style>

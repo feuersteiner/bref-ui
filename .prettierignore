@@ -21,3 +21,4 @@ refactor-plan.md
 # Preserve unchanged donor formatting
 themes/src/lib/new-paris/progress/progress.svelte
 themes/src/lib/crystal-code/progress/progress.svelte
+themes/src/lib/vscode/progress/progress.svelte
