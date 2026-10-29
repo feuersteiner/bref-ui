@@ -6,7 +6,7 @@ entry point. Theme implementations are reviewed in separate pull requests.
 The Todo, House Shop and RunnerAI demos use canonical Bref components and palette
 configuration. Their sources and previews live in [docs](../docs/README.md).
 
-[▶ Watch the Bref-ui showcase — 2:18](https://github.com/feuersteiner/bref-ui/blob/dev/docs/static/bref-ui-demo.mp4)
+https://github.com/user-attachments/assets/b059c943-2959-4ae7-9f8f-8ad8568bbc88
 
 See New Paris, VS Code and Glassy in action. The [video app and storyboard](../video-demo/README.md)
 are part of this repository.
