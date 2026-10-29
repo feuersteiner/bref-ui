@@ -4,7 +4,8 @@
 	"workspaces": [
 		"core",
 		"themes",
-		"docs"
+		"docs",
+		"video-demo"
 	],
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",

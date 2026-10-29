@@ -61,7 +61,7 @@
 			preload="metadata"
 			width="1280"
 			height="720"
-			aria-label="Bref-ui in 60 seconds: themes, scoped Svelte CSS, npm and CLI installation"
+			aria-label="Bref-ui showcase: live demos, component composition, source ownership, and three themes"
 		>
 			<source src={asset('bref-ui-demo.mp4')} type="video/mp4" />
 			Your browser does not support embedded video.
