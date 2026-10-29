@@ -130,7 +130,7 @@ configuration for `publish-core.yml` and `publish-themes.yml`; see [npm setup](h
 flowchart LR
     foundation["✅ Component foundation<br/>19 components · npm + copy CLI"]
     themes["✅ Theme tooling<br/>static light/dark palettes · contrast reports"]
-    agents["🚧 Agent tooling<br/>/llms.txt today · skills and CLI/SDK next"]
+    agents["✅ Agent tooling<br/>/llms.txt today · CLI/SDK (WIP: MCP)"]
     sites["🗓️ Marketing sites<br/>sections, recipes, generated SvelteKit sites"]
     genui["🗓️ Generative UI<br/>json-render experiment"]
     foundation --> themes --> agents --> sites --> genui
