@@ -1,16 +1,34 @@
-# bref-ui-themes
+# Bref-ui themes
 
-Reusable themes for [Bref-ui](https://github.com/feuersteiner/bref-ui#readme):
-New Paris, VS Code, Glassy and Crystal Code, each with its own public entry point.
+Ready-to-use themes for [Bref-ui](https://github.com/feuersteiner/bref-ui), built
+with Svelte 5, native HTML and scoped CSS. Pick a visual style and compose familiar
+Bref components through a dedicated theme entry point.
 
-The Todo, House Shop and RunnerAI demos use canonical Bref components and palette
-configuration. Their sources and previews live in [docs](../docs/README.md).
+[![npm](https://img.shields.io/npm/v/bref-ui-themes?logo=npm)](https://www.npmjs.com/package/bref-ui-themes)
+[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.gg/JpgQRTUsVS)
+[![MIT license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/feuersteiner/bref-ui/blob/main/LICENSE)
+
+Explore the [theme galleries](https://feuersteiner.github.io/bref-ui/themes) for
+component examples and interaction states, or browse the
+[Bref-ui documentation](https://feuersteiner.github.io/bref-ui/).
 
 [Watch the 60-second demo](https://github.com/feuersteiner/bref-ui/raw/c31d50d44163d28ceb4c068d4819af9416538257/docs/static/bref-ui-demo.mp4)
 
 See New Paris shopping, the ADE workbench with VS Code styling and a Glassy
 workspace in action. The [video app and storyboard](https://github.com/feuersteiner/bref-ui/tree/main/video-demo#readme)
 are part of this repository.
+
+## Available themes
+
+| Theme                                                                      | Style                                           | Import                        |
+| -------------------------------------------------------------------------- | ----------------------------------------------- | ----------------------------- |
+| [New Paris](https://feuersteiner.github.io/bref-ui/themes/new-paris)       | Black and ivory, serif headings, paper overlays | `bref-ui-themes/new-paris`    |
+| [Glassy](https://feuersteiner.github.io/bref-ui/themes/glassy)             | Translucent controls and frosted overlays       | `bref-ui-themes/glassy`       |
+| [Crystal Code](https://feuersteiner.github.io/bref-ui/themes/crystal-code) | Light and dark frosted workbench                | `bref-ui-themes/crystal-code` |
+| [VS Code](https://feuersteiner.github.io/bref-ui/themes/vscode)            | Fixed-dark workbench                            | `bref-ui-themes/vscode`       |
+
+Each entry point exports twenty components, including `Theme`, `Button`, form
+controls, overlays and navigation. Importing one theme does not load the others.
 
 ## Installation
 
@@ -133,3 +151,17 @@ Material Symbols icons load automatically with Theme. Text uses system fonts, so
 no custom text font installation is required.
 
 The gallery uses the same public package exports at `/themes/vscode`.
+
+## Community and contributing
+
+Join [Discord](https://discord.gg/JpgQRTUsVS) and use the `bref-ui` channel for
+questions and examples. Report bugs and suggest themes through
+[GitHub Issues](https://github.com/feuersteiner/bref-ui/issues).
+
+This package lives in the [Bref-ui monorepo](https://github.com/feuersteiner/bref-ui/tree/main/themes).
+See [CONTRIBUTING.md](https://github.com/feuersteiner/bref-ui/blob/main/CONTRIBUTING.md)
+for contribution guidelines.
+
+## License
+
+[MIT](https://github.com/feuersteiner/bref-ui/blob/main/LICENSE).
