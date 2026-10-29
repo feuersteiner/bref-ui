@@ -24,7 +24,7 @@
 		</div>
 	</div>
 {:else}
-	<div class="type-screen hype"><h1>New demos</h1></div>
+	<div class="type-screen hype"><h1><Kinetic text="New demos" {time} /></h1></div>
 {/if}
 
 <style>

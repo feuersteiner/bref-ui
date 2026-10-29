@@ -1,8 +1,9 @@
 <script lang="ts">
+	import Kinetic from '../components/kinetic.svelte';
 	import Paris from '../showcases/paris.svelte';
 	import Code from '../showcases/code.svelte';
 	import Glass from '../showcases/glass.svelte';
-	let { id, time }: { id: string; time: number } = $props();
+	let { id, time, elapsed }: { id: string; time: number; elapsed: number } = $props();
 	const titles: Record<string, string> = {
 		paris: '#1 New Paris',
 		vscode: '#2 VS Code',
@@ -13,7 +14,7 @@
 <div class={['theme-sequence', id]}>
 	<div class="theme-label">
 		<span>Themes:</span>
-		{titles[id]}
+		<Kinetic text={titles[id]} time={elapsed} />
 	</div>
 	<div class="theme-live">
 		{#if id === 'paris'}<Paris {time} />{:else if id === 'vscode'}<Code {time} />{:else}<Glass
@@ -53,5 +54,10 @@
 		border-radius: 16px;
 		overflow: hidden;
 		box-shadow: 0 12px 36px #17233115;
+	}
+	.theme-label :global(.kinetic) {
+		font: inherit;
+		letter-spacing: inherit;
+		text-align: left;
 	}
 </style>

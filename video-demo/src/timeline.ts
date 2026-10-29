@@ -6,15 +6,15 @@ export const scenes = [
 	{
 		id: 'import-title',
 		label: 'Import the components',
-		duration: 1,
+		duration: 1.5,
 		sourceDuration: 2.5,
 		chapter: 1
 	},
 	{ id: 'install', label: 'npm install bref-ui', duration: 1.5, sourceDuration: 3, chapter: 1 },
-	{ id: 'compose', label: 'Compose a mini form', duration: 5.5, sourceDuration: 18, chapter: 1 },
+	{ id: 'compose', label: 'Compose a mini form', duration: 5, sourceDuration: 18, chapter: 1 },
 	{ id: 'customize', label: 'Customize your theme', duration: 4, sourceDuration: 12, chapter: 1 },
-	{ id: 'own-title', label: 'Own the code', duration: 1, sourceDuration: 2.5, chapter: 2 },
-	{ id: 'cli', label: 'Copy the source', duration: 2.5, sourceDuration: 9, chapter: 2 },
+	{ id: 'own-title', label: 'Own the code', duration: 1.3, sourceDuration: 2.5, chapter: 2 },
+	{ id: 'cli', label: 'Copy the source', duration: 2.2, sourceDuration: 9, chapter: 2 },
 	{
 		id: 'files',
 		label: 'From npm to your codebase',
@@ -54,6 +54,7 @@ export const locate = (seconds: number) => {
 	const scene = scenes[index];
 	return {
 		scene,
+		elapsed: clamp(seconds - starts[index], 0, scene.duration),
 		time:
 			(clamp(seconds - starts[index], 0, scene.duration) * scene.sourceDuration) / scene.duration
 	};

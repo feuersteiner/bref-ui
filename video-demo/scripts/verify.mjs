@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { verifyMotion } from './verify-motion.mjs';
 import { root, seek, studio } from './browser.mjs';
 const output = resolve(root, 'output/review');
 await mkdir(output, { recursive: true });
@@ -18,7 +19,7 @@ try {
 	const screenshot = async (name, selector = '.film') =>
 		app.page.locator(selector).screenshot({ path: resolve(output, `${name}.png`) });
 	await at('demos', 0.75);
-	assert.equal(await app.page.locator('h1').innerText(), 'New demos');
+	assert.equal((await app.page.locator('h1').innerText()).trim(), 'New demos');
 	await screenshot('new-demos');
 	await at('apps', 10.8);
 	assert.equal(await app.page.locator('.demo-column').count(), 3);
@@ -27,7 +28,7 @@ try {
 		const column = app.page
 			.locator('.demo-column')
 			.filter({ has: app.page.locator(`video[src$="${id}.mp4"]`) });
-		assert.equal(await column.locator('h2 [aria-hidden="true"]').count(), 1);
+		assert.equal(await column.locator('h2 > [aria-hidden="true"]').count(), 1);
 		const video = await column.locator('video').evaluate((v) => ({
 			duration: v.duration,
 			time: v.currentTime,
@@ -69,7 +70,7 @@ try {
 		['dark', 10]
 	]) {
 		await at('customize', time);
-		assert.equal(await app.page.locator('h1').innerText(), 'Customize your theme');
+		assert.equal((await app.page.locator('h1').innerText()).trim(), 'Customize your theme');
 		assert.equal(await app.page.locator('.palette-controls button').count(), 4);
 		await screenshot(`${name}-crop`, '.signup-card');
 	}
@@ -88,18 +89,7 @@ try {
 	assert.match(await app.page.locator('.copied-source').innerText(), /switch.svelte/);
 	assert.equal(await app.page.getByRole('img', { name: 'npm', exact: true }).count(), 1);
 	await screenshot('files');
-	await at('paris', 9);
-	const nav = await app.page.locator('.paris-nav').boundingBox();
-	const campaign = await app.page.locator('.paris-campaign').boundingBox();
-	assert.equal(await app.page.locator('.fashion-grid article').count(), 3);
-	assert.ok(await app.page.getByRole('button', { name: 'Added to bag' }).isVisible());
-	await screenshot('paris-products');
-	await at('paris', 20);
-	assert.deepEqual(await app.page.locator('.paris-nav').boundingBox(), nav);
-	assert.deepEqual(await app.page.locator('.paris-campaign').boundingBox(), campaign);
-	assert.equal(await app.page.getByLabel('Email', { exact: true }).inputValue(), 'alex@studio.com');
-	assert.ok(await app.page.getByRole('button', { name: /WORKSPACE CREATED/i }).isVisible());
-	await screenshot('paris-form');
+	await verifyMotion(app, timeline, at, screenshot);
 	await at('vscode', 8);
 	assert.equal(
 		await app.page.getByRole('tablist', { name: 'Activity' }).getAttribute('aria-orientation'),

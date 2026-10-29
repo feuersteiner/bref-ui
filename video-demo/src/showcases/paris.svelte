@@ -1,29 +1,16 @@
 <script lang="ts">
 	import { Button, Pill, Select, Tabs, Theme } from 'bref-ui-themes/new-paris';
-	import MiniForm from '../components/mini-form.svelte';
+	import ParisLogin from './paris-login.svelte';
+	import { smooth } from '../timeline.js';
 	import campaign from '../../../docs/static/demos/new-paris-campaign.png';
 	let { time }: { time: number } = $props();
 	let collection = $state('new');
 	let size = $state('m');
+	const shopping = $derived(smooth((time - 9) / 2));
 	const products = [
-		{
-			name: 'The wool coat',
-			price: '€390',
-			color: '#baa995',
-			path: 'M60 28 35 47 18 112 42 120 54 80 49 200h103l-6-120 12 40 24-8-17-65-25-19-24 14H84z'
-		},
-		{
-			name: 'The silk shirt',
-			price: '€145',
-			color: '#e6dfd1',
-			path: 'M66 35 36 52 17 98 46 111 57 83 53 190h94l-4-107 11 28 29-13-19-46-30-17-19 16H85z'
-		},
-		{
-			name: 'The city bag',
-			price: '€210',
-			color: '#383330',
-			path: 'M48 80h104l13 110H35z M72 80V57q0-34 28-34t28 34v23'
-		}
+		{ name: 'The trench coat', price: '€390', image: './fashion/coat.jpg' },
+		{ name: 'The silk shirt', price: '€145', image: './fashion/silk.jpg' },
+		{ name: 'The city bag', price: '€210', image: './fashion/bag.jpg' }
 	];
 </script>
 
@@ -35,7 +22,7 @@
 			<Button
 				icon={{ name: 'shopping_bag' }}
 				aria-label="Shopping bag"
-				label={time >= 8 ? 'Bag (1)' : 'Bag (0)'}
+				label={time >= 17 ? 'Bag (1)' : 'Bag (0)'}
 			/>
 		</nav>
 		<div class="paris-campaign">
@@ -47,53 +34,58 @@
 			<h2>
 				Quietly <em>remarkable.</em>
 			</h2>
-			{#if time < 11.8}
-				<Tabs
-					items={[
-						{ id: 'new', label: 'New arrivals', icon: 'fiber_new' },
-						{ id: 'tailoring', label: 'Tailoring', icon: 'checkroom' },
-						{ id: 'essentials', label: 'Essentials', icon: 'styler' }
-					]}
-					bind:value={collection}
-					label="Fashion collection"
-				/>
-				<div class="fashion-grid">
-					{#each products as product (product.name)}<article>
-							<div class="fashion-art">
-								<svg viewBox="0 0 200 220" role="img" aria-label={product.name}>
-									<path
-										d={product.path}
-										fill={product.color}
-										stroke="#655d51"
-										stroke-width="2"
-										stroke-linejoin="round"
-									/>
-								</svg>
-							</div>
-							<h3>{product.name}</h3>
-							<p>{product.price}</p>
-						</article>{/each}
+			<div class="paris-panels">
+				<div
+					class="paris-login"
+					style:opacity={1 - shopping}
+					style:transform={`translateX(${-shopping * 120}px)`}
+					style:pointer-events={shopping < 0.5 ? 'auto' : 'none'}
+				>
+					<ParisLogin {time} />
 				</div>
-				<div class="fashion-actions">
-					<label class="sr-only" for="garment-size">Garment size</label>
-					<Select
+				<div
+					class="paris-shop"
+					style:opacity={shopping}
+					style:transform={`translateX(${(1 - shopping) * 120}px)`}
+					style:pointer-events={shopping >= 0.5 ? 'auto' : 'none'}
+				>
+					<Tabs
 						items={[
-							{ id: 's', label: 'Small' },
-							{ id: 'm', label: 'Medium' },
-							{ id: 'l', label: 'Large' }
+							{ id: 'new', label: 'New arrivals', icon: 'fiber_new' },
+							{ id: 'tailoring', label: 'Tailoring', icon: 'checkroom' },
+							{ id: 'essentials', label: 'Essentials', icon: 'styler' }
 						]}
-						bind:value={size}
-						id="garment-size"
-					/><Button
-						label={time >= 8 ? 'Added to bag' : 'Add to bag'}
-						icon={{ name: time >= 8 ? 'check' : 'add' }}
-						variant="filled"
-						color="primary"
+						bind:value={collection}
+						label="Fashion collection"
 					/>
+					<div class="fashion-grid">
+						{#each products as product (product.name)}<article>
+								<div class="fashion-art">
+									<img src={product.image} alt={product.name} />
+								</div>
+								<h3>{product.name}</h3>
+								<p>{product.price}</p>
+							</article>{/each}
+					</div>
+					<div class="fashion-actions">
+						<label class="sr-only" for="garment-size">Garment size</label>
+						<Select
+							items={[
+								{ id: 's', label: 'Small' },
+								{ id: 'm', label: 'Medium' },
+								{ id: 'l', label: 'Large' }
+							]}
+							bind:value={size}
+							id="garment-size"
+						/><Button
+							label={time >= 17 ? 'Added to bag' : 'Add to bag'}
+							icon={{ name: time >= 17 ? 'check' : 'add' }}
+							variant="filled"
+							color="primary"
+						/>
+					</div>
 				</div>
-			{:else}<div class="paris-build">
-					<MiniForm theme="paris" time={time - 2} interactive />
-				</div>{/if}
+			</div>
 		</section>
 	</div>
 </Theme>

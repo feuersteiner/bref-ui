@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Kinetic from '../components/kinetic.svelte';
 	import { ease } from '../timeline.js';
 	let { time }: { time: number } = $props();
 	const actions = [
@@ -11,9 +12,11 @@
 
 <div class="closing-end">
 	{#if time < 2}<div class="closing-actions">
-			{#each actions as action (action.text)}<a href={action.url}>{action.text}</a>{/each}
+			{#each actions as action, index (action.text)}<a href={action.url}>
+					<Kinetic text={action.text} time={time - index * 0.1} leave={1.75 - index * 0.1} />
+				</a>{/each}
 		</div>
-	{:else if time < 3.4}<h2>Build cool shit ;)</h2>
+	{:else if time < 3.4}<h2><Kinetic text="Build cool shit ;)" time={time - 2} leave={1.1} /></h2>
 	{:else}<div class="logo" style:opacity={ease((time - 3.4) / 0.3)}>
 			bref <span>/</span>
 			ui
@@ -36,6 +39,7 @@
 		color: inherit;
 		text-decoration: none;
 		font-size: 57px;
+		font-weight: 650;
 		letter-spacing: -2px;
 	}
 	h2 {
@@ -44,6 +48,11 @@
 		letter-spacing: -6px;
 	}
 	.logo > span {
-		color: #92b4df;
+		color: var(--color-primary);
+	}
+	a :global(.kinetic),
+	h2 :global(.kinetic) {
+		font: inherit;
+		letter-spacing: inherit;
 	}
 </style>

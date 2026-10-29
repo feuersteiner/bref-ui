@@ -1,8 +1,15 @@
 <script lang="ts">
+	import { smooth } from '../timeline.js';
 	import { Icon } from 'bref-ui';
+	import Kinetic from '../components/kinetic.svelte';
 	import Cursor from '../components/cursor.svelte';
 	import shots from '../../public/footage/shots.json';
-	let { time, playing, rate }: { time: number; playing: boolean; rate: number } = $props();
+	let {
+		time,
+		elapsed,
+		playing,
+		rate
+	}: { time: number; elapsed: number; playing: boolean; rate: number } = $props();
 	let videos: HTMLVideoElement[] = [];
 	const demos = [
 		{ id: 'todo', title: 'Todo app.', icon: 'checklist' },
@@ -22,8 +29,19 @@
 <div class="demo-grid">
 	{#each demos as demo, index (demo.id)}
 		{@const focus = shots[demo.id]}
-		<section class="demo-column" aria-label={demo.title}>
-			<h2><Icon name={demo.icon} filled />{demo.title}</h2>
+		{@const entrance = smooth((elapsed - 0.1 - index * 0.2) / 0.6)}
+		<section
+			class="demo-column"
+			aria-label={demo.title}
+			style:opacity={entrance}
+			style:transform={`translateY(${(1 - entrance) * 1120}px) rotate(${(1 - entrance) * 2}deg)`}
+		>
+			<h2>
+				<Icon name={demo.icon} filled /><Kinetic
+					text={demo.title}
+					time={elapsed - 0.1 - index * 0.2}
+				/>
+			</h2>
 			<div class="demo-frame">
 				<div class="demo-shot">
 					<video
@@ -89,5 +107,10 @@
 	.demo-shot > video {
 		width: 768px;
 		height: 1152px;
+	}
+	h2 :global(.kinetic) {
+		font: inherit;
+		letter-spacing: inherit;
+		text-align: left;
 	}
 </style>
