@@ -213,3 +213,12 @@
 	font-size: 20px;
 	line-height: 1.8;
 }
+
+.customizing .composition-source {
+	font-size: 36px;
+	width: 940px;
+}
+.customizing .composition-source pre {
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}

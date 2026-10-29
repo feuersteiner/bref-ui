@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { clamp, ease } from '../timeline.js';
+	import { clamp, smooth } from '../timeline.js';
 	let {
 		text,
 		time,
@@ -7,23 +7,51 @@
 		leave = Infinity,
 		class: className = ''
 	}: { text: string; time: number; speed?: number; leave?: number; class?: string } = $props();
-	const exit = $derived(ease((time - leave) / 0.22));
+	const words = $derived(text.split(' '));
+	const exit = $derived(smooth((time - leave) / 0.24));
 </script>
 
 <div
 	class={['kinetic', className]}
 	aria-label={text}
 	style:opacity={1 - exit}
-	style:transform={`translateY(${-110 * exit}px) scale(${1 + exit * 0.12})`}
+	style:transform={`translateY(${-60 * exit}px)`}
 >
-	{#each Array.from(text) as letter, index (index)}
-		{@const p = ease((time - index / speed) / 0.18)}
-		{#if letter === '\n'}<br />{:else}<span
-				aria-hidden="true"
-				style:opacity={clamp((time - index / speed) * speed)}
-				style:transform={`translateY(${(1 - p) * 65}px) rotate(${(1 - p) * (index % 2 ? 8 : -8)}deg)`}
+	{#each words as word, index (index)}
+		{@const p = smooth((time - (index * 3) / speed) / 0.38)}
+		<span class="word-mask" aria-hidden="true">
+			<span
+				class:accent={index === words.length - 1}
+				style:opacity={clamp(p * 4)}
+				style:transform={`translateY(${(1 - p) * 115}%) rotate(${(1 - p) * 4}deg)`}
+				style:--fill={`${smooth((time - 0.2 - (index * 3) / speed) / 0.5) * 100}%`}
 			>
-				{letter}
-			</span>{/if}
+				{word + (index < words.length - 1 ? ' ' : '')}
+			</span>
+		</span>
 	{/each}
 </div>
+
+<style>
+	.word-mask {
+		display: inline-block;
+		overflow: hidden;
+		vertical-align: bottom;
+		padding: 0.08em 0.035em;
+		margin: -0.08em -0.035em;
+	}
+	.word-mask > span {
+		display: inline-block;
+	}
+	.accent {
+		font-family: Georgia, 'Times New Roman', serif;
+		font-weight: 400;
+		font-style: italic;
+		letter-spacing: -0.045em;
+		background: linear-gradient(
+			90deg,
+			var(--headline-accent, #dae2b3) var(--fill),
+			transparent var(--fill)
+		);
+	}
+</style>

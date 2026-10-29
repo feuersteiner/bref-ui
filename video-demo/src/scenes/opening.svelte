@@ -24,12 +24,13 @@
 		</div>
 	</div>
 {:else}
-	<div class="type-screen hype">
-		{#if time < 0.9}<Kinetic text="Enough talk." {time} speed={36} leave={0.65} />{:else}<Kinetic
-				text="See the demos."
-				time={time - 0.9}
-				speed={40}
-				leave={0.85}
-			/>{/if}
-	</div>
+	<div class="type-screen hype"><h1><Kinetic text="New demos" {time} /></h1></div>
 {/if}
+
+<style>
+	h1 {
+		font-size: 174px;
+		font-weight: 600;
+		letter-spacing: -9px;
+	}
+</style>
