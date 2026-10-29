@@ -1,6 +1,5 @@
 {
 	"name": "bref-ui-workspace",
-	"private": true,
 	"type": "module",
 	"workspaces": [
 		"core",
