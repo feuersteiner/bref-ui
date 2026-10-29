@@ -1,0 +1,29 @@
+{
+	"name": "video-demo",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"capture": "node scripts/capture-demos.mjs",
+		"render": "node scripts/render.mjs",
+		"verify": "node scripts/verify.mjs",
+		"check": "svelte-check --tsconfig ./tsconfig.json",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"bref-ui": "workspace:*",
+		"bref-ui-themes": "workspace:*",
+		"svelte": "^5.57.2"
+	},
+	"devDependencies": {
+		"@fontsource-variable/inter": "^5.3.0",
+		"@fontsource-variable/syne": "^5.3.0",
+		"@sveltejs/vite-plugin-svelte": "^7.3.1",
+		"playwright": "^1.64.1",
+		"svelte-check": "^4.7.7",
+		"typescript": "^6.0.3",
+		"vite": "^8.3.5"
+	}
+}

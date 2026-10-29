@@ -6,6 +6,11 @@ entry point. Theme implementations are reviewed in separate pull requests.
 The Todo, House Shop and RunnerAI demos use canonical Bref components and palette
 configuration. Their sources and previews live in [docs](../docs/README.md).
 
+https://github.com/user-attachments/assets/3326a5c3-0573-4b40-bb8e-9a10da1fd6ac
+
+See New Paris, VS Code and Glassy in action. The [video app and storyboard](../video-demo/README.md)
+are part of this repository.
+
 ## Installation
 
 Install [bref-ui-themes from npm](https://www.npmjs.com/package/bref-ui-themes) in a Svelte 5 app:

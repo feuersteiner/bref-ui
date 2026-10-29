@@ -12,7 +12,10 @@ playgrounds and the [Todo, House Shop and RunnerAI demos](https://feuersteiner.g
 The `themes` package includes [New Paris](themes/README.md#new-paris), available through
 `bref-ui-themes/new-paris`.
 
-https://github.com/user-attachments/assets/09b9a73d-c6fb-4e8d-b4f5-2267c4552ad7
+https://github.com/user-attachments/assets/3326a5c3-0573-4b40-bb8e-9a10da1fd6ac
+
+Import and compose, own the source with the CLI, and explore New Paris, VS Code and
+Glassy. The [Svelte production app and storyboard](video-demo/README.md) live in this repository.
 
 ## Get started
 
@@ -80,7 +83,7 @@ Components: `button`, `checkbox`, `combobox`, `dialog`, `icon`, `pill`,
 
 ## Why Bref-ui?
 
-[Watch Bref-ui in 60 seconds](https://feuersteiner.github.io/bref-ui/#why-bref-ui).
+[Watch the Bref-ui showcase](https://feuersteiner.github.io/bref-ui/#why-bref-ui).
 
 - **Svelte-first.** Strictly Svelte: no runtime dependencies, scoped CSS, native HTML,
   events, bindings and snippets. No class names to memorize.
@@ -115,6 +118,7 @@ bun run preview # preview docs/build
   [copy CLI](core/cli/README.md).
 - [`themes`](themes): the `bref-ui-themes` package, including New Paris through its own entry point.
 - [`docs`](docs): the static component documentation, playgrounds, demos and palette previews.
+- [`video-demo`](video-demo): the Svelte showcase app, storyboard and repeatable video renderer.
 
 The root lint/format configuration covers every package. The docs site imports public
 package source exports directly; no package prebuild is required for development or checks.

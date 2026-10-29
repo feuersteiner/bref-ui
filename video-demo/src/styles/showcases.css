@@ -1,0 +1,359 @@
+.paris-app {
+	height: 1080px;
+	width: 1920px;
+	background: var(--color-background);
+	font-family: 'Inter Variable', sans-serif;
+}
+.paris-nav {
+	height: 100px;
+	padding: 0 80px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid #d9d5cc;
+}
+.paris-nav strong {
+	font:
+		45px 'Times New Roman',
+		serif;
+	letter-spacing: -2px;
+}
+.paris-grid {
+	display: grid;
+	grid-template-columns: 1.05fr 1fr;
+	height: 980px;
+}
+.paris-campaign {
+	margin: 40px;
+	overflow: hidden;
+}
+.paris-campaign img {
+	height: 100%;
+	width: 100%;
+	display: block;
+	object-fit: cover;
+	object-position: center;
+}
+.paris-editorial {
+	padding: 90px 90px 60px 50px;
+}
+.paris-editorial h2 {
+	font:
+		400 104px / 1 'Times New Roman',
+		serif;
+	letter-spacing: -5px;
+	margin: 35px 0 65px;
+}
+.paris-editorial h2 em {
+	font-weight: 400;
+}
+.paris-form > label:first-child {
+	display: block;
+	font-size: 18px;
+	margin: 0 0 20px;
+}
+.paris-consent {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 17px;
+	margin: 32px 0;
+}
+.paris-details > div {
+	display: flex;
+	justify-content: space-between;
+	padding: 30px 0;
+	border-bottom: 1px solid #d9d5cc;
+	font-size: 20px;
+}
+.paris-details strong {
+	font-weight: 400;
+}
+.code-app {
+	height: 1080px;
+	width: 1920px;
+	background: #1e1e1e;
+	color: #ccc;
+	font-family: 'Segoe UI', system-ui, sans-serif;
+}
+.workbench-menubar {
+	height: 55px;
+	display: flex;
+	align-items: center;
+	padding: 0 35px;
+	background: #323233;
+	color: #aaa;
+	font:
+		16px 'Segoe UI',
+		sans-serif;
+}
+.workbench-body {
+	display: grid;
+	grid-template-columns: 300px 1fr 500px;
+	height: 1025px;
+}
+.workbench-explorer {
+	background: #252526;
+	padding: 35px 25px;
+}
+.workspace-file {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 25px 0;
+	font-size: 17px;
+}
+.workbench-editor {
+	min-width: 0;
+}
+.workbench-editor > .code-source {
+	height: 680px;
+	padding: 70px 50px 30px;
+	font:
+		27px 'SFMono-Regular',
+		Consolas,
+		monospace;
+	--color-foreground: #9cdcfe;
+}
+.workbench-editor .syntax-string {
+	color: #ce9178;
+}
+.workbench-editor .syntax-tag {
+	color: #569cd6;
+}
+.workbench-editor .syntax-keyword {
+	color: #c586c0;
+}
+.workbench-terminal {
+	padding: 40px 50px;
+	border-top: 1px solid #444;
+}
+.workbench-terminal code {
+	display: block;
+	font:
+		23px / 2 ui-monospace,
+		monospace;
+}
+.workbench-terminal code:last-child {
+	color: #89d185;
+}
+.workbench-settings {
+	background: #252526;
+	padding: 80px 45px;
+	border-left: 1px solid #454545;
+}
+.workbench-settings h2 {
+	font:
+		400 50px 'Segoe UI',
+		sans-serif;
+	margin-bottom: 60px;
+}
+.workbench-settings > label:first-of-type {
+	display: block;
+	font-size: 18px;
+	margin-bottom: 16px;
+}
+.workbench-toggle {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	margin: 50px 0;
+	font-size: 18px;
+}
+.workbench-settings > button {
+	margin-top: 60px;
+}
+.glass-app {
+	position: relative;
+	width: 1920px;
+	height: 1080px;
+	padding: 0 70px;
+	overflow: hidden;
+	isolation: isolate;
+	background: linear-gradient(125deg, #dce5ed, #f1eeee 50%, #c8dce1);
+	font-family: 'Inter Variable', sans-serif;
+}
+.glass-shape {
+	position: absolute;
+	z-index: -1;
+	border: 1px solid #fffa;
+	box-shadow:
+		inset 0 0 80px #fff8,
+		0 25px 65px #7489b222;
+}
+.glass-shape-one {
+	width: 640px;
+	height: 640px;
+	border-radius: 180px;
+	background: linear-gradient(140deg, #8fabbc66, #fff5);
+	top: 450px;
+	left: -190px;
+}
+.glass-shape-two {
+	width: 700px;
+	height: 700px;
+	border-radius: 50%;
+	background: linear-gradient(150deg, #c1b5a466, #fff5);
+	right: -240px;
+	top: -240px;
+}
+.glass-nav {
+	height: 130px;
+	display: flex;
+	align-items: center;
+	border-bottom: 1px solid #fff8;
+	font-size: 38px;
+	letter-spacing: -1px;
+}
+.glass-greeting {
+	position: absolute;
+	left: 90px;
+	top: 400px;
+}
+.glass-greeting h2 {
+	font:
+		500 106px / 1.05 'Inter Variable',
+		sans-serif;
+	letter-spacing: -6px;
+}
+.glass-widgets {
+	position: absolute;
+	left: 825px;
+	top: 240px;
+	display: grid;
+	grid-template-columns: 440px 480px;
+	gap: 40px;
+}
+.glass-widgets .music-widget {
+	display: block;
+	width: 440px;
+	height: 680px;
+	padding: 45px;
+}
+.widget-heading {
+	font-size: 20px;
+	color: var(--color-muted);
+}
+.record {
+	width: 260px;
+	height: 260px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	background:
+		repeating-radial-gradient(circle, #5e788b44 0 2px, #a9c2cb55 3px 6px),
+		linear-gradient(120deg, #9aafc0, #d1dbdf);
+	margin: 40px auto;
+	box-shadow: 0 20px 40px #506f8722;
+}
+.record > div {
+	display: grid;
+	place-items: center;
+	width: 90px;
+	height: 90px;
+	border-radius: 50%;
+	background: #d9e3e7;
+	color: #6f8798;
+	font-size: 55px;
+}
+.music-widget h3 {
+	font:
+		500 27px 'Inter Variable',
+		sans-serif;
+	margin-bottom: 35px;
+	letter-spacing: -1px;
+}
+.music-controls {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 30px;
+	margin-top: 45px;
+}
+.glass-right-widgets {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+.glass-widgets .focus-widget {
+	display: block;
+	height: 280px;
+	padding: 45px;
+}
+.glass-widgets .todo-widget {
+	display: block;
+	height: 360px;
+	padding: 45px;
+}
+.glass-widgets h3 {
+	font-weight: 500;
+}
+.glass-right-widgets label {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 19px;
+	margin: 45px 0;
+}
+.todo-widget .checked {
+	text-decoration: line-through;
+	color: var(--color-muted);
+}
+
+.paris-scroll {
+	position: absolute;
+	inset: 0;
+	will-change: transform;
+}
+.paris-app {
+	height: 1800px;
+}
+.paris-grid {
+	height: 900px;
+}
+.paris-materials {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	margin-top: 100px;
+	font-size: 20px;
+}
+.paris-build {
+	height: 800px;
+	display: grid;
+	grid-template-columns: 1.05fr 1fr;
+	align-items: center;
+	gap: 0;
+	padding: 0 90px 70px 40px;
+}
+.paris-build .mini-form {
+	justify-self: center;
+}
+.paris-detail-image {
+	height: 700px;
+	overflow: hidden;
+	margin-right: 50px;
+}
+.paris-detail-image img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+	object-position: 50% 30%;
+}
+.paris-build .mini-form h2 {
+	font-family: 'Times New Roman', serif;
+	font-size: 50px;
+	font-weight: 400;
+}
+
+.paris-campaign {
+	position: absolute;
+	top: 140px;
+	left: 40px;
+	width: 903px;
+	height: 900px;
+	margin: 0;
+}
+.paris-editorial {
+	grid-column: 2;
+}

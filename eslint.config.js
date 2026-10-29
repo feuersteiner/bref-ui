@@ -57,6 +57,11 @@ export default defineConfig(
 		}
 	},
 	{
+		// Film layouts share external CSS across scenes and the reusable code/preview panels.
+		files: ['video-demo/src/**/*.svelte'],
+		rules: { 'svelte/no-unused-class-name': 'off' }
+	},
+	{
 		// Keep imported application demos in their original authoring style.
 		files: ['docs/src/routes/(docs)/demo/**/*.{ts,svelte}'],
 		rules: {

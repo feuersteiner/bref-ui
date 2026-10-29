@@ -1,0 +1,146 @@
+.film {
+	position: relative;
+	width: 1920px;
+	height: 1080px;
+	overflow: hidden;
+	background: var(--color-background);
+	color: var(--color-foreground);
+	font:
+		24px 'Inter Variable',
+		sans-serif;
+	isolation: isolate;
+}
+.film h1,
+.film h2,
+.film h3,
+.film p {
+	margin: 0;
+}
+.film.dark {
+	background: #08090b;
+	color: #f8f7f3;
+}
+.scene {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+}
+.type-screen {
+	width: 100%;
+	height: 100%;
+	display: grid;
+	place-items: center;
+	padding: 100px;
+}
+.kinetic {
+	font:
+		600 148px / 1.12 'Inter Variable',
+		sans-serif;
+	letter-spacing: -8px;
+	white-space: pre-wrap;
+	text-align: center;
+}
+.kinetic > span {
+	display: inline-block;
+	white-space: pre;
+}
+.hype .kinetic {
+	font-size: 174px;
+}
+.opening {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 90px;
+}
+.logo {
+	font:
+		750 210px / 1 'Syne Variable',
+		sans-serif;
+	letter-spacing: -16px;
+}
+.logo > span {
+	color: var(--color-primary);
+	margin: 0 8px;
+}
+.values {
+	display: flex;
+	gap: 54px;
+	min-height: 65px;
+}
+.values .kinetic {
+	font:
+		500 52px / 1.2 'Inter Variable',
+		sans-serif;
+	letter-spacing: -2px;
+}
+.values > :nth-child(2) {
+	color: var(--color-primary);
+}
+.commands {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 60px;
+	padding: 100px;
+}
+.commands > div {
+	font:
+		400 70px / 1.5 'SFMono-Regular',
+		Consolas,
+		monospace;
+	letter-spacing: -4px;
+	white-space: pre;
+}
+.command-muted {
+	color: #777b83;
+}
+.commands i {
+	display: inline-block;
+	width: 6px;
+	height: 90px;
+	vertical-align: -14px;
+	margin-left: 8px;
+	background: #f8f7f3;
+}
+.film-cursor {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 24px;
+	height: 30px;
+	pointer-events: none;
+	z-index: 30;
+	filter: drop-shadow(0 1px 1px #0004);
+}
+.film-cursor > svg {
+	position: relative;
+}
+.demo-shot,
+.demo-shot > video {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1920px;
+	height: 1080px;
+	transform-origin: 0 0;
+}
+.demo-shot > video {
+	object-fit: cover;
+}
+.closing a {
+	color: inherit;
+	text-decoration: none;
+}
+.closing .logo > span {
+	color: #92b4df;
+}
+
+.commands.theme-imports > div {
+	font-size: 50px;
+	letter-spacing: -2px;
+}

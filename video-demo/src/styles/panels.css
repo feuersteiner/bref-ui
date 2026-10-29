@@ -1,0 +1,215 @@
+.code-source {
+	min-width: 0;
+}
+.code-source pre {
+	margin: 0;
+	font: inherit;
+	line-height: 1.48;
+	white-space: pre;
+}
+.source-filename {
+	font:
+		400 26px 'Inter Variable',
+		sans-serif;
+	color: var(--color-muted);
+	margin-bottom: 55px;
+}
+.syntax-string {
+	color: #34745a;
+}
+.syntax-keyword {
+	color: #7c43a4;
+}
+.syntax-tag {
+	color: #b1472d;
+}
+.syntax-plain {
+	color: var(--color-foreground);
+}
+.code-caret {
+	color: var(--color-primary);
+}
+.composition {
+	width: 1920px;
+	height: 1080px;
+	overflow: hidden;
+}
+.composition-source {
+	position: absolute;
+	top: 0;
+	left: 65px;
+	width: calc(1760px - 830px * var(--split));
+	height: 1080px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	font:
+		calc(23px - 4px * var(--split)) 'SFMono-Regular',
+		Consolas,
+		monospace;
+}
+.composition-preview {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 880px;
+	height: 1080px;
+}
+.signup-preview {
+	position: absolute;
+	inset: 0;
+	background: var(--color-background);
+	color: var(--color-foreground);
+}
+.signup-card {
+	position: absolute;
+	width: 600px;
+	left: 140px;
+	top: 190px;
+}
+.palette-controls {
+	position: absolute;
+	left: 1208px;
+	top: 912px;
+	display: flex;
+	align-items: center;
+	gap: 56px;
+}
+.palette-controls > button {
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	border: 6px solid var(--color-background);
+	outline: 1px solid transparent;
+	background: var(--swatch);
+	cursor: pointer;
+}
+.palette-controls > .chosen {
+	outline-color: var(--color-foreground);
+}
+.palette-controls.mode-controls {
+	left: 1490px;
+}
+.palette-controls .dark-toggle {
+	background: var(--color-background);
+	color: var(--color-foreground);
+	display: grid;
+	place-items: center;
+	border-color: color-mix(in srgb, var(--color-foreground) 10%, transparent);
+}
+.json-scene {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-content: center;
+	font:
+		44px 'SFMono-Regular',
+		Consolas,
+		monospace;
+}
+.source-tree {
+	position: absolute;
+	left: 620px;
+	top: 100px;
+	width: 720px;
+	transform-origin: 50% 20%;
+}
+.source-tree h2 {
+	font:
+		500 34px 'Inter Variable',
+		sans-serif;
+	margin-bottom: 35px;
+}
+.tree-file {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	height: 32px;
+	font:
+		21px 'SFMono-Regular',
+		Consolas,
+		monospace;
+	color: var(--color-muted);
+}
+.tree-file.folder {
+	color: var(--color-foreground);
+}
+.tree-file.nested {
+	padding-left: 45px;
+}
+.file-icon {
+	flex-shrink: 0;
+}
+.additional-command {
+	display: block;
+	margin-top: 30px;
+	color: var(--color-primary);
+	font-size: 21px;
+}
+.theme-sequence,
+.theme-live,
+.theme-camera {
+	position: absolute;
+	inset: 0;
+	width: 1920px;
+	height: 1080px;
+}
+.theme-camera {
+	transform-origin: 0 0;
+}
+.mini-form {
+	width: 600px;
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+.form-heading {
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
+	margin-bottom: 22px;
+}
+.form-heading > span {
+	font-size: 42px;
+}
+.film .mini-form h2 {
+	font:
+		500 44px/1.15 'Inter Variable',
+		sans-serif;
+	letter-spacing: -2px;
+	margin: 0;
+}
+.mini-form > label {
+	font-size: 20px;
+	margin: 4px 0 0;
+}
+.mini-form .form-option {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	margin: 22px 0 0;
+	font-size: 21px;
+}
+.mini-form .consent {
+	margin: 4px 0 22px;
+}
+.mini-form > button {
+	margin-top: 10px;
+}
+.theme-announcement {
+	position: absolute;
+	inset: 0;
+	background: var(--color-background);
+}
+.theme-announcement .kinetic {
+	font-size: 112px;
+	letter-spacing: -5px;
+}
+.chapter-title .kinetic {
+	font-size: 125px;
+}
+.additional-command {
+	white-space: pre;
+	font-size: 20px;
+	line-height: 1.8;
+}
