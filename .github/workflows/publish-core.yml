@@ -1,6 +1,7 @@
 name: Publish bref-ui
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths: [core/package.json]
