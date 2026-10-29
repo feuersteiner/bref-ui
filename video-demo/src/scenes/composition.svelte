@@ -22,7 +22,7 @@
 	);
 </script>
 
-<div class="composition" style:--split={split}>
+<div class="composition" class:customizing={!typing} style:--split={split}>
 	<div class="composition-source"><Editor {source} cursor={typing && progress < 1} /></div>
 	<div class="composition-preview" style:transform={`translateX(${(1 - split) * 100}%)`}>
 		<Signup {dark} {paletteIndex} time={typing ? time : 18} />

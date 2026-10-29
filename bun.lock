@@ -18,7 +18,7 @@
     },
     "core": {
       "name": "bref-ui",
-      "version": "3.0.0",
+      "version": "3.0.1",
       "bin": {
         "bref-ui": "dist-cli/index.js",
       },
@@ -68,7 +68,7 @@
     },
     "themes": {
       "name": "bref-ui-themes",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "dependencies": {
         "@fontsource-variable/material-symbols-outlined": "^5.3.5",
       },

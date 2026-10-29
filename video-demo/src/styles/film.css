@@ -17,6 +17,7 @@
 	margin: 0;
 }
 .film.dark {
+	--headline-accent: #3f6274;
 	background: #08090b;
 	color: #f8f7f3;
 }
