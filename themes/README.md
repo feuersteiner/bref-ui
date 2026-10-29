@@ -1,14 +1,15 @@
 # bref-ui-themes
 
-Reusable themes for [Bref-ui](../readme.md), each intended to have its own public
-entry point. Theme implementations are reviewed in separate pull requests.
+Reusable themes for [Bref-ui](https://github.com/feuersteiner/bref-ui#readme):
+New Paris, VS Code, Glassy and Crystal Code, each with its own public entry point.
 
 The Todo, House Shop and RunnerAI demos use canonical Bref components and palette
 configuration. Their sources and previews live in [docs](../docs/README.md).
 
-[Watch the 60-second demo](https://github.com/feuersteiner/bref-ui/blob/dev/docs/static/bref-ui-demo.mp4)
+[Watch the 60-second demo](https://github.com/feuersteiner/bref-ui/raw/c31d50d44163d28ceb4c068d4819af9416538257/docs/static/bref-ui-demo.mp4)
 
-See New Paris, VS Code and Glassy in action. The [video app and storyboard](../video-demo/README.md)
+See New Paris shopping, the ADE workbench with VS Code styling and a Glassy
+workspace in action. The [video app and storyboard](https://github.com/feuersteiner/bref-ui/tree/main/video-demo#readme)
 are part of this repository.
 
 ## Installation

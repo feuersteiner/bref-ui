@@ -9,13 +9,19 @@ and apps with components you can make your own.
 
 The [documentation](https://feuersteiner.github.io/bref-ui/) includes component
 playgrounds and the [Todo, House Shop and RunnerAI demos](https://feuersteiner.github.io/bref-ui/demo).
-The `themes` package includes [New Paris](themes/README.md#new-paris), available through
-`bref-ui-themes/new-paris`.
+Explore [New Paris, VS Code, Glassy and Crystal Code](https://github.com/feuersteiner/bref-ui/tree/main/themes#readme)
+through individual `bref-ui-themes` entry points.
 
-[Watch the 60-second demo](https://github.com/feuersteiner/bref-ui/blob/dev/docs/static/bref-ui-demo.mp4)
+## See Bref-ui in 60 seconds
 
-Import and compose, own the source with the CLI, and explore New Paris, VS Code and
-Glassy. The [Svelte production app and storyboard](video-demo/README.md) live in this repository.
+[Watch the demo](https://github.com/feuersteiner/bref-ui/raw/c31d50d44163d28ceb4c068d4819af9416538257/docs/static/bref-ui-demo.mp4)
+
+Three apps side by side. Import components, customize a theme and copy the source
+into your codebase. Then explore New Paris shopping, the ADE workbench with VS Code
+styling and a Glassy workspace—all in one minute.
+
+The [Svelte production app and storyboard](https://github.com/feuersteiner/bref-ui/tree/main/video-demo#readme)
+include the repeatable video renderer.
 
 ## Get started
 
@@ -116,7 +122,7 @@ bun run preview # preview docs/build
 
 - [`core`](core): the `bref-ui` package, with [components](core/src/lib), the
   [copy CLI](core/cli/README.md).
-- [`themes`](themes): the `bref-ui-themes` package, including New Paris through its own entry point.
+- [`themes`](themes): New Paris, VS Code, Glassy and Crystal Code, each with its own package entry point.
 - [`docs`](docs): the static component documentation, playgrounds, demos and palette previews.
 - [`video-demo`](video-demo): the Svelte showcase app, storyboard and repeatable video renderer.
 
