@@ -27,7 +27,7 @@ try {
 		if (requested.length && !requested.includes(id)) continue;
 		console.log(`Capturing ${id}: 14 seconds, slow scroll, two deliberate interactions.`);
 		const page = await browser.newPage({
-			viewport: { width: 1920, height: 1080 },
+			viewport: { width: 768, height: 1152 },
 			deviceScaleFactor: 1
 		});
 		const errors = [];
@@ -40,7 +40,7 @@ try {
 			Promise.all(Array.from(document.images).map((image) => image.decode()))
 		);
 		await page.addStyleTag({
-			content: `html{scroll-behavior:auto!important;${id === 'shop' ? '' : 'zoom:1.2'}}body{overflow-x:hidden}footer{display:none!important}`
+			content: `html{scroll-behavior:auto!important;zoom:1.05}body{overflow-x:hidden}footer{display:none!important}`
 		});
 		const first =
 			id === 'todo'
@@ -54,7 +54,7 @@ try {
 		const firstBox = await first.boundingBox();
 		const target =
 			id === 'shop' ? Math.min(scrollTo, Math.max(0, firstBox.y - 400)) : Math.min(scrollTo, 300);
-		let firstPoint = [960, 540],
+		let firstPoint = [690, 1020],
 			secondPoint = firstPoint,
 			second;
 		const video = encoder(resolve(output, `${id}.mp4`));
@@ -71,7 +71,10 @@ try {
 								: eased)
 					);
 				}
-				if (frame === 145) firstPoint = await center(first);
+				if (frame === 145) {
+					await first.scrollIntoViewIfNeeded();
+					firstPoint = await center(first);
+				}
 				if (frame === 195) await first.click();
 				if (frame === 235) {
 					second =
@@ -82,14 +85,15 @@ try {
 										.getByRole('dialog')
 										.getByRole('button', { name: 'Add Sunday chair, Ivory to cart', exact: true })
 								: page.getByRole('button', { name: /^Inspect Value proposition,/ });
+					await second.scrollIntoViewIfNeeded();
 					secondPoint = await center(second);
 				}
 				if (frame === 294) await second.click();
 				const point =
 					frame < 150
-						? [1730, 950]
+						? [690, 1020]
 						: frame < 195
-							? move([1730, 950], firstPoint, (frame - 150) / 45)
+							? move([690, 1020], firstPoint, (frame - 150) / 45)
 							: frame < 249
 								? firstPoint
 								: frame < 294

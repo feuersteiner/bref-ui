@@ -1,12 +1,13 @@
 <script lang="ts">
+	import { Icon } from 'bref-ui';
 	import Cursor from '../components/cursor.svelte';
 	import shots from '../../public/footage/shots.json';
 	let { time, playing, rate }: { time: number; playing: boolean; rate: number } = $props();
 	let videos: HTMLVideoElement[] = [];
 	const demos = [
-		{ id: 'todo', title: 'Todo app.', action: 'Complete a task. Add another.' },
-		{ id: 'shop', title: 'Ecommerce shop.', action: 'Explore the collection. Add to cart.' },
-		{ id: 'runner', title: 'SaaS AI app.', action: 'Retry a run. Inspect a workflow.' }
+		{ id: 'todo', title: 'Todo app.', icon: 'checklist' },
+		{ id: 'shop', title: 'Ecommerce shop.', icon: 'storefront' },
+		{ id: 'runner', title: 'SaaS AI app.', icon: 'auto_awesome' }
 	] as const;
 	$effect(() => {
 		for (const video of videos) {
@@ -22,7 +23,7 @@
 	{#each demos as demo, index (demo.id)}
 		{@const focus = shots[demo.id]}
 		<section class="demo-column" aria-label={demo.title}>
-			<h2>{demo.title}</h2>
+			<h2><Icon name={demo.icon} filled />{demo.title}</h2>
 			<div class="demo-frame">
 				<div class="demo-shot">
 					<video
@@ -38,8 +39,8 @@
 					<Cursor
 						{time}
 						path={[
-							[0, 1730, 950],
-							[5, 1730, 950],
+							[0, 690, 1020],
+							[5, 690, 1020],
 							[6.5, focus.first[0], focus.first[1]],
 							[8.3, focus.first[0], focus.first[1]],
 							[9.8, focus.second[0], focus.second[1]],
@@ -50,7 +51,6 @@
 					/>
 				</div>
 			</div>
-			<p>{demo.action}</p>
 		</section>
 	{/each}
 </div>
@@ -66,22 +66,28 @@
 	}
 	section {
 		display: grid;
-		gap: 36px;
+		gap: 24px;
 	}
 	h2 {
-		font-size: 46px;
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		font-size: 42px;
 		letter-spacing: -2px;
-	}
-	p {
-		font-size: 24px;
 	}
 	.demo-frame {
 		position: relative;
-		aspect-ratio: 16 / 9;
+		aspect-ratio: 2 / 3;
 		overflow: hidden;
 		border-radius: 12px;
 	}
 	.demo-shot {
-		transform: scale(0.3083333333);
+		width: 768px;
+		height: 1152px;
+		transform: scale(0.7708333333);
+	}
+	.demo-shot > video {
+		width: 768px;
+		height: 1152px;
 	}
 </style>

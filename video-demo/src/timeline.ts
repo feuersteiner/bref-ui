@@ -1,7 +1,7 @@
-// Runtime is separate from the animation clock so every existing interaction survives the cut.
+// Screen durations map onto deterministic animation clocks for frame-accurate export.
 export const scenes = [
 	{ id: 'intro', label: 'Bref-ui', duration: 2.75, sourceDuration: 5, chapter: 0 },
-	{ id: 'demos', label: 'See the demos', duration: 0.75, sourceDuration: 2, chapter: 0 },
+	{ id: 'demos', label: 'New demos', duration: 1.5, sourceDuration: 1.5, chapter: 0 },
 	{ id: 'apps', label: 'Three live demos', duration: 9, sourceDuration: 14, chapter: 0 },
 	{
 		id: 'import-title',
@@ -11,36 +11,28 @@ export const scenes = [
 		chapter: 1
 	},
 	{ id: 'install', label: 'npm install bref-ui', duration: 1.5, sourceDuration: 3, chapter: 1 },
-	{ id: 'compose', label: 'Compose a mini form', duration: 6, sourceDuration: 18, chapter: 1 },
-	{ id: 'customize', label: 'Colors and dark mode', duration: 3.5, sourceDuration: 12, chapter: 1 },
+	{ id: 'compose', label: 'Compose a mini form', duration: 5.5, sourceDuration: 18, chapter: 1 },
+	{ id: 'customize', label: 'Customize your theme', duration: 4, sourceDuration: 12, chapter: 1 },
 	{ id: 'own-title', label: 'Own the code', duration: 1, sourceDuration: 2.5, chapter: 2 },
-	{ id: 'cli', label: 'Copy the source', duration: 3, sourceDuration: 9, chapter: 2 },
-	{ id: 'files', label: 'package.json and src', duration: 2.5, sourceDuration: 7, chapter: 2 },
-	{ id: 'own-compose', label: 'Compose locally', duration: 4, sourceDuration: 18, chapter: 2 },
+	{ id: 'cli', label: 'Copy the source', duration: 2.5, sourceDuration: 9, chapter: 2 },
 	{
-		id: 'themes-title',
-		label: 'Lazy? We made the themes for you ;)',
-		duration: 1.5,
-		sourceDuration: 4,
+		id: 'files',
+		label: 'From npm to your codebase',
+		duration: 3.5,
+		sourceDuration: 3.5,
+		chapter: 2
+	},
+	{ id: 'paris', label: 'New Paris', duration: 6.5, sourceDuration: 22, chapter: 3 },
+	{ id: 'vscode', label: 'ADE · VS Code', duration: 6, sourceDuration: 18, chapter: 3 },
+	{ id: 'glassy', label: 'Glassy', duration: 6, sourceDuration: 18, chapter: 3 },
+	{
+		id: 'theme-install',
+		label: 'Import the themes',
+		duration: 2.25,
+		sourceDuration: 7,
 		chapter: 3
 	},
-	{ id: 'paris', label: 'New Paris', duration: 6, sourceDuration: 22, chapter: 3 },
-	{
-		id: 'vscode',
-		label: 'Fancy building a devtool? We got you.',
-		duration: 4.5,
-		sourceDuration: 20,
-		chapter: 3
-	},
-	{
-		id: 'glassy',
-		label: 'Your next SaaS side project? Glassy is here.',
-		duration: 4.5,
-		sourceDuration: 20,
-		chapter: 3
-	},
-	{ id: 'theme-install', label: 'Import the themes', duration: 3, sourceDuration: 7, chapter: 3 },
-	{ id: 'end', label: 'Your turn', duration: 5.5, sourceDuration: 11, chapter: 4 }
+	{ id: 'end', label: 'Your turn', duration: 7, sourceDuration: 7, chapter: 4 }
 ] as const;
 export type Scene = (typeof scenes)[number];
 export const duration = scenes.reduce((sum, scene) => sum + scene.duration, 0);

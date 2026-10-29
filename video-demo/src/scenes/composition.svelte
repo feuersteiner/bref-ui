@@ -22,7 +22,10 @@
 	);
 </script>
 
-<div class="composition" style:--split={split}>
+<div class="composition" class:customizing={!typing} style:--split={split}>
+	{#if !typing}<h1 style:color={dark ? palettes[paletteIndex].darkForeground : undefined}>
+			Customize your theme
+		</h1>{/if}
 	<div class="composition-source"><Editor {source} cursor={typing && progress < 1} /></div>
 	<div class="composition-preview" style:transform={`translateX(${(1 - split) * 100}%)`}>
 		<Signup {dark} {paletteIndex} time={typing ? time : 18} />
@@ -80,3 +83,15 @@
 		visible={!typing || time >= 10}
 	/>
 </div>
+
+<style>
+	h1 {
+		position: absolute;
+		top: 75px;
+		left: 1130px;
+		font-size: 48px;
+		font-weight: 500;
+		letter-spacing: -2px;
+		z-index: 2;
+	}
+</style>

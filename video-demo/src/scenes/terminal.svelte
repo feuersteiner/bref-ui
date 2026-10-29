@@ -12,7 +12,7 @@
 							"import * as VSCode from 'bref-ui-themes/vscode';",
 							"import * as Glassy from 'bref-ui-themes/glassy';"
 						]
-				: ['npm install bref-ui', 'npx bref-ui init', 'npx bref-ui add button']
+				: ['npm install bref-ui', 'npx bref-ui init', 'npx bref-ui add switch']
 	);
 	const clock = $derived(id === 'theme-install' && time >= 2.5 ? time - 2.5 : time);
 	const interval = $derived(id === 'theme-install' ? 1 : 2.7);

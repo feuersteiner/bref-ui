@@ -43,52 +43,39 @@ uses 4177. Each command closes its browser and server. Root `check`, `lint`, and
 
 ## Storyboard
 
-| Time          | Scene                                                                                                    |
-| ------------- | -------------------------------------------------------------------------------------------------------- |
-| 0:00–0:03.5   | Logo; Human first. Svelte first. Agent first. Enough talk. See the demos.                                |
-| 0:03.5–0:12.5 | Three columns: Todo, ecommerce and SaaS AI apps scroll and perform both recorded interactions together   |
-| 0:12.5–0:15   | Import the components. `npm install bref-ui`                                                             |
-| 0:15–0:21     | Type the component source; slide in the mini form; fill email, change a switch, submit                   |
-| 0:21–0:24.5   | One persistent row: default blue, green, red, dark mode                                                  |
-| 0:24.5–0:28.5 | Own the code. Install, initialize, add Button                                                            |
-| 0:28.5–0:31   | `package.json` imports, copied source, commands to add the remaining form components                     |
-| 0:31–0:35     | The same mini form, now imported from `#bref`                                                            |
-| 0:35–0:36.5   | Lazy? We made the themes for you ;)                                                                      |
-| 0:36.5–0:42.5 | New Paris: lady campaign, “Quietly remarkable.”, scroll to the same mini form and complete it            |
-| 0:42.5–0:47   | Fancy building a devtool? We got you. Tabs, search, select, switch, checkbox, progress and deployment    |
-| 0:47–0:51.5   | Your next SaaS side project? Glassy is here. Music controls, focus, tasks, progress and frosted surfaces |
-| 0:51.5–0:54.5 | Install the single themes package; show its three public theme imports                                   |
-| 0:54.5–1:00   | All four typed CTAs; black; Build cool shit ;); black; logo; black                                       |
+| Time            | Scene                                                                                        |
+| --------------- | -------------------------------------------------------------------------------------------- |
+| 0:00–0:02.75    | Original logo and Human first / Svelte first / Agent first                                   |
+| 0:02.75–0:04.25 | “New demos” held on screen                                                                   |
+| 0:04.25–0:13.25 | Three portrait tablets: Todo, ecommerce and SaaS AI; icon titles and two interactions each   |
+| 0:13.25–0:15.75 | Import the components; `npm install bref-ui`                                                 |
+| 0:15.75–0:21.25 | Type and use the mini form                                                                   |
+| 0:21.25–0:25.25 | Persistent “Customize your theme” heading; blue, green, red and dark controls                |
+| 0:25.25–0:28.75 | Own the code; install, initialize and copy Switch                                            |
+| 0:28.75–0:32.25 | `switch.svelte` flies from the filled npm cloud into `src/lib/ui`                            |
+| 0:32.25–0:38.75 | Themes: #1 New Paris; anchored campaign, fashion grid, filters, cart and mini form           |
+| 0:38.75–0:44.75 | Themes: #2 VS Code; ADE activity tabs, real TreeView, smaller editor, agent edits and checks |
+| 0:44.75–0:50.75 | Themes: #3 Glassy; music, focus, tasks, search, workspace selector, calendar and meeting     |
+| 0:50.75–0:53    | Install the single themes package and show the three public imports                          |
+| 0:53–1:00       | Four linked CTAs; Build cool shit ;); logo held for the final 3.6 seconds                    |
 
-Each scene has a screen duration and its original animation duration. Seeking and
-rendering map between those clocks, preserving every original cue and final state.
-The three app recordings run together at 14/9 speed, with their full framing and
-individual cursors retained. Their titles remain visible throughout.
+## Composition and motion
 
-The mini form contains a standalone icon, heading, name and email inputs with
-icons, a switch, checkbox and submit button. Both import paths demonstrate the
-same composition. The CLI accepts one component per invocation; the source tree
-shows Button's dependencies and separate commands for TextInput, Switch and
-Checkbox. Icons are actual document and folder outlines.
+Scene screen durations map onto explicit animation clocks. The three app
+recordings are recaptured at 768×1152, then displayed as 592×888 portrait tablets
+at 14/9 speed. Their full responsive framing and individual cursors remain visible.
+Capture scrolls interaction targets into view before measuring cursor positions.
 
-The three themes ship in one npm package, with `new-paris`, `vscode`, and `glassy`
-entry points. The closing install scene shows that real package command followed
-by three minimal import lines; it does not invent per-theme CLI commands.
+The New Paris header and campaign never move independently. Its collection uses
+local vector product illustrations, Tabs, Select and Button before revealing the
+mini form. ADE uses the public VS Code vertical Tabs and TreeView components beside
+an editor, terminal and agent panel. Glassy adds a calendar with meeting controls,
+a workspace selector, search, pills and avatars to the original music/focus/tasks.
+Numbered theme labels remain above the apps throughout each theme scene.
 
-## Motion and theme isolation
-
-No persistent film header, footer or editor chrome. Titles and source type
-character by character. App footage holds its original framing. Typing, scrolls,
-cursor pauses and theme close-ups follow the compressed scene clocks. Each themed
-app retains at most one restrained close-up around related controls. Quintic easing starts and ends at zero velocity and
-acceleration. Cursor movement uses the same easing and a small pointer with a
-subtle press, without large click rings.
-
-The root mounts one default `Theme`. Following the docs theme preview, the core
-viewport scopes `data-theme` and public `--color-*` properties to its own subtree.
-The default preview overrides nothing. Color and mode changes leave the film's
-palette unchanged. Each supplied theme uses its own scoped `Theme` wrapper.
-Library component and theme sources are unchanged.
+The root mounts one default `Theme`. Core previews scope `data-theme` and public
+`--color-*` properties to their subtree; each supplied theme uses its own scoped
+`Theme` wrapper. Library components, theme sources and public APIs are unchanged.
 
 ## Delivery
 
