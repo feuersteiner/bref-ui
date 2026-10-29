@@ -30,3 +30,7 @@ vite.config.ts.timestamp-*
 /references.local.md
 
 /themes/LICENSE
+
+# Browser test output
+/playwright-report/
+/test-results/

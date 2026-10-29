@@ -55,24 +55,27 @@
 		/>
 	{/if}
 </div>
-{#if item.children?.length && expanded}
+{#if item.children?.length}
 	<div
 		id={childrenId}
 		role="group"
 		aria-label={`Children of ${item.label}`}
 		data-children
+		aria-hidden={!expanded}
 		style:--tree-guide-left={`calc(14px + ${indent} * 12px)`}
 	>
-		{#each item.children as child (child.id)}
-			<RecursiveNode
-				indent={indent + 1}
-				item={child}
-				bind:selection
-				{defaultExpanded}
-				{onDelete}
-				{glass}
-			/>
-		{/each}
+		{#if expanded}
+			{#each item.children as child (child.id)}
+				<RecursiveNode
+					indent={indent + 1}
+					item={child}
+					bind:selection
+					{defaultExpanded}
+					{onDelete}
+					{glass}
+				/>
+			{/each}
+		{/if}
 	</div>
 {/if}
 

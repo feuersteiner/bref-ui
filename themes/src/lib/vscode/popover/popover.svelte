@@ -50,15 +50,16 @@
 		popover="auto"
 		data-width={surfaceProps.width}
 		transition:flyGlass
-		onintrostart={(event) => showPopover(event.currentTarget)}
+		onintrostart={(event) => {
+			if (open && !disabled) showPopover(event.currentTarget);
+		}}
 		onoutrostart={(event) => {
 			if (!event.currentTarget.matches(':popover-open')) return;
 			if (document.activeElement === document.body && returnFocus?.isConnected) returnFocus.focus();
 			event.currentTarget.hidePopover();
 		}}
-		ontoggle={(event) => {
-			if (event.newState === 'closed' && !event.currentTarget.matches(':popover-open'))
-				open = false;
+		onbeforetoggle={(event) => {
+			if (event.newState === 'closed') open = false;
 		}}
 	>
 		<Surface {...surfacePropsWithDefaults} data-surface-motion data-overlay>

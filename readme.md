@@ -106,7 +106,8 @@ bun install
 bun run dev     # docs from workspace source exports
 bun run check   # all package checks
 bun run lint
-bun run --workspaces --if-present test # CLI contract tests
+bunx playwright install chromium # once, for browser tests
+bun run test   # CLI, clean npm consumers and browser contracts
 bun run build   # both libraries and the static docs site
 bun run preview # preview docs/build
 ```
@@ -118,6 +119,16 @@ bun run preview # preview docs/build
 
 The root lint/format configuration covers every package. The docs site imports public
 package source exports directly; no package prebuild is required for development or checks.
+
+Tests pack both libraries, install them into a temporary npm consumer, copy all 19
+registry components, and type-check and build plain Svelte and SvelteKit applications.
+Chromium checks package and copied components for form behavior, keyboard navigation,
+overlay focus, SSR/hydration errors and accessibility. Run `bun run test:browser` for
+that consumer/browser suite alone. Tests may download npm dependencies and clean up
+the temporary consumer afterward.
+
+Pull requests to `dev` and `main` run checks, lint, builds and tests. Both package
+publishing workflows require the same validation before publishing.
 
 On `main`, each package publishes directly when its manifest changes; npm rejects
 already-published versions. Releases use tags such as `bref-ui@3.0.0`. Docs deploy on

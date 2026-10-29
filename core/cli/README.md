@@ -36,6 +36,10 @@ The suite packs and installs the local package into a temporary npm consumer, th
 dependency files, repeat runs, invalid arguments and cancellation/overwrite approvals.
 Initial npm installation may download package dependencies; temporary files are cleaned up.
 
+The root `bun run test` also builds clean Svelte and SvelteKit consumers from the
+packed libraries and all 19 CLI copies, then runs browser contracts against package
+and copied components. Install Chromium once with `bunx playwright install chromium`.
+
 ```mermaid
 flowchart TD
     entry["index.ts"] --> init["initImports"]

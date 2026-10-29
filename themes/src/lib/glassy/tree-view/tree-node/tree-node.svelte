@@ -60,20 +60,28 @@
 		/>
 	{/if}
 </div>
-{#if item.children?.length && expanded}
-	{#each item.children as child (child.id)}
-		<RecursiveNode
-			indent={indent + 1}
-			item={child}
-			bind:selection
-			{defaultExpanded}
-			{onDelete}
-			{glass}
-		/>
-	{/each}
+{#if item.children?.length}
+	<div id={childrenId} data-children aria-hidden={!expanded}>
+		{#if expanded}
+			{#each item.children as child (child.id)}
+				<RecursiveNode
+					indent={indent + 1}
+					item={child}
+					bind:selection
+					{defaultExpanded}
+					{onDelete}
+					{glass}
+				/>
+			{/each}
+		{/if}
+	</div>
 {/if}
 
 <style>
+	[data-children] {
+		display: contents;
+	}
+
 	.bref-surface {
 		--surface-color: var(--color-foreground, black);
 		--surface-base: var(--color-background, white);
