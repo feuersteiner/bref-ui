@@ -14,7 +14,7 @@ through individual `bref-ui-themes` entry points.
 
 ## See Bref-ui in 60 seconds
 
-[Watch the demo](https://github.com/feuersteiner/bref-ui/raw/c31d50d44163d28ceb4c068d4819af9416538257/docs/static/bref-ui-demo.mp4)
+https://github.com/user-attachments/assets/b2a0cff0-5d34-4f5b-bbdb-0233e0fef81e
 
 Three apps side by side. Import components, customize a theme and copy the source
 into your codebase. Then explore New Paris shopping, the ADE workbench with VS Code

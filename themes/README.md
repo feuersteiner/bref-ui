@@ -12,7 +12,7 @@ Explore the [theme galleries](https://feuersteiner.github.io/bref-ui/themes) for
 component examples and interaction states, or browse the
 [Bref-ui documentation](https://feuersteiner.github.io/bref-ui/).
 
-[Watch the 60-second demo](https://github.com/feuersteiner/bref-ui/raw/c31d50d44163d28ceb4c068d4819af9416538257/docs/static/bref-ui-demo.mp4)
+https://github.com/user-attachments/assets/b2a0cff0-5d34-4f5b-bbdb-0233e0fef81e
 
 See New Paris shopping, the ADE workbench with VS Code styling and a Glassy
 workspace in action. The [video app and storyboard](https://github.com/feuersteiner/bref-ui/tree/main/video-demo#readme)
