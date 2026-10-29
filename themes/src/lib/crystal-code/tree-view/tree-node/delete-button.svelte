@@ -18,7 +18,7 @@
 		min-height: var(--tree-action-size);
 		padding: 0;
 		border: 0;
-		border-radius: 50%;
+		border-radius: var(--crystal-code-radius);
 		background: transparent;
 		color: var(--tree-action-color, inherit);
 		font: inherit;

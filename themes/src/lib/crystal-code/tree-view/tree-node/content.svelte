@@ -9,7 +9,9 @@
 	{#if item.icon}
 		<Icon
 			{...item.icon}
-			color={attributes['aria-pressed'] === true && !item.disabled ? 'primary' : undefined}
+			filled={attributes['aria-pressed'] === true ||
+				attributes['aria-pressed'] === 'true' ||
+				item.icon.filled}
 			label={undefined}
 		/>
 	{/if}
@@ -18,15 +20,14 @@
 
 <style>
 	button {
-		display: grid;
-		grid-template-columns: 1em minmax(0, 1fr);
+		display: flex;
 		align-items: center;
 		justify-content: start;
 		flex: 1;
-		gap: 0.5rem;
+		gap: 0.375rem;
 		min-width: 0;
 		min-height: var(--tree-action-size);
-		padding: 0.125rem 0.375rem;
+		padding: 0.125rem 0.25rem;
 		border: 0;
 		border-radius: 0.375rem;
 		outline: none;
@@ -37,8 +38,10 @@
 		cursor: pointer;
 	}
 	span {
-		grid-column: 2;
 		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	button::before {
 		position: absolute;

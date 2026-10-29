@@ -97,8 +97,6 @@
 	}
 	[popover]::backdrop {
 		background: var(--crystal-code-veil);
-		-webkit-backdrop-filter: blur(1px);
-		backdrop-filter: blur(1px);
 		opacity: 0;
 		transition:
 			opacity 100ms ease,

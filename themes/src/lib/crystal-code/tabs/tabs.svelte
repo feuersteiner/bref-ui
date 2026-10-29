@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
-	import { crossfade, fade } from 'svelte/transition';
+	import { crossfade } from 'svelte/transition';
 	import Item from './item.svelte';
 	import type { TabsProps } from 'bref-ui/types';
 
@@ -28,20 +28,9 @@
 		duration: () => (matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 180),
 		easing: cubicOut
 	});
-	const themeIndicator = (node: HTMLElement) => {
-		const duration = parseFloat(
-			getComputedStyle(node).getPropertyValue('--bref-appearance-duration')
-		);
-		return Number.isFinite(duration)
-			? fade(node, {
-					duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : duration
-				})
-			: undefined;
-	};
 	const intro = (node: HTMLElement) =>
-		transitionIn?.(node) ?? themeIndicator(node) ?? receive(node, { key: 'selected-tab' });
-	const outro = (node: HTMLElement) =>
-		transitionOut?.(node) ?? themeIndicator(node) ?? send(node, { key: 'selected-tab' });
+		transitionIn?.(node) ?? receive(node, { key: 'selected-tab' });
+	const outro = (node: HTMLElement) => transitionOut?.(node) ?? send(node, { key: 'selected-tab' });
 	const select = async (id: string) => {
 		if (id === value || !items.some((item) => item.id === id && !item.disabled)) return;
 		value = id;
@@ -113,6 +102,12 @@
 		overflow: auto;
 		overscroll-behavior-inline: contain;
 		scrollbar-width: thin;
+	}
+	div[data-orientation='horizontal'] {
+		scrollbar-width: none;
+	}
+	div[data-orientation='horizontal']::-webkit-scrollbar {
+		display: none;
 	}
 	div[data-width='fill'] {
 		width: 100%;

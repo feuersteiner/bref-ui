@@ -18,13 +18,14 @@
 		transitionOut = () => ({})
 	}: TabItemProps = $props();
 	const smallScreen = new MediaQuery('(max-width: 575px)', false);
-	const showLabel = $derived(!smallScreen.current || (orientation === 'horizontal' && selected));
+	const showLabel = $derived(orientation === 'horizontal' && (!smallScreen.current || selected));
 </script>
 
 <button
 	type="button"
 	role="tab"
 	aria-label={label}
+	title={orientation === 'vertical' ? label : undefined}
 	aria-selected={selected ?? false}
 	data-width={orientation === 'horizontal' ? width : undefined}
 	data-size={size}
@@ -366,6 +367,7 @@
 		padding-block: 8px;
 		font-weight: 400;
 		background: transparent;
+		color: color-mix(in srgb, var(--color-foreground) 72%, transparent);
 	}
 	[role='tab'][data-size='small'] {
 		--internal-font-size: 11px;
@@ -375,10 +377,15 @@
 		color: var(--crystal-code-bright);
 	}
 	[role='tab'] > i {
-		height: 1px;
+		inset: auto 0 0;
+		height: 2px;
+		background: var(--color-primary);
+		backdrop-filter: none;
+		box-shadow: none;
 	}
 	[role='tab'][data-orientation='vertical'] > i {
-		width: 1px;
+		inset: 0 auto 0 0;
+		width: 2px;
 		height: auto;
 	}
 	[role='tab'][data-width='fill'] {

@@ -372,7 +372,10 @@
 		--surface-border: transparent;
 		--surface-base: var(--crystal-code-panel);
 		--surface-neutral-content: var(--crystal-code-bright);
-		transition: color 100ms ease;
+		transition:
+			background-color 120ms ease,
+			color 120ms ease,
+			scale 80ms ease;
 	}
 	.bref-surface:is(:active, [data-surface-pressed='true']) {
 		--surface-hover: 0%;
@@ -409,8 +412,11 @@
 	}
 	.button[data-size='x-small'] {
 		--internal-height: 24px;
-		--internal-padding: 7px;
+		--internal-padding: 6px;
 		--internal-font-size: 11px;
+		--internal-icon-size: 12px;
+		padding-block: 2px;
+		gap: 4px;
 	}
 	.button[data-size='small'] {
 		--internal-height: 28px;
@@ -432,8 +438,27 @@
 	.button:not(:disabled, [aria-disabled='true']):hover {
 		color: var(--crystal-code-bright);
 	}
+	.button.bref-surface-neutral:not(:disabled, [aria-disabled='true']):hover {
+		background: color-mix(in srgb, var(--surface-tint) 12%, var(--surface-base));
+	}
+	.button.bref-surface-soft:not(:disabled, [aria-disabled='true']):hover {
+		background: color-mix(in srgb, var(--surface-fill) 82%, var(--surface-color));
+	}
 	.button.bref-surface-filled:not(:disabled, [aria-disabled='true']):hover {
+		background: color-mix(in srgb, var(--surface-fill) 82%, var(--surface-base));
 		color: var(--surface-content);
+	}
+	.button:not(:disabled, [aria-disabled='true']):active {
+		scale: 0.97;
+	}
+	.button.bref-surface-neutral:not(:disabled, [aria-disabled='true']):active {
+		background: color-mix(in srgb, var(--surface-tint) 24%, var(--surface-base));
+	}
+	.button.bref-surface-soft:not(:disabled, [aria-disabled='true']):active {
+		background: color-mix(in srgb, var(--surface-fill) 65%, var(--surface-color));
+	}
+	.button.bref-surface-filled:not(:disabled, [aria-disabled='true']):active {
+		background: color-mix(in srgb, var(--surface-fill) 65%, var(--surface-base));
 	}
 	.bref-glass {
 		--glass-blur: blur(32px);
@@ -448,6 +473,9 @@
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
+		.button:not(:disabled, [aria-disabled='true']):active {
+			scale: 1;
+		}
 		* {
 			animation: none !important;
 			transition: none !important;

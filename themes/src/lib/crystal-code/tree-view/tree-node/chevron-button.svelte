@@ -16,8 +16,9 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		min-width: var(--tree-action-size);
-		min-height: var(--tree-action-size);
+		flex: 0 0 var(--tree-action-size);
+		width: var(--tree-action-size);
+		height: var(--tree-action-size);
 		padding: 0;
 		border: 0;
 		border-radius: 50%;
@@ -25,22 +26,33 @@
 		color: var(--tree-action-color, inherit);
 		font: inherit;
 		cursor: pointer;
-		transition: background-color 150ms ease;
 	}
 	span {
 		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
 		font-size: 1.125em;
-		transition: transform 150ms ease;
+		line-height: 1;
+		transform-origin: center;
+		transition:
+			transform 150ms ease,
+			background-color 150ms ease;
 	}
 	button[aria-expanded='true'] span {
 		transform: rotate(90deg);
 	}
-	button:not(:disabled):hover {
+	button:not(:disabled):hover span {
 		background: color-mix(in srgb, currentColor 8%, transparent);
 	}
 	button:focus-visible {
+		outline: none;
+	}
+	button:focus-visible span {
 		outline: 2px solid var(--color-primary);
-		outline-offset: -2px;
+		outline-offset: 1px;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		button,
@@ -49,7 +61,7 @@
 		}
 	}
 	@media (forced-colors: active) {
-		button:focus-visible {
+		button:focus-visible span {
 			outline-color: Highlight;
 		}
 	}

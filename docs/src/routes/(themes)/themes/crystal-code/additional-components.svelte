@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Examples from './examples.svelte';
 	import type { TreeItemProps } from 'bref-ui/types';
 	let { components }: { components: typeof import('bref-ui-themes/crystal-code') } = $props();
 	const languages = [
@@ -84,9 +85,11 @@
 			</p>
 		</div>
 	</div>
+	<Examples section="additional" />
 	<p class="metadata">
 		<code>ThemeModeToggle</code>
-		supplies document color-scheme metadata. The header switches this preview between light and dark.
+		supplies document color-scheme metadata, without a visible control. The header selects light, dark,
+		or System to follow the device preference; Theme styles the preview.
 	</p>
 </section>
 

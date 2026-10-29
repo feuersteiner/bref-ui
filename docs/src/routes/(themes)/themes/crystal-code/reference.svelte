@@ -1,5 +1,6 @@
 <script lang="ts">
 	import AdditionalComponents from './additional-components.svelte';
+	import Examples from './examples.svelte';
 	import * as Components from 'bref-ui-themes/crystal-code';
 	import {
 		Button,
@@ -19,6 +20,7 @@
 	} from 'bref-ui-themes/crystal-code';
 	import type { TabItemDataProps } from 'bref-ui/types';
 	const variants = ['neutral', 'soft', 'filled'] as const;
+	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	let project = $state('');
 	let submitted = $state(false);
 	let saved = $state(false);
@@ -78,6 +80,17 @@
 					/>
 				{/each}
 			</div>
+			<div class="row" role="group" aria-label="Button sizes">
+				{#each sizes as size, index (size)}
+					<Button
+						label={['XS', 'S', 'M', 'L', 'XL'][index]}
+						{size}
+						variant="soft"
+						color="primary"
+						icon={{ name: 'save' }}
+					/>
+				{/each}
+			</div>
 			<div class="row secondary-actions">
 				<Button label="Deploy unavailable" disabled icon={{ name: 'cloud_upload' }} />
 				<Button
@@ -90,6 +103,7 @@
 				</span>
 			</div>
 		</div>
+		<Examples section="actions" />
 	</section>
 	<section id="workspace-settings" aria-labelledby="settings-title">
 		<div class="section-heading">
@@ -146,6 +160,7 @@
 				<p class="muted">Changes stay local to this preview.</p>
 			</div>
 		</div>
+		<Examples section="forms" />
 	</section>
 	<section aria-labelledby="organize-title">
 		<div class="section-heading">
@@ -199,6 +214,7 @@
 				<Pill label="Remote checks unavailable" aria-disabled="true" icon={{ name: 'lock' }} />
 			</div>
 		</div>
+		<Examples section="organize" />
 	</section>
 	<section aria-labelledby="feedback-title">
 		<div class="section-heading">
@@ -240,6 +256,7 @@
 				/>
 			</div>
 		</div>
+		<Examples section="feedback" />
 	</section>
 	<section aria-labelledby="context-title">
 		<div class="section-heading">
@@ -295,6 +312,7 @@
 				</div>
 			</div>
 		</div>
+		<Examples section="context" />
 	</section>
 	<AdditionalComponents components={Components} />
 </div>
@@ -405,8 +423,9 @@
 	.check {
 		font-size: 12px;
 	}
-	.secondary-actions {
-		margin-top: 32px;
+	.actions-surface {
+		display: grid;
+		gap: 24px;
 	}
 	.secondary-actions > span {
 		color: var(--color-muted);
