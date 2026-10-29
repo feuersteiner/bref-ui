@@ -1,0 +1,71 @@
+{
+	"name": "bref-ui-themes",
+	"version": "1.0.0",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build && npm run prepack",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync",
+		"prepack": "node ../scripts/package.mjs && svelte-kit sync && svelte-package && publint",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --check . --ignore-path ../.prettierignore && eslint .",
+		"format": "prettier --write . --ignore-path ../.prettierignore"
+	},
+	"files": [
+		"dist",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*",
+		"src/lib"
+	],
+	"sideEffects": [
+		"**/*.css"
+	],
+	"svelte": "./src/lib/index.ts",
+	"types": "./src/lib/index.ts",
+	"type": "module",
+	"exports": {
+		".": "./src/lib/index.ts",
+		"./new-paris": "./src/lib/new-paris/index.ts",
+		"./glassy": "./src/lib/glassy/index.ts",
+		"./crystal-code": "./src/lib/crystal-code/index.ts",
+		"./vscode": "./src/lib/vscode/index.ts"
+	},
+	"dependencies": {
+		"@fontsource-variable/material-symbols-outlined": "^5.3.5"
+	},
+	"peerDependencies": {
+		"bref-ui": "^3.0.0",
+		"svelte": "^5.0.0"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^8.0.0",
+		"@sveltejs/kit": "^3.1.0",
+		"@sveltejs/package": "^3.0.1",
+		"@sveltejs/vite-plugin-svelte": "^7.3.1",
+		"bref-ui": "workspace:*",
+		"publint": "^0.3.21",
+		"svelte": "^5.57.2",
+		"svelte-check": "^4.7.7",
+		"typescript": "^6.0.3",
+		"vite": "^8.3.5"
+	},
+	"keywords": [
+		"svelte"
+	],
+	"imports": {
+		"#lib": "./src/lib/index.js",
+		"#lib/*": "./src/lib/*"
+	},
+	"description": "Pre-built turnkey beautiful themes using bref-ui.",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/feuersteiner/bref-ui.git",
+		"directory": "themes"
+	},
+	"homepage": "https://github.com/feuersteiner/bref-ui#readme",
+	"bugs": {
+		"url": "https://github.com/feuersteiner/bref-ui/issues"
+	}
+}

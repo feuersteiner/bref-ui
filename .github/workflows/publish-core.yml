@@ -1,0 +1,48 @@
+name: Publish bref-ui
+
+on:
+  push:
+    branches: [main]
+    paths: [core/package.json]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-bref-ui
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.4'
+      - run: bun install --frozen-lockfile
+      - run: bun run check
+      - run: bun run lint
+      - run: bun run build
+      - name: Publish
+        working-directory: core
+        run: npm publish --ignore-scripts --access public --provenance
+      - name: Create package release
+        working-directory: core
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RELEASE_TAG="bref-ui@$(npm pkg get version --workspaces=false | tr -d '"')"
+          if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --title "$RELEASE_TAG" --generate-notes
+          fi

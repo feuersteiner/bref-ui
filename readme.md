@@ -7,31 +7,29 @@ and apps with components you can make your own.
 [![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.gg/JpgQRTUsVS)
 [![MIT license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-Ready-made themes and complete site demos are hosted in
-[bref-ui-themes](https://github.com/feuersteiner/bref-ui-themes), the companion package
-for Bref-ui. [Explore the themes showcase](https://feuersteiner.github.io/bref-ui-themes/).
+The [documentation](https://feuersteiner.github.io/bref-ui/) includes component
+playgrounds and the [Todo, House Shop and RunnerAI demos](https://feuersteiner.github.io/bref-ui/demo).
+The `themes` package includes [New Paris](themes/README.md#new-paris), available through
+`bref-ui-themes/new-paris`.
 
-https://github.com/user-attachments/assets/09b9a73d-c6fb-4e8d-b4f5-2267c4552ad7
+https://github.com/user-attachments/assets/3326a5c3-0573-4b40-bb8e-9a10da1fd6ac
+
+Import and compose, own the source with the CLI, and explore New Paris, VS Code and
+Glassy. The [Svelte production app and storyboard](video-demo/README.md) live in this repository.
 
 ## Get started
 
-### Install
+### 1. Install
 
-In an existing Svelte 5.56.1+ or SvelteKit project:
+In a Svelte 5.56.1+ or SvelteKit project:
 
 ```sh
 npm install bref-ui
 ```
 
-Import components directly from `bref-ui`. Bun and local packaging are not required.
+### 2. Import
 
-### Use components
-
-Render `Theme` once in the application root (`src/routes/+layout.svelte` in SvelteKit
-or `src/App.svelte` in a plain Svelte app). It opts into the palette, reset and
-Material Symbols font setup. If already configured, import only `Button` where needed.
-
-Minimal `.svelte` example:
+Render `Theme` once in your app root, then use components anywhere:
 
 ```svelte
 <script lang="ts">
@@ -42,144 +40,109 @@ Minimal `.svelte` example:
 <Button label="Save" />
 ```
 
-Button accepts text through `label` and a click handler through `onClick`. See the
-[Button documentation](https://feuersteiner.github.io/bref-ui/button) for the full API.
+### 3. Customize
 
-### Shared surface styles
-
-Theme composes internal colors, surfaces, fonts and styles components. Surface and
-Button use the same paint recipe; apply it to native HTML with the typed helper:
+Paint native HTML with the same recipe as `Surface` and `Button`:
 
 ```svelte
 <script>
-	import { Theme, surface } from 'bref-ui';
+	import { surface } from 'bref-ui';
 </script>
 
-<Theme />
-<button class={surface({ variant: 'filled', color: 'primary', shadow: 'small', hover: 'medium' })}>
-	Save
-</button>
+<button class={surface({ variant: 'filled', color: 'primary', shadow: 'small' })}>Save</button>
 ```
 
-All options are optional: variant defaults to neutral and color to foreground;
-shadow and hover accept small, medium or large. Shadow also accepts true for medium
-and false for none. Set `glass: true` for translucent paint and backdrop blur, or use
-`<Surface glass>` and `<Button glass>`; glass defaults to false.
-SurfaceProps extends SurfaceBaseProps with component props.
-Supply padding, radius and layout
-in element styles. The helper adds classes only; Theme loads their CSS. SurfaceBaseProps
-is available from `bref-ui/types`. Copied components include the helper in
-`theme/surface.ts`; the local UI barrel keeps component exports only.
-
-## Why Bref-ui?
-
-[Watch Bref-ui in 60 seconds](https://feuersteiner.github.io/bref-ui/#why-bref-ui): themes,
-scoped Svelte CSS, npm installation and CLI source ownership.
-The [demo video](static/bref-ui-demo.mp4) is also available in this repository.
-
-1. **Svelte-first.** The goal is modern components with zero runtime dependencies
-   beyond Svelte, built from scoped CSS, familiar HTML, native events, bindings and
-   snippets. Readable styles, with no class-name vocabulary to memorize. The
-   collection will grow from small UI components to marketing sections and
-   complete app interfaces.
-2. **Human-first.** Composable components with full control over appearance and
-   behavior. Inspired by shadcn's source ownership model, tooling brings component
-   source into the project for unrestricted customization. Planned agent skills
-   and validation tools help developers adapt components while preserving native
-   behavior and accessibility.
-3. **Agent-first.** A component collection paired with tools that help agents
-   discover, compose, customize and verify interfaces. Planned capabilities include
-   complete site generation, generative UI and interactive interfaces for agent
-   workflows.
-
-## Copy components into a project (optional)
-
-The optional `bref-ui` CLI requires Bun to copy editable component source into a
-project. After `npm install bref-ui`, run commands from the project's root:
+Or own the source: the optional CLI (runs on Node.js) copies components into your project.
 
 ```sh
-bun run bref-ui init
-bun run bref-ui add button
-bun run bref-ui --help
+npx bref-ui init
+npx bref-ui add button
 ```
 
-`init` creates `bref.config.json` and leaves an existing file untouched:
+`init` adds a `#bref` import to `package.json`, pointing at `src/lib/ui` by default:
 
 ```json
-{
-	"ui": "$lib/ui"
+"imports": {
+	"#bref": "./src/lib/ui/index.js",
+	"#bref/*": "./src/lib/ui/*"
 }
 ```
 
-The default destination is `src/lib/ui`. Edit `ui` to another `$lib` path, such as
-`$lib/bref`, to change the destination. The CLI maps `$lib` to `src/lib`; it does not
-discover project aliases or accept an `--alias` option. Configure the same alias
-in a plain Svelte project if using `$lib/ui` imports.
-
-`add <component>` copies the component and its registry dependencies, then merges
-component exports into the destination's `index.ts`. Button includes Icon and Theme.
-The preview lists `add`, `unchanged` and `conflict` files. Each conflicting file
-requires overwrite approval, followed by a final installation confirmation. Declining
-a prompt cancels without writes; identical files are skipped.
-
-Use the copied components in a `.svelte` file:
+`add` previews every file and asks before overwriting anything. Import your copies from
+`#bref` and keep `bref-ui` installed for its shared types:
 
 ```svelte
 <script lang="ts">
-	import { Button, Theme } from '$lib/ui';
+	import { Button, Theme } from '#bref';
 </script>
-
-<Theme />
-<Button label="Save" />
 ```
 
-Keep `bref-ui` installed for shared types imported from `bref-ui/types`. To copy
-Theme separately, run `bun run bref-ui add theme`. The copied Theme uses the default
-palette and has no `palette` prop; customize its copied CSS tokens. The package
-Theme retains its `palette` prop.
-
-Available component IDs: `button`, `checkbox`, `combobox`, `dialog`, `icon`, `pill`,
+Components: `button`, `checkbox`, `combobox`, `dialog`, `icon`, `pill`,
 `pill-choice-group`, `pill-group`, `popover`, `progress`, `select`, `spinner`,
-`surface`, `switch`, `text-area`, `text-input`, `theme` and `tree-view`.
+`surface`, `switch`, `tabs`, `text-area`, `text-input`, `theme` and `tree-view`.
 
-## Documentation and demos
+## Why Bref-ui?
+
+[Watch the Bref-ui showcase](https://feuersteiner.github.io/bref-ui/#why-bref-ui).
+
+- **Svelte-first.** Strictly Svelte: no runtime dependencies, scoped CSS, native HTML,
+  events, bindings and snippets. No class names to memorize.
+- **Human-first.** Simple to use, simpler to customize: copy the source and grow it as
+  your own.
+- **Agent-first.** Typed APIs and an [`/llms.txt`](https://feuersteiner.github.io/bref-ui/llms.txt)
+  reference help agents discover, compose and verify interfaces.
+
+## Documentation
 
 Explore the [component gallery](https://feuersteiner.github.io/bref-ui/) for examples,
-props and theme customization.
+props and theme customization. Get started with [Use the package](https://feuersteiner.github.io/bref-ui/library),
+[Own the code](https://feuersteiner.github.io/bref-ui/cli) and
+[Use a prebuilt theme](https://feuersteiner.github.io/bref-ui/themes).
 
-To run the gallery locally, use Bun and Node 22.12+ within Node 22, or Node 24:
+## Repository structure
+
+Install workspace dependencies with Bun, then run commands from the repository root.
+Bun is used for workspace development; the published CLI runs through Node.js and npm.
 
 ```sh
-git clone https://github.com/feuersteiner/bref-ui.git
-cd bref-ui
 bun install
-bun run dev
+bun run dev     # docs from workspace source exports
+bun run check   # all package checks
+bun run lint
+bun run --workspaces --if-present test # CLI contract tests
+bun run build   # both libraries and the static docs site
+bun run preview # preview docs/build
 ```
 
-Open the URL printed in the terminal.
-Explore the [component exports](src/lib/index.ts) and [component source](src/lib)
-to inspect and customize the implementation.
+- [`core`](core): the `bref-ui` package, with [components](core/src/lib), the
+  [copy CLI](core/cli/README.md).
+- [`themes`](themes): the `bref-ui-themes` package, including New Paris through its own entry point.
+- [`docs`](docs): the static component documentation, playgrounds, demos and palette previews.
+- [`video-demo`](video-demo): the Svelte showcase app, storyboard and repeatable video renderer.
+
+The root lint/format configuration covers every package. The docs site imports public
+package source exports directly; no package prebuild is required for development or checks.
+
+On `main`, each package publishes directly when its manifest changes; npm rejects
+already-published versions. Releases use tags such as `bref-ui@3.0.0`. Docs deploy on
+every push to `main` and support manual dispatch. Publishing requires npm trusted-publisher
+configuration for `publish-core.yml` and `publish-themes.yml`; see [npm setup](https://docs.npmjs.com/trusted-publishers/).
 
 ## Roadmap
 
-- **Component foundation:** inputs/textarea, pills, tree views, loading/progress,
-  static theme tooling and complete npm/copy distribution. Planned theme tooling
-  emits the existing light/dark palette with literal primary and per-mode overrides;
-  contrast failures are reported without silently replacing inputs.
-- **Marketing sites:** reusable sections and design recipes, then validated YAML/JSON
-  generation of complete SvelteKit sites with content, assets, routes and metadata.
-  Prove a small multipage site in two distinct recipes.
-- **Agent tooling:** a machine-readable catalog, skills and shared CLI/SDK operations
-  for discovery, validation, planning, preview and repair. Regeneration previews
-  changes and detects human-edit conflicts; exported source can become human-owned.
-- **Generative UI:** evaluate a Bref catalog on json-render with one interactive
-  task, preserving input and focus while invoking registered host actions. Measure
-  runtime cost before choosing a renderer and adding one optional host integration.
+```mermaid
+flowchart LR
+    foundation["✅ Component foundation<br/>19 components · npm + copy CLI"]
+    themes["✅ Theme tooling<br/>static light/dark palettes · contrast reports"]
+    agents["✅ Agent tooling<br/>/llms.txt today · CLI/SDK (WIP: MCP)"]
+    sites["🗓️ Marketing sites<br/>sections, recipes, generated SvelteKit sites"]
+    genui["🗓️ Generative UI<br/>json-render experiment"]
+    foundation --> themes --> agents --> sites --> genui
+```
 
-Generation tooling and agent integrations will be optional. A visual editor,
-arbitrary application logic generation and hosted model services are deferred.
-Accessibility depends on the final composition, theme and interactions; component
-checks and generated CSS do not guarantee that every customization is accessible.
+✅ shipped · 🚧 in progress · 🗓️ planned. Generation and agent integrations will stay
+optional. Accessibility depends on your final composition and theme; component checks
+cannot guarantee every customization is accessible.
 
 ## Community and contributing
 
