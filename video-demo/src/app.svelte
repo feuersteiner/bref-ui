@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
+	import { Theme, ThemeModeToggle } from 'bref-ui';
 	import Film from './film.svelte';
 	import { clamp, duration, formatTime, locate, scenes, starts } from './timeline.js';
 	import '@fontsource-variable/syne';
@@ -29,7 +30,10 @@
 							once: true
 						});
 					});
-				const target = Math.min(current.time, Math.max(video.duration - 0.05, 0));
+				const target = Math.min(
+					Math.max(0, current.time - Number(video.dataset.offset ?? 0)),
+					Math.max(video.duration - 0.05, 0)
+				);
 				if (Math.abs(video.currentTime - target) < 0.005) return;
 				await new Promise<void>((resolve) => {
 					video.addEventListener('seeked', () => resolve(), { once: true });
@@ -77,23 +81,11 @@
 />
 
 <main class={['studio', { rendering }]}>
-	{#if !rendering}
-		<header class="studio-header">
-			<a class="studio-brand" href="https://feuersteiner.github.io/bref-ui/">
-				bref
-				<span>/</span>
-				ui
-			</a>
-			<p>
-				THE SHOWCASE <span>—</span>
-				MADE WITH BREF-UI
-			</p>
-			<a href="https://github.com/feuersteiner/bref-ui">GitHub ↗</a>
-		</header>
-	{/if}
+	<Theme />
+	<ThemeModeToggle mode="light" />
 	<div class="viewport" bind:clientWidth={width}>
 		<div class="stage" style:transform={`scale(${width / 1920})`}>
-			<Film {...current} {seconds} {playing} />
+			<Film {...current} {playing} />
 		</div>
 	</div>
 	{#if !rendering}
@@ -135,8 +127,5 @@
 				</button>
 			{/each}
 		</nav>
-		<footer class="studio-footer">
-			Svelte components. Native CSS. Entirely yours. <span>SPACE TO PAUSE · ← → TO SEEK</span>
-		</footer>
 	{/if}
 </main>

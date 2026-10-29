@@ -1,25 +1,24 @@
 export const scenes = [
-	{ id: 'intro', label: 'Human first. Svelte first. Agent first.', duration: 8, chapter: 0 },
-	{ id: 'demos', label: 'See what you can build.', duration: 2, chapter: 0 },
-	{ id: 'todo', label: 'Todo', duration: 4, chapter: 0 },
-	{ id: 'shop', label: 'House Shop', duration: 4, chapter: 0 },
-	{ id: 'runner', label: 'RunnerAI', duration: 4, chapter: 0 },
-	{ id: 'import-title', label: 'Import and use the components', duration: 3, chapter: 1 },
-	{ id: 'install', label: 'One install. All the possibilities.', duration: 4, chapter: 1 },
-	{ id: 'compose', label: 'Import. Compose. Ship.', duration: 14, chapter: 1 },
-	{ id: 'customize', label: 'Your palette. Your personality.', duration: 7, chapter: 1 },
-	{ id: 'modes', label: 'From day to night.', duration: 7, chapter: 1 },
-	{ id: 'own-title', label: 'Own the code', duration: 3, chapter: 2 },
-	{ id: 'cli', label: 'A component library. In your source tree.', duration: 8, chapter: 2 },
-	{ id: 'files', label: 'Real files. Yours to change.', duration: 9, chapter: 2 },
-	{ id: 'own-compose', label: 'Same components. Now local.', duration: 12, chapter: 2 },
-	{ id: 'themes-title', label: 'Start with a theme. Make it yours.', duration: 3, chapter: 3 },
-	{ id: 'paris', label: 'New Paris', duration: 12, chapter: 3 },
-	{ id: 'vscode', label: 'VS Code', duration: 12, chapter: 3 },
-	{ id: 'glassy', label: 'Glassy', duration: 12, chapter: 3 },
-	{ id: 'end', label: 'Build cool shit ;)', duration: 10, chapter: 4 }
+	{ id: 'intro', label: 'Bref-ui', duration: 5, chapter: 0 },
+	{ id: 'demos', label: 'See the demos', duration: 2, chapter: 0 },
+	{ id: 'todo', label: 'Todo app', duration: 17, chapter: 0 },
+	{ id: 'shop', label: 'Ecommerce shop', duration: 17, chapter: 0 },
+	{ id: 'runner', label: 'SaaS AI app', duration: 17, chapter: 0 },
+	{ id: 'import-title', label: 'Import the components', duration: 2.5, chapter: 1 },
+	{ id: 'install', label: 'npm install bref-ui', duration: 3, chapter: 1 },
+	{ id: 'compose', label: 'Compose a mini form', duration: 18, chapter: 1 },
+	{ id: 'customize', label: 'Colors and dark mode', duration: 12, chapter: 1 },
+	{ id: 'own-title', label: 'Own the code', duration: 2.5, chapter: 2 },
+	{ id: 'cli', label: 'Copy the source', duration: 9, chapter: 2 },
+	{ id: 'files', label: 'package.json and src', duration: 7, chapter: 2 },
+	{ id: 'own-compose', label: 'Compose locally', duration: 18, chapter: 2 },
+	{ id: 'themes-title', label: 'Lazy? We made the themes for you ;)', duration: 4, chapter: 3 },
+	{ id: 'paris', label: 'New Paris', duration: 22, chapter: 3 },
+	{ id: 'vscode', label: 'Fancy building a devtool? We got you.', duration: 20, chapter: 3 },
+	{ id: 'glassy', label: 'Your next SaaS side project? Glassy is here.', duration: 20, chapter: 3 },
+	{ id: 'theme-install', label: 'Import the themes', duration: 7, chapter: 3 },
+	{ id: 'end', label: 'Your turn', duration: 11, chapter: 4 }
 ] as const;
-
 export type Scene = (typeof scenes)[number];
 export const duration = scenes.reduce((sum, scene) => sum + scene.duration, 0);
 export const starts = scenes.map((_, index) =>
@@ -27,6 +26,11 @@ export const starts = scenes.map((_, index) =>
 );
 export const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 export const ease = (value: number) => 1 - (1 - clamp(value)) ** 3;
+// Quintic easing has zero velocity and acceleration at both ends.
+export const smooth = (value: number) => {
+	const p = clamp(value);
+	return p * p * p * (p * (p * 6 - 15) + 10);
+};
 export const locate = (seconds: number) => {
 	const index = Math.max(
 		starts.findLastIndex((start) => start <= seconds),
@@ -36,7 +40,7 @@ export const locate = (seconds: number) => {
 };
 export const formatTime = (seconds: number) =>
 	`${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
-export const typeWords = (source: string, progress: number) => {
-	const words = source.match(/\S+\s*/g) ?? [];
-	return words.slice(0, Math.floor(clamp(progress) * words.length)).join('');
-};
+export const typeChars = (source: string, progress: number) =>
+	Array.from(source)
+		.slice(0, Math.floor(clamp(progress) * Array.from(source).length))
+		.join('');

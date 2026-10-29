@@ -1,51 +1,33 @@
 <script lang="ts">
-	import { typeWords } from '../timeline.js';
+	import { typeChars, ease } from '../timeline.js';
 	let { id, time }: { id: string; time: number } = $props();
 	const commands = $derived(
 		id === 'install'
 			? ['npm install bref-ui']
-			: ['npm install bref-ui', 'npx bref-ui init', 'npx bref-ui add button']
+			: id === 'theme-install'
+				? time < 2.5
+					? ['npm install bref-ui bref-ui-themes']
+					: [
+							"import * as Paris from 'bref-ui-themes/new-paris';",
+							"import * as VSCode from 'bref-ui-themes/vscode';",
+							"import * as Glassy from 'bref-ui-themes/glassy';"
+						]
+				: ['npm install bref-ui', 'npx bref-ui init', 'npx bref-ui add button']
 	);
+	const clock = $derived(id === 'theme-install' && time >= 2.5 ? time - 2.5 : time);
+	const interval = $derived(id === 'theme-install' ? 1 : 2.7);
 </script>
 
-<div class="terminal-scene">
-	<p class="eyebrow">
-		{id === 'install' ? 'START SIMPLE. STAY FLEXIBLE.' : 'YOUR COMPONENTS. YOUR REPOSITORY.'}
-	</p>
-	<h1>
-		{id === 'install' ? 'One install.' : 'Bring it home.'}
-		<br />
-		<em>{id === 'install' ? 'All the possibilities.' : 'Keep the source.'}</em>
-	</h1>
-	<div class="terminal-window">
-		<div class="terminal-chrome">
-			<span class="traffic-lights">● ● ●</span>
-			<span>Terminal — your-svelte-app</span>
-		</div>
-		<div class="terminal-body">
-			{#each commands as command, index (command)}
-				{#if time > 0.4 + index * 2.2}
-					<p>
-						<span class="prompt">❯</span>
-						{typeWords(command, (time - 0.4 - index * 2.2) / 1.1)}
-						<span class="terminal-cursor">▎</span>
-					</p>
-					{#if time > 1.8 + index * 2.2}
-						<p class="terminal-result">
-							✓ {index === 0
-								? 'Installed. Ready to build.'
-								: index === 1
-									? 'Added #bref imports to package.json.'
-									: 'Reviewed & copied button + icon + theme.'}
-						</p>
-					{/if}
-				{/if}
-			{/each}
-		</div>
-	</div>
-	<p class="terminal-caption">
-		{id === 'install'
-			? 'Svelte components. Native CSS. Nothing to memorize.'
-			: 'The CLI previews every file and asks before overwriting.'}
-	</p>
+<div class="commands" class:theme-imports={id === 'theme-install'}>
+	{#each commands as command, index (command)}<div
+			style:opacity={ease((clock - index * interval) / 0.2)}
+		>
+			<span>
+				{typeChars(
+					command,
+					(clock - 0.1 - index * interval) / (id === 'theme-install' ? 0.8 : 1.5)
+				)}
+			</span>
+			{#if clock > index * interval && clock < index * interval + 1.6}<i></i>{/if}
+		</div>{/each}
 </div>
