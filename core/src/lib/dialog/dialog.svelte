@@ -15,14 +15,20 @@
 		children,
 		footer,
 		dismissible = true,
+		glass = true,
+		closeOnBackdrop = false,
 		size = 'medium',
 		onclose,
 		oncancel,
+		onpointerdown,
+		onpointercancel,
+		onclick,
 		...attributes
 	}: DialogProps = $props();
 
 	let dialog: HTMLDialogElement;
 	let returnFocus: HTMLElement | null = null;
+	let backdropPress = false;
 	const id = $props.id();
 	const smallScreen = new MediaQuery('(max-width: 36rem)', false);
 	const effectiveSize = $derived(smallScreen.current ? 'full-screen' : size);
@@ -38,6 +44,41 @@
 		if (dismissible) open = false;
 	};
 
+	const isBackdrop = (event: MouseEvent) => {
+		if (event.target !== dialog) return false;
+		const rect = dialog.getBoundingClientRect();
+		return (
+			event.clientX < rect.left ||
+			event.clientX > rect.right ||
+			event.clientY < rect.top ||
+			event.clientY > rect.bottom
+		);
+	};
+	const handlePointerDown = (
+		event: PointerEvent & { currentTarget: EventTarget & HTMLDialogElement }
+	) => {
+		backdropPress =
+			event.isPrimary &&
+			event.button === 0 &&
+			isBackdrop(event) &&
+			!dialog.querySelector(':popover-open');
+		onpointerdown?.(event);
+		backdropPress &&= !event.defaultPrevented;
+	};
+	const handlePointerCancel = (
+		event: PointerEvent & { currentTarget: EventTarget & HTMLDialogElement }
+	) => {
+		backdropPress = false;
+		onpointercancel?.(event);
+	};
+	const handleClick = (event: MouseEvent & { currentTarget: EventTarget & HTMLDialogElement }) => {
+		const fromBackdrop = backdropPress && event.detail > 0 && isBackdrop(event);
+		backdropPress = false;
+		onclick?.(event);
+		if (fromBackdrop && closeOnBackdrop && dismissible && !event.defaultPrevented)
+			dialog.dispatchEvent(new Event('cancel', { cancelable: true }));
+	};
+
 	const handleCancel = (event: Event & { currentTarget: EventTarget & HTMLDialogElement }) => {
 		oncancel?.(event);
 		const prevented = event.defaultPrevented;
@@ -46,6 +87,7 @@
 	};
 
 	const handleClose = (event: Event & { currentTarget: EventTarget & HTMLDialogElement }) => {
+		backdropPress = false;
 		open = false;
 		onclose?.(event);
 		tick().then(() => {
@@ -68,11 +110,19 @@
 	aria-describedby={header.description ? `${id}-description` : undefined}
 	oncancel={handleCancel}
 	onclose={handleClose}
+	onpointerdown={handlePointerDown}
+	onpointercancel={handlePointerCancel}
+	onclick={handleClick}
 >
 	{#if open}
 		<div
 			data-surface
-			class={surface({ color: 'background', glass: true, shadow: 'large' })}
+			class={surface({
+				color: 'background',
+				variant: glass ? 'neutral' : 'filled',
+				glass,
+				shadow: 'large'
+			})}
 			use:showModal
 			transition:fly|global={{
 				y: prefersReducedMotion.current ? 0 : 16,

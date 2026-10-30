@@ -15,6 +15,10 @@ interfaces.
 
 ### Before starting
 
+- Check [Roadmap #126](https://github.com/feuersteiner/bref-ui/issues/126) for features
+  and [Bug fixes #125](https://github.com/feuersteiner/bref-ui/issues/125) for bugs.
+  Read relevant sub-issues and newer [open issues](https://github.com/feuersteiner/bref-ui/issues)
+  for current scope, acceptance criteria and pending API decisions before proposing changes.
 - Stay scoped, preserve unrelated changes and ask before large diffs. Communicate briefly.
 - Let the human's review pace govern coding patterns, speed and scope at all times.
   Default to one small, reviewable step: explain it, make the scoped change, show the

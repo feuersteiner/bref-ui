@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { compile } from 'svelte/compiler';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { cli, fixture, snapshot } from './cli-fixture.js';
@@ -85,6 +86,18 @@ test('add button copies dependencies and package type imports; rerunning changes
 	expect(output).toContain('unchanged: button/button.svelte');
 	expect(output).not.toContain('Overwrite');
 	expect(await snapshot(directory)).toEqual(files);
+});
+
+test('add table installs a compilable native component and its Theme dependency', async () => {
+	const directory = await fixture();
+	cli(directory, ['init']);
+	expect(cli(directory, ['add', 'table'], 'y\n')).toContain('Installed table');
+	const files = await snapshot(directory);
+	expect(files['src/lib/ui/index.ts']).toContain('default as Table');
+	expect(files['src/lib/ui/index.ts']).toContain('default as Theme');
+	for (const [filename, source] of Object.entries(files))
+		if (filename.endsWith('.svelte'))
+			expect(() => compile(source, { filename, generate: 'server' })).not.toThrow();
 });
 
 test.each(['\n', 'no\n', ''])('cancelled add writes nothing for input %j', async (input) => {

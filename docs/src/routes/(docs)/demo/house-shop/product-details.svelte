@@ -16,17 +16,6 @@
 		onQuantity: (product: Product, finish: string, quantity: number) => boolean;
 		items: CartItem[];
 	} = $props();
-	// TODO(bref-ui#68): remove once Dialog closes on backdrop clicks itself.
-	// Light dismiss: close only when the press starts and ends on the backdrop, not in the content.
-	let backdropPress = false;
-	const pressBackdrop = (event: PointerEvent & { currentTarget: HTMLDialogElement }) => {
-		backdropPress =
-			event.target === event.currentTarget && !event.currentTarget.querySelector(':popover-open');
-	};
-	const clickBackdrop = (event: MouseEvent & { currentTarget: HTMLDialogElement }) => {
-		if (backdropPress && event.target === event.currentTarget) open = false;
-		backdropPress = false;
-	};
 	let finish = $state<string | string[]>(untrack(() => product.finishes[0]));
 	const quantity = $derived(
 		items.find((item) => item.product.id === product.id && item.finish === String(finish))
@@ -41,8 +30,8 @@
 		description: money(product.price)
 	}}
 	size="medium"
-	onpointerdown={pressBackdrop}
-	onclick={clickBackdrop}
+	glass={false}
+	closeOnBackdrop
 >
 	<div data-product-detail={product.id}>
 		<img src={asset(product.image)} alt={product.alt} width="400" height="450" />

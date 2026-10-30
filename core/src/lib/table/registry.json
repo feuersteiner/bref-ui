@@ -1,0 +1,6 @@
+{
+	"id": "table",
+	"files": ["table.svelte"],
+	"exports": { "Table": "table.svelte" },
+	"dependencies": ["theme"]
+}

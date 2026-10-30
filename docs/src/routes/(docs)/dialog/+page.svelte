@@ -33,6 +33,8 @@
 
 	let previewOpen = $state(false);
 	let previewDismissible = $state(true);
+	let previewGlass = $state(true);
+	let previewCloseOnBackdrop = $state(false);
 	let previewSize = $state<NonNullable<DialogProps['size']>>('medium');
 	let headerTitle = $state('Edit details');
 	let headerDescription = $state('Changes are local until saved.');
@@ -56,6 +58,8 @@
 	const reset = () => {
 		previewOpen = false;
 		previewDismissible = true;
+		previewGlass = true;
+		previewCloseOnBackdrop = false;
 		previewSize = 'medium';
 		headerTitle = 'Edit details';
 		headerDescription = 'Changes are local until saved.';
@@ -102,7 +106,7 @@
 <${'/'}script>
 ${footerMode === 'snippet' ? '\n{#snippet footer()}\n  <Button label="Done" onClick={() => open = false} />\n{/snippet}\n' : ''}
 <Button label="Open preview dialog" onClick={() => open = true} />
-<Dialog bind:open header={${JSON.stringify(previewHeader)}} size="${previewSize}" dismissible={${previewDismissible}}
+<Dialog bind:open header={${JSON.stringify(previewHeader)}} size="${previewSize}" dismissible={${previewDismissible}} glass={${previewGlass}} closeOnBackdrop={${previewCloseOnBackdrop}}
   onclose={() => { lastEvent = 'Closed'; closeCount++; }} oncancel={() => { lastEvent = 'Cancel event'; cancelCount++; }}${
 		footerMode === 'actions'
 			? `
@@ -169,6 +173,22 @@ ${bodyMode === 'form' ? '  <label for="dialog-preview-name">Display name</label>
 			description: 'Allow Escape and show the close button.'
 		},
 		{
+			name: 'closeOnBackdrop',
+			type: 'boolean',
+			required: false,
+			default: 'false',
+			description:
+				'A backdrop press-and-click requests cancellation when dismissible. Native onclick or oncancel can prevent it.'
+		},
+		{
+			name: 'glass',
+			type: 'boolean',
+			required: false,
+			default: 'true',
+			description:
+				'Translucent surface and blur; false uses an opaque theme background. Backdrop blur is unchanged.'
+		},
+		{
 			name: 'size',
 			type: "Size | 'full-screen'",
 			required: false,
@@ -205,6 +225,25 @@ ${bodyMode === 'form' ? '  <label for="dialog-preview-name">Display name</label>
 		<p aria-live="polite">{lastEvent}</p>
 		<CodeSnippet {source} label="Dialog usage code" />
 	</Section>
+	<Section {...sections.find((section) => section.id === 'surfaces')!}>
+		<p>
+			Choose an opaque surface for readable content over a busy page. Glass remains available;
+			backdrop blur is independent.
+		</p>
+		{#each [true, false] as glass (glass)}
+			<Button
+				label={glass ? 'Open glass dialog' : 'Open opaque dialog'}
+				onClick={() => {
+					previewGlass = glass;
+					previewOpen = true;
+				}}
+			/>
+		{/each}
+		<CodeSnippet
+			source={'<Dialog bind:open header={{ title: "Details" }} glass={false}>Content</Dialog>'}
+			label="Opaque Dialog usage"
+		/>
+	</Section>
 	<Section {...sections.find((section) => section.id === 'header-motion')!}>
 		<p>Title and icon changes enter together. Reduced motion skips the entrance.</p>
 		<Button label="Open header animation" onClick={() => (headerMotionOpen = true)} />
@@ -234,12 +273,18 @@ ${bodyMode === 'form' ? '  <label for="dialog-preview-name">Display name</label>
 					cancel events: {previewCancelCount}
 				</span>{/snippet}
 			<PlaygroundGroup title="Appearance">
+				<PlaygroundField id="dialog-previewGlass" label="Glass surface" toggle>
+					<Checkbox id="dialog-previewGlass" bind:checked={previewGlass} />
+				</PlaygroundField>
 				<PlaygroundField id="dialog-previewSize" label="Size">
 					<Select
 						id="dialog-previewSize"
 						items={sizes.map((id) => ({ id, label: id }))}
 						bind:value={() => previewSize, (next) => (previewSize = next as typeof previewSize)}
 					/>
+				</PlaygroundField>
+				<PlaygroundField id="dialog-previewCloseOnBackdrop" label="Backdrop dismissal" toggle>
+					<Checkbox id="dialog-previewCloseOnBackdrop" bind:checked={previewCloseOnBackdrop} />
 				</PlaygroundField>
 				<PlaygroundField id="dialog-previewDismissible" label="Dismissible" toggle>
 					<Checkbox id="dialog-previewDismissible" bind:checked={previewDismissible} />
@@ -312,6 +357,8 @@ ${bodyMode === 'form' ? '  <label for="dialog-preview-name">Display name</label>
 			header={previewHeader}
 			size={previewSize}
 			dismissible={previewDismissible}
+			glass={previewGlass}
+			closeOnBackdrop={previewCloseOnBackdrop}
 			footer={footerMode === 'actions'
 				? previewActions
 				: footerMode === 'snippet'
@@ -338,8 +385,10 @@ ${bodyMode === 'form' ? '  <label for="dialog-preview-name">Display name</label>
 	</Section>
 	<Section {...sections.find((section) => section.id === 'dismissal')!}>
 		<p>
-			Tab remains inside the modal. Escape and the close button follow the dismissible control.
-			Close from the caller by setting the state bound to <code>open</code>
+			Tab remains inside the modal. Escape and the close button follow the dismissible control. Opt
+			into closeOnBackdrop to dismiss after a press and click outside the panel; dragging from
+			inside leaves it open. Backdrop dismissal emits a cancel event, which can be prevented. Close
+			from the caller by setting the state bound to <code>open</code>
 			to
 			<code>false</code>
 			. Focus returns to the opener after the exit animation.
@@ -356,6 +405,7 @@ ${bodyMode === 'form' ? '  <label for="dialog-preview-name">Display name</label>
 				description: 'Try Tab, Escape, the backdrop and the bound state.'
 			}}
 			{dismissible}
+			closeOnBackdrop
 		>
 			<Button label="Close via binding" onClick={() => (dismissalOpen = false)} />
 		</Dialog>

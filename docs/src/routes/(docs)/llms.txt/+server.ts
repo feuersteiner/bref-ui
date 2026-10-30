@@ -18,6 +18,7 @@ import treeViewUsage from './tree-view.js';
 import dialogUsage from './dialog.js';
 import popoverUsage from './popover.js';
 import tabsUsage from './tabs.js';
+import tableUsage from './table.js';
 import type { RequestHandler } from './$types.js';
 
 export const prerender = true;
@@ -45,7 +46,8 @@ const componentUsage: Record<
 	TreeView: treeViewUsage,
 	Dialog: dialogUsage,
 	Popover: popoverUsage,
-	Tabs: tabsUsage
+	Tabs: tabsUsage,
+	Table: tableUsage
 };
 
 export const GET: RequestHandler = () => {
