@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep live examples and their prop documentation together. */
 	import { chapter, sections } from './sections.js';
 	import Playground from '../components/playground.svelte';
@@ -7,10 +9,12 @@
 	import MovingBackground from '../components/moving-background.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { Button, TreeView, Select, Checkbox, TextInput } from 'bref-ui';
 	import type { BaseSize, TreeItemProps, TreeSectionProps } from 'bref-ui/types';
+
+	const doc = componentDocs['tree-view'];
+	const props = doc.props;
 
 	const exampleItems: TreeItemProps[] = [
 		{ id: 'projects', label: 'Projects', children: [{ id: 'notes', label: 'Notes' }] }
@@ -120,94 +124,14 @@
 <TreeView {items} {sections} bind:selection label={${JSON.stringify(treeLabel)}}
   size="${size}" glass={${glass}} defaultExpanded={${defaultExpanded}}${allowDelete ? '\n  onDelete={remove}' : ''}${customNode ? '>\n  {#snippet node(item)}\n    <a href="#props">{item.label}</a>\n  {/snippet}\n</TreeView>' : ' />'}
 <p role="status">Selected: {Array.isArray(selection) ? selection.join(', ') || 'none' : selection || 'none'}</p>`);
-	const source = `<script lang="ts">
-  import { TreeView } from 'bref-ui';
-  const items = [{
-    id: 'projects', label: 'Projects',
-    children: [{ id: 'notes', label: 'Notes' }]
-  }];
-  let selection = $state<string>();
-<${'/'}script>
-
-<TreeView {items} label="Files" bind:selection />`;
-	const props = [
-		{
-			name: 'items',
-			type: 'TreeItemProps[]',
-			required: true,
-			default: '—',
-			description:
-				'Nested items with id, label, optional icon, children and disabled. IDs must be unique across the component.'
-		},
-		{
-			name: 'sections',
-			type: 'TreeSectionProps[]',
-			required: false,
-			default: '[]',
-			description:
-				'Ordered headers with id, label, optional description and icon, and their own items array.'
-		},
-		{
-			name: 'label',
-			type: 'string',
-			required: false,
-			default: 'Tree view',
-			description: 'Accessible name for the group of items.'
-		},
-		{
-			name: 'size',
-			type: 'BaseSize',
-			required: false,
-			default: 'medium',
-			description: 'small, medium or large.'
-		},
-		{
-			name: 'glass',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Use glass on selected soft surfaces, including nested items.'
-		},
-		{
-			name: 'selection',
-			type: 'string | string[]',
-			required: false,
-			default: 'Omitted',
-			description:
-				'Bindable selected IDs. A string selects one item; an array toggles individual items independently.'
-		},
-		{
-			name: 'defaultExpanded',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Sets the initial open state of each branch.'
-		},
-		{
-			name: 'onDelete',
-			type: '(id: string) => void',
-			required: false,
-			default: 'Omitted',
-			description:
-				'Shows a delete button for each item; the caller updates the nested data and selection.'
-		},
-		{
-			name: 'node',
-			type: 'Snippet<[TreeItemProps]>',
-			required: false,
-			default: 'Omitted',
-			description:
-				'Replaces each top-level node in items and sections. The snippet owns its links, children, expansion, selection and actions.'
-		}
-	];
 </script>
 
 {#snippet linkNode(item: TreeItemProps)}<a href="#props">{item.label}</a>{/snippet}
 
-<Page title={chapter} description="Nested items with expandable branches and selectable rows.">
+<Page title={chapter} description={doc.description}>
 	<Section {...sections[0]}>
 		<TreeView items={exampleItems} label="Files" bind:selection={exampleSelection} />
-		<CodeSnippet {source} label="Tree view usage code" />
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections[1]}>
 		<p>

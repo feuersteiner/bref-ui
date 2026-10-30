@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep the trigger composition examples and their documentation together. */
 	import { resolve } from '$app/paths';
 	import { chapter, sections } from './sections.js';
@@ -8,11 +10,13 @@
 	import MovingBackground from '../components/moving-background.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { Popover, TextInput, Checkbox, Button, Select } from 'bref-ui';
 
 	import type { PopoverProps } from 'bref-ui/types';
+
+	const doc = componentDocs['popover'];
+	const props = doc.props;
 
 	let inputOpen = $state(false);
 	let inputWide = $state(false);
@@ -112,162 +116,9 @@ ${content === 'form' ? '  <label for="popover-preview-name">Display name</label>
   <Button label="Done" onClick={() => open = false} />
 </Popover>
 <p role="status">{open ? 'Open' : 'Closed'}</p>`);
-	const source = `<script>
-  import { Checkbox, Popover, TextInput } from 'bref-ui';
-  let open = $state(false);
-  let wide = $state(false);
-<${'/'}script>
-
-<label><Checkbox bind:checked={wide} /> Wide input</label>
-<Popover bind:open scroll>
-  {#snippet trigger()}
-    <TextInput {wide} value="Sample text" aria-label="Search" aria-expanded={open}
-      oninput={() => open = true} onclick={() => open = true} />
-  {/snippet}
-  <p>Helpful details beside the input.</p>
-</Popover>`;
-	const boundSource = `<script>
-  import { Button, Popover, TextInput } from 'bref-ui';
-  let open = $state(false);
-<${'/'}script>
-
-<Popover bind:open variant="filled" spacing="medium" radius="small" shadow scroll>
-  {#snippet trigger()}
-    <Button label="Edit settings" onClick={() => open = !open}
-      aria-expanded={open} />
-  {/snippet}
-  <label>Display name <TextInput value="Example" /></label>
-  <Button label="Done" onClick={() => open = false} />
-</Popover>`;
-	const props = [
-		{
-			name: 'trigger',
-			type: 'Snippet',
-			required: true,
-			default: '—',
-			description: 'The owning control or component; manages its own events and accessibility.'
-		},
-		{
-			name: 'children',
-			type: 'Snippet',
-			required: true,
-			default: '—',
-			description: 'Parameterless content inside the popover.'
-		},
-		{
-			name: 'open',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Bindable visibility; native dismissals update it.'
-		},
-		{
-			name: 'disabled',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Keep the panel closed; the trigger controls its own disabled state.'
-		},
-		{
-			name: 'as',
-			type: "'div' | 'section' | 'span'",
-			required: false,
-			default: 'div',
-			description: 'Native root element of the Surface inside the panel.'
-		},
-		{
-			name: 'variant',
-			type: 'Variant',
-			required: false,
-			default: 'soft',
-			description: 'neutral, soft or filled; every variant uses glass.'
-		},
-		{
-			name: 'color',
-			type: 'Color',
-			required: false,
-			default: 'background',
-			description: 'Theme role for panel paint.'
-		},
-		{
-			name: 'shadow',
-			type: 'BaseSize | boolean',
-			required: false,
-			default: 'medium',
-			description: 'Shadow strength; true means medium and false disables it.'
-		},
-		{
-			name: 'hover',
-			type: 'BaseSize',
-			required: false,
-			default: 'Omitted',
-			description: 'Optional hover treatment strength.'
-		},
-		{
-			name: 'spacing',
-			type: 'Size',
-			required: false,
-			default: 'medium',
-			description: 'Padding and gap from x-small to x-large.'
-		},
-		{
-			name: 'orientation',
-			type: 'Orientation',
-			required: false,
-			default: 'vertical',
-			description: 'Horizontal or vertical Surface layout.'
-		},
-		{
-			name: 'width',
-			type: 'Dimension',
-			required: false,
-			default: 'Omitted',
-			description:
-				'fill follows trigger width; fit or omitted grows with content, at least as wide as the trigger.'
-		},
-		{
-			name: 'height',
-			type: 'Dimension',
-			required: false,
-			default: 'Omitted',
-			description:
-				'fit follows content; fill fills available Surface height within the viewport cap.'
-		},
-		{
-			name: 'radius',
-			type: 'SurfaceRadius',
-			required: false,
-			default: 'small',
-			description: 'Size token, rem value or percentage.'
-		},
-		{
-			name: 'scroll',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Enable scrolling within the Surface.'
-		},
-		{
-			name: 'class',
-			type: 'string',
-			required: false,
-			default: 'Omitted',
-			description: 'Additional Surface classes.'
-		},
-		{
-			name: 'style',
-			type: 'string',
-			required: false,
-			default: 'Omitted',
-			description: 'Inline styles on the Surface.'
-		}
-	];
 </script>
 
-<Page
-	title={chapter}
-	description="An anchored native popover whose trigger snippet renders the owning control or component."
->
+<Page title={chapter} description={doc.description}>
 	<Section {...sections.find((section) => section.id === 'usage')!}>
 		<label data-wide-control>
 			<Checkbox bind:checked={inputWide} />
@@ -294,7 +145,7 @@ ${content === 'form' ? '  <label for="popover-preview-name">Display name</label>
 			click outside or press Escape to dismiss. The default soft glass panel fits its content and is
 			at least as wide as the trigger, within the viewport. Toggle wide to check the anchor minimum.
 		</p>
-		<CodeSnippet {source} label="Popover usage code" />
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections.find((section) => section.id === 'playground')!}>
 		<Playground source={playgroundSource} onReset={reset}>
@@ -472,7 +323,6 @@ ${content === 'form' ? '  <label for="popover-preview-name">Display name</label>
 			<Button label="Close programmatically" onClick={() => (open = false)} />
 		</div>
 		<p role="status">Settings {open ? 'open' : 'closed'}.</p>
-		<CodeSnippet source={boundSource} label="Bound Popover usage code" />
 	</Section>
 	<Section {...sections.find((section) => section.id === 'viewport')!}>
 		<div data-controls>

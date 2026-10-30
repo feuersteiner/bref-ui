@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep the Pill gallery matrix and usage together. */
 	import { chapter, sections } from './sections.js';
 	import Playground from '../components/playground.svelte';
@@ -8,14 +10,15 @@
 	import MovingBackground from '../components/moving-background.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { Pill, TextInput, Select, Checkbox } from 'bref-ui';
 	import type { Color, Size, Variant, IconName } from 'bref-ui/types';
 
+	const doc = componentDocs['pill'];
+	const props = doc.props;
+
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const variants = ['neutral', 'soft', 'filled'] as const;
-	const glassUsage = '<Pill label="Glass" color="primary" glass />';
 	const colors = [
 		'primary',
 		'secondary',
@@ -68,91 +71,9 @@
 <Pill label={${JSON.stringify(label)}} size="${size}" variant="${variant}" color="${color}"
   wide={${wide}} glass={${glass}} swoosh={${swoosh}}${showIcon ? `\n  icon={{ name: ${JSON.stringify(iconName)}, filled: ${iconFilled} }}` : ''}${clickEnabled ? '\n  onClick={() => clicks++}' : ''}${deleteEnabled ? '\n  onDelete={() => removals++}' : ''}
   title="Native title attribute"${showChildren ? '>\n  <strong>snippet</strong>\n</Pill>' : ' />'}${clickEnabled || deleteEnabled ? '\n<p role="status">' + (clickEnabled ? 'Clicks: {clicks} ' : '') + (deleteEnabled ? 'Removals: {removals}' : '') + '</p>' : ''}`);
-	const props = [
-		{
-			name: 'label',
-			type: 'string',
-			required: true,
-			default: '—',
-			description: 'Visible label.'
-		},
-		{
-			name: 'icon',
-			type: "Omit<IconProps, 'label' | 'size' | 'color'>",
-			required: false,
-			default: 'Omitted',
-			description: 'Decorative leading icon.'
-		},
-		{
-			name: 'children',
-			type: 'Snippet',
-			required: false,
-			default: 'Omitted',
-			description: 'Visible content.'
-		},
-		{
-			name: 'size',
-			type: 'Size',
-			required: false,
-			default: 'medium',
-			description: 'Five sizes from x-small to x-large.'
-		},
-		{
-			name: 'variant',
-			type: 'Variant',
-			required: false,
-			default: 'neutral',
-			description: 'neutral, soft or filled.'
-		},
-		{
-			name: 'color',
-			type: "Exclude<Color, 'background'>",
-			required: false,
-			default: 'foreground',
-			description: 'Theme role.'
-		},
-		{
-			name: 'onClick',
-			type: '(event: MouseEvent) => void',
-			required: false,
-			default: 'Omitted',
-			description: 'Activate the Pill.'
-		},
-		{
-			name: 'onDelete',
-			type: '() => void',
-			required: false,
-			default: 'Omitted',
-			description: 'Show a labeled remove button.'
-		},
-		{
-			name: 'wide',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Fill the available width.'
-		},
-		{
-			name: 'swoosh',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Animate the highlight.'
-		},
-		{
-			name: 'glass',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Translucent paint and backdrop blur.'
-		}
-	];
 </script>
 
-<Page
-	title={chapter}
-	description="A compact glass label for status, categories and optional actions."
->
+<Page title={chapter} description={doc.description}>
 	<Section {...sections[0]}>
 		<div data-demo="row">
 			<Pill label="Draft" /><Pill label="Ready" color="success" variant="soft" /><Pill
@@ -161,10 +82,7 @@
 				variant="filled"
 			/>
 		</div>
-		<CodeSnippet
-			label="Pill usage code"
-			source={`<script>\n  import { Pill } from 'bref-ui';\n<${'/'}script>\n\n<Pill label="Ready" color="success" variant="soft" />`}
-		/>
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections.find((section) => section.id === 'playground')!}>
 		<Playground source={playgroundSource} onReset={reset}>
@@ -313,7 +231,6 @@
 				</div>
 			{/each}
 		</div>
-		<CodeSnippet label="Glass Pill usage code" source={glassUsage} />
 	</Section>
 	<Section {...sections[4]}>
 		<PropTable {props} label="Pill props" />

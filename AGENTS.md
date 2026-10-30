@@ -45,4 +45,5 @@ cover all packages. The published copy CLI runs on Node.js through npm.
 
 - [ ] Agree on the component API/types first with the user, keeping it closer to base html (i.e. a `<Button>` component should use just `<button>`)
 - [ ] Scoped styles use agreed tokens and variants
+- [ ] Add a colocated `docs.ts` satisfying `ComponentDocProps`, register it in `bref-ui/docs`, and verify CLI coverage/examples during packaging.
 - [ ] In docs, buil the gallery, covering variants, interactions and meaningful states (with one playground)

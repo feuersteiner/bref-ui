@@ -1,16 +1,11 @@
 <script lang="ts">
+	import type { FieldDocProps } from 'bref-ui/types';
 	let {
 		props,
 		label = 'Component props'
 	}: {
 		label?: string;
-		props: {
-			name: string;
-			type: string;
-			required: boolean | string;
-			default: string;
-			description: string;
-		}[];
+		props: FieldDocProps[];
 	} = $props();
 </script>
 
@@ -33,10 +28,10 @@
 					<th scope="row"><code>{prop.name}</code></th>
 					<td><code>{prop.type}</code></td>
 					<td>
-						{typeof prop.required === 'boolean' ? (prop.required ? 'Yes' : 'No') : prop.required}
+						{typeof prop.required === 'string' ? prop.required : prop.required ? 'Yes' : 'No'}
 					</td>
-					<td><code>{prop.default}</code></td>
-					<td>{prop.description}</td>
+					<td><code>{prop.default ?? '—'}</code></td>
+					<td>{prop.description}{prop.bindable ? ' Bindable.' : ''}</td>
 				</tr>
 			{/each}
 		</tbody>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ThemeModeToggleProps } from './types.ts';
+	import type { ThemeModeToggleProps } from '../theme/types.js';
 
 	let { mode = 'auto' }: ThemeModeToggleProps = $props();
 </script>

@@ -62,7 +62,8 @@ and shared navigation/ToC; do not duplicate chapter names or section definitions
 
 ## Documentation
 
-- Start with a one-sentence description.
+- Consume description, usage and props from `bref-ui/docs`; keep live galleries and playground controls local.
+- Start with the shared one-sentence description.
 - Use `PropTable` to list required props first, then optional props.
 - Let `PropTable` document defaults; avoid repeating them in prose.
 - Briefly explain supported native attributes, events, bindings and snippets.

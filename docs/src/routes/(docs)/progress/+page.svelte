@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep the progress controls and interactive examples together. */
 	import { Progress, TextInput, Select, Checkbox, Button } from 'bref-ui';
 	import type { BaseSize } from 'bref-ui/types';
@@ -8,9 +10,11 @@
 	import PlaygroundGroup from '../components/playground-group.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { chapter, sections } from './sections.js';
+
+	const doc = componentDocs['progress'];
+	const props = doc.props;
 
 	const sizes: BaseSize[] = ['small', 'medium', 'large'];
 	let value = $state(0.35);
@@ -42,55 +46,12 @@
 		seekable = false;
 		rtl = false;
 	};
-	const props = [
-		{
-			name: 'label',
-			type: 'string',
-			required: false,
-			default: '—',
-			description: 'Optional accessible name of the indicator or seek control.'
-		},
-		{
-			name: 'value',
-			type: 'number',
-			required: false,
-			default: 'Omitted',
-			description: 'Normalized value from 0 to 1. Omit for indeterminate progress.'
-		},
-		{
-			name: 'onSeek',
-			type: '(value: number) => void',
-			required: false,
-			default: 'Omitted',
-			description: 'Makes progress seekable and emits normalized values on edits.'
-		},
-		{
-			name: 'disabled',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Disables the seek control when present.'
-		},
-		{
-			name: 'size',
-			type: 'BaseSize',
-			required: false,
-			default: 'medium',
-			description: 'Track thickness: small, medium, or large.'
-		}
-	];
 </script>
 
-<Page
-	title={chapter}
-	description="Show determinate or indeterminate progress, with an optional controlled seek control."
->
+<Page title={chapter} description={doc.description}>
 	<Section {...sections.find((section) => section.id === 'usage')!}>
 		<Progress label="Upload progress" value={0.4} />
-		<CodeSnippet
-			label="Progress usage code"
-			source={'<Progress label="Upload progress" value={0.4} />'}
-		/>
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections.find((section) => section.id === 'playground')!}>
 		<Playground source={playgroundSource} onReset={resetPlayground}>
@@ -223,10 +184,6 @@
 			Current: {value.toFixed(2)} ({Math.round(value * 100)}%). Drag, tap, or use Arrow, Home, and
 			End keys.
 		</p>
-		<CodeSnippet
-			label="Seekable progress code"
-			source={'<Progress label="Playback position" {value} onSeek={(next) => value = next} />'}
-		/>
 	</Section>
 	<Section {...sections.find((section) => section.id === 'direction-disabled')!}>
 		<div dir="rtl">

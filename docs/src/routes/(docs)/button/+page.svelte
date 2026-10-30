@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep the prop matrix and interactive examples in their documentation page. */
 	import { chapter, sections } from './sections.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';
@@ -12,6 +13,9 @@
 	import MovingBackground from '../components/moving-background.svelte';
 	import { Button, TextInput, Select, Checkbox, Switch } from 'bref-ui';
 	import type { Color, Size, Variant, IconName } from 'bref-ui/types';
+
+	const doc = componentDocs['button'];
+	const props = doc.props;
 
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const variants = ['neutral', 'soft', 'filled'] as const;
@@ -66,107 +70,9 @@
 		clicks = 0;
 	};
 	const noop = () => undefined;
-	const source = `<script>
-  import { Button } from 'bref-ui';
-<${'/'}script>
-
-<Button label="Save" onClick={() => undefined} />
-<Button label="Next" href="/next" color="primary" variant="filled" trailingIcon={{ name: 'arrow_forward' }} />
-<Button icon={{ name: 'favorite', filled: true }} rounded onClick={() => undefined} aria-label="Favorite" />
-<Button label="Unavailable" disabled />`;
-
-	const props = [
-		{
-			name: 'href',
-			type: 'string',
-			required: 'For links',
-			default: 'Omitted',
-			description: 'Render an anchor for navigation; omit for a native button.'
-		},
-		{
-			name: 'label',
-			type: 'string',
-			required: 'For text buttons',
-			default: 'Omitted',
-			description: 'Visible text; omit for icon-only buttons.'
-		},
-		{
-			name: 'icon',
-			type: "Omit<IconProps, 'size' | 'color'>",
-			required: 'For icon-only buttons',
-			default: 'Omitted',
-			description: 'Leading icon; required when label is omitted.'
-		},
-		{
-			name: 'size',
-			type: 'Size',
-			required: false,
-			default: 'medium',
-			description: 'x-small, small, medium, large or x-large.'
-		},
-		{
-			name: 'variant',
-			type: 'Variant',
-			required: false,
-			default: 'neutral',
-			description: 'neutral, soft or filled.'
-		},
-		{
-			name: 'color',
-			type: "Exclude<Color, 'background'>",
-			required: false,
-			default: 'foreground',
-			description: 'Theme color excluding background.'
-		},
-		{
-			name: 'trailingIcon',
-			type: "Omit<IconProps, 'size' | 'color'>",
-			required: false,
-			default: 'Omitted',
-			description: 'Icon after the label; text buttons only.'
-		},
-		{
-			name: 'wide',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Full width; text buttons only.'
-		},
-		{
-			name: 'rounded',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Circular shape; icon-only buttons only.'
-		},
-		{
-			name: 'glass',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Adds translucent paint and backdrop blur to the selected variant.'
-		},
-		{
-			name: 'disabled',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Disables actions and navigation; uses muted paint for the selected variant.'
-		},
-		{
-			name: 'onClick',
-			type: 'MouseEvent handler',
-			required: false,
-			default: 'Omitted',
-			description: 'Click handler for actions and links; replaces native onclick.'
-		}
-	];
 </script>
 
-<Page
-	title={chapter}
-	description="An action or navigation control with text or icon labels, theme colors, five sizes, three variants, and wide, rounded or disabled options."
->
+<Page title={chapter} description={doc.description}>
 	<Section {...sections[0]}>
 		<div data-demo="row">
 			<Button label="Save" onClick={noop} />
@@ -185,7 +91,7 @@
 			/>
 			<Button label="Unavailable" onClick={noop} disabled />
 		</div>
-		<CodeSnippet {source} label="Button usage code" />
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections[1]}>
 		<p>
@@ -578,13 +484,6 @@
 			</div>
 		</form>
 		<p role="status">{submitted}</p>
-		<CodeSnippet
-			label="Button native behavior code"
-			source={`<Button label="Saving…" icon={{ name: 'sync' }} variant="filled" onClick={save} disabled aria-busy={true} />
-<Button label="Submit" onClick={save} type="submit" name="action" value="save" />
-<Button label="Reset" onClick={reset} type="reset" />
-<Button label="Full-width link in a new tab" href="#native-behavior" wide target="_blank" rel="noopener noreferrer" color="primary" variant="soft" trailingIcon={{ name: 'open_in_new' }} />`}
-		/>
 	</Section>
 	<Section {...sections[5]}>
 		<p>

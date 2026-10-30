@@ -44,3 +44,5 @@ export type {
 	SelectProps,
 	SelectTriggerProps
 } from './select/types.js';
+
+export type { ComponentDocProps, FieldDocProps } from './types/docs.js';

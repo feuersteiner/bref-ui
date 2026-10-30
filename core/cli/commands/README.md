@@ -2,7 +2,7 @@
 
 [CLI overview](../README.md)
 
-The executable and init/add commands are implemented. Commands use the current directory
+The executable and init/add/docs commands are implemented. Commands use the current directory
 as the consumer project; the registry comes from canonical sources beside the executable,
 either in the installed package or the source checkout. Node.js runs the compiled executable.
 
@@ -13,8 +13,9 @@ sole routing entry. It calls `parse`, then `execute`. Its catch block prints a c
 message directly with `console.error` and sets exit code 1.
 Help, successful commands and deliberate cancellation exit with code 0.
 
-Supported arguments are `init`, `add <component>`, `help`, `--help` and `-h`. No arguments
-also shows help; `init --help` and `add --help` are accepted. Unknown commands, unsupported
+Supported arguments are `init`, `add <component>`, `docs list`, `docs cli`,
+`docs <component> [usage|props|cli]`, `help`, `--help` and `-h`. No arguments
+also shows help; `init --help`, `add --help` and `docs --help` are accepted. Unknown commands, unsupported
 options, missing component IDs and extra arguments fail before accessing project files.
 
 ```mermaid
@@ -27,6 +28,13 @@ flowchart TD
     init --> report["Report result or failure"]
     add --> report
 ```
+
+## Read documentation
+
+`execute` sends docs requests to `readDocumentation` in [documentation](../documentation/README.md).
+This branch runs before consumer initialization and installation. It reads only the bundled,
+versioned catalogue. Full references are the default; invalid sections, extra arguments and
+unknown components fail with an actionable error. Skills are deferred.
 
 ## Initialize imports
 

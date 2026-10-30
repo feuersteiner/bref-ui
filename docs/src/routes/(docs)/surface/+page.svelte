@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep the Surface matrix and interactive examples in their documentation page. */
 	import { chapter, sections } from './sections.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';
@@ -21,6 +22,9 @@
 		Checkbox
 	} from 'bref-ui';
 	import type { Color, Size, SurfaceProps, SurfaceRadius, Variant } from 'bref-ui/types';
+
+	const doc = componentDocs['surface'];
+	const props = doc.props;
 
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const variants = ['neutral', 'soft', 'filled'] as const;
@@ -68,80 +72,15 @@
 		{ id: 'one', label: 'Design' },
 		{ id: 'two', label: 'Development' }
 	];
-	const source = `<script>
-  import { Surface } from 'bref-ui';
-<${'/'}script>
-
-<Surface as="section" variant="soft" spacing="medium" radius="small">
-  <h2>Details</h2>
-  <p>Content inside the surface.</p>
-</Surface>`;
-	const scrollSource = `<div style="height: 12rem;">
-  <Surface scroll height="fill">
-    Content
-  </Surface>
-</div>`;
-	const helperSource = `<script>
-  import { Theme, surface } from 'bref-ui';
-<${'/'}script>
-
-<Theme />
-<button class={surface({ variant: 'filled', color: 'primary', shadow: 'small', hover: 'medium' })}>
-  Save
-</button>`;
-	const props = [
-		['as', "'div' | 'section' | 'span'", 'div', 'Native root element.'],
-		['children', 'Snippet', 'Omitted', 'Content rendered directly inside the root.'],
-		['color', 'Color', 'background', 'Theme color; the shared recipe supplies content color.'],
-		[
-			'variant',
-			'Variant',
-			'neutral',
-			'Lightly tinted neutral, opaque tinted soft, or opaque filled panel.'
-		],
-		['spacing', 'Size', 'Omitted', 'Shared padding and gap; omitted means zero.'],
-		[
-			'orientation',
-			'Orientation',
-			'vertical',
-			'Column, or row with centered cross-axis alignment.'
-		],
-		['width', 'Dimension', 'fill', 'fill uses 100%; fit hugs content.'],
-		['height', 'Dimension', 'fit', 'fit uses natural height; fill uses 100% of a sized parent.'],
-		[
-			'radius',
-			'Size | `${number}rem` | `${number}%`',
-			'Omitted (0)',
-			'Named corner scale or an explicit rem/percentage radius.'
-		],
-		['shadow', 'BaseSize | boolean', 'false', 'Shadow strength; true selects medium.'],
-		[
-			'hover',
-			'BaseSize',
-			'Omitted',
-			'Optional hover/focus treatment; does not make the root interactive.'
-		],
-		['scroll', 'boolean', 'false', 'true sets overflow to auto; otherwise overflow stays visible.'],
-		['glass', 'boolean', 'false', 'Enable translucent paint and backdrop blur.']
-	].map(([name, type, defaultValue, description]) => ({
-		name,
-		type,
-		default: defaultValue,
-		description,
-		required: false
-	}));
 </script>
 
-<Page
-	title={chapter}
-	description="A semantic flex container with theme tints, opt-in glass, shared spacing, corner rounding and optional scrolling."
->
+<Page title={chapter} description={doc.description}>
 	<Section {...sections[0]}>
 		<Surface as="section" variant="soft" spacing="medium" radius="small">
 			<h2>Details</h2>
 			<p>Content inside the surface.</p>
 		</Surface>
-		<CodeSnippet {source} label="Surface usage code" />
+		<ComponentUsage usage={doc.usage} />
 		<p>
 			Render Theme once to load the shared paint recipes. The typed surface helper applies the same
 			recipes to native HTML; pass <code>glass: true</code>
@@ -160,7 +99,6 @@
 				Disabled
 			</button>
 		</div>
-		<CodeSnippet source={helperSource} label="Typed surface helper usage" />
 	</Section>
 	<Section {...sections[1]}>
 		<p>Explore paint and layout together. The preview has a fixed height for fill and scrolling.</p>
@@ -392,16 +330,6 @@
 				<p>The same helper also composes with native panel styling.</p>
 			</div>
 		</div>
-		<CodeSnippet
-			label="Opt-in glass usage"
-			source={`<Surface glass variant="soft" spacing="medium" radius="small">
-  Panel content
-</Surface>
-
-<button class={surface({ variant: 'soft', color: 'primary', hover: 'medium', glass: true })}>
-  Save
-</button>`}
-		/>
 	</Section>
 	<Section {...sections[4]}>
 		<div data-matrix>
@@ -465,12 +393,7 @@
 		>
 			<p>Focused {nativeFocuses} times.</p>
 		</Surface>
-		<CodeSnippet
-			label="Surface native attributes code"
-			source={`<Surface as="section" id="details" class="custom-surface" style="font-style: italic;" aria-label="Details" tabindex={0} onfocus={onFocus}>
-  <p>Content inside the surface.</p>
-</Surface>`}
-		/>
+
 		<p>
 			Give the parent a fixed height and use height="fill" to constrain scrolling. A scrollable
 			Surface can receive keyboard focus; use arrow keys to scroll.
@@ -482,7 +405,6 @@
 				{/each}
 			</Surface>
 		</div>
-		<CodeSnippet label="Surface scrolling code" source={scrollSource} />
 	</Section>
 	<Section {...sections[6]}>
 		<PropTable {props} />

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	import { Spinner, Select, Checkbox, TextInput } from 'bref-ui';
 	import type { Size } from 'bref-ui/types';
 
@@ -7,12 +9,12 @@
 	import PlaygroundGroup from '../components/playground-group.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { chapter, sections } from './sections.js';
-	const usageCode = '<Spinner label="Loading results" />';
-	const colorCode =
-		'<span style="color: var(--color-primary)"><Spinner label="Loading results" /></span>';
+
+	const doc = componentDocs['spinner'];
+	const props = doc.props;
+
 	const sizes: Size[] = ['x-small', 'small', 'medium', 'large', 'x-large'];
 	const colors = [
 		'foreground',
@@ -40,28 +42,12 @@
 		announced = true;
 		color = 'primary';
 	};
-	const props = [
-		{
-			name: 'label',
-			type: 'string',
-			required: false,
-			default: '—',
-			description: 'Optional screen reader status text; omit for a decorative ring.'
-		},
-		{
-			name: 'size',
-			type: 'Size',
-			required: false,
-			default: 'Inherited',
-			description: 'Matches Icon sizes; omitted size inherits surrounding font size.'
-		}
-	];
 </script>
 
-<Page title={chapter} description="Show loading status or a decorative animated ring.">
+<Page title={chapter} description={doc.description}>
 	<Section {...sections.find((section) => section.id === 'usage')!}>
 		<Spinner label="Loading results" />
-		<CodeSnippet label="Spinner usage code" source={usageCode} />
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections.find((section) => section.id === 'playground')!}>
 		<Playground source={playgroundSource} onReset={resetPlayground}>
@@ -116,7 +102,6 @@
 				</figure>
 			{/each}
 		</div>
-		<CodeSnippet label="Inherited spinner color code" source={colorCode} />
 	</Section>
 	<Section {...sections.find((section) => section.id === 'props')!}>
 		<PropTable {props} />

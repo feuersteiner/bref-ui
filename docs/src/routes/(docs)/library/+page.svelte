@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep the theme examples and their page styles together. */
 	import { getContext, onDestroy } from 'svelte';
 	import { chapter, sections } from './sections.js';
@@ -12,6 +14,10 @@
 	import ThemePreview from '../theme/theme-preview.svelte';
 	import { Button, Icon, Select, TextInput, Checkbox } from 'bref-ui';
 	import type { ThemeMode, ThemeProps, Palette, Color } from 'bref-ui/types';
+
+	const doc = componentDocs['theme'];
+	const props = doc.props;
+
 	const theme = getContext<{ mode: ThemeMode; palette: NonNullable<ThemeProps['palette']> }>(
 		'documentation-theme'
 	);
@@ -99,47 +105,7 @@
 <Theme>
   <Button label="Save" variant="filled" color="primary" />
 </Theme>`;
-	const source = `<script lang="ts">
-  import { Select, Theme, ThemeModeToggle } from 'bref-ui';
-  import type { ThemeMode, ThemeProps, Palette, Color } from 'bref-ui/types';
-  let mode = $state<ThemeMode>('auto');
-  const modes = [
-    { id: 'auto', label: 'System' },
-    { id: 'light', label: 'Light' },
-    { id: 'dark', label: 'Dark' }
-  ];
-<${'/'}script>
 
-<Theme>
-  <ThemeModeToggle {mode} />
-  <label for="theme-mode">Theme</label>
-  <Select id="theme-mode" items={modes}
-    bind:value={() => mode, (next) => mode = next as ThemeMode} />
-</Theme>`;
-	const props = [
-		{
-			name: 'Theme: palette',
-			type: 'Palette | { dark: Palette; light: Palette }',
-			required: false,
-			default: '{}',
-			description:
-				'Optional hex colors for the nine roles; a single palette applies to both modes. Invalid hex values throw.'
-		},
-		{
-			name: 'Theme: children',
-			type: 'Snippet',
-			required: false,
-			default: 'Omitted',
-			description: 'Application content.'
-		},
-		{
-			name: 'ThemeModeToggle: mode',
-			type: 'ThemeMode',
-			required: false,
-			default: 'auto',
-			description: 'light, dark or auto (system preference).'
-		}
-	];
 	const colors = [
 		'primary',
 		'secondary',
@@ -153,10 +119,7 @@
 	] as const;
 </script>
 
-<Page
-	title={chapter}
-	description="Install Bref as a library, import its components and customize the shared theme."
->
+<Page title={chapter} description={doc.description}>
 	<Section {...sections[0]}>
 		<CodeSnippet language="bash" label="npm installation command" source="npm install bref-ui" />
 		<p>
@@ -192,7 +155,10 @@
 				/>{/each}
 			<Button label="Disabled" onClick={noop} disabled />
 		</div>
-		<CodeSnippet {source} label="Theme usage code" />
+		<ComponentUsage usage={doc.usage} />
+		<h3>ThemeModeToggle</h3>
+		<ComponentUsage usage={componentDocs['theme-mode-toggle'].usage} />
+		<PropTable props={componentDocs['theme-mode-toggle'].props} label="ThemeModeToggle props" />
 	</Section>
 	<Section {...sections[2]}>
 		<p>
