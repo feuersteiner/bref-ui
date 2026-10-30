@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep both orientations and their interactive examples together. */
 	import { Button, Checkbox, Select, Tabs, TextInput } from 'bref-ui';
 	import type {
@@ -11,12 +13,14 @@
 	import { fade, fly } from 'svelte/transition';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';
 	import PlaygroundGroup from '../components/playground-group.svelte';
 	import { chapter, sections } from './sections.js';
+
+	const doc = componentDocs['tabs'];
+	const props = doc.props;
 
 	const items: TabItemDataProps[] = [
 		{ id: 'overview', label: 'Overview', icon: 'dashboard' },
@@ -53,18 +57,6 @@
 	const customOut: TabTransition = (node) => fade(node, { duration: 100 });
 	const selectedLabel = (id: string | undefined) =>
 		items.find((item) => item.id === id)?.label ?? 'No tab selected';
-	const source = (direction: Orientation) => `<script lang="ts">
-  import { Tabs } from 'bref-ui';
-  let value = $state('overview');
-  const items = ${JSON.stringify(items, null, 2)} as const;
-<${'/'}script>
-
-<Tabs {items} bind:value orientation="${direction}" label="Workspace sections" />
-{#if value === 'overview'}
-  <p>Workspace overview</p>
-{:else}
-  <p>Workspace settings</p>
-{/if}`;
 	const playgroundSource = $derived(`<script lang="ts">
   import { Tabs } from 'bref-ui';${customTransitions ? "\n  import { fade, fly } from 'svelte/transition';" : ''}
   const items = ${JSON.stringify(previewItems, null, 2)} as const;
@@ -93,90 +85,9 @@
 		empty = false;
 		changes = 0;
 	};
-	const props = [
-		{
-			name: 'items',
-			type: 'readonly TabItemDataProps[]',
-			required: true,
-			default: '—',
-			description:
-				'Display order; each item has a unique id, label, icon and optional disabled flag.'
-		},
-		{
-			name: 'orientation',
-			type: 'Orientation',
-			required: false,
-			default: 'horizontal',
-			description:
-				'Soft glass pills in a horizontal row or equal-width vertical column; determines arrow-key navigation.'
-		},
-		{
-			name: 'width',
-			type: 'Dimension',
-			required: false,
-			default: 'fit',
-			description:
-				'Horizontal only: fit keeps natural item widths and scrolls; fill spans the parent and truncates labels. Vertical rejects width.'
-		},
-		{
-			name: 'size',
-			type: 'BaseSize',
-			required: false,
-			default: 'medium',
-			description:
-				'Scales tab height, padding, label and icon in both orientations. Coarse pointers keep 44px touch targets.'
-		},
-		{
-			name: 'value',
-			type: 'string',
-			required: false,
-			default: 'undefined',
-			description:
-				'Bindable selected ID. If missing or disabled, the first enabled tab stays focusable without changing the value. Omitted values preserve native Tab order.'
-		},
-		{
-			name: 'onChange',
-			type: '(id: string) => void',
-			required: false,
-			default: 'Omitted',
-			description: 'Called once when user interaction changes selection.'
-		},
-		{
-			name: 'label',
-			type: 'string',
-			required: false,
-			default: 'Tabs',
-			description: 'Accessible name for the tab list.'
-		},
-		{
-			name: 'filled',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description:
-				'Fill every Material Symbols icon; the selected icon is always filled. Does not change the soft glass background.'
-		},
-		{
-			name: 'transitionIn',
-			type: 'TabTransition',
-			required: false,
-			default: 'Shared crossfade',
-			description: 'Custom intro for the selected indicator; receives its HTMLElement.'
-		},
-		{
-			name: 'transitionOut',
-			type: 'TabTransition',
-			required: false,
-			default: 'Shared crossfade',
-			description: 'Custom outro for the selected indicator; receives its HTMLElement.'
-		}
-	];
 </script>
 
-<Page
-	title={chapter}
-	description="Switch between sections with primary-colored floating pills and soft glass selection, horizontally or vertically."
->
+<Page title={chapter} description={doc.description}>
 	<Section {...sections.find((section) => section.id === 'horizontal')!}>
 		<div data-demo="horizontal">
 			<div data-tabs>
@@ -190,7 +101,7 @@
 		</div>
 		<details>
 			<summary>Horizontal usage code</summary>
-			<CodeSnippet source={source('horizontal')} label="Horizontal tabs code" />
+			<ComponentUsage usage={doc.usage} example={0} />
 		</details>
 	</Section>
 	<Section {...sections.find((section) => section.id === 'vertical')!}>
@@ -212,13 +123,7 @@
 		</div>
 		<details>
 			<summary>Vertical usage code</summary>
-			<CodeSnippet
-				source={source('vertical').replace(
-					'label="Workspace sections"',
-					'label="Workspace sections" filled'
-				)}
-				label="Vertical tabs code"
-			/>
+			<ComponentUsage usage={doc.usage} example={1} />
 		</details>
 	</Section>
 	<Section {...sections.find((section) => section.id === 'sizes')!}>
@@ -228,10 +133,6 @@
 				<Tabs {items} value="overview" size={tabSize} label={`${tabSize} workspace sections`} />
 			{/each}
 		</div>
-		<CodeSnippet
-			source={'<Tabs {items} bind:value size="small" label="Workspace sections" />'}
-			label="Tab sizes code"
-		/>
 	</Section>
 	<Section {...sections.find((section) => section.id === 'playground')!}>
 		<Playground source={playgroundSource} onReset={reset}>

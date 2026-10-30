@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep this page's controls, selection demos and documentation together. */
 	import { chapter, sections } from './sections.js';
 	import Playground from '../components/playground.svelte';
@@ -9,9 +11,11 @@
 	import Section from '../components/section.svelte';
 	import type { Color, Size, Variant, PillDataProps } from 'bref-ui/types';
 	import { Button, PillChoiceGroup, Select, Checkbox } from 'bref-ui';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import MovingBackground from '../components/moving-background.svelte';
+
+	const doc = componentDocs['pill-choice-group'];
+	const props = doc.props;
 
 	const items = [
 		{ id: 'focus', label: 'Focus', icon: { name: 'center_focus_strong' } },
@@ -84,75 +88,12 @@
   size="${size}" variant="${variant}" color="${color}"
   disabled={${disabled}} glass={${glass}} animateSelected={${animateSelected}}${deleteEnabled ? '\n  onDelete={remove}' : ''} />
 <p role="status">Selected: {Array.isArray(selection) ? selection.join(', ') || 'none' : selection || 'none'}</p>`);
-	const props = [
-		{
-			name: 'items',
-			type: 'readonly PillDataProps[]',
-			required: true,
-			default: '—',
-			description: 'Choices with unique IDs and visible labels; icons are optional.'
-		},
-		{
-			name: 'selection',
-			type: 'string | string[]',
-			required: true,
-			default: '—',
-			description: 'Bindable ID for radio choice, or IDs for checkboxes.'
-		},
-		{
-			name: 'disabled',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Disable every choice.'
-		},
-		{
-			name: 'onDelete',
-			type: '(id: string) => void',
-			required: false,
-			default: 'Omitted',
-			description:
-				'Show delete buttons and report the item ID; the consumer updates items and selection.'
-		},
-		{ name: 'size', type: 'Size', required: false, default: 'medium', description: 'Pill size.' },
-		{
-			name: 'variant',
-			type: "Exclude<Variant, 'filled'>",
-			required: false,
-			default: 'neutral',
-			description: 'Neutral selects soft; soft selects filled.'
-		},
-		{
-			name: 'color',
-			type: "Exclude<Color, 'background'>",
-			required: false,
-			default: 'foreground',
-			description: 'Theme role for every pill, including selected choices.'
-		},
-		{
-			name: 'animateSelected',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Enable the pill highlight animation.'
-		},
-		{
-			name: 'glass',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Translucent paint and backdrop blur for the choices.'
-		}
-	];
 </script>
 
-<Page title={chapter} description="Single or multiple choices presented as a group of Pills.">
+<Page title={chapter} description={doc.description}>
 	<Section {...sections[0]}>
 		<PillChoiceGroup {items} selection="focus" aria-label="Example mood" />
-		<CodeSnippet
-			label="PillChoiceGroup usage code"
-			source={`<script>\n  import { PillChoiceGroup } from 'bref-ui';\n  const items = [{ id: 'focus', label: 'Focus' }, { id: 'calm', label: 'Calm' }];\n  let selection = $state('focus');\n<${'/'}script>\n\n<PillChoiceGroup {items} aria-label="Mood" bind:selection />`}
-		/>
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections[1]}>
 		<Playground source={playgroundSource} onReset={reset}>

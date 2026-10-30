@@ -10,8 +10,11 @@ src/lib/
     button.svelte
     types.ts          # only for necessary custom types
     registry.json     # CLI installation metadata
+    docs.ts           # default export satisfying ComponentDocProps
   index.ts            # public component exports
   types.ts            # shared types and public type exports
+  types/docs.ts       # ComponentDocProps and FieldDocProps
+  docs/index.ts       # dedicated reference catalogue, never a runtime import
 ```
 
 Use kebab-case filenames, camelCase custom props and PascalCase types. Keep components
@@ -64,6 +67,20 @@ Keep type definitions out of copied files; copied components import their types 
 supplied source root. Its shared loader validates metadata, unique IDs/export names,
 file existence and the dependency graph. Development and CLI packaging reuse this
 loader; no separate development command is required.
+
+### Component reference
+
+Every public component, including package-only exports, owns a colocated `docs.ts`
+with a default export satisfying `ComponentDocProps` from `types/docs.ts`.
+Use exactly `description`, `usage` and `props`. `usage` is one Markdown string with
+complete fenced Svelte examples plus native behavior, accessibility and customization
+guidance. Fields use `FieldDocProps`; document required props first, then optional
+props, defaults and bindable state. Register the reference in `docs/index.ts`.
+The CLI, `bref-ui/docs`, `/llms.txt` and gallery pages consume this data.
+Keep gallery controls/live demonstrations in docs; remove duplicated reference data.
+Installation metadata stays in registry.json and is generated at packaging time.
+Never import reference data into component runtime code or list it among copied files.
+TypeScript checks the reference types; packaging validates component coverage and compiles usage examples.
 
 ## 2. CSS patterns
 

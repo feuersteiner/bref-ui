@@ -1,11 +1,12 @@
 import { fileURLToPath } from 'node:url';
 import { addComponent } from './add/index.js';
 import { initImports } from './init-imports.js';
+import { readDocumentation } from '../documentation/index.js';
 import type { Command } from './types.js';
 
 /**
  * Run a validated request and print its outcome using the registry shipped beside the executable.
- * @param command Parsed help, init or add request.
+ * @param command Parsed help, init, add or docs request.
  * @param projectRoot Consumer project directory, supplied by the executable's cwd.
  * @throws When initialization or installation fails; the executable reports the error.
  */
@@ -16,10 +17,17 @@ export const execute = async (command: Command, projectRoot: string): Promise<vo
 				'Commands:\n' +
 				'  init             Add the #bref UI imports to package.json\n' +
 				'  add <component>  Preview and install a component and its dependencies\n\n' +
+				'  docs list        Discover public components and copy availability\n' +
+				'  docs cli         Read the CLI workflow\n' +
+				'  docs <component> [usage|props|cli]  Read a component reference\n\n' +
 				'Options:\n' +
 				'  -h, --help       Show this help\n\n' +
-				'Commands use the current directory as the consumer project.'
+				'init/add use the current directory as the consumer project. docs reads bundled references offline.'
 		);
+		return;
+	}
+	if (command.name === 'docs') {
+		await readDocumentation(command.target, command.section);
 		return;
 	}
 	if (command.name === 'init') {

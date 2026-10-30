@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep the selection and overflow regression demos together. */
 	import { Checkbox, Select, TextInput, Button } from 'bref-ui';
 	import type { SelectOptionDataProps, BaseSize, IconProps } from 'bref-ui/types';
@@ -8,9 +10,11 @@
 	import PlaygroundGroup from '../components/playground-group.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { chapter, sections } from './sections.js';
+
+	const doc = componentDocs['select'];
+	const props = doc.props;
 
 	const items: SelectOptionDataProps[] = [
 		{ id: 'draft', label: 'Draft', icon: { name: 'edit' } },
@@ -29,14 +33,6 @@
 	let overflowMany = $state<string[]>(['option-1', 'option-2', 'option-3']);
 	let disabled = $state(false);
 	let changeCount = $state(0);
-	const source = `<script>
-  import { Select } from 'bref-ui';
-  let status = $state<string | undefined>();
-  const items = [{ id: 'draft', label: 'Draft' }];
-<${'/'}script>
-
-<label for="status">Status</label>
-<Select id="status" {items} bind:value={status} />`;
 
 	let previewValue = $state<string | string[] | undefined>();
 	let previewSize = $state<BaseSize>('medium');
@@ -91,72 +87,14 @@
 		optionDisabled = true;
 		previewChanges = 0;
 	};
-	const props = [
-		{
-			name: 'items',
-			type: 'readonly SelectOptionDataProps[]',
-			required: true,
-			default: '\u2014',
-			description: 'Unique IDs, labels, optional icons and disabled state.'
-		},
-		{
-			name: 'value',
-			type: 'string | string[]',
-			required: false,
-			default: 'undefined',
-			description: 'Bindable selected ID or IDs; an array enables multiple selection.'
-		},
-		{
-			name: 'onChange',
-			type: '(value: string | string[]) => void',
-			required: false,
-			default: 'Omitted',
-			description: 'Called when a user changes selection.'
-		},
-		{
-			name: 'id',
-			type: 'string',
-			required: false,
-			default: 'Omitted',
-			description: 'Trigger ID for label association.'
-		},
-		{
-			name: 'placeholder',
-			type: 'string',
-			required: false,
-			default: 'Select\u2026',
-			description: 'Text shown for an empty selection.'
-		},
-		{
-			name: 'emptyMessage',
-			type: 'SelectEmptyProps',
-			required: false,
-			default: "{ message: 'No options found' }",
-			description: 'Empty results text and optional decorative icon.'
-		},
-		{
-			name: 'size',
-			type: 'BaseSize',
-			required: false,
-			default: 'medium',
-			description: 'Control and option size.'
-		},
-		{
-			name: 'disabled',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Disable the control and close the popup.'
-		}
-	];
 </script>
 
-<Page title={chapter} description="Choose one or more labeled options by ID.">
+<Page title={chapter} description={doc.description}>
 	<Section {...sections.find((section) => section.id === 'usage')!}>
 		<label for="status">Status</label>
 		<Select id="status" {items} bind:value onChange={() => changeCount++} />
 		<p role="status">Selected: {value ?? 'none'}; changes: {changeCount}</p>
-		<CodeSnippet {source} label="Select usage code" />
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections.find((section) => section.id === 'playground')!}>
 		<Playground source={playgroundSource} onReset={resetPlayground}>

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep controls, native form behavior and fixed examples together. */
 	import { chapter, sections } from './sections.js';
 
@@ -7,15 +9,16 @@
 	import PlaygroundGroup from '../components/playground-group.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { Icon, Switch, Button, Checkbox, Select, TextInput } from 'bref-ui';
 	import type { BaseSize } from 'bref-ui/types';
 
+	const doc = componentDocs['switch'];
+	const props = doc.props;
+
 	const sizes: BaseSize[] = ['small', 'medium', 'large'];
 	let enabled = $state(false);
 	let submitted = $state('No submission yet.');
-	const source = `<script>\n  import { Icon, Switch } from 'bref-ui';\n  let enabled = $state(false);\n<${'/'}script>\n\n<label>\n  <Switch name="notifications" bind:checked={enabled}>\n    {#if enabled}<Icon name="dark_mode" />{:else}<Icon name="light_mode" />{/if}\n  </Switch>\n  Notifications\n</label>`;
 	let previewChecked = $state(false);
 	let previewSize = $state<BaseSize>('medium');
 	let previewLabel = $state('Receive updates');
@@ -39,32 +42,9 @@
 		previewInvalid = false;
 		withIcon = false;
 	};
-	const props = [
-		{
-			name: 'checked',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Bindable on/off state.'
-		},
-		{
-			name: 'size',
-			type: 'BaseSize',
-			required: false,
-			default: 'medium',
-			description: 'small, medium or large.'
-		},
-		{
-			name: 'children',
-			type: 'Snippet',
-			required: false,
-			default: 'Omitted',
-			description: 'Decorative content rendered inside the thumb.'
-		}
-	];
 </script>
 
-<Page title={chapter} description="A checkbox-based on/off control with native form behavior.">
+<Page title={chapter} description={doc.description}>
 	<Section {...sections.find((section) => section.id === 'usage')!}>
 		<label>
 			<Switch name="notifications" bind:checked={enabled}>
@@ -73,7 +53,7 @@
 			Notifications
 		</label>
 		<p role="status">Notifications {enabled ? 'on' : 'off'}.</p>
-		<CodeSnippet {source} label="Switch usage code" />
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections.find((section) => section.id === 'playground')!}>
 		<Playground source={playgroundSource} onReset={resetPlayground}>

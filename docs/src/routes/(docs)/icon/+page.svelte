@@ -1,15 +1,20 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep the prop matrix and interactive examples in their documentation page. */
 	import { chapter, sections } from './sections.js';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import Playground from '../components/playground.svelte';
 	import PlaygroundField from '../components/playground-field.svelte';
 	import PlaygroundGroup from '../components/playground-group.svelte';
 	import { Button, Icon, Select, TextInput, Checkbox } from 'bref-ui';
 	import type { Color, Size, IconName } from 'bref-ui/types';
+
+	const doc = componentDocs['icon'];
+	const props = doc.props;
+
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'] as const;
 	const colors = [
 		'primary',
@@ -47,63 +52,15 @@
 		filled = false;
 		label = 'Favorite';
 	};
-	const source = `<script>
-  import { Icon } from 'bref-ui';
-<${'/'}script>
-
-<Icon name="check_circle" label="Complete" />
-<Icon name="favorite" filled size="large" color="secondary" />`;
-
-	const props = [
-		{
-			name: 'name',
-			type: 'IconName',
-			required: true,
-			default: '—',
-			description: 'Material Symbols identifier.'
-		},
-		{
-			name: 'filled',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Use the filled glyph variant.'
-		},
-		{
-			name: 'label',
-			type: 'string',
-			required: false,
-			default: 'Omitted',
-			description: 'Accessible name for a meaningful standalone icon.'
-		},
-		{
-			name: 'size',
-			type: 'Size',
-			required: false,
-			default: 'Inherited',
-			description: 'x-small, small, medium, large or x-large.'
-		},
-		{
-			name: 'color',
-			type: 'Color',
-			required: false,
-			default: 'Inherited',
-			description:
-				'primary, secondary, foreground, background, muted, info, success, warning or error.'
-		}
-	];
 </script>
 
-<Page
-	title={chapter}
-	description="Render Material Symbols by name, with inherited or explicit size and color, optional fill, and accessible labels. Load the Material Symbols font through Theme or your app's font-face declaration."
->
+<Page title={chapter} description={doc.description}>
 	<Section {...sections[0]}>
 		<div data-demo="row">
 			<Icon name="check_circle" label="Complete" />
 			<Icon name="favorite" filled size="large" color="secondary" />
 		</div>
-		<CodeSnippet {source} label="Icon usage code" />
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections[1]}>
 		<p>Clear the label for a decorative icon. Omitted size and color inherit from the preview.</p>
@@ -243,11 +200,6 @@
 			class="custom-icon"
 			style="font-size: 3rem; color: var(--color-secondary);"
 			title="Native span title"
-		/>
-		<CodeSnippet
-			label="Icon composition code"
-			source={`<span style="font-size: 2rem; color: var(--color-primary);"><Icon name="star" /> Inherited size and color</span>
-<Icon name="star" class="custom-icon" style="font-size: 3rem; color: var(--color-secondary);" title="Native span title" />`}
 		/>
 	</Section>
 	<Section {...sections[5]}>

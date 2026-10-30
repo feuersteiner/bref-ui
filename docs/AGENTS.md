@@ -31,22 +31,11 @@ Documentation routes and `/llms.txt` references live in `docs/src/routes/(docs)`
 pathnames (`''` for `/`, `'button'` for `/button`).
 Use the package (`/library`) covers setup and Theme; Own the code (`/cli`) covers copied source.
 
-Whenever a public component is added, changed or removed, update its documentation
-page's `props` array, navigation and its `src/routes/(docs)/llms.txt/<component>.ts` reference
-(`purpose`, optional `setup`, `example`, `props: string`), then verify `/llms.txt`.
-Register added or removed references in `src/routes/(docs)/llms.txt/+server.ts`.
-Cover every public component separately, including ThemeModeToggle. Keep entries
-brief: name, purpose, one working example and all props on one line, required first,
-with types and defaults. No tables, subsections, indexes or playgrounds. Format:
-
-````markdown
-## ComponentName
-
-Use for <purpose>.
-
-```svelte
-<ComponentName requiredProp="value" />
-```
-
-Props: requiredProp: string; optionalProp?: boolean = false
-````
+Whenever a public component is added, changed or removed, update its colocated core
+`docs.ts` and the `bref-ui/docs` catalogue, then update navigation and verify `/llms.txt`.
+Use the shared description, usage and props in gallery pages. Do not author component
+reference data or static usage strings again in this package. Keep live galleries,
+playground controls and their generated preview source in docs.
+The library guide also consumes the separate ThemeModeToggle reference.
+`/llms.txt` renders all shared references, including package-only components, without
+maintaining another list of descriptions, props or examples.

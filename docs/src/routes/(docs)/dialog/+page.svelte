@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep the dialog's interactive gallery examples together. */
 	import { Button, Checkbox, Dialog, TextInput, Select } from 'bref-ui';
 	import type {
@@ -13,9 +15,11 @@
 	import PlaygroundGroup from '../components/playground-group.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { chapter, sections } from './sections.js';
+
+	const doc = componentDocs['dialog'];
+	const props = doc.props;
 
 	const sizes = ['x-small', 'small', 'medium', 'large', 'x-large', 'full-screen'] as const;
 	const colors: StatusColor[] = ['info', 'success', 'warning', 'error'];
@@ -118,64 +122,6 @@ ${bodyMode === 'form' ? '  <label for="dialog-preview-name">Display name</label>
   <Button label="Close via binding" onClick={() => open = false} />
 </Dialog>
 <p role="status">{lastEvent}; close events: {closeCount}; cancel events: {cancelCount}</p>`);
-	const source = `<script lang="ts">
-  import { Button, Dialog, TextInput } from 'bref-ui';
-  let open = $state(false);
-<${'/'}script>
-
-<Button label="Open dialog" onClick={() => open = true} />
-<Dialog bind:open header={{ title: 'Edit details', description: 'Changes are local until saved.' }}>
-  <label>
-    Display name <TextInput value="Example name" />
-  </label>
-</Dialog>`;
-
-	const props = [
-		{
-			name: 'header',
-			type: 'DialogHeaderDataProps',
-			required: true,
-			default: '—',
-			description:
-				'Title, optional description, and optional decorative icon. Title/icon changes animate unless reduced motion is requested.'
-		},
-		{
-			name: 'children',
-			type: 'Snippet',
-			required: true,
-			default: '—',
-			description: 'Dialog body.'
-		},
-		{
-			name: 'open',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Bindable modal state.'
-		},
-		{
-			name: 'footer',
-			type: 'Snippet | { primary: DialogActionProps; secondary: DialogActionProps }',
-			required: false,
-			default: 'Omitted',
-			description:
-				'Custom footer or exactly two actions; each action accepts label, icon, onClick, disabled, and status color.'
-		},
-		{
-			name: 'dismissible',
-			type: 'boolean',
-			required: false,
-			default: 'true',
-			description: 'Allow Escape and show the close button.'
-		},
-		{
-			name: 'size',
-			type: "Size | 'full-screen'",
-			required: false,
-			default: 'medium',
-			description: 'Dialog width or full-screen; screens up to 36rem always use full-screen.'
-		}
-	];
 </script>
 
 {#snippet previewFooter()}<Button label="Done" onClick={() => (previewOpen = false)} />{/snippet}
@@ -184,7 +130,7 @@ ${bodyMode === 'form' ? '  <label for="dialog-preview-name">Display name</label>
 	<Button label="Done" onClick={() => (snippetOpen = false)} />
 {/snippet}
 
-<Page title={chapter} description="Present modal content with native focus and accessible naming.">
+<Page title={chapter} description={doc.description}>
 	<Section {...sections.find((section) => section.id === 'usage')!}>
 		<p>Open a modal with a named header and a body snippet.</p>
 		<div><Button label="Open dialog" onClick={() => (open = true)} /></div>
@@ -203,7 +149,7 @@ ${bodyMode === 'form' ? '  <label for="dialog-preview-name">Display name</label>
 			<p>Backdrop clicks leave the dialog open.</p>
 		</Dialog>
 		<p aria-live="polite">{lastEvent}</p>
-		<CodeSnippet {source} label="Dialog usage code" />
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections.find((section) => section.id === 'header-motion')!}>
 		<p>Title and icon changes enter together. Reduced motion skips the entrance.</p>

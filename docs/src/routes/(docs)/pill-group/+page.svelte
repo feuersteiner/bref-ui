@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep interactive group states and gallery examples together. */
 	import { chapter, sections } from './sections.js';
 	import Playground from '../components/playground.svelte';
@@ -8,10 +10,12 @@
 	import MovingBackground from '../components/moving-background.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import { PillGroup, Select, Checkbox } from 'bref-ui';
 	import type { Color, Size, Variant, PillDataProps } from 'bref-ui/types';
+
+	const doc = componentDocs['pill-group'];
+	const props = doc.props;
 
 	const items = [
 		{ id: 'draft', label: 'Draft', icon: { name: 'draft' } },
@@ -65,53 +69,12 @@
 
 <PillGroup {items} size="${size}" variant="${variant}" color="${color}"
   glass={${glass}} aria-label="Document categories preview"${deleteEnabled ? '\n  onDelete={(id) => items = items.filter((item) => item.id !== id)}' : ''} />`);
-	const props = [
-		{
-			name: 'items',
-			type: 'readonly PillDataProps[]',
-			required: true,
-			default: '—',
-			description: 'Items with unique IDs, labels and optional icons.'
-		},
-		{
-			name: 'onDelete',
-			type: '(id: string) => void',
-			required: false,
-			default: 'Omitted',
-			description: 'Show delete buttons and report the item ID; the consumer updates items.'
-		},
-		{ name: 'size', type: 'Size', required: false, default: 'medium', description: 'Pill size.' },
-		{
-			name: 'variant',
-			type: 'Variant',
-			required: false,
-			default: 'neutral',
-			description: 'neutral, soft or filled.'
-		},
-		{
-			name: 'color',
-			type: "Exclude<Color, 'background'>",
-			required: false,
-			default: 'foreground',
-			description: 'Theme color shared by the Pills.'
-		},
-		{
-			name: 'glass',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Translucent paint and backdrop blur for every Pill.'
-		}
-	];
 </script>
 
-<Page title={chapter} description="A list of Pills for related categories or statuses.">
+<Page title={chapter} description={doc.description}>
 	<Section {...sections[0]}>
 		<PillGroup {items} aria-label="Document categories" />
-		<CodeSnippet
-			label="PillGroup usage code"
-			source={`<script lang="ts">\n  import { PillGroup } from 'bref-ui';\n  import type { PillDataProps } from 'bref-ui/types';\n  const items: PillDataProps[] = [{ id: 'draft', label: 'Draft', icon: { name: 'draft' } }, { id: 'review', label: 'In review' }];\n<${'/'}script>\n\n<PillGroup {items} aria-label="Document categories" />`}
-		/>
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections[1]}>
 		<Playground source={playgroundSource} onReset={reset}>

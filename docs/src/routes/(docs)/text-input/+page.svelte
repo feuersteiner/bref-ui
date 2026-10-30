@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep the native form examples and component matrix together on the documentation page. */
 	import { TextInput, Select, Checkbox, Button } from 'bref-ui';
 	import type { BaseSize, Variant, IconProps } from 'bref-ui/types';
@@ -8,10 +10,12 @@
 	import PlaygroundGroup from '../components/playground-group.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import MovingBackground from '../components/moving-background.svelte';
 	import { chapter, sections } from './sections.js';
+
+	const doc = componentDocs['text-input'];
+	const props = doc.props;
 
 	const sizes: BaseSize[] = ['small', 'medium', 'large'];
 	const variants = ['neutral', 'soft'] as const;
@@ -94,72 +98,15 @@
 		lastChange = 'Edit the field to inspect onChange.';
 		nativeEvents = 0;
 	};
-	const props = [
-		{
-			name: 'value',
-			type: 'string',
-			required: false,
-			default: 'Omitted',
-			description: 'Bindable string value.'
-		},
-		{
-			name: 'onChange',
-			type: '(value: string) => void',
-			required: false,
-			default: 'Omitted',
-			description: 'Called once per input edit.'
-		},
-		{
-			name: 'icon',
-			type: 'IconProps',
-			required: false,
-			default: 'Omitted',
-			description: 'Decorative leading icon.'
-		},
-		{
-			name: 'size',
-			type: 'BaseSize',
-			required: false,
-			default: 'medium',
-			description: 'Small, medium or large.'
-		},
-		{
-			name: 'variant',
-			type: "Exclude<Variant, 'filled'>",
-			required: false,
-			default: 'soft',
-			description: 'Neutral or soft surface treatment.'
-		},
-		{
-			name: 'glass',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Translucent surface with backdrop blur.'
-		},
-		{
-			name: 'wide',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description: 'Fills available width.'
-		}
-	];
 </script>
 
-<Page
-	title={chapter}
-	description="A native single-line text control with an optional leading icon."
->
+<Page title={chapter} description={doc.description}>
 	<Section {...sections.find((section) => section.id === 'usage')!}>
 		<div data-demo="fields">
 			<label for="usage-text-input">Name</label>
 			<TextInput id="usage-text-input" name="entry" placeholder="Your name" />
 		</div>
-		<CodeSnippet
-			label="TextInput usage"
-			source={`<script>\n  import { TextInput } from 'bref-ui';\n<${'/'}script>\n\n<label for="entry">Name</label>\n<TextInput id="entry" name="entry" placeholder="Your name" />`}
-		/>
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections.find((section) => section.id === 'types')!}>
 		<div data-demo="grid">

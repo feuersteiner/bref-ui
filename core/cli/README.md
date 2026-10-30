@@ -5,7 +5,7 @@ configured UI directory, using package types from `bref-ui/types`.
 
 ## Overview
 
-The executable routes init and add to the implemented stages and ships in the local package.
+The executable routes init, add and read-only docs commands and ships in the local package.
 `init` adds a `#bref` subpath import to `package.json`; `add` copies into the directory
 it maps to. There is no configuration file. The CLI runs on Node.js through npm.
 Run commands from the consumer project directory:
@@ -14,6 +14,12 @@ Run commands from the consumer project directory:
 npx bref-ui init
 npx bref-ui add button
 npx bref-ui add theme
+npx bref-ui docs list
+npx bref-ui docs cli
+npx bref-ui docs button
+npx bref-ui docs button usage
+npx bref-ui docs button props
+npx bref-ui docs button cli
 ```
 
 Install the local tarball with `npm install /path/to/bref-ui-<version>.tgz`. The executable loads
@@ -55,6 +61,12 @@ flowchart TD
     decisions -->|null| cancel["Return cancelled"]
     decisions -->|Approved paths| copy["copyFiles"]
 ```
+
+Documentation is bundled with its package version. Read commands work offline without
+project files, initialization or prompts, and never run installation. Omit a component section
+for the full reference; there is no `all` selector. Dependency documentation stays separate.
+Package-only components are identified in discovery. See [documentation](documentation/README.md)
+for shared sources, packaging validation and generated installation references. Skills are deferred.
 
 ## Workflow documentation
 

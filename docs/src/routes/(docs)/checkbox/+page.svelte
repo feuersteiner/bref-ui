@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { componentDocs } from 'bref-ui/docs';
+	import ComponentUsage from '../components/component-usage.svelte';
 	/* eslint-disable max-lines -- Keep controls, native form behavior and fixed examples together. */
 	import { Checkbox, Button, Select, TextInput } from 'bref-ui';
 
@@ -7,10 +9,12 @@
 	import PlaygroundGroup from '../components/playground-group.svelte';
 	import Page from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
-	import CodeSnippet from '../components/code-snippet.svelte';
 	import PropTable from '../components/prop-table.svelte';
 	import type { Size } from 'bref-ui/types';
 	import { chapter, sections } from './sections.js';
+
+	const doc = componentDocs['checkbox'];
+	const props = doc.props;
 
 	let checked = $state(false);
 	let choiceVisible = $state(true);
@@ -40,36 +44,13 @@
 		previewInvalid = false;
 		indeterminate = false;
 	};
-	const props = [
-		{
-			name: 'size',
-			type: 'Size',
-			required: false,
-			default: 'medium',
-			description: 'Checkbox size from x-small through x-large.'
-		},
-		{
-			name: 'checked',
-			type: 'boolean',
-			required: false,
-			default: 'false',
-			description:
-				'Bind to the checked state. Checkmark motion respects reduced motion and does not delay removing a parent.'
-		}
-	];
 </script>
 
-<Page
-	title={chapter}
-	description="A compact checkbox with clear checked states and native form behavior."
->
+<Page title={chapter} description={doc.description}>
 	<Section {...sections.find((section) => section.id === 'usage')!}>
 		<label><Checkbox name="updates" value="yes" bind:checked /> Receive updates</label>
 		<p role="status">{checked ? 'Selected' : 'Not selected'}</p>
-		<CodeSnippet
-			label="Checkbox usage code"
-			source="&lt;label&gt;&lt;Checkbox name=&quot;updates&quot; value=&quot;yes&quot; bind:checked /&gt; Receive updates&lt;/label&gt;"
-		/>
+		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections.find((section) => section.id === 'motion')!}>
 		<p>
