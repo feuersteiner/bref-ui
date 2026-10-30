@@ -80,7 +80,7 @@ The CLI, `bref-ui/docs`, `/llms.txt` and gallery pages consume this data.
 Keep gallery controls/live demonstrations in docs; remove duplicated reference data.
 Installation metadata stays in registry.json and is generated at packaging time.
 Never import reference data into component runtime code or list it among copied files.
-Packaging validates component coverage and compiles/type-checks every usage example.
+TypeScript checks the reference types; packaging validates component coverage and compiles usage examples.
 
 ## 2. CSS patterns
 

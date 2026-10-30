@@ -11,6 +11,7 @@ documentation/
   read-catalogue.ts    Read the package-local JSON bundle
   render.ts           Select discovery, workflow or component sections
   format-props.ts     Render required/default/bindable fields
+  format-installation.ts  Render existing registry plans and type imports
   types.ts            Bundle shape and supported sections
   cli.md              General installation workflow
 ```
@@ -22,11 +23,13 @@ There is no `all` section and dependency references are not expanded.
 Unknown IDs/sections fail with an actionable discovery/usage command.
 Every response identifies the bundled package version.
 
-During prepack, `scripts/pack-docs.mjs` consumes the separately compiled `src/lib/docs`
-catalogue. It validates coverage, field structure and copy/runtime separation, then compiles
-and type-checks all fenced Svelte examples. It generates installation references from the
-validated registry, dependency plans and public type exports; no installation metadata belongs
-in component docs.ts files. The compiled JSON ships with the executable.
+During prepack, the existing `cli/pack.ts` bundles the separately compiled `src/lib/docs`
+catalogue into `dist-cli/docs.json`. TypeScript checks the shared metadata through
+`ComponentDocProps` and `FieldDocProps`; packaging checks public component coverage and
+compiles fenced Svelte examples. Existing registry/dependency modules provide installation
+plans, and `formatInstallation` renders their files and imports. Public type imports come
+from the TypeScript export information. No separate packaging scripts or temporary example
+projects are used.
 
 The dedicated `bref-ui/docs` entry exposes the same references for the static docs site
 and /llms.txt. Component runtime exports never import reference data.
