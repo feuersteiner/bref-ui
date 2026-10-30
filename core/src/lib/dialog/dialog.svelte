@@ -15,6 +15,7 @@
 		children,
 		footer,
 		dismissible = true,
+		glass = true,
 		size = 'medium',
 		onclose,
 		oncancel,
@@ -72,7 +73,12 @@
 	{#if open}
 		<div
 			data-surface
-			class={surface({ color: 'background', glass: true, shadow: 'large' })}
+			class={surface({
+				color: 'background',
+				variant: glass ? 'neutral' : 'filled',
+				glass,
+				shadow: 'large'
+			})}
 			use:showModal
 			transition:fly|global={{
 				y: prefersReducedMotion.current ? 0 : 16,

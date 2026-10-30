@@ -41,6 +41,7 @@
 		description: money(product.price)
 	}}
 	size="medium"
+	glass={false}
 	onpointerdown={pressBackdrop}
 	onclick={clickBackdrop}
 >

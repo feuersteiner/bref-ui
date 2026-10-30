@@ -31,5 +31,7 @@ export type DialogProps = Omit<
 	children: Snippet;
 	footer?: Snippet | { primary: DialogActionProps; secondary: DialogActionProps };
 	dismissible?: boolean;
+	/** Enable translucent surface paint and blur; false uses an opaque background. */
+	glass?: boolean;
 	size?: Size | 'full-screen';
 };
