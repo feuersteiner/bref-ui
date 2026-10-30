@@ -136,6 +136,11 @@ configuration for `publish-core.yml` and `publish-themes.yml`; see [npm setup](h
 
 ## Roadmap
 
+Track planned features in [Roadmap #126](https://github.com/feuersteiner/bref-ui/issues/126)
+and fixes in [Bug fixes #125](https://github.com/feuersteiner/bref-ui/issues/125).
+Their linked sub-issues describe scope and acceptance criteria; check
+[open issues](https://github.com/feuersteiner/bref-ui/issues) for newer reports.
+
 ```mermaid
 flowchart LR
     foundation["✅ Component foundation<br/>19 components · npm + copy CLI"]
