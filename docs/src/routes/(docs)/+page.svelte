@@ -89,7 +89,7 @@
 			installation details through the CLI, or share the full
 			<a href={resolve('llms.txt')}>/llms.txt reference</a>
 			. See
-			<a href={resolve('agents')}>Agent documentation</a>
+			<a href={resolve('agents')}>Agentic development</a>
 			for both workflows.
 		</p>
 	</Section>

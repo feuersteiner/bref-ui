@@ -59,10 +59,10 @@ export const navigation = [
 		title: 'Get started',
 		sort: false,
 		links: [
+			{ title: agentsChapter, href: 'agents' },
 			{ title: libraryChapter, href: 'library' },
 			{ title: cliChapter, href: 'cli' },
-			{ title: themesChapter, href: 'themes' },
-			{ title: agentsChapter, href: 'agents' }
+			{ title: themesChapter, href: 'themes' }
 		]
 	},
 	{

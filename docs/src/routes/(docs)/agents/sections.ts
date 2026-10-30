@@ -1,4 +1,4 @@
-export const chapter = 'Agent documentation';
+export const chapter = 'Agentic development';
 
 export const sections = [
 	{ id: 'cli', title: 'Targeted CLI references' },
