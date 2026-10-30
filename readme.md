@@ -85,7 +85,7 @@ npx bref-ui add button
 
 Components: `button`, `checkbox`, `combobox`, `dialog`, `icon`, `pill`,
 `pill-choice-group`, `pill-group`, `popover`, `progress`, `select`, `spinner`,
-`surface`, `switch`, `tabs`, `text-area`, `text-input`, `theme` and `tree-view`.
+`surface`, `switch`, `table`, `tabs`, `text-area`, `text-input`, `theme` and `tree-view`.
 
 ## Why Bref-ui?
 
@@ -143,7 +143,7 @@ Their linked sub-issues describe scope and acceptance criteria; check
 
 ```mermaid
 flowchart LR
-    foundation["✅ Component foundation<br/>19 components · npm + copy CLI"]
+    foundation["✅ Component foundation<br/>20 components · npm + copy CLI"]
     themes["✅ Theme tooling<br/>static light/dark palettes · contrast reports"]
     agents["✅ Agent tooling<br/>/llms.txt today · CLI/SDK (WIP: MCP)"]
     sites["🗓️ Marketing sites<br/>sections, recipes, generated SvelteKit sites"]
