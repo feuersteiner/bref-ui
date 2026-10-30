@@ -85,8 +85,12 @@
 		</p>
 		<h3>Agent-first</h3>
 		<p>
-			Bref is planned to pair its component collection with tools for discovery, customization and
-			validation. Site generation and live generative UI remain future work.
+			Give agents the same component reference used by this site. Read just the usage, props or
+			installation details through the CLI, or share the full
+			<a href={resolve('llms.txt')}>/llms.txt reference</a>
+			. See
+			<a href={resolve('agents')}>Agent documentation</a>
+			for both workflows.
 		</p>
 	</Section>
 	<Section {...sections[2]}>

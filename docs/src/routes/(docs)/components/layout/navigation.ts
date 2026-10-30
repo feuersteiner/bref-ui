@@ -1,4 +1,5 @@
 import { demoNavigation, demoPageSections } from '../../demo/catalog.js';
+import { chapter as agentsChapter, sections as agentsSections } from '../../agents/sections.js';
 import { chapter as cliChapter, sections as cliSections } from '../../cli/sections.js';
 import { chapter as themesChapter, sections as themesSections } from '../../themes/sections.js';
 import {
@@ -60,7 +61,8 @@ export const navigation = [
 		links: [
 			{ title: libraryChapter, href: 'library' },
 			{ title: cliChapter, href: 'cli' },
-			{ title: themesChapter, href: 'themes' }
+			{ title: themesChapter, href: 'themes' },
+			{ title: agentsChapter, href: 'agents' }
 		]
 	},
 	{
@@ -122,6 +124,7 @@ export interface NavigationItem {
 }
 
 export const pageSections: Record<string, readonly PageSection[]> = {
+	'/agents': agentsSections,
 	'/cli': cliSections,
 	'/library': librarySections,
 	'/themes': themesSections,
