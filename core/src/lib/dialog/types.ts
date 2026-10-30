@@ -33,5 +33,7 @@ export type DialogProps = Omit<
 	dismissible?: boolean;
 	/** Enable translucent surface paint and blur; false uses an opaque background. */
 	glass?: boolean;
+	/** Allow a backdrop press-and-click to request cancellation when dismissible. */
+	closeOnBackdrop?: boolean;
 	size?: Size | 'full-screen';
 };
