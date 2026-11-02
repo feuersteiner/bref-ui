@@ -51,6 +51,16 @@
 <Page title={chapter} description={doc.description}>
 	<Section {...sections.find((section) => section.id === 'usage')!}>
 		<Progress label="Upload progress" value={0.4} />
+		<div data-demo="controls">
+			<button type="button" data-demo="progress-card">
+				Uploading file
+				<Progress label="File upload progress" value={0.4} />
+			</button>
+			<button type="button" data-demo="progress-card">
+				Processing file
+				<Progress label="File processing progress" />
+			</button>
+		</div>
 		<ComponentUsage usage={doc.usage} />
 	</Section>
 	<Section {...sections.find((section) => section.id === 'playground')!}>
@@ -220,6 +230,12 @@
 		grid-template-columns: minmax(5rem, 8rem) repeat(3, minmax(0, 1fr));
 		align-items: center;
 		gap: 1rem;
+	}
+	[data-demo='progress-card'] {
+		display: grid;
+		gap: 0.75rem;
+		padding: 1rem;
+		width: min(100%, 16rem);
 	}
 	[data-demo='controls'] {
 		display: flex;

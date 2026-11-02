@@ -42,7 +42,7 @@
 	};
 </script>
 
-<div data-size={size} data-seekable={seekable} data-unknown={checkedValue === undefined}>
+<span data-size={size} data-seekable={seekable} data-unknown={checkedValue === undefined}>
 	<progress
 		{...seekable ? {} : { ...attributes, oninput, onchange, onpointercancel }}
 		id={seekable ? undefined : id}
@@ -77,10 +77,10 @@
 		/>
 		<span class={['glass']} style:inset-inline-start={`${percentage}%`} aria-hidden="true"></span>
 	{/if}
-</div>
+</span>
 
 <style>
-	div {
+	span[data-size] {
 		--progress-height: 0.375rem;
 		--progress-track: color-mix(in srgb, var(--color-foreground) 22%, var(--color-background));
 		--progress-fill: var(--color-primary);
@@ -89,10 +89,10 @@
 		width: 100%;
 		min-width: 0;
 	}
-	div[data-size='small'] {
+	span[data-size='small'] {
 		--progress-height: 0.25rem;
 	}
-	div[data-size='large'] {
+	span[data-size='large'] {
 		--progress-height: 0.5rem;
 	}
 	progress {
@@ -116,13 +116,13 @@
 		background: var(--progress-fill);
 		border-radius: 999px;
 	}
-	div[data-unknown='true'] progress::-webkit-progress-value {
+	span[data-unknown='true'] progress::-webkit-progress-value {
 		background: transparent;
 	}
-	div[data-unknown='true'] progress::-moz-progress-bar {
+	span[data-unknown='true'] progress::-moz-progress-bar {
 		background: transparent;
 	}
-	div[data-unknown='true']::after {
+	span[data-unknown='true']::after {
 		content: '';
 		position: absolute;
 		top: calc(50% - var(--progress-height) / 2);
@@ -135,15 +135,15 @@
 			sweep-trailing 2s cubic-bezier(0.55, 0, 0.85, 1) infinite;
 		pointer-events: none;
 	}
-	div[data-seekable='true'] {
+	span[data-seekable='true'] {
 		min-height: 2.75rem;
 		display: flex;
 		align-items: center;
 	}
-	div[data-seekable='true'] progress {
+	span[data-seekable='true'] progress {
 		pointer-events: none;
 	}
-	div:has(input:disabled) {
+	span[data-size]:has(input:disabled) {
 		--progress-fill: var(--color-muted);
 		filter: grayscale(1);
 	}
@@ -160,7 +160,7 @@
 	input:disabled {
 		cursor: not-allowed;
 	}
-	span {
+	input + span {
 		--glass-paint: color-mix(in srgb, var(--color-background) 92%, var(--progress-fill));
 		--surface-shadow: 0 2px 6px color-mix(in srgb, var(--color-foreground) 18%, transparent);
 		box-sizing: border-box;
@@ -188,7 +188,7 @@
 			0 4px 14px color-mix(in srgb, var(--color-foreground) 24%, transparent),
 			0 0 0 4px color-mix(in srgb, var(--progress-fill) 18%, transparent);
 	}
-	span:dir(rtl) {
+	input + span:dir(rtl) {
 		--internal-thumb-offset: 50%;
 	}
 	input:focus-visible + span {
@@ -206,24 +206,24 @@
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		span {
+		input + span {
 			transition: none;
 		}
-		div[data-unknown='true']::after {
+		span[data-unknown='true']::after {
 			animation: none;
 			inset-inline: 35%;
 		}
 	}
 	@media (forced-colors: active) {
-		div {
+		span[data-size] {
 			--progress-track: Canvas;
 			--progress-fill: Highlight;
 		}
-		div:has(input:disabled) {
+		span[data-size]:has(input:disabled) {
 			--progress-fill: GrayText;
 			filter: none;
 		}
-		div[data-unknown='true']::after {
+		span[data-unknown='true']::after {
 			forced-color-adjust: none;
 		}
 		input:focus-visible + span {
@@ -234,7 +234,7 @@
 			border: 1px solid CanvasText;
 			box-shadow: none;
 		}
-		span {
+		input + span {
 			background: Highlight;
 			border: 1px solid HighlightText;
 			box-shadow: none;
