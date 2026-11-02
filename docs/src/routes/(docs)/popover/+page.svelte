@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { componentDocs } from 'bref-ui/docs';
 	import ComponentUsage from '../components/component-usage.svelte';
+	import CodeSnippet from '../components/code-snippet.svelte';
 	/* eslint-disable max-lines -- Keep the trigger composition examples and their documentation together. */
 	import { resolve } from '$app/paths';
 	import { chapter, sections } from './sections.js';
@@ -18,6 +19,16 @@
 	const doc = componentDocs['popover'];
 	const props = doc.props;
 
+	const materialExamples = [
+		{ id: 'plain', title: 'Glass on plain', contextual: false, opaque: false },
+		{ id: 'context', title: 'Glass over content', contextual: true, opaque: false },
+		{ id: 'opaque', title: 'Opaque over content', contextual: true, opaque: true }
+	] as const;
+	const materialOptions = ['Draft', 'In review', 'Archived', 'Published'];
+	const opaqueStyle =
+		'background: var(--surface-fill); backdrop-filter: none; -webkit-backdrop-filter: none;';
+	let materialOpen = $state([false, false, false]);
+	let materialValues = $state(['Draft', 'Draft', 'Draft']);
 	let inputOpen = $state(false);
 	let inputWide = $state(false);
 	let open = $state(false);
@@ -146,6 +157,72 @@ ${content === 'form' ? '  <label for="popover-preview-name">Display name</label>
 			at least as wide as the trigger, within the viewport. Toggle wide to check the anchor minimum.
 		</p>
 		<ComponentUsage usage={doc.usage} />
+	</Section>
+	<Section {...sections.find((section) => section.id === 'glass-context')!}>
+		<p>
+			Open each status dropdown to compare the same soft panel on a plain background, over a static
+			pattern and with an opaque fill. Glass blurs the pattern behind the options; its fine top
+			highlight is easier to distinguish when there is content behind it.
+		</p>
+		<div data-material-comparison>
+			{#each materialExamples as example, index (example.id)}
+				<div data-material-example>
+					<h3 id={`material-${example.id}`}>{example.title}</h3>
+					<div data-material-stage data-contextual={example.contextual}>
+						<Popover
+							bind:open={materialOpen[index]}
+							width="fill"
+							spacing="x-small"
+							radius="0.75rem"
+							shadow
+							style={example.opaque ? opaqueStyle : undefined}
+						>
+							{#snippet trigger()}
+								<Button
+									label={materialValues[index]}
+									variant="soft"
+									wide
+									trailingIcon={{ name: 'keyboard_arrow_down' }}
+									aria-label={`${example.title}: ${materialValues[index]}`}
+									aria-expanded={materialOpen[index]}
+									onClick={() => (materialOpen[index] = !materialOpen[index])}
+								/>
+							{/snippet}
+							<div data-material-options aria-labelledby={`material-${example.id}`}>
+								{#each materialOptions as option (option)}
+									<Button
+										label={option}
+										size="small"
+										wide
+										disabled={option === 'Archived'}
+										aria-pressed={materialValues[index] === option}
+										onClick={() => {
+											materialValues[index] = option;
+											materialOpen[index] = false;
+										}}
+									/>
+								{/each}
+							</div>
+						</Popover>
+					</div>
+				</div>
+			{/each}
+		</div>
+		<p>
+			The trigger stays opaque. Use Tab to focus options, Enter or Space to select, and Escape to
+			dismiss; Archived is disabled. Switch the shared theme control to compare light and dark. The
+			backgrounds stay still, including with reduced motion.
+		</p>
+		<p>
+			See <a href={resolve('surface#glass')}>contextual glass and accessibility fallbacks</a>
+			for customization guidance. An explicit Surface style gives the last panel an opaque fill:
+		</p>
+		<CodeSnippet
+			label="Opaque popover surface override"
+			source={`<Popover style="${opaqueStyle}">
+  <!-- Keep the same trigger and content snippets. -->
+</Popover>`}
+		/>
 	</Section>
 	<Section {...sections.find((section) => section.id === 'playground')!}>
 		<Playground source={playgroundSource} onReset={reset}>
@@ -483,6 +560,32 @@ ${content === 'form' ? '  <label for="popover-preview-name">Display name</label>
 </Page>
 
 <style>
+	[data-material-comparison] {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+		gap: 1rem;
+	}
+	[data-material-example] {
+		min-width: 0;
+	}
+	[data-material-stage] {
+		min-height: 16rem;
+		padding: 1rem;
+		border: 1px solid color-mix(in srgb, var(--color-foreground) 15%, transparent);
+		border-radius: 0.75rem;
+		background: var(--color-background);
+	}
+	[data-material-stage][data-contextual='true'] {
+		background: repeating-linear-gradient(
+			125deg,
+			var(--color-background) 0 2rem,
+			color-mix(in srgb, var(--color-primary) 24%, var(--color-background)) 2rem 4rem
+		);
+	}
+	[data-material-options] {
+		display: grid;
+		gap: 0.125rem;
+	}
 	[data-playground-stage] {
 		position: relative;
 		isolation: isolate;
