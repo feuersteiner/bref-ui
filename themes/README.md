@@ -89,11 +89,6 @@ public workspace source exports directly. Package-level `check`, `build` and `pr
 remain available here; `src/lib` holds published sources and `src/routes` is only
 a local library preview.
 
-Palette regression tests run with `bun run --cwd core test` from the repository root.
-Install Chromium once with `bun run --cwd core playwright install chromium`
-(add `--with-deps` on Linux). The tests cover SSR, defaults, partial palettes,
-light/dark/system modes, updates and nested instance isolation.
-
 Packing includes this README and a generated copy of the repository MIT license.
 Edit the root license; generated package copies are ignored.
 
