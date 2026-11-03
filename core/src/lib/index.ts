@@ -4,6 +4,7 @@ export { default as Icon } from './icon/icon.svelte';
 export { default as Surface } from './surface/surface.svelte';
 export { surface } from './theme/surface.js';
 export { default as Theme } from './theme/theme.svelte';
+export { paletteStyle } from './theme/colors.svelte';
 export { default as ThemeModeToggle } from './theme-mode-toggle/theme-mode-toggle.svelte';
 export { default as Checkbox } from './checkbox/checkbox.svelte';
 export { default as Switch } from './switch/switch.svelte';
