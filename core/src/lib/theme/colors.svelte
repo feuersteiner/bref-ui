@@ -1,7 +1,6 @@
-<script lang="ts">
-	import type { ThemeProps } from './types.js';
+<script module lang="ts">
+	import type { ThemeProps } from 'bref-ui/types';
 
-	let { palette = {} }: Pick<ThemeProps, 'palette'> = $props();
 	const roles = [
 		'primary',
 		'secondary',
@@ -13,19 +12,30 @@
 		'warning',
 		'error'
 	] as const;
-	let paletteCss = $derived.by(() => {
+
+	/** Serialize validated palette overrides for Theme and prebuilt theme wrappers. */
+	export const paletteStyle = (
+		palette: ThemeProps['palette'] = {},
+		prefix: 'color' | 'user-input' = 'color'
+	): string => {
 		const modes = 'light' in palette ? palette : { light: palette, dark: palette };
-		const declarations = (['light', 'dark'] as const).flatMap((mode) =>
-			roles.flatMap((role) => {
-				const value = modes[mode][role];
-				if (value === undefined) return [];
-				if (!/^#(?:[\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i.test(value))
-					throw new Error(`Theme palette ${mode}.${role} must be a hex color.`);
-				return `--user-input-${role}-${mode}: ${value};`;
-			})
-		);
-		return `:root { ${declarations.join(' ')} }`;
-	});
+		return (['light', 'dark'] as const)
+			.flatMap((mode) =>
+				roles.flatMap((role) => {
+					const value = modes[mode][role];
+					if (value === undefined) return [];
+					if (!/^#(?:[\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i.test(value))
+						throw new Error(`Theme palette ${mode}.${role} must be a hex color.`);
+					return `--${prefix}-${role}-${mode}: ${value};`;
+				})
+			)
+			.join(' ');
+	};
+</script>
+
+<script lang="ts">
+	let { palette = {} }: Pick<ThemeProps, 'palette'> = $props();
+	let paletteCss = $derived(`:root { ${paletteStyle(palette, 'user-input')} }`);
 </script>
 
 <svelte:head>
@@ -97,6 +107,38 @@
 			--color-success: var(--color-success-dark);
 			--color-warning: var(--color-warning-dark);
 			--color-error: var(--color-error-dark);
+		}
+	}
+
+	/* Reset on every wrapper so a nested theme never inherits a parent's mode variable. */
+	:global([data-bref-theme]) {
+		--bref-theme-mode: initial;
+	}
+
+	:global(:where(:root:has(meta[name='color-scheme'][content='light'])) [data-bref-theme]) {
+		--bref-theme-mode: light;
+	}
+	:global(:where(:root:has(meta[name='color-scheme'][content='dark'])) [data-bref-theme]) {
+		--bref-theme-mode: dark;
+	}
+	:global(:where(:root:has(meta[name='color-scheme'][content='light dark'])) [data-bref-theme]) {
+		--bref-theme-mode: light dark;
+	}
+
+	/* Scoping proximity makes the nearest explicit mode win, including nested previews. */
+	@scope ([data-theme='light']) {
+		:global([data-bref-theme]) {
+			--bref-theme-mode: light;
+		}
+	}
+	@scope ([data-theme='dark']) {
+		:global([data-bref-theme]) {
+			--bref-theme-mode: dark;
+		}
+	}
+	@scope ([data-theme='auto']) {
+		:global([data-bref-theme]) {
+			--bref-theme-mode: light dark;
 		}
 	}
 </style>
