@@ -1,8 +1,7 @@
 <script lang="ts">
 	import '@fontsource-variable/material-symbols-outlined/fill.css';
 	import type { ThemeProps } from 'bref-ui/types';
-	import { paletteStyle } from '../theme/palette.js';
-	import '../theme/mode.css';
+	import { paletteStyle } from 'bref-ui';
 	let { children, palette = {} }: ThemeProps = $props();
 </script>
 

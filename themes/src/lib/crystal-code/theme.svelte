@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { ThemeProps } from 'bref-ui/types';
-	import { paletteStyle } from '../theme/palette.js';
-	import '../theme/mode.css';
+	import { paletteStyle } from 'bref-ui';
 	import './theme/fonts.css';
 
 	let { children, palette = {} }: ThemeProps = $props();
