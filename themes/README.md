@@ -50,6 +50,38 @@ Import components from the theme's entry point:
 <Theme><Button label="Save" /></Theme>
 ```
 
+## Theme controls
+
+Every prebuilt `Theme` accepts the core `ThemeProps` from `bref-ui/types`:
+optional `children?: Snippet` and `palette?: Palette | { light: Palette; dark: Palette }`.
+`Palette` is a partial map of semantic colors to CSS hex values: `primary`,
+`secondary`, `background`, `foreground`, `muted`, `info`, `success`, `warning`, `error`.
+Invalid hex values throw, as in core Theme.
+
+```svelte
+<script lang="ts">
+	import { Theme as CrystalCodeTheme, Button } from 'bref-ui-themes/crystal-code';
+	import type { Palette } from 'bref-ui/types';
+
+	const palette = { primary: '#6750a4' } satisfies Palette;
+</script>
+
+<CrystalCodeTheme {palette}><Button label="Save" /></CrystalCodeTheme>
+```
+
+A shared palette applies to both modes. For separate overrides, pass
+`palette={{ light: { primary: '#6750a4' }, dark: { primary: '#d0bcff' } }}`.
+Each mode merges only its supplied colors with that theme's defaults. Omitted
+colors retain the original appearance; private material and typography tokens
+remain theme-specific. Check contrast when choosing custom colors. Overrides stay on the instance, including nested themes,
+and do not alter sibling themes or core Theme.
+
+Use `ThemeModeToggle` to select `light`, `dark` or `auto` through the existing
+color-scheme metadata. Local `[data-theme="light"]`, `[data-theme="dark"]` and
+`[data-theme="auto"]` containers select the mode for their nested prebuilt themes;
+the nearest container wins. Without a mode selection, Crystal Code follows the
+system, New Paris and Glassy stay light, and VS Code stays dark.
+
 ## Development
 
 Run `bun install` and `bun run dev` from the repository root. The docs site consumes

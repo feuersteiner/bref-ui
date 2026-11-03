@@ -1,14 +1,15 @@
 <script lang="ts">
 	import '@fontsource-variable/material-symbols-outlined/fill.css';
-	import type { Snippet } from 'svelte';
-	let { children }: { children?: Snippet } = $props();
+	import type { ThemeProps } from 'bref-ui/types';
+	import { paletteStyle } from 'bref-ui';
+	let { children, palette = {} }: ThemeProps = $props();
 </script>
 
-<div data-bref-theme="new-paris">{@render children?.()}</div>
+<div data-bref-theme="new-paris" style={paletteStyle(palette)}>{@render children?.()}</div>
 
 <style>
 	[data-bref-theme] {
-		color-scheme: light;
+		color-scheme: var(--bref-theme-mode, light);
 		--color-primary-light: #171715;
 		--color-primary-dark: #171715;
 		--color-primary: light-dark(var(--color-primary-light), var(--color-primary-dark));

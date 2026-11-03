@@ -1,15 +1,16 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import type { ThemeProps } from 'bref-ui/types';
+	import { paletteStyle } from 'bref-ui';
 	import './theme/fonts.css';
 
-	let { children }: { children?: Snippet } = $props();
+	let { children, palette = {} }: ThemeProps = $props();
 </script>
 
-<div data-bref-theme="crystal-code">{@render children?.()}</div>
+<div data-bref-theme="crystal-code" style={paletteStyle(palette)}>{@render children?.()}</div>
 
 <style>
 	[data-bref-theme] {
-		color-scheme: light dark;
+		color-scheme: var(--bref-theme-mode, light dark);
 		--color-primary-light: #4e5969;
 		--color-primary-dark: #8aa7f8;
 		--color-primary: light-dark(var(--color-primary-light), var(--color-primary-dark));
@@ -69,23 +70,5 @@
 		background: var(--color-background);
 		color: var(--color-foreground);
 		font-synthesis: none;
-	}
-
-	:global(:where(:root:has(meta[name='color-scheme'][content='light']))) [data-bref-theme] {
-		color-scheme: light;
-	}
-	:global(:where(:root:has(meta[name='color-scheme'][content='dark']))) [data-bref-theme] {
-		color-scheme: dark;
-	}
-
-	@scope ([data-theme='light']) {
-		[data-bref-theme] {
-			color-scheme: light;
-		}
-	}
-	@scope ([data-theme='dark']) {
-		[data-bref-theme] {
-			color-scheme: dark;
-		}
 	}
 </style>

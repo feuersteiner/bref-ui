@@ -1,14 +1,15 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import type { ThemeProps } from 'bref-ui/types';
+	import { paletteStyle } from 'bref-ui';
 	import './theme/fonts.css';
-	let { children }: { children?: Snippet } = $props();
+	let { children, palette = {} }: ThemeProps = $props();
 </script>
 
-<div data-bref-theme="glassy">{@render children?.()}</div>
+<div data-bref-theme="glassy" style={paletteStyle(palette)}>{@render children?.()}</div>
 
 <style>
 	[data-bref-theme] {
-		color-scheme: light;
+		color-scheme: var(--bref-theme-mode, light);
 		--color-primary-light: #0068d9;
 		--color-primary-dark: #0068d9;
 		--color-primary: light-dark(var(--color-primary-light), var(--color-primary-dark));
