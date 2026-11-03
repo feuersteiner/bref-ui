@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { asset, resolve } from '$app/paths';
 	import { Surface } from 'bref-ui';
+	import { componentDocs } from 'bref-ui/docs';
+	import PropTable from '../components/prop-table.svelte';
 	import PageContainer from '../components/page-container.svelte';
 	import Section from '../components/section.svelte';
 	import CodeSnippet from '../components/code-snippet.svelte';
@@ -40,6 +42,38 @@
 
 <Theme><Button label="Save" /></Theme>`}
 		/>
+		<p>
+			Every prebuilt Theme accepts the same <code>ThemeProps</code>
+			as core Theme:
+		</p>
+		<PropTable props={componentDocs.theme.props} />
+		<CodeSnippet
+			label="Override a prebuilt palette"
+			source={`<script lang="ts">
+  import { Theme as CrystalCodeTheme, Button } from 'bref-ui-themes/crystal-code';
+  import type { Palette } from 'bref-ui/types';
+  const palette = { primary: '#6750a4' } satisfies Palette;
+<${'/'}script>
+
+<CrystalCodeTheme {palette}><Button label="Save" /></CrystalCodeTheme>`}
+		/>
+		<p>
+			A shared palette applies to both modes. Separate overrides use
+			<code>{"palette={{ light: { primary: '#6750a4' }, dark: { primary: '#d0bcff' } }}"}</code>
+			. Each mode keeps the theme defaults for omitted colors. Overrides stay local to each instance,
+			including nested themes. Private material and typography tokens remain theme-specific.
+		</p>
+		<p>
+			Use <code>ThemeModeToggle</code>
+			for light, dark or system mode. Local
+			<code>data-theme="light"</code>
+			,
+			<code>data-theme="dark"</code>
+			or
+			<code>data-theme="auto"</code>
+			containers select the mode for nested themes; the nearest container wins. Without a mode selection,
+			Crystal Code follows the system, New Paris and Glassy stay light, and VS Code stays dark.
+		</p>
 		<p>
 			<a href={resolve('demo')}>Demo</a>
 			shows complete applications using canonical Bref components and palette configuration.

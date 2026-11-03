@@ -1,0 +1,31 @@
+/* Reset on every wrapper so a nested theme never inherits a parent's mode variable. */
+[data-bref-theme] {
+	--bref-theme-mode: initial;
+}
+
+:where(:root:has(meta[name='color-scheme'][content='light'])) [data-bref-theme] {
+	--bref-theme-mode: light;
+}
+:where(:root:has(meta[name='color-scheme'][content='dark'])) [data-bref-theme] {
+	--bref-theme-mode: dark;
+}
+:where(:root:has(meta[name='color-scheme'][content='light dark'])) [data-bref-theme] {
+	--bref-theme-mode: light dark;
+}
+
+/* Scoping proximity makes the nearest explicit mode win, including nested previews. */
+@scope ([data-theme='light']) {
+	[data-bref-theme] {
+		--bref-theme-mode: light;
+	}
+}
+@scope ([data-theme='dark']) {
+	[data-bref-theme] {
+		--bref-theme-mode: dark;
+	}
+}
+@scope ([data-theme='auto']) {
+	[data-bref-theme] {
+		--bref-theme-mode: light dark;
+	}
+}
