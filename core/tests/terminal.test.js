@@ -38,6 +38,11 @@ test('empty output is a named, focusable viewport with decorative chrome, not co
 	expect(body).not.toMatch(/<header|<button|<input|aria-live|role="log"/);
 });
 
+test('keeps leading and trailing blank entries inside samp, away from the pre parser boundary', () => {
+	const { body } = render(Terminal, { props: { lines: ['', 'first', ''] } });
+	expect(body).toMatch(/<pre[^>]*><samp[^>]*>\nfirst\n<\/samp><\/pre>/);
+});
+
 test('forwards native attributes and permits accessible naming and focus overrides', () => {
 	const { body } = render(Terminal, {
 		props: {

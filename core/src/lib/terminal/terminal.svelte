@@ -15,7 +15,7 @@
 		</span>
 		<strong>{windowTitle}</strong>
 	</p>
-	<pre>{lines.join('\n')}</pre>
+	<pre><samp>{lines.join('\n')}</samp></pre>
 </div>
 
 <style>
@@ -84,6 +84,9 @@
 			monospace;
 		tab-size: 4;
 		white-space: pre;
+	}
+	samp {
+		font: inherit;
 	}
 	@media (forced-colors: active) {
 		div {
