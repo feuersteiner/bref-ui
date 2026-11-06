@@ -7,14 +7,14 @@
 <!-- The overflow viewport needs keyboard scrolling. -->
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div role="region" aria-label={windowTitle || 'Terminal'} tabindex="0" {...attributes}>
-	<header>
+	<p>
 		<span aria-hidden="true">
 			<i></i>
 			<i></i>
 			<i></i>
 		</span>
 		<strong>{windowTitle}</strong>
-	</header>
+	</p>
 	<pre>{lines.join('\n')}</pre>
 </div>
 
@@ -36,7 +36,8 @@
 		outline: 2px solid var(--color-primary-dark, #92b4df);
 		outline-offset: 3px;
 	}
-	header {
+	p {
+		margin: 0;
 		display: grid;
 		grid-template-columns: 3.25rem minmax(0, 1fr) 3.25rem;
 		align-items: center;

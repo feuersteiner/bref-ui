@@ -35,7 +35,7 @@ test('empty output is a named, focusable viewport with decorative chrome, not co
 	expect(body).toContain('aria-label="Terminal"');
 	expect(body).toContain('tabindex="0"');
 	expect(body).toContain('aria-hidden="true"');
-	expect(body).not.toMatch(/<button|<input|aria-live|role="log"/);
+	expect(body).not.toMatch(/<header|<button|<input|aria-live|role="log"/);
 });
 
 test('forwards native attributes and permits accessible naming and focus overrides', () => {
