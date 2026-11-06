@@ -1,6 +1,6 @@
 {
 	"name": "bref-ui-themes",
-	"version": "1.0.3",
+	"version": "1.1.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
@@ -9,6 +9,7 @@
 		"prepack": "node ../scripts/package.mjs && svelte-kit sync && svelte-package && publint",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"test": "node --test tests/*.test.js",
 		"lint": "prettier --check . --ignore-path ../.prettierignore && eslint .",
 		"format": "prettier --write . --ignore-path ../.prettierignore"
 	},
@@ -35,7 +36,7 @@
 		"@fontsource-variable/material-symbols-outlined": "^5.3.5"
 	},
 	"peerDependencies": {
-		"bref-ui": "^3.1.1",
+		"bref-ui": "^3.2.0",
 		"svelte": "^5.0.0"
 	},
 	"devDependencies": {
