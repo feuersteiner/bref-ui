@@ -1,0 +1,6 @@
+{
+	"id": "terminal",
+	"files": ["terminal.svelte"],
+	"exports": { "Terminal": "terminal.svelte" },
+	"dependencies": ["theme"]
+}
