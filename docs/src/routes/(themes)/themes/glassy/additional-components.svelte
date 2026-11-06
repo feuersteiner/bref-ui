@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { TreeItemProps } from 'bref-ui/types';
-	import { Combobox, Switch, TextArea, TreeView } from 'bref-ui-themes/glassy';
+	import { Combobox, Switch, Terminal, TextArea, TreeView } from 'bref-ui-themes/glassy';
+	import TerminalPreview from '../terminal-preview.svelte';
 	const languages = [
 		{ id: 'svelte', label: 'Svelte', icon: { name: 'code' as const } },
 		{ id: 'typescript', label: 'TypeScript', icon: { name: 'data_object' as const } }
@@ -55,6 +56,7 @@
 			<TreeView items={files} bind:selection defaultExpanded label="Project files" />
 		</div>
 	</div>
+	<TerminalPreview {Terminal} label="Glassy" />
 </section>
 
 <style>

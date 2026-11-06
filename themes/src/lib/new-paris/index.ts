@@ -1,4 +1,5 @@
 export { default as Theme } from './theme.svelte';
+export { default as Terminal } from './terminal/terminal.svelte';
 export { default as Icon } from './icon/icon.svelte';
 export { default as Button } from './button/button.svelte';
 export { default as Checkbox } from './checkbox/checkbox.svelte';

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { TreeItemProps } from 'bref-ui/types';
+	import TerminalPreview from '../terminal-preview.svelte';
 	let { components }: { components: typeof import('bref-ui-themes/new-paris') } = $props();
 	const languages = [
 		{ id: 'svelte', label: 'Svelte', icon: { name: 'code' as const } },
@@ -55,6 +56,7 @@
 			<components.TreeView items={files} bind:selection defaultExpanded label="Project files" />
 		</div>
 	</div>
+	<TerminalPreview Terminal={components.Terminal} label="New Paris" />
 </section>
 
 <style>

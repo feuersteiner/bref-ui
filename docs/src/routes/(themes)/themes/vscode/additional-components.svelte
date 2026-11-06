@@ -1,4 +1,5 @@
 <script lang="ts">
+	import TerminalPreview from '../terminal-preview.svelte';
 	let { components }: { components: typeof import('bref-ui-themes/vscode') } = $props();
 	const languages = [
 		{ id: 'svelte', label: 'Svelte', icon: { name: 'code' as const } },
@@ -165,6 +166,7 @@
 			</div>
 		</form>
 	</div>
+	<TerminalPreview Terminal={components.Terminal} label="VS Code" />
 	<div class="scheme-note">
 		<div>
 			<h3>Appearance</h3>
