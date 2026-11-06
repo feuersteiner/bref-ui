@@ -19,6 +19,7 @@ import pillGroupDoc from '../pill-group/docs.js';
 import pillChoiceGroupDoc from '../pill-choice-group/docs.js';
 import selectDoc from '../select/docs.js';
 import tabsDoc from '../tabs/docs.js';
+import terminalDoc from '../terminal/docs.js';
 
 /** Canonical references, separate from component runtime exports. */
 export const componentDocs: Record<string, ComponentDocProps> = {
@@ -41,5 +42,6 @@ export const componentDocs: Record<string, ComponentDocProps> = {
 	'pill-group': pillGroupDoc,
 	'pill-choice-group': pillChoiceGroupDoc,
 	select: selectDoc,
-	tabs: tabsDoc
+	tabs: tabsDoc,
+	terminal: terminalDoc
 };
