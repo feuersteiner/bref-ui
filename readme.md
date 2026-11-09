@@ -7,6 +7,9 @@ and apps with components you can make your own.
 [![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.gg/JpgQRTUsVS)
 [![MIT license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
+<a href="https://trendshift.io/repositories/297856?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-297856" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/297856/daily?language=Svelte" alt="feuersteiner%2Fbref-ui | Trendshift" width="250" height="55"/></a>
+<a href="https://trendshift.io/repositories/297856?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-297856" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/297856/weekly?language=Svelte" alt="feuersteiner%2Fbref-ui | Trendshift" width="250" height="55"/></a>
+
 The [documentation](https://feuersteiner.github.io/bref-ui/) includes component
 playgrounds and the [Todo, House Shop and RunnerAI demos](https://feuersteiner.github.io/bref-ui/demo).
 Explore [New Paris, VS Code, Glassy and Crystal Code](https://github.com/feuersteiner/bref-ui/tree/main/themes#readme)
