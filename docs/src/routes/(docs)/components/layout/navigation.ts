@@ -9,6 +9,10 @@ import {
 import { chapter as selectChapter, sections as selectSections } from '../../select/sections.js';
 import { chapter as tabsChapter, sections as tabsSections } from '../../tabs/sections.js';
 import {
+	chapter as terminalChapter,
+	sections as terminalSections
+} from '../../terminal/sections.js';
+import {
 	chapter as introductionChapter,
 	sections as introductionSections
 } from '../../sections.js';
@@ -100,7 +104,8 @@ export const navigation = [
 		links: [
 			{ title: dialogChapter, href: 'dialog' },
 			{ title: popoverChapter, href: 'popover' },
-			{ title: surfaceChapter, href: 'surface' }
+			{ title: surfaceChapter, href: 'surface' },
+			{ title: terminalChapter, href: 'terminal' }
 		]
 	}
 ] as const;
@@ -136,6 +141,7 @@ export const pageSections: Record<string, readonly PageSection[]> = {
 	'/popover': popoverSections,
 	'/select': selectSections,
 	'/tabs': tabsSections,
+	'/terminal': terminalSections,
 	'/combobox': comboboxSections,
 	'/checkbox': checkboxSections,
 	'/switch': switchSections,

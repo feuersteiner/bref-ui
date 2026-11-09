@@ -88,7 +88,7 @@ npx bref-ui add button
 
 Components: `button`, `checkbox`, `combobox`, `dialog`, `icon`, `pill`,
 `pill-choice-group`, `pill-group`, `popover`, `progress`, `select`, `spinner`,
-`surface`, `switch`, `tabs`, `text-area`, `text-input`, `theme` and `tree-view`.
+`surface`, `switch`, `tabs`, `terminal`, `text-area`, `text-input`, `theme` and `tree-view`.
 
 ## Why Bref-ui?
 

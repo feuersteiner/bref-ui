@@ -13,7 +13,8 @@ test('packed docs discover all components and read offline without a project or 
 	const before = await snapshot(directory);
 	const list = cli(directory, ['docs', 'list'], '', 0, 'node');
 	expect(list).toContain(`bref-ui v${version}`);
-	expect(list.match(/^- /gm)).toHaveLength(20);
+	expect(list.match(/^- /gm)).toHaveLength(21);
+	expect(list).toContain('terminal (Terminal; package + copy)');
 	expect(list).toContain('button (Button; package + copy)');
 	expect(list).toContain('theme-mode-toggle (ThemeModeToggle; package only)');
 	for (const args of [
@@ -69,10 +70,19 @@ test.each(['npx', 'pnpm'])(
 	}
 );
 
-test('an app built from the packed CLI usage reference compiles in a clean consumer', async () => {
+test.each([
+	['button', false],
+	['terminal', false],
+	['terminal', true]
+])('the packed %s reference compiles in a clean consumer (copied: %s)', async (id, copied) => {
 	const directory = await fixture({ type: 'module' });
-	const usage = cli(directory, ['docs', 'button', 'usage']);
-	const source = usage.match(/```svelte\n([\s\S]*?)```/)[1];
+	const usage = cli(directory, ['docs', id, 'usage']);
+	let source = usage.match(/```svelte\n([\s\S]*?)```/)[1];
+	if (copied) {
+		cli(directory, ['init']);
+		expect(cli(directory, ['add', id], 'y\n')).toContain(`Installed ${id}`);
+		source = source.replace("from 'bref-ui'", "from '#bref'");
+	}
 	await writeFile(join(directory, 'app.svelte'), source);
 	await writeFile(
 		join(directory, 'main.js'),

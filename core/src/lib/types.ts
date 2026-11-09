@@ -4,6 +4,7 @@ export type Variant = 'neutral' | 'soft' | 'filled';
 export type StatusColor = 'info' | 'success' | 'warning' | 'error';
 export type Color = 'primary' | 'secondary' | 'foreground' | 'background' | 'muted' | StatusColor;
 export type Orientation = 'horizontal' | 'vertical';
+export type { TerminalProps } from './terminal/types.js';
 export type Dimension = 'fit' | 'fill';
 
 export type { TabItemProps, TabItemDataProps, TabsProps, TabTransition } from './tabs/types.js';
