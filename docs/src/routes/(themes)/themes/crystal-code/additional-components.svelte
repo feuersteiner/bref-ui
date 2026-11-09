@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Examples from './examples.svelte';
+	import TerminalPreview from '../terminal-preview.svelte';
 	import type { TreeItemProps } from 'bref-ui/types';
 	let { components }: { components: typeof import('bref-ui-themes/crystal-code') } = $props();
 	const languages = [
@@ -85,6 +86,7 @@
 			</p>
 		</div>
 	</div>
+	<TerminalPreview Terminal={components.Terminal} label="Crystal Code" />
 	<Examples section="additional" />
 	<p class="metadata">
 		<code>ThemeModeToggle</code>

@@ -27,7 +27,7 @@ are part of this repository.
 | [Crystal Code](https://feuersteiner.github.io/bref-ui/themes/crystal-code) | Light and dark frosted workbench                | `bref-ui-themes/crystal-code` |
 | [VS Code](https://feuersteiner.github.io/bref-ui/themes/vscode)            | Fixed-dark workbench                            | `bref-ui-themes/vscode`       |
 
-Each entry point exports twenty components, including `Theme`, `Button`, form
+Each entry point exports twenty-one components, including `Theme`, `Button`, `Terminal`, form
 controls, overlays and navigation. Importing one theme does not load the others.
 
 ## Installation
@@ -38,7 +38,7 @@ Install [bref-ui-themes from npm](https://www.npmjs.com/package/bref-ui-themes) 
 npm install bref-ui bref-ui-themes
 ```
 
-Bref-ui 3 and Svelte 5 are peer dependencies. The custom text font remains optional.
+Bref-ui 3.2+ and Svelte 5 are peer dependencies. The custom text font remains optional.
 
 Import components from the theme's entry point:
 
@@ -82,6 +82,29 @@ color-scheme metadata. Local `[data-theme="light"]`, `[data-theme="dark"]` and
 the nearest container wins. Without a mode selection, Crystal Code follows the
 system, New Paris and Glassy stay light, and VS Code stays dark.
 
+## Terminal
+
+Every theme exports the same read-only `Terminal` API from `bref-ui`:
+
+```svelte
+<script>
+	import { Theme, Terminal } from 'bref-ui-themes/glassy';
+</script>
+
+<Theme>
+	<Terminal lines={['$ bun run dev', '✓ Ready to build']} windowTitle="bref — terminal" />
+</Theme>
+```
+
+New Paris uses warm charcoal and restrained corners; Glassy has rounded, highlighted
+chrome; Crystal Code uses a softly tinted workbench; VS Code uses flat editor framing.
+All keep the dark viewport and decorative traffic lights. Glassy and Crystal Code
+use opaque gradients here so output stays readable without backdrop blur. Native
+attributes and events pass through to core, and consumer `style` declarations come
+last. See the [Terminal reference](https://feuersteiner.github.io/bref-ui/terminal)
+for props, keyboard scrolling and plain-text behavior. Each gallery includes normal,
+empty and overflowing output with append/clear controls.
+
 ## Development
 
 Run `bun install` and `bun run dev` from the repository root. The docs site consumes
@@ -98,7 +121,7 @@ New Paris depends on Material Symbols and loads its variable fill font through T
 
 ## New Paris
 
-Black and ivory controls, serif typography and opaque paper overlays. All twenty components are exported through the theme subpath.
+Black and ivory controls, serif typography and opaque paper overlays. All twenty-one components are exported through the theme subpath.
 
 Material Symbols icons load automatically with Theme. The custom text font, Inter,
 is optional to avoid adding unused font assets to apps; text falls back to system
@@ -121,7 +144,7 @@ The gallery uses the same public package exports at `/themes/new-paris`.
 
 ## Glassy
 
-Translucent controls and frosted overlays with scoped component styling. All twenty components are exported through the theme subpath:
+Translucent controls and frosted overlays with scoped component styling. All twenty-one components are exported through the theme subpath:
 
 ```svelte
 <script>
@@ -139,7 +162,7 @@ The gallery uses the same public package exports at `/themes/glassy`.
 
 ## Crystal Code
 
-Light and dark frosted workbench controls with a complete component reference. All twenty components are exported through the theme subpath:
+Light and dark frosted workbench controls with a complete component reference. All twenty-one components are exported through the theme subpath:
 
 ```svelte
 <script>
@@ -169,7 +192,7 @@ The gallery uses the same public package exports at `/themes/crystal-code`.
 
 ## VS Code
 
-Fixed-dark workbench controls with native interactions and scoped styling. All twenty components are exported through the theme subpath:
+Fixed-dark workbench controls with native interactions and scoped styling. All twenty-one components are exported through the theme subpath:
 
 ```svelte
 <script>

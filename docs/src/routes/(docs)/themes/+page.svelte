@@ -28,7 +28,7 @@
 			source="npm install bref-ui bref-ui-themes"
 		/>
 		<p>
-			Bref-ui 3 and Svelte 5 are peer dependencies. Shared types come from
+			Bref-ui 3.2+ and Svelte 5 are peer dependencies. Shared types come from
 			<code>bref-ui/types</code>
 			and are re-exported as types from
 			<code>bref-ui-themes</code>
@@ -73,6 +73,11 @@
 			<code>data-theme="auto"</code>
 			containers select the mode for nested themes; the nearest container wins. Without a mode selection,
 			Crystal Code follows the system, New Paris and Glassy stay light, and VS Code stays dark.
+		</p>
+		<p>
+			Every theme also exports <a href={resolve('terminal')}>Terminal</a>
+			with the core API and theme-specific dark window styling. The galleries include append/clear controls,
+			empty output and keyboard-scrollable long output.
 		</p>
 		<p>
 			<a href={resolve('demo')}>Demo</a>
