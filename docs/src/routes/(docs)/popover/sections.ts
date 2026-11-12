@@ -2,6 +2,7 @@ export const chapter = 'Popover';
 
 export const sections = [
 	{ id: 'usage', title: 'Usage' },
+	{ id: 'glass-context', title: 'Glass in context' },
 	{ id: 'playground', title: 'Playground' },
 	{ id: 'bound-state', title: 'Bound state' },
 	{ id: 'viewport', title: 'Scrolling and multiple instances' },
