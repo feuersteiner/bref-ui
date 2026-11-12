@@ -14,7 +14,7 @@ export default {
 <Progress {value} onSeek={(next) => value = next} label="Playback position" />
 \`\`\`
 
-Use normalized values from 0 to 1; omit value for indeterminate progress. Provide label for the accessible name. Supplying onSeek switches to a native range control and reports normalized values; update value in the handler. disabled affects seeking. Native attributes/events are forwarded. Customize size and inherited color with CSS.`,
+Use normalized values from 0 to 1; omit value for indeterminate progress. Provide label for the accessible name. Supplying onSeek switches to a native range control and reports normalized values; update value in the handler. disabled affects seeking. Non-seekable indicators use phrasing markup and can appear inside a button. Keep seekable progress outside buttons, links, and other interactive controls. Native attributes/events are forwarded. Customize size and inherited color with CSS.`,
 	props: [
 		{
 			name: 'label',

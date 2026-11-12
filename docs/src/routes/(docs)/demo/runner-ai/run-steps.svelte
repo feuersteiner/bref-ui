@@ -44,7 +44,6 @@
 					{/each}
 				</span>
 				<span data-progress>
-					<!-- TODO(bref-ui#67): Progress renders a <div>, which is invalid inside this <button>. -->
 					<Progress value={node.progress / 100} label={`${node.name} progress`} size="small" />
 					<span>{node.progress}%</span>
 				</span>
